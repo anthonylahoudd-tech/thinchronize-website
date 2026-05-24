@@ -16,6 +16,8 @@ const navLinks = [
   { label: 'Contact',   href: '/contact' },
 ]
 
+const DIAGNOSTIC_HREF = '/diagnostic'
+
 export default function Header() {
   const headerRef = useRef<HTMLElement>(null)
   const [scrolled,  setScrolled]  = useState(false)
@@ -102,18 +104,25 @@ export default function Header() {
             ))}
 
             <button
-              onClick={() => scrollToSection('/contact')}
-              className="ml-4 px-5 py-2.5 border border-white/30 text-white rounded-full will-change-transform hover:bg-white hover:text-dark"
+              onClick={() => scrollToSection(DIAGNOSTIC_HREF)}
+              className="ml-4 px-5 py-2.5 will-change-transform"
               style={{
                 fontFamily:    "'PPNeueCorp', system-ui, sans-serif",
                 fontWeight:    800,
                 fontSize:      11,
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',
-                transition:    'all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                background:    '#D0274B',
+                color:         '#fff',
+                borderRadius:  4,
+                border:        'none',
+                cursor:        'pointer',
+                transition:    'background 0.25s',
               }}
+              onMouseEnter={e => ((e.currentTarget as HTMLButtonElement).style.background = '#b8223f')}
+              onMouseLeave={e => ((e.currentTarget as HTMLButtonElement).style.background = '#D0274B')}
             >
-              Start a Project
+              Diagnose →
             </button>
           </nav>
 
@@ -153,18 +162,23 @@ export default function Header() {
             </button>
           ))}
           <button
-            onClick={() => scrollToSection('/contact')}
-            className="self-start mt-8 px-6 py-3 bg-red text-white rounded-full will-change-transform hover:bg-white hover:text-dark"
+            onClick={() => scrollToSection(DIAGNOSTIC_HREF)}
+            className="self-start mt-8 px-6 py-3 will-change-transform"
             style={{
               fontFamily:    "'PPNeueCorp', system-ui, sans-serif",
               fontWeight:    800,
               fontSize:      12,
               letterSpacing: '0.12em',
               textTransform: 'uppercase',
-              transition:    'all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+              background:    '#D0274B',
+              color:         '#fff',
+              borderRadius:  4,
+              border:        'none',
+              cursor:        'pointer',
+              transition:    'background 0.25s',
             }}
           >
-            Start a Project
+            Diagnose →
           </button>
         </nav>
       </div>

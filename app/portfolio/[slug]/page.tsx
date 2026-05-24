@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
-import { PROJECTS, getProjectBySlug } from '@/lib/projects'
+import { PROJECTS, getProjectBySlug, type Project } from '@/lib/projects'
 import PortfolioProjectClient from './PortfolioProjectClient'
 
 interface Props {
@@ -23,5 +23,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default function PortfolioProjectPage({ params }: Props) {
   const project = getProjectBySlug(params.slug)
   if (!project) redirect('/portfolio')
-  return <PortfolioProjectClient project={project} />
+
+  // Pick 2 other projects for "More Work"
+  const moreWork: Project[] = PROJECTS.filter(p => p.id !== project!.id).slice(0, 2)
+
+  return <PortfolioProjectClient project={project!} moreWork={moreWork} />
 }

@@ -1,268 +1,452 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import { motion } from 'framer-motion'
 import type { Project } from '@/lib/projects'
 
 const PP  = "'PPNeueCorp', system-ui, sans-serif"
 const RED = '#D0274B'
 
-const fadeUp = (delay = 0) => ({
-  initial:    { opacity: 0, y: 20 },
-  animate:    { opacity: 1, y: 0 },
-  transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] as const, delay },
-})
+// ─── Scroll-reveal hook ───────────────────────────────────────────────────────
 
-export default function PortfolioProjectClient({ project }: { project: Project }) {
-  const heroRef = useRef<HTMLImageElement>(null)
+function useReveal(delay = 0) {
+  const ref  = useRef<HTMLDivElement>(null)
+  const [vis, setVis] = useState(false)
 
   useEffect(() => {
-    const img = heroRef.current
-    if (!img) return
-    img.style.opacity = '0'
-    const onLoad = () => {
-      img.style.transition = 'opacity 0.8s ease'
-      img.style.opacity    = '1'
-    }
-    if (img.complete) { onLoad() } else { img.addEventListener('load', onLoad) }
-    return () => img.removeEventListener('load', onLoad)
+    const el  = ref.current
+    if (!el) return
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setVis(true); obs.disconnect() } },
+      { threshold: 0.1 }
+    )
+    obs.observe(el)
+    return () => obs.disconnect()
   }, [])
 
+  return {
+    ref,
+    style: {
+      opacity:    vis ? 1 : 0,
+      transform:  vis ? 'translateY(0)' : 'translateY(20px)',
+      transition: `opacity 0.7s ease-out ${delay}s, transform 0.7s ease-out ${delay}s`,
+    } as React.CSSProperties,
+  }
+}
+
+// ─── More-work card ───────────────────────────────────────────────────────────
+
+function MoreWorkCard({ project }: { project: Project }) {
+  const [hov, setHov] = useState(false)
   return (
-    <div style={{ backgroundColor: '#292929', minHeight: '100vh', paddingBottom: 0 }}>
-
-      {/* ── Top navigation ────────────────────────────────────────────── */}
-      <div style={{ paddingTop: 90, paddingLeft: 48, paddingRight: 48, maxWidth: 860, margin: '0 auto' }}>
-        <Link
-          href="/portfolio"
-          style={{
-            display:        'inline-block',
-            fontFamily:     PP,
-            fontWeight:     400,
-            fontSize:       13,
-            color:          '#919191',
-            textDecoration: 'none',
-            marginBottom:   0,
-            transition:     'color 0.2s',
-          }}
-          onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.color = '#fff')}
-          onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.color = '#919191')}
-        >
-          ← All Projects
-        </Link>
-      </div>
-
-      {/* ── Hero section ──────────────────────────────────────────────── */}
-      <div style={{ position: 'relative', marginTop: 20 }}>
+    <Link
+      href={`/portfolio/${project.id}`}
+      style={{ display: 'block', textDecoration: 'none', flex: '1 1 0' }}
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+    >
+      <div style={{ overflow: 'hidden', aspectRatio: '4/3', marginBottom: 16 }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          ref={heroRef}
           src={project.coverImage}
           alt={project.title}
           style={{
-            width:      '100%',
-            height:     500,
-            objectFit:  'cover',
-            display:    'block',
+            width: '100%', height: '100%', objectFit: 'cover', display: 'block',
+            transform: hov ? 'scale(1.03)' : 'scale(1)',
+            transition: 'transform 0.5s ease',
           }}
         />
-        {/* Fade gradient into page background */}
+      </div>
+      <p style={{ fontFamily: PP, fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#919191', marginBottom: 6 }}>
+        {project.category}
+      </p>
+      <h3 style={{ fontFamily: PP, fontWeight: 900, fontSize: 20, color: hov ? RED : '#292929', transition: 'color 0.25s', lineHeight: 1.15 }}>
+        {project.title}
+      </h3>
+      <p style={{ fontFamily: PP, fontSize: 13, color: '#919191', marginTop: 4 }}>
+        {project.market} · {project.year}
+      </p>
+    </Link>
+  )
+}
+
+// ─── Scroll indicator ─────────────────────────────────────────────────────────
+
+function ScrollIndicator() {
+  return (
+    <div style={{
+      position:   'absolute',
+      bottom:     48,
+      left:       '50%',
+      transform:  'translateX(-50%)',
+      display:    'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap:        8,
+      color:      'rgba(255,255,255,0.5)',
+    }}>
+      <span style={{ fontFamily: PP, fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase' }}>
+        Scroll
+      </span>
+      <svg width="16" height="24" viewBox="0 0 16 24" fill="none" style={{ animation: 'bounce 1.8s infinite' }}>
+        <path d="M8 0v20M1 13l7 7 7-7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+      <style>{`@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }`}</style>
+    </div>
+  )
+}
+
+// ─── Main component ───────────────────────────────────────────────────────────
+
+interface Props {
+  project: Project
+  moreWork: Project[]
+}
+
+export default function PortfolioProjectClient({ project, moreWork }: Props) {
+  const rChallenge   = useReveal()
+  const rImage1      = useReveal(0.1)
+  const rDiagnosis   = useReveal()
+  const rBuilt       = useReveal(0.15)
+  const rImage2      = useReveal()
+  const rResult      = useReveal()
+  const rDeliv       = useReveal()
+  const rNav         = useReveal()
+  const rMore        = useReveal()
+
+  return (
+    <div style={{ backgroundColor: '#FFFFFF', minHeight: '100vh' }}>
+
+      {/* ══ SECTION 1 — Hero ══════════════════════════════════════════ */}
+      <section style={{
+        position:   'relative',
+        minHeight:  '100vh',
+        display:    'flex',
+        alignItems: 'flex-end',
+      }}>
+        {/* Background image */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={project.coverImage}
+          alt={project.title}
+          style={{
+            position:    'absolute',
+            inset:       0,
+            width:       '100%',
+            height:      '100%',
+            objectFit:   'cover',
+            objectPosition: 'center',
+          }}
+        />
+        {/* Dark overlay */}
         <div style={{
           position:   'absolute',
-          bottom:     0,
-          left:       0,
-          right:      0,
-          height:     200,
-          background: 'linear-gradient(to bottom, transparent 0%, #292929 100%)',
-          pointerEvents: 'none',
+          inset:       0,
+          background:  'linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.6) 100%)',
         }} />
-      </div>
 
-      {/* ── Content area ──────────────────────────────────────────────── */}
-      <div style={{ maxWidth: 860, margin: '0 auto', padding: '0 48px 120px' }}>
-
-        {/* Meta row — overlaps hero bottom */}
-        <motion.div {...fadeUp(0)} style={{ marginTop: -40, marginBottom: 0, display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-          <span style={{
-            background:   'rgba(208,39,75,0.9)',
-            color:        '#fff',
-            borderRadius: 6,
-            padding:      '5px 12px',
-            fontSize:     11,
-            fontFamily:   PP,
-            fontWeight:   700,
-          }}>
-            {project.category}
-          </span>
-          <span style={{ fontFamily: PP, fontSize: 14, color: 'rgba(255,255,255,0.8)', textShadow: '0 1px 4px rgba(0,0,0,0.5)' }}>
-            · {project.market} · {project.year}
-          </span>
-        </motion.div>
-
-        {/* Title */}
-        <motion.h1
-          {...fadeUp(0.05)}
-          style={{
-            fontFamily:    PP,
-            fontWeight:    900,
-            fontSize:      'clamp(34px, 6vw, 56px)',
-            color:         '#fff',
-            lineHeight:    1.05,
-            letterSpacing: '-0.01em',
-            marginTop:     20,
-            marginBottom:  0,
-          }}
-        >
-          {project.title}
-        </motion.h1>
-
-        {/* Divider */}
-        <motion.div
-          {...fadeUp(0.1)}
-          style={{ height: 1, background: 'rgba(255,255,255,0.1)', margin: '40px 0' }}
-        />
-
-        {/* Four content sections */}
-        {[
-          { label: 'The Brief',     body: project.brief,     large: false, delay: 0.12 },
-          { label: 'The Diagnosis', body: project.diagnosis, large: false, delay: 0.2 },
-          { label: 'What We Built', body: project.built,     large: false, delay: 0.28 },
-          { label: 'The Result',    body: project.result,    large: true,  delay: 0.36 },
-        ].map(({ label, body, large, delay }) => (
-          <motion.div key={label} {...fadeUp(delay)} style={{ marginBottom: 48 }}>
-            <p style={{
-              fontFamily:    PP,
-              fontWeight:    800,
-              fontSize:      10,
-              color:         RED,
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              marginBottom:  10,
-            }}>
-              {label}
-            </p>
-            <p style={{
-              fontFamily:  PP,
-              fontWeight:  large ? 600 : 400,
-              fontSize:    large ? 22 : 17,
-              color:       '#FFFFFF',
-              lineHeight:  1.85,
-              maxWidth:    680,
-            }}>
-              {body}
-            </p>
-          </motion.div>
-        ))}
-
-        {/* Services row */}
-        <motion.div {...fadeUp(0.44)} style={{ marginBottom: 72 }}>
+        {/* Content — bottom left */}
+        <div style={{
+          position: 'relative',
+          padding:  'clamp(40px, 5vw, 80px)',
+          maxWidth: 900,
+        }}>
           <p style={{
             fontFamily:    PP,
-            fontWeight:    800,
-            fontSize:      10,
-            color:         RED,
-            letterSpacing: '0.2em',
+            fontWeight:    400,
+            fontSize:      12,
+            letterSpacing: '0.15em',
             textTransform: 'uppercase',
-            marginBottom:  12,
+            color:         'rgba(255,255,255,0.7)',
+            marginBottom:  16,
           }}>
-            Services
+            Case Study
           </p>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-            {project.services.map(s => (
-              <span key={s} style={{
-                background:   'rgba(255,255,255,0.06)',
-                border:       '1px solid rgba(255,255,255,0.1)',
-                borderRadius: 20,
-                padding:      '6px 14px',
-                color:        '#999',
-                fontSize:     12,
-                fontFamily:   PP,
-              }}>{s}</span>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* Placeholder for additional project images */}
-        {/* Additional project images — add to public/images/portfolio/[slug]/ when available */}
-
-        {/* CTA */}
-        <motion.div
-          {...fadeUp(0.5)}
-          style={{
-            borderTop:   '1px solid rgba(255,255,255,0.1)',
-            paddingTop:  48,
-            marginBottom: 80,
-          }}
-        >
-          <h2 style={{
-            fontFamily:   PP,
-            fontWeight:   900,
-            fontSize:     32,
-            color:        '#fff',
-            marginBottom: 12,
-            lineHeight:   1.2,
+          <h1 style={{
+            fontFamily:    PP,
+            fontWeight:    900,
+            fontSize:      'clamp(48px, 7vw, 96px)',
+            color:         '#FFFFFF',
+            lineHeight:    1.0,
+            letterSpacing: '-0.02em',
+            marginBottom:  16,
           }}>
-            Start your own engagement.
-          </h2>
+            {project.title}
+          </h1>
           <p style={{
             fontFamily:  PP,
             fontWeight:  400,
-            fontSize:    16,
-            color:       '#919191',
-            margin:      '0 0 28px',
-            lineHeight:  1.6,
+            fontSize:    22,
+            color:       'rgba(255,255,255,0.75)',
+            marginBottom: 32,
+            lineHeight:  1.4,
           }}>
-            Every project begins with a diagnosis.
+            {project.subtitle}
           </p>
-          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
-            <Link
-              href="/contact"
-              style={{
-                display:       'inline-block',
-                padding:       '14px 28px',
-                background:    RED,
-                color:         '#fff',
+          {/* Services chips */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+            {project.services.map(s => (
+              <span key={s} style={{
+                border:        '1px solid rgba(255,255,255,0.4)',
+                borderRadius:  20,
+                padding:       '6px 14px',
                 fontFamily:    PP,
-                fontWeight:    800,
-                fontSize:      12,
-                letterSpacing: '0.12em',
+                fontWeight:    400,
+                fontSize:      11,
+                letterSpacing: '0.08em',
                 textTransform: 'uppercase',
-                textDecoration:'none',
-                borderRadius:  10,
-                transition:    'background 0.2s',
-              }}
-              onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.background = '#b8223f')}
-              onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.background = RED)}
-            >
-              Start the conversation →
-            </Link>
-            <Link
-              href="/portfolio"
-              style={{
-                display:       'inline-block',
-                padding:       '14px 28px',
-                background:    'transparent',
-                color:         '#fff',
-                fontFamily:    PP,
-                fontWeight:    800,
-                fontSize:      12,
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-                textDecoration:'none',
-                borderRadius:  10,
-                border:        '1px solid rgba(255,255,255,0.2)',
-                transition:    'border-color 0.2s',
-              }}
-              onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.borderColor = RED)}
-              onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.borderColor = 'rgba(255,255,255,0.2)')}
-            >
-              ← Back to portfolio
-            </Link>
+                color:         'rgba(255,255,255,0.8)',
+              }}>
+                {s}
+              </span>
+            ))}
           </div>
-        </motion.div>
+        </div>
 
-      </div>
+        <ScrollIndicator />
+      </section>
+
+      {/* ══ SECTION 2 — The Challenge ═════════════════════════════════ */}
+      <section style={{ padding: '120px 0' }}>
+        <div
+          ref={rChallenge.ref}
+          style={{ ...rChallenge.style, maxWidth: 800, margin: '0 auto', padding: '0 clamp(24px, 6vw, 80px)' }}
+        >
+          <p style={{
+            fontFamily:    PP,
+            fontWeight:    400,
+            fontSize:      11,
+            letterSpacing: '0.15em',
+            textTransform: 'uppercase',
+            color:         '#919191',
+            marginBottom:  24,
+          }}>
+            The Challenge
+          </p>
+          <p style={{
+            fontFamily:  PP,
+            fontWeight:  800,
+            fontSize:    'clamp(22px, 3vw, 32px)',
+            color:       '#292929',
+            lineHeight:  1.5,
+          }}>
+            {project.brief}
+          </p>
+        </div>
+      </section>
+
+      {/* ══ SECTION 3 — First large image ════════════════════════════ */}
+      <section>
+        <div ref={rImage1.ref} style={{ ...rImage1.style, overflow: 'hidden' }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={project.coverImage}
+            alt={`${project.title} — detail`}
+            style={{
+              width:     '100%',
+              height:    '70vh',
+              objectFit: 'cover',
+              display:   'block',
+            }}
+          />
+        </div>
+      </section>
+
+      {/* ══ SECTION 4 — Diagnosis + Solution ════════════════════════ */}
+      <section style={{ padding: 'clamp(60px, 8vw, 120px) clamp(24px, 6vw, 80px)' }}>
+        <div style={{ display: 'flex', gap: 'clamp(32px, 6vw, 80px)', flexWrap: 'wrap' }}>
+          {/* Left — Diagnosis */}
+          <div ref={rDiagnosis.ref} style={{ ...rDiagnosis.style, flex: '1 1 280px' }}>
+            <p style={{
+              fontFamily:    PP,
+              fontWeight:    400,
+              fontSize:      11,
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase',
+              color:         '#919191',
+              marginBottom:  24,
+            }}>
+              The Diagnosis
+            </p>
+            <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 18, color: '#292929', lineHeight: 1.75 }}>
+              {project.diagnosis}
+            </p>
+          </div>
+
+          {/* Right — What We Built */}
+          <div ref={rBuilt.ref} style={{ ...rBuilt.style, flex: '1 1 280px' }}>
+            <p style={{
+              fontFamily:    PP,
+              fontWeight:    400,
+              fontSize:      11,
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase',
+              color:         '#919191',
+              marginBottom:  24,
+            }}>
+              What We Built
+            </p>
+            <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 18, color: '#292929', lineHeight: 1.75 }}>
+              {project.built}
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ══ SECTION 5 — Second image (right-aligned, 65%) ═══════════ */}
+      <section style={{ padding: '0 clamp(24px, 6vw, 80px) 120px' }}>
+        <div ref={rImage2.ref} style={{ ...rImage2.style, marginLeft: 'auto', width: '65%', minWidth: 280 }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={project.coverImage}
+            alt={`${project.title} — work`}
+            style={{
+              width:     '100%',
+              height:    500,
+              objectFit: 'cover',
+              display:   'block',
+            }}
+          />
+        </div>
+      </section>
+
+      {/* ══ SECTION 6 — The Result (dark) ════════════════════════════ */}
+      <section style={{ background: '#292929', padding: 'clamp(60px, 8vw, 120px) clamp(24px, 6vw, 80px)' }}>
+        <div ref={rResult.ref} style={rResult.style}>
+          <p style={{
+            fontFamily:    PP,
+            fontWeight:    400,
+            fontSize:      11,
+            letterSpacing: '0.15em',
+            textTransform: 'uppercase',
+            color:         RED,
+            marginBottom:  24,
+          }}>
+            The Result
+          </p>
+          <p style={{
+            fontFamily:  PP,
+            fontWeight:  800,
+            fontSize:    'clamp(24px, 3.5vw, 36px)',
+            color:       '#FFFFFF',
+            lineHeight:  1.5,
+            maxWidth:    720,
+            marginBottom: 40,
+          }}>
+            {project.result}
+          </p>
+          <p style={{ fontFamily: PP, fontSize: 14, color: 'rgba(255,255,255,0.5)' }}>
+            {project.market} · {project.year}
+          </p>
+        </div>
+      </section>
+
+      {/* ══ SECTION 7 — Deliverables ═════════════════════════════════ */}
+      <section style={{ background: '#FFFFFF', padding: 'clamp(60px, 8vw, 120px) clamp(24px, 6vw, 80px)' }}>
+        <div ref={rDeliv.ref} style={rDeliv.style}>
+          <p style={{
+            fontFamily:    PP,
+            fontWeight:    400,
+            fontSize:      11,
+            letterSpacing: '0.15em',
+            textTransform: 'uppercase',
+            color:         '#919191',
+            marginBottom:  32,
+          }}>
+            Deliverables
+          </p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
+            {project.services.map(s => (
+              <DeliverableChip key={s} label={s} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══ SECTION 8 — Navigation CTA ═══════════════════════════════ */}
+      <section style={{ padding: '80px clamp(24px, 6vw, 80px)', borderTop: '1px solid #E8E8E8' }}>
+        <div
+          ref={rNav.ref}
+          style={{
+            ...rNav.style,
+            display:       'flex',
+            alignItems:    'center',
+            justifyContent:'space-between',
+            flexWrap:      'wrap',
+            gap:           24,
+          }}
+        >
+          <Link
+            href="/portfolio"
+            style={{ fontFamily: PP, fontWeight: 400, fontSize: 14, color: '#292929', textDecoration: 'none', transition: 'color 0.2s' }}
+            onMouseEnter={e => (e.currentTarget.style.color = RED)}
+            onMouseLeave={e => (e.currentTarget.style.color = '#292929')}
+          >
+            ← Back to Portfolio
+          </Link>
+
+          <span style={{ fontFamily: PP, fontWeight: 900, fontSize: 12, color: '#292929', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+            Thinchronize
+          </span>
+
+          <Link
+            href="/contact"
+            style={{ fontFamily: PP, fontWeight: 400, fontSize: 14, color: RED, textDecoration: 'none', transition: 'opacity 0.2s' }}
+            onMouseEnter={e => (e.currentTarget.style.opacity = '0.7')}
+            onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
+          >
+            Start a project →
+          </Link>
+        </div>
+      </section>
+
+      {/* ══ SECTION 9 — More Work ════════════════════════════════════ */}
+      {moreWork.length > 0 && (
+        <section style={{ padding: '0 clamp(24px, 6vw, 80px) 80px' }}>
+          <div ref={rMore.ref} style={rMore.style}>
+            <p style={{
+              fontFamily:    PP,
+              fontWeight:    400,
+              fontSize:      11,
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase',
+              color:         '#919191',
+              marginBottom:  40,
+            }}>
+              More Work
+            </p>
+            <div style={{ display: 'flex', gap: 40, flexWrap: 'wrap' }}>
+              {moreWork.map(p => <MoreWorkCard key={p.id} project={p} />)}
+            </div>
+          </div>
+        </section>
+      )}
+
     </div>
+  )
+}
+
+// ─── Deliverable chip with hover ──────────────────────────────────────────────
+
+function DeliverableChip({ label }: { label: string }) {
+  const [hov, setHov] = useState(false)
+  return (
+    <span
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      style={{
+        border:       `1px solid ${hov ? RED : '#E8E8E8'}`,
+        borderRadius: 24,
+        padding:      '10px 20px',
+        fontFamily:   PP,
+        fontWeight:   400,
+        fontSize:     13,
+        color:        hov ? RED : '#292929',
+        transition:   'border-color 0.2s, color 0.2s',
+        cursor:       'default',
+      }}
+    >
+      {label}
+    </span>
   )
 }
