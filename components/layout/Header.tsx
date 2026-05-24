@@ -3,10 +3,13 @@
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { gsap } from 'gsap'
 import { Menu, X } from 'lucide-react'
 import clsx from 'clsx'
+
+// Pages with white (#FFFFFF) backgrounds — header must use dark text + white bg
+const LIGHT_PAGES = ['/services', '/portfolio']
 
 const navLinks = [
   { label: 'Home',      href: '/' },
@@ -22,7 +25,11 @@ export default function Header() {
   const headerRef = useRef<HTMLElement>(null)
   const [scrolled,  setScrolled]  = useState(false)
   const [menuOpen,  setMenuOpen]  = useState(false)
-  const router = useRouter()
+  const router   = useRouter()
+  const pathname = usePathname()
+
+  // Is this a white-background page?
+  const isLight = LIGHT_PAGES.some(p => pathname === p || pathname.startsWith(p + '/'))
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 60)
@@ -57,14 +64,18 @@ export default function Header() {
     <>
       <header
         ref={headerRef}
-        className={clsx(
-          'fixed top-0 left-0 right-0 z-50 will-change-transform',
-          'transition-all duration-500',
-          scrolled
-            ? 'py-4 bg-dark/92 backdrop-blur-md border-b border-white/5'
-            : 'py-6 bg-transparent'
-        )}
-        style={{ transform: 'translateZ(0)' }}
+        className="fixed top-0 left-0 right-0 z-50 will-change-transform transition-all duration-500"
+        style={{
+          transform:    'translateZ(0)',
+          padding:      scrolled ? '16px 0' : '24px 0',
+          background:   isLight
+            ? (scrolled ? 'rgba(255,255,255,0.96)' : '#FFFFFF')
+            : (scrolled ? 'rgba(41,41,41,0.92)' : 'transparent'),
+          backdropFilter: scrolled ? 'blur(12px)' : 'none',
+          borderBottom: scrolled
+            ? (isLight ? '1px solid #E8E8E8' : '1px solid rgba(255,255,255,0.05)')
+            : 'none',
+        }}
       >
         <div className="container mx-auto flex items-center justify-between">
 
@@ -92,11 +103,14 @@ export default function Header() {
                   fontSize:      12,
                   letterSpacing: '0.1em',
                   textTransform: 'uppercase',
-                  color:         'rgba(255,255,255,0.65)',
+                  color:         isLight ? 'rgba(41,41,41,0.6)' : 'rgba(255,255,255,0.65)',
+                  background:    'none',
+                  border:        'none',
+                  cursor:        'pointer',
                   transition:    'color 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                 }}
-                onMouseEnter={(e) => ((e.currentTarget as HTMLButtonElement).style.color = '#fff')}
-                onMouseLeave={(e) => ((e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.65)')}
+                onMouseEnter={(e) => ((e.currentTarget as HTMLButtonElement).style.color = isLight ? '#292929' : '#fff')}
+                onMouseLeave={(e) => ((e.currentTarget as HTMLButtonElement).style.color = isLight ? 'rgba(41,41,41,0.6)' : 'rgba(255,255,255,0.65)')}
                 className="link-underline"
               >
                 {link.label}
@@ -128,7 +142,8 @@ export default function Header() {
 
           {/* Mobile toggle */}
           <button
-            className="md:hidden text-white p-2"
+            className="md:hidden p-2"
+            style={{ color: isLight ? '#292929' : '#fff' }}
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Toggle menu"
           >
