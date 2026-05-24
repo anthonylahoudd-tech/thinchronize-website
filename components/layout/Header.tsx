@@ -3,13 +3,14 @@
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { gsap } from 'gsap'
 import { Menu, X } from 'lucide-react'
 import clsx from 'clsx'
 
 const navLinks = [
   { label: 'Work',     href: '/#work' },
-  { label: 'Services', href: '/#services' },
+  { label: 'Services', href: '/services' },
   { label: 'Journal',  href: '/#journal' },
   { label: 'Contact',  href: '/#contact' },
 ]
@@ -18,6 +19,7 @@ export default function Header() {
   const headerRef = useRef<HTMLElement>(null)
   const [scrolled,  setScrolled]  = useState(false)
   const [menuOpen,  setMenuOpen]  = useState(false)
+  const router = useRouter()
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 60)
@@ -35,7 +37,10 @@ export default function Header() {
 
   const scrollToSection = (href: string) => {
     setMenuOpen(false)
-    if (!href.startsWith('/#')) return
+    if (!href.startsWith('/#')) {
+      router.push(href)
+      return
+    }
     const id = href.slice(2)
     const el = document.getElementById(id)
     if (!el) return

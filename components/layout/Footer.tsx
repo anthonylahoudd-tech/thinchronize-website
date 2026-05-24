@@ -15,7 +15,7 @@ interface FooterLink {
 const footerLinks: Record<string, FooterLink[]> = {
   Studio: [
     { label: 'Work',     href: '/#work' },
-    { label: 'Services', href: '/#services' },
+    { label: 'Services', href: '/services' },
     { label: 'Journal',  href: '/#journal' },
     { label: 'About',    href: '/#about' },
   ],
