@@ -14,19 +14,19 @@ const process = [
     number: '01',
     title: 'Detect',
     description:
-      'We begin by listening — to the market, the audience, and the brand itself. Uncovering latent tensions, mapping the competitive landscape, and finding the white space where your brand can live with purpose.',
+      'We begin by listening — to the market, the audience, and the brand itself. Uncovering latent tensions, mapping the competitive landscape, and finding the space where your brand can live with conviction.',
   },
   {
     number: '02',
     title: 'Define',
     description:
-      'Strategy is the backbone of everything we build. We articulate who you are, what you stand for, and how you should speak — shaping a brand brief that acts as the compass for every creative decision.',
+      'Strategy is the backbone of everything we build. We articulate who you are, what you stand for, and how you should speak — shaping a brand platform that acts as the compass for every creative decision.',
   },
   {
     number: '03',
     title: 'Design',
     description:
-      'Form follows meaning. We craft the visual system, typography, color language, and communication architecture that brings your brand to life — consistently, beautifully, and with intention.',
+      'Form follows meaning. Only once the strategy is settled do we build the visual system — typography, colour, communication architecture — everything coherent, nothing arbitrary.',
   },
   {
     number: '04',
@@ -100,7 +100,7 @@ export default function About() {
           <span className="eyebrow">About</span>
         </div>
 
-        {/* Editorial statement — NormalUltrabold 800, red, tracked */}
+        {/* Editorial statement */}
         <p
           className="mb-8"
           style={{
@@ -112,10 +112,10 @@ export default function About() {
             color:         '#D0274B',
           }}
         >
-          They walk into a room without announcing themselves.
+          Diagnosis before design. Always.
         </p>
 
-        {/* Main heading — ExtendedUltrabold 900 */}
+        {/* Main heading */}
         <div className="about-heading mb-10 md:mb-16">
           <div className="overflow-hidden">
             <div className="flex flex-wrap gap-x-4">
@@ -136,18 +136,16 @@ export default function About() {
         {/* Body + stat */}
         <div className="about-body grid grid-cols-1 md:grid-cols-12 gap-12 mb-20 md:mb-32">
           <div className="md:col-span-6">
-            <p
-              style={{
-                fontFamily: PP,
-                fontWeight: 400,
-                fontSize:   18,
-                lineHeight: 1.7,
-                color:      '#919191',
-              }}
-            >
-              Thinchronize is a brand strategy and creative studio that believes great brands are
-              not made — they are discovered. Through research, strategy, and disciplined craft, we
-              help ambitious companies become the most coherent version of themselves.
+            <p style={{
+              fontFamily: PP,
+              fontWeight: 400,
+              fontSize:   18,
+              lineHeight: 1.7,
+              color:      '#919191',
+            }}>
+              Thinchronize is a strategy-led creative studio. We are not here to make your brand
+              look better. We are here to make it true. Every engagement starts with a diagnosis —
+              not a brief — because we don&apos;t design until we understand.
             </p>
           </div>
           <div className="md:col-span-4 md:col-start-9">
@@ -156,17 +154,15 @@ export default function About() {
                 className="text-display-sm text-white mb-2 uppercase"
                 style={{ fontFamily: PP, fontWeight: 900 }}
               >
-                5+ years
+                150+
               </p>
-              <p
-                style={{
-                  fontFamily: PP,
-                  fontWeight: 400,
-                  fontSize:   14,
-                  color:      '#919191',
-                }}
-              >
-                of building brand systems across Lebanon, the Gulf, and Europe.
+              <p style={{
+                fontFamily: PP,
+                fontWeight: 400,
+                fontSize:   14,
+                color:      '#919191',
+              }}>
+                clients built on referral — across Lebanon, the Gulf, and Europe.
               </p>
             </div>
           </div>
@@ -190,8 +186,6 @@ export default function About() {
         <div className="process-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {process.map((step) => (
             <div key={step.number} className="process-item will-change-transform">
-
-              {/* Large red number — ExtendedUltrabold */}
               <p
                 className="mb-4"
                 style={{
@@ -205,8 +199,6 @@ export default function About() {
               >
                 {step.number}
               </p>
-
-              {/* D-word — NormalUltrabold, white */}
               <h4
                 className="text-white uppercase mb-4"
                 style={{
@@ -219,17 +211,13 @@ export default function About() {
               >
                 {step.title}
               </h4>
-
-              {/* Description — NormalMedium */}
-              <p
-                style={{
-                  fontFamily: PP,
-                  fontWeight: 400,
-                  fontSize:   14,
-                  lineHeight: 1.7,
-                  color:      '#919191',
-                }}
-              >
+              <p style={{
+                fontFamily: PP,
+                fontWeight: 400,
+                fontSize:   14,
+                lineHeight: 1.7,
+                color:      '#919191',
+              }}>
                 {step.description}
               </p>
             </div>

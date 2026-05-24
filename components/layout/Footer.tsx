@@ -14,13 +14,13 @@ interface FooterLink {
 
 const footerLinks: Record<string, FooterLink[]> = {
   Studio: [
-    { label: 'Work',     href: '/#work' },
+    { label: 'Home',     href: '/' },
+    { label: 'Work',     href: '/work' },
     { label: 'Services', href: '/services' },
-    { label: 'Journal',  href: '/#journal' },
-    { label: 'About',    href: '/#about' },
+    { label: 'Journal',  href: '/journal' },
   ],
   Connect: [
-    { label: 'Contact',   href: '/#contact' },
+    { label: 'Contact',   href: '/contact' },
     { label: 'Instagram', href: 'https://instagram.com', external: true },
     { label: 'LinkedIn',  href: 'https://linkedin.com',  external: true },
     { label: 'Behance',   href: 'https://behance.net',   external: true },
@@ -112,7 +112,7 @@ export default function Footer() {
               Ready to build something that lasts?
             </p>
             <Link
-              href="/#contact"
+              href="/contact"
               className="self-start group inline-flex items-center gap-3 px-6 py-3 bg-white rounded-full will-change-transform"
               style={{
                 fontFamily:    PP,

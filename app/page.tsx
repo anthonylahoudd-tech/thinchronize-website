@@ -1,5 +1,6 @@
-import Hero            from '@/components/sections/Hero'
-import About           from '@/components/sections/About'
+import Hero                  from '@/components/sections/Hero'
+import MindfulDesignReveal  from '@/components/sections/MindfulDesignReveal'
+import About                from '@/components/sections/About'
 import Manifesto       from '@/components/sections/Manifesto'
 import Work            from '@/components/sections/Work'
 import Services        from '@/components/sections/Services'
@@ -19,6 +20,7 @@ export default async function HomePage() {
   return (
     <>
       <Hero />
+      <MindfulDesignReveal />
       <Marquee dark />
       <About />
       <Manifesto />
