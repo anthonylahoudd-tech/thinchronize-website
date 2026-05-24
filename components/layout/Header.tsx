@@ -9,11 +9,11 @@ import { Menu, X } from 'lucide-react'
 import clsx from 'clsx'
 
 const navLinks = [
-  { label: 'Home',     href: '/' },
-  { label: 'Work',     href: '/work' },
-  { label: 'Services', href: '/services' },
-  { label: 'Journal',  href: '/journal' },
-  { label: 'Contact',  href: '/contact' },
+  { label: 'Home',      href: '/' },
+  { label: 'Services',  href: '/services' },
+  { label: 'Portfolio', href: '/portfolio' },
+  { label: 'Journal',   href: '/journal' },
+  { label: 'Contact',   href: '/contact' },
 ]
 
 export default function Header() {

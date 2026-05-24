@@ -1,12 +1,11 @@
 import type { Metadata } from 'next'
-import ServicesClient from './ServicesClient'
+import ServicesOrbitalClient from './ServicesOrbitalClient'
 
 export const metadata: Metadata = {
   title: 'Services',
-  description:
-    'Brand Engagement, production add-ons, Brand Guardianship retainer, and Alumni pricing — the complete Thinchronize service offering.',
+  description: 'Discover Thinchronize services through an interactive brand diagnostic experience.',
 }
 
 export default function ServicesPage() {
-  return <ServicesClient />
+  return <ServicesOrbitalClient />
 }
