@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm --version)",
+      "Bash(npm install *)",
+      "Bash(npx tsc *)",
+      "Bash(npm run *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/work/al-barakeh)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/journal/case-for-restraint)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/studio)",
+      "Bash(identify /Users/user/Desktop/thinchronize-website/public/images/hero-bg.jpg)",
+      "Bash(git init *)",
+      "Bash(git add *)"
+    ]
+  }
+}

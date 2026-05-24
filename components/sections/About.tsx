@@ -1,0 +1,242 @@
+'use client'
+
+import { useRef } from 'react'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useGSAP } from '@gsap/react'
+
+gsap.registerPlugin(ScrollTrigger)
+
+const PP = "'PPNeueCorp', system-ui, sans-serif"
+
+const process = [
+  {
+    number: '01',
+    title: 'Detect',
+    description:
+      'We begin by listening — to the market, the audience, and the brand itself. Uncovering latent tensions, mapping the competitive landscape, and finding the white space where your brand can live with purpose.',
+  },
+  {
+    number: '02',
+    title: 'Define',
+    description:
+      'Strategy is the backbone of everything we build. We articulate who you are, what you stand for, and how you should speak — shaping a brand brief that acts as the compass for every creative decision.',
+  },
+  {
+    number: '03',
+    title: 'Design',
+    description:
+      'Form follows meaning. We craft the visual system, typography, color language, and communication architecture that brings your brand to life — consistently, beautifully, and with intention.',
+  },
+  {
+    number: '04',
+    title: 'Deliver',
+    description:
+      'A brand only works if it works in the world. We launch, document, and guard the brand over time — ensuring it remains coherent as it meets new contexts, channels, and audiences.',
+  },
+]
+
+export default function About() {
+  const sectionRef = useRef<HTMLElement>(null)
+
+  useGSAP(
+    () => {
+      gsap.fromTo(
+        '.about-heading-word',
+        { yPercent: 110 },
+        {
+          yPercent: 0,
+          duration: 1,
+          ease: 'power4.out',
+          stagger: 0.06,
+          scrollTrigger: { trigger: '.about-heading', start: 'top 80%', once: true },
+        }
+      )
+      gsap.fromTo(
+        '.about-body',
+        { y: 30, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.9,
+          ease: 'power3.out',
+          scrollTrigger: { trigger: '.about-body', start: 'top 82%', once: true },
+        }
+      )
+      gsap.fromTo(
+        '.process-item',
+        { y: 40, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: 'power3.out',
+          stagger: 0.15,
+          scrollTrigger: { trigger: '.process-grid', start: 'top 78%', once: true },
+        }
+      )
+      gsap.fromTo(
+        '.about-red-line',
+        { scaleX: 0 },
+        {
+          scaleX: 1,
+          duration: 1.2,
+          ease: 'power4.inOut',
+          transformOrigin: 'left center',
+          scrollTrigger: { trigger: '.about-red-line', start: 'top 85%', once: true },
+        }
+      )
+    },
+    { scope: sectionRef }
+  )
+
+  return (
+    <section ref={sectionRef} id="about" className="bg-dark section-padding">
+      <div className="container mx-auto">
+
+        {/* Section eyebrow */}
+        <div className="flex items-center gap-4 mb-12">
+          <span className="w-8 h-px bg-red" />
+          <span className="eyebrow">About</span>
+        </div>
+
+        {/* Editorial statement — NormalUltrabold 800, red, tracked */}
+        <p
+          className="mb-8"
+          style={{
+            fontFamily:    PP,
+            fontWeight:    800,
+            fontSize:      11,
+            letterSpacing: '0.25em',
+            textTransform: 'uppercase',
+            color:         '#D0274B',
+          }}
+        >
+          They walk into a room without announcing themselves.
+        </p>
+
+        {/* Main heading — ExtendedUltrabold 900 */}
+        <div className="about-heading mb-10 md:mb-16">
+          <div className="overflow-hidden">
+            <div className="flex flex-wrap gap-x-4">
+              {['We build brands', 'that outlast', 'the moment.'].map((word) => (
+                <span key={word} className="overflow-hidden">
+                  <span
+                    className="about-heading-word inline-block text-display-md text-white uppercase"
+                    style={{ fontFamily: PP, fontWeight: 900 }}
+                  >
+                    {word}
+                  </span>
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Body + stat */}
+        <div className="about-body grid grid-cols-1 md:grid-cols-12 gap-12 mb-20 md:mb-32">
+          <div className="md:col-span-6">
+            <p
+              style={{
+                fontFamily: PP,
+                fontWeight: 400,
+                fontSize:   18,
+                lineHeight: 1.7,
+                color:      '#919191',
+              }}
+            >
+              Thinchronize is a brand strategy and creative studio that believes great brands are
+              not made — they are discovered. Through research, strategy, and disciplined craft, we
+              help ambitious companies become the most coherent version of themselves.
+            </p>
+          </div>
+          <div className="md:col-span-4 md:col-start-9">
+            <div className="border border-white/10 rounded-2xl p-8">
+              <p
+                className="text-display-sm text-white mb-2 uppercase"
+                style={{ fontFamily: PP, fontWeight: 900 }}
+              >
+                5+ years
+              </p>
+              <p
+                style={{
+                  fontFamily: PP,
+                  fontWeight: 400,
+                  fontSize:   14,
+                  color:      '#919191',
+                }}
+              >
+                of building brand systems across Lebanon, the Gulf, and Europe.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Red divider */}
+        <div className="about-red-line h-px bg-red mb-16 md:mb-24" />
+
+        {/* Process header */}
+        <div className="flex items-center justify-between mb-16">
+          <h3
+            className="text-white uppercase"
+            style={{ fontFamily: PP, fontWeight: 800, fontSize: 20 }}
+          >
+            Our Process
+          </h3>
+          <span className="eyebrow">The 4D Framework</span>
+        </div>
+
+        {/* 4D grid */}
+        <div className="process-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {process.map((step) => (
+            <div key={step.number} className="process-item will-change-transform">
+
+              {/* Large red number — ExtendedUltrabold */}
+              <p
+                className="mb-4"
+                style={{
+                  fontFamily:    PP,
+                  fontWeight:    900,
+                  fontSize:      'clamp(56px, 6vw, 96px)',
+                  lineHeight:    1,
+                  letterSpacing: '-0.02em',
+                  color:         '#D0274B',
+                }}
+              >
+                {step.number}
+              </p>
+
+              {/* D-word — NormalUltrabold, white */}
+              <h4
+                className="text-white uppercase mb-4"
+                style={{
+                  fontFamily:    PP,
+                  fontWeight:    800,
+                  fontSize:      'clamp(24px, 2.2vw, 32px)',
+                  letterSpacing: '0.02em',
+                  lineHeight:    1,
+                }}
+              >
+                {step.title}
+              </h4>
+
+              {/* Description — NormalMedium */}
+              <p
+                style={{
+                  fontFamily: PP,
+                  fontWeight: 400,
+                  fontSize:   14,
+                  lineHeight: 1.7,
+                  color:      '#919191',
+                }}
+              >
+                {step.description}
+              </p>
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </section>
+  )
+}
