@@ -6,6 +6,7 @@ import { PROJECTS } from '@/lib/projects'
 
 const PP  = "'PPNeueCorp', system-ui, sans-serif"
 const RED = '#D0274B'
+const BASE = '/images/work/whatsub'
 
 // ─── Scroll-reveal hook ───────────────────────────────────────────────────────
 
@@ -97,6 +98,26 @@ function MoreWorkCard({ id, title, category, coverImage, market, year }: {
   )
 }
 
+// ─── Nav link ─────────────────────────────────────────────────────────────────
+
+function NavLink({ href, label, red }: { href: string; label: string; red?: boolean }) {
+  const [hov, setHov] = useState(false)
+  return (
+    <Link
+      href={href}
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      style={{
+        fontFamily: PP, fontWeight: 400, fontSize: 14,
+        color: red ? (hov ? '#b8223f' : RED) : (hov ? RED : '#292929'),
+        textDecoration: 'none', transition: 'color 0.2s',
+      }}
+    >
+      {label}
+    </Link>
+  )
+}
+
 // ─── Scroll indicator ─────────────────────────────────────────────────────────
 
 function ScrollIndicator() {
@@ -106,9 +127,7 @@ function ScrollIndicator() {
       display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8,
       color: 'rgba(255,255,255,0.5)',
     }}>
-      <span style={{ fontFamily: PP, fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase' }}>
-        Scroll
-      </span>
+      <span style={{ fontFamily: PP, fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase' }}>Scroll</span>
       <svg width="16" height="24" viewBox="0 0 16 24" fill="none" style={{ animation: 'bounce 1.8s infinite' }}>
         <path d="M8 0v20M1 13l7 7 7-7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
       </svg>
@@ -117,7 +136,7 @@ function ScrollIndicator() {
   )
 }
 
-// ─── Main ─────────────────────────────────────────────────────────────────────
+// ─── Data ─────────────────────────────────────────────────────────────────────
 
 const DELIVERABLES = [
   'Logo Suite', 'Brand Guidelines', 'Menu Design', 'Packaging System',
@@ -125,7 +144,27 @@ const DELIVERABLES = [
   'Cup Design', 'Outdoor Advertising', 'Color System', 'Icon Marks',
 ]
 
+// All 13 images in strict process order
+// 1 hero · 1 large · 1 right-aligned · 6 process · 4 gallery = 13
+const PROCESS_IMAGES = [
+  { file: 'sketch-1.jpg',   caption: '01 — Initial Concept Sketches' },
+  { file: 'sketch-2.jpg',   caption: '02 — Logo Construction' },
+  { file: 'logo-final.jpg', caption: '03 — Final Logotype' },
+  { file: 'logo-colors.jpg',caption: '04 — Color Applied to Logo' },
+  { file: 'palette.jpg',    caption: '05 — Full Color Palette' },
+  { file: 'icons.jpg',      caption: '06 — Icon & Mark System' },
+]
+
+const GALLERY_IMAGES = [
+  { file: 'packaging.jpg', alt: 'Whatsub packaging system' },
+  { file: 'menu.jpg',      alt: 'Whatsub menu design' },
+  { file: 'poster-1.jpg',  alt: 'Whatsub poster advertising' },
+  { file: 'poster-2.jpg',  alt: 'Whatsub poster advertising 2' },
+]
+
 const moreWork = PROJECTS.filter(p => p.id !== 'whatsub').slice(0, 2)
+
+// ─── Main ─────────────────────────────────────────────────────────────────────
 
 export default function WhatsubPage() {
   const rChallenge = useReveal()
@@ -141,18 +180,15 @@ export default function WhatsubPage() {
   return (
     <div style={{ backgroundColor: '#FFFFFF', minHeight: '100vh' }}>
 
-      {/* ══ SECTION 1 — Hero ══════════════════════════════════════════ */}
+      {/* ══ 1 — Hero (truck.jpg) ══════════════════════════════════════ */}
       <section style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'flex-end' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/images/work/Whatsub-2025/truck.jpg"
-          alt="Whatsub"
+          src={`${BASE}/truck.jpg`}
+          alt="Whatsub food truck"
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
         />
-        <div style={{
-          position: 'absolute', inset: 0,
-          background: 'linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.65) 100%)',
-        }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.65) 100%)' }} />
 
         <div style={{ position: 'relative', padding: 'clamp(40px, 5vw, 80px)', maxWidth: 900 }}>
           <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 12, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.7)', marginBottom: 16 }}>
@@ -175,16 +211,12 @@ export default function WhatsubPage() {
             Washington D.C., USA · 2025
           </p>
         </div>
-
         <ScrollIndicator />
       </section>
 
-      {/* ══ SECTION 2 — The Challenge ════════════════════════════════ */}
+      {/* ══ 2 — The Challenge ════════════════════════════════════════ */}
       <section style={{ padding: '120px 0' }}>
-        <div
-          ref={rChallenge.ref}
-          style={{ ...rChallenge.style, maxWidth: 800, margin: '0 auto', padding: '0 clamp(24px, 6vw, 80px)' }}
-        >
+        <div ref={rChallenge.ref} style={{ ...rChallenge.style, maxWidth: 800, margin: '0 auto', padding: '0 clamp(24px, 6vw, 80px)' }}>
           <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#919191', marginBottom: 24 }}>
             The Challenge
           </p>
@@ -194,19 +226,19 @@ export default function WhatsubPage() {
         </div>
       </section>
 
-      {/* ══ SECTION 3 — First large image ════════════════════════════ */}
+      {/* ══ 3 — Large image: mural.jpg ═══════════════════════════════ */}
       <section>
         <div style={{ overflow: 'hidden' }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/images/work/Whatsub-2025/mural.jpg"
-            alt="Whatsub mural"
+            src={`${BASE}/mural.jpg`}
+            alt="Whatsub restaurant mural"
             style={{ width: '100%', height: '70vh', objectFit: 'cover', display: 'block' }}
           />
         </div>
       </section>
 
-      {/* ══ SECTION 4 — Diagnosis + Solution ════════════════════════ */}
+      {/* ══ 4 — Diagnosis + Solution ═════════════════════════════════ */}
       <section style={{ padding: 'clamp(60px, 8vw, 120px) clamp(24px, 6vw, 80px)' }}>
         <div style={{ display: 'flex', gap: 'clamp(32px, 6vw, 80px)', flexWrap: 'wrap' }}>
           <div ref={rDiagnosis.ref} style={{ ...rDiagnosis.style, flex: '1 1 280px' }}>
@@ -217,7 +249,6 @@ export default function WhatsubPage() {
               Fast casual visual language in D.C. was converging on the same clean, minimal aesthetic. The gap was personality. The target audience — urban, street food-native, 18–35 — expected brands that felt crafted and confident, not templated. Generic would be invisible here.
             </p>
           </div>
-
           <div ref={rBuilt.ref} style={{ ...rBuilt.style, flex: '1 1 280px' }}>
             <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#919191', marginBottom: 24 }}>
               What We Built
@@ -229,19 +260,19 @@ export default function WhatsubPage() {
         </div>
       </section>
 
-      {/* ══ SECTION 5 — Second image (right-aligned, 65%) ════════════ */}
+      {/* ══ 5 — Right-aligned image: collateral.jpg ══════════════════ */}
       <section style={{ padding: '0 clamp(24px, 6vw, 80px) 120px' }}>
         <div style={{ marginLeft: 'auto', width: '65%', minWidth: 280 }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/images/work/Whatsub-2025/collateral.jpg"
-            alt="Whatsub collateral"
+            src={`${BASE}/collateral.jpg`}
+            alt="Whatsub collateral system"
             style={{ width: '100%', height: 500, objectFit: 'cover', display: 'block' }}
           />
         </div>
       </section>
 
-      {/* ══ SECTION 6 — The Result (dark) ════════════════════════════ */}
+      {/* ══ 6 — The Result (dark) ════════════════════════════════════ */}
       <section style={{ background: '#292929', padding: 'clamp(60px, 8vw, 120px) clamp(24px, 6vw, 80px)' }}>
         <div ref={rResult.ref} style={rResult.style}>
           <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', color: RED, marginBottom: 24 }}>
@@ -259,29 +290,26 @@ export default function WhatsubPage() {
         </div>
       </section>
 
-      {/* ══ SECTION 7 — The Process ══════════════════════════════════ */}
+      {/* ══ 7 — The Process: 6 images in 2 rows of 3 ════════════════ */}
+      {/* sketch-1 → sketch-2 → logo-final → logo-colors → palette → icons */}
       <section style={{ background: '#FFFFFF', padding: 'clamp(60px, 8vw, 100px) clamp(24px, 6vw, 80px)' }}>
         <div ref={rProcess.ref} style={{ ...rProcess.style, maxWidth: 1200, margin: '0 auto' }}>
           <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 12, letterSpacing: '0.2em', textTransform: 'uppercase', color: RED, marginBottom: 16 }}>
             The Process
           </p>
-          <h2 style={{ fontFamily: PP, fontWeight: 800, fontSize: 40, color: '#292929', letterSpacing: '-0.015em', marginBottom: 48 }}>
+          <h2 style={{ fontFamily: PP, fontWeight: 800, fontSize: 'clamp(28px, 3.5vw, 40px)', color: '#292929', letterSpacing: '-0.015em', marginBottom: 48 }}>
             From Sketch to Street.
           </h2>
-          <div className="process-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24 }}>
-            {[
-              { src: '/images/work/Whatsub-2025/sketch-1.jpg',    caption: '01 — Initial Concept Sketches' },
-              { src: '/images/work/Whatsub-2025/sketch-2.jpg',    caption: '02 — Logo Construction' },
-              { src: '/images/work/Whatsub-2025/logo-colors.jpg', caption: '03 — Color System Development' },
-            ].map(({ src, caption }) => (
-              <div key={caption}>
+          <div className="process-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '32px 24px' }}>
+            {PROCESS_IMAGES.map(({ file, caption }) => (
+              <div key={file}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={src}
+                  src={`${BASE}/${file}`}
                   alt={caption}
-                  style={{ aspectRatio: '16/9', objectFit: 'cover', width: '100%', display: 'block' }}
+                  style={{ aspectRatio: '4/3', objectFit: 'cover', width: '100%', display: 'block' }}
                 />
-                <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 12, color: '#919191', letterSpacing: '0.15em', textTransform: 'uppercase', marginTop: 12 }}>
+                <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 11, color: '#919191', letterSpacing: '0.12em', textTransform: 'uppercase', marginTop: 12 }}>
                   {caption}
                 </p>
               </div>
@@ -290,24 +318,20 @@ export default function WhatsubPage() {
         </div>
       </section>
 
-      {/* ══ SECTION 8 — Brand Gallery ════════════════════════════════ */}
-      <section style={{ background: '#FFFFFF', padding: '0 clamp(24px, 6vw, 80px) 80px' }}>
+      {/* ══ 8 — Brand in Action: 4 images in 2×2 ════════════════════ */}
+      {/* packaging → menu → poster-1 → poster-2 */}
+      <section style={{ background: '#F7F7F7', padding: 'clamp(60px, 8vw, 100px) clamp(24px, 6vw, 80px)' }}>
         <div ref={rGallery.ref} style={{ ...rGallery.style, maxWidth: 1400, margin: '0 auto' }}>
           <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 12, letterSpacing: '0.2em', textTransform: 'uppercase', color: RED, marginBottom: 48 }}>
             Brand in Action
           </p>
           <div className="gallery-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 24 }}>
-            {[
-              '/images/work/Whatsub-2025/poster-1.jpg',
-              '/images/work/Whatsub-2025/poster-2.jpg',
-              '/images/work/Whatsub-2025/packaging.jpg',
-              '/images/work/Whatsub-2025/menu.jpg',
-            ].map((src, i) => (
+            {GALLERY_IMAGES.map(({ file, alt }) => (
               // eslint-disable-next-line @next/next/no-img-element
               <img
-                key={i}
-                src={src}
-                alt={`Whatsub brand ${i + 1}`}
+                key={file}
+                src={`${BASE}/${file}`}
+                alt={alt}
                 style={{ aspectRatio: '4/3', objectFit: 'cover', width: '100%', display: 'block' }}
               />
             ))}
@@ -315,7 +339,7 @@ export default function WhatsubPage() {
         </div>
       </section>
 
-      {/* ══ SECTION 9 — Deliverables ═════════════════════════════════ */}
+      {/* ══ 9 — Deliverables ═════════════════════════════════════════ */}
       <section style={{ background: '#FFFFFF', padding: 'clamp(60px, 8vw, 120px) clamp(24px, 6vw, 80px)' }}>
         <div ref={rDeliv.ref} style={rDeliv.style}>
           <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#919191', marginBottom: 32 }}>
@@ -327,12 +351,9 @@ export default function WhatsubPage() {
         </div>
       </section>
 
-      {/* ══ SECTION 10 — Navigation CTA ══════════════════════════════ */}
+      {/* ══ 10 — Navigation CTA ══════════════════════════════════════ */}
       <section style={{ padding: '80px clamp(24px, 6vw, 80px)', borderTop: '1px solid #E8E8E8' }}>
-        <div
-          ref={rNav.ref}
-          style={{ ...rNav.style, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 24 }}
-        >
+        <div ref={rNav.ref} style={{ ...rNav.style, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 24 }}>
           <NavLink href="/portfolio" label="← Back to Portfolio" />
           <span style={{ fontFamily: PP, fontWeight: 900, fontSize: 12, color: '#292929', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
             Thinchronize
@@ -341,7 +362,7 @@ export default function WhatsubPage() {
         </div>
       </section>
 
-      {/* ══ SECTION 11 — More Work ════════════════════════════════════ */}
+      {/* ══ 11 — More Work ═══════════════════════════════════════════ */}
       {moreWork.length > 0 && (
         <section style={{ padding: '0 clamp(24px, 6vw, 80px) 80px' }}>
           <div ref={rMore.ref} style={rMore.style}>
@@ -350,15 +371,7 @@ export default function WhatsubPage() {
             </p>
             <div style={{ display: 'flex', gap: 40, flexWrap: 'wrap' }}>
               {moreWork.map(p => (
-                <MoreWorkCard
-                  key={p.id}
-                  id={p.id}
-                  title={p.title}
-                  category={p.category}
-                  coverImage={p.coverImage}
-                  market={p.market}
-                  year={p.year}
-                />
+                <MoreWorkCard key={p.id} id={p.id} title={p.title} category={p.category} coverImage={p.coverImage} market={p.market} year={p.year} />
               ))}
             </div>
           </div>
@@ -370,28 +383,10 @@ export default function WhatsubPage() {
           .process-grid { grid-template-columns: 1fr !important; }
           .gallery-grid  { grid-template-columns: 1fr !important; }
         }
+        @media (min-width: 641px) and (max-width: 900px) {
+          .process-grid { grid-template-columns: repeat(2, 1fr) !important; }
+        }
       `}</style>
     </div>
-  )
-}
-
-// ─── Nav link with hover ──────────────────────────────────────────────────────
-
-function NavLink({ href, label, red }: { href: string; label: string; red?: boolean }) {
-  const [hov, setHov] = useState(false)
-  const base = red ? RED : '#292929'
-  return (
-    <Link
-      href={href}
-      onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
-      style={{
-        fontFamily: PP, fontWeight: 400, fontSize: 14,
-        color: red ? (hov ? '#b8223f' : RED) : (hov ? RED : '#292929'),
-        textDecoration: 'none', transition: 'color 0.2s',
-      }}
-    >
-      {label}
-    </Link>
   )
 }
