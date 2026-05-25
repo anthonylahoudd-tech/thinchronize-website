@@ -259,23 +259,18 @@ export default function AboutClient() {
           </h1>
 
           {/* Signage image */}
-          <div style={{
-            width:    '100%',
-            maxWidth: '700px',
-            margin:   '0 auto 40px',
-          }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/images/about-signage.jpg"
-              alt="Thinchronize Studio"
-              style={{
-                width:      '100%',
-                height:     'auto',
-                display:    'block',
-                objectFit:  'cover',
-              }}
-            />
-          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/about-signage.jpg"
+            alt="Thinchronize Studio"
+            style={{
+              width:    '100%',
+              maxWidth: '700px',
+              height:   'auto',
+              display:  'block',
+              margin:   '0 auto 40px',
+            }}
+          />
 
           <p style={{
             fontFamily: PP,

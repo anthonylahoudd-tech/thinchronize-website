@@ -102,7 +102,7 @@ export default function Contact() {
           <div className="lg:col-span-5">
             <div className="contact-heading mb-10">
               <div className="flex flex-wrap gap-x-4">
-                {["Let's make", "something worth", "keeping."].map((word) => (
+                {["Let's make", "something worth keeping."].map((word) => (
                   <span key={word} className="overflow-hidden w-full">
                     <span className="contact-heading-word inline-block text-display-md text-white font-display font-black uppercase leading-tight">
                       {word}

@@ -46,7 +46,7 @@ export default function Hero() {
     >
       {/* ── Background photo — full clarity, no overlay ───────────── */}
       <Image
-        src="/images/hero-bg.jpg"
+        src="/images/hero-main.jpg"
         alt=""
         fill
         priority
