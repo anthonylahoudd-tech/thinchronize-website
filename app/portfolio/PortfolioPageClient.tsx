@@ -8,7 +8,7 @@ import { SERVICES } from '@/lib/services-data'
 const PP  = "'PPNeueCorp', system-ui, sans-serif"
 const RED = '#D0274B'
 
-// ─── Grid config: 7 projects, 12-column alternating layout ───────────────────
+// ─── Grid config: 8 projects, 12-column alternating layout ───────────────────
 
 const GRID_CONFIG = [
   { gridColumn: '1 / 8',  aspectRatio: '4/3'  }, // [0] Pattern A — large left
@@ -18,6 +18,7 @@ const GRID_CONFIG = [
   { gridColumn: '9 / 13', aspectRatio: '1/1'  }, // [4] Pattern B — equal third
   { gridColumn: '1 / 6',  aspectRatio: '3/4'  }, // [5] Pattern C — small left
   { gridColumn: '6 / 13', aspectRatio: '4/3'  }, // [6] Pattern C — large right
+  { gridColumn: '1 / 13', aspectRatio: '21/9' }, // [7] Pattern D — full-width hero
 ]
 
 // ─── Filter bar ───────────────────────────────────────────────────────────────

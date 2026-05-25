@@ -135,6 +135,22 @@ export const PROJECTS: Project[] = [
     services: ['Editorial Design', 'Print Design', 'Content Hierarchy'],
     year: '2023',
     market: 'Lebanon'
+  },
+  {
+    id: 'whatsub',
+    title: 'Whatsub',
+    subtitle: 'Brand Identity & Visual System',
+    category: 'Brand Identity',
+    coverImage: '/images/work/whatsub/cover.jpg',
+    diagnosticAnswers: [0, 2, 3],
+    keywords: ['brand identity', 'logo', 'packaging', 'menu design', 'environmental', 'food truck', 'fast casual', 'washington dc'],
+    brief: "A new sub sandwich brand launching in Washington D.C. needed a full visual identity — from logo to packaging to food truck wrap — that could compete in a saturated fast casual market and own the street.",
+    diagnosis: "The fast casual space in D.C. was dominated by clean, corporate visual systems. The gap was character. Whatsub needed to feel handcrafted, bold, and street-ready — a brand that could live on a truck wrap, a takeaway bag, and a menu with equal conviction.",
+    built: "A custom scripted logotype with an illustrated submarine sandwich mascot. A bold yellow-to-orange-to-red color system. Full rollout across logo suite, menu design, packaging (bags, boxes, cups, stickers), food truck wrap, restaurant mural, and outdoor advertising.",
+    result: "Whatsub launched in early 2025 with a complete brand system that was immediately recognizable at street level. The identity translated across every touchpoint — from the 20-foot truck wrap to the condiment packet — with no dilution.",
+    services: ['Brand Identity', 'Print Design', 'Environmental Design', 'Packaging'],
+    year: '2025',
+    market: 'Washington D.C., USA'
   }
 ]
 
