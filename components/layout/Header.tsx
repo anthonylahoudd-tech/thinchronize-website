@@ -9,11 +9,12 @@ import { Menu, X } from 'lucide-react'
 import clsx from 'clsx'
 
 // Pages with white (#FFFFFF) backgrounds — header must use dark text + white bg
-const LIGHT_PAGES = ['/services', '/portfolio']
+const LIGHT_PAGES = ['/services', '/portfolio', '/about']
 
 const navLinks = [
   { label: 'Home',      href: '/' },
   { label: 'Services',  href: '/services' },
+  { label: 'About',     href: '/about' },
   { label: 'Portfolio', href: '/portfolio' },
   { label: 'Journal',   href: '/journal' },
   { label: 'Contact',   href: '/contact' },
@@ -136,7 +137,7 @@ export default function Header() {
               onMouseEnter={e => ((e.currentTarget as HTMLButtonElement).style.background = '#b8223f')}
               onMouseLeave={e => ((e.currentTarget as HTMLButtonElement).style.background = '#D0274B')}
             >
-              Diagnose →
+              Message Bin
             </button>
           </nav>
 
@@ -193,7 +194,7 @@ export default function Header() {
               transition:    'background 0.25s',
             }}
           >
-            Diagnose →
+            Message Bin
           </button>
         </nav>
       </div>
