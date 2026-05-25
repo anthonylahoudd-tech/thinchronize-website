@@ -107,7 +107,7 @@ export default function Footer() {
           <div className="md:col-span-4 flex items-center justify-center md:justify-end">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/images/Thinchronize-Logo.png"
+              src="/images/logo-stacked.png"
               alt="Thinchronize"
               style={{
                 height:     '180px',
