@@ -145,7 +145,7 @@ export default function WhatsubPage() {
       <section style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'flex-end' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/images/work/whatsub/cover.jpg"
+          src="/images/work/Whatsub-2025/truck.jpg"
           alt="Whatsub"
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
         />
@@ -199,7 +199,7 @@ export default function WhatsubPage() {
         <div style={{ overflow: 'hidden' }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/images/work/whatsub/mural.jpg"
+            src="/images/work/Whatsub-2025/mural.jpg"
             alt="Whatsub mural"
             style={{ width: '100%', height: '70vh', objectFit: 'cover', display: 'block' }}
           />
@@ -234,7 +234,7 @@ export default function WhatsubPage() {
         <div style={{ marginLeft: 'auto', width: '65%', minWidth: 280 }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/images/work/whatsub/collateral.jpg"
+            src="/images/work/Whatsub-2025/collateral.jpg"
             alt="Whatsub collateral"
             style={{ width: '100%', height: 500, objectFit: 'cover', display: 'block' }}
           />
@@ -270,9 +270,9 @@ export default function WhatsubPage() {
           </h2>
           <div className="process-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24 }}>
             {[
-              { src: '/images/work/whatsub/sketch-1.jpg',   caption: '01 — Initial Concept Sketches' },
-              { src: '/images/work/whatsub/sketch-2.jpg',   caption: '02 — Logo Construction' },
-              { src: '/images/work/whatsub/logo-colors.jpg', caption: '03 — Color System Development' },
+              { src: '/images/work/Whatsub-2025/sketch-1.jpg',    caption: '01 — Initial Concept Sketches' },
+              { src: '/images/work/Whatsub-2025/sketch-2.jpg',    caption: '02 — Logo Construction' },
+              { src: '/images/work/Whatsub-2025/logo-colors.jpg', caption: '03 — Color System Development' },
             ].map(({ src, caption }) => (
               <div key={caption}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -298,10 +298,10 @@ export default function WhatsubPage() {
           </p>
           <div className="gallery-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 24 }}>
             {[
-              '/images/work/whatsub/poster-1.jpg',
-              '/images/work/whatsub/poster-2.jpg',
-              '/images/work/whatsub/packaging.jpg',
-              '/images/work/whatsub/menu.jpg',
+              '/images/work/Whatsub-2025/poster-1.jpg',
+              '/images/work/Whatsub-2025/poster-2.jpg',
+              '/images/work/Whatsub-2025/packaging.jpg',
+              '/images/work/Whatsub-2025/menu.jpg',
             ].map((src, i) => (
               // eslint-disable-next-line @next/next/no-img-element
               <img
