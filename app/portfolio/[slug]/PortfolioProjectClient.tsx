@@ -314,7 +314,7 @@ export default function PortfolioProjectClient({ project, moreWork }: Props) {
       </section>
 
       {/* ══ SECTION 6 — The Result (dark) ════════════════════════════ */}
-      <section style={{ background: '#292929', padding: 'clamp(60px, 8vw, 120px) clamp(24px, 6vw, 80px)' }}>
+      <section style={{ background: '#000000', padding: 'clamp(60px, 8vw, 120px) clamp(24px, 6vw, 80px)' }}>
         <div ref={rResult.ref} style={rResult.style}>
           <p style={{
             fontFamily:    PP,

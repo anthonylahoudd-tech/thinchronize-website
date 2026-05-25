@@ -11,15 +11,15 @@ const RED = '#D0274B'
 
 const FOMO: Record<string, string> = {
   'brand-engagement':
-    "Most brands don't lose ground overnight — they drift. When your brand no longer reflects what you've built, the gap between perception and reality is costing you. Potential clients judge capability by presentation, and misalignment between who you are and how you look loses you deals before the conversation starts. Every month without clarity is a month your competitors are winning business that should be yours.",
+    "Most brands don't lose ground overnight. They drift. When your brand no longer reflects what you've built, the gap between perception and reality is costing you. Potential clients judge capability by presentation, and misalignment between who you are and how you look loses you deals before the conversation starts. Every month without clarity is a month your competitors are winning business that should be yours.",
   'print-design':
     "In a world saturated with digital noise, physical materials have become the highest-trust touchpoint left. But generic, templated print signals the opposite of what you need it to. When what you hand someone looks assembled rather than designed, they mentally discount your price point before you've said a word. The quality of what they hold is a proxy for the quality of what you deliver.",
   'digital-design':
-    "Decision-makers form a lasting opinion of your brand within 19 seconds of landing on your website. If your digital presence doesn't communicate authority in that window, you're not just losing visitors — you're losing deals that never became conversations. Digital isn't where you exist. It's where you're evaluated.",
+    "Decision-makers form a lasting opinion of your brand within 19 seconds of landing on your website. If your digital presence doesn't communicate authority in that window, you're not just losing visitors; you're losing deals that never became conversations. Digital isn't where you exist. It's where you're evaluated.",
   'animation-motion':
-    "Static content generates a fraction of the engagement motion does — and more importantly, motion communicates personality, energy, and confidence in ways static design simply cannot. If your brand has no kinetic identity, it's sitting still while everything around it moves. The gap in perception grows every day you wait.",
+    "Static content generates a fraction of the engagement motion does, and more importantly, motion communicates personality, energy, and confidence in ways static design simply cannot. If your brand has no kinetic identity, it's sitting still while everything around it moves. The gap in perception grows every day you wait.",
   'photography-video':
-    "Stock photography is the clearest signal that a brand hasn't invested in itself, and decision-makers notice. Real photography communicates authenticity and specificity — it says you take your brand seriously enough to show the real thing. If your visuals look like everyone else's, your pricing will be questioned before your capabilities are.",
+    "Stock photography is the clearest signal that a brand hasn't invested in itself, and decision-makers notice. Real photography communicates authenticity and specificity: it says you take your brand seriously enough to show the real thing. If your visuals look like everyone else's, your pricing will be questioned before your capabilities are.",
   'brand-guardianship':
     "Brands don't usually fail suddenly. They drift. Inconsistencies accumulate, team members interpret guidelines loosely, markets shift. Without someone holding the standard, even the strongest brand slowly loses coherence. And once a brand loses coherence, rebuilding trust costs more than maintaining it would have.",
 }
@@ -27,34 +27,34 @@ const FOMO: Record<string, string> = {
 const DELIVERABLES: Record<string, { name: string; desc: string }[]> = {
   'brand-engagement': [
     { name: 'Brand Audit',           desc: "A full diagnostic of your current brand equity: what's resonating, what's eroding, and what's invisible from the inside." },
-    { name: 'Brand Foundation',      desc: "Mission, vision, values, positioning, and personality — the strategic core everything else must hold up against." },
-    { name: 'Visual Identity System',desc: "Logo, color palette, typography, photography direction, and iconography — a complete visual language built to last and scale." },
+    { name: 'Brand Foundation',      desc: "Mission, vision, values, positioning, and personality: the strategic core everything else must hold up against." },
+    { name: 'Visual Identity System',desc: "Logo, color palette, typography, photography direction, and iconography: a complete visual language built to last and scale." },
     { name: 'Brand Standards',       desc: "The rulebook that keeps your brand consistent across every team, every touchpoint, every market." },
     { name: 'Launch Activation',     desc: "Internal rollout and external debut strategy so the new brand lands with the impact it deserves." },
   ],
   'print-design': [
-    { name: 'Brand Collateral',       desc: "Business cards, letterheads, and stationery — the physical extensions of your identity that clients hold after the meeting." },
+    { name: 'Brand Collateral',       desc: "Business cards, letterheads, and stationery: the physical extensions of your identity that clients hold after the meeting." },
     { name: 'Brochures & Catalogues', desc: "Multi-page formats that take prospects through your offering with the same clarity and authority as a pitch." },
-    { name: 'Packaging Design',       desc: "Structural and graphic design for physical product packaging — the first moment a customer physically meets your product." },
-    { name: 'Signage & Environmental',desc: "Wayfinding, office branding, and event signage — the spaces that communicate who you are before anyone speaks." },
+    { name: 'Packaging Design',       desc: "Structural and graphic design for physical product packaging, the first moment a customer physically meets your product." },
+    { name: 'Signage & Environmental',desc: "Wayfinding, office branding, and event signage: the spaces that communicate who you are before anyone speaks." },
     { name: 'Campaign Materials',     desc: "Posters, banners, and point-of-sale materials designed to perform in physical spaces and leave a lasting impression." },
   ],
   'digital-design': [
-    { name: 'Website Design',      desc: "From information architecture to final UI — designed to convert and communicate, not just look good." },
+    { name: 'Website Design',      desc: "From information architecture to final UI, designed to convert and communicate, not just look good." },
     { name: 'Social Media Design', desc: "Templates and content systems that keep your digital presence consistent without needing a designer every time." },
-    { name: 'UI/UX Design',        desc: "Interface design for digital products, apps, and platforms — built around how users actually think and move." },
+    { name: 'UI/UX Design',        desc: "Interface design for digital products, apps, and platforms, built around how users actually think and move." },
     { name: 'Digital Advertising', desc: "Ad creatives, landing pages, and campaign assets designed to perform against measurable objectives." },
-    { name: 'Presentation Design', desc: "Pitch decks and investor presentations — because how you present is part of what you're pitching." },
+    { name: 'Presentation Design', desc: "Pitch decks and investor presentations, because how you present is part of what you're pitching." },
   ],
   'animation-motion': [
     { name: 'Brand Motion System',    desc: "Motion principles, transitions, and animations that give your brand a consistent kinetic identity across all digital touchpoints." },
-    { name: 'Logo Animation',         desc: "Animated logo variants for digital use — intros, outros, loading states, and social formats." },
+    { name: 'Logo Animation',         desc: "Animated logo variants for digital use: intros, outros, loading states, and social formats." },
     { name: 'Explainer Videos',       desc: "Scripted, animated, and voiced content that communicates complex ideas in 60–90 seconds with precision and brand clarity." },
-    { name: 'Social Motion Content',  desc: "Short-form animated assets optimized for feed, stories, and reels — designed to stop the scroll and hold attention." },
+    { name: 'Social Motion Content',  desc: "Short-form animated assets optimized for feed, stories, and reels, designed to stop the scroll and hold attention." },
     { name: 'Presentation Motion',    desc: "Animated slide templates and transitions that elevate the delivery of your most important presentations." },
   ],
   'photography-video': [
-    { name: 'Brand Photography',  desc: "Directed sessions that build a library of on-brand images — people, spaces, products, and atmosphere." },
+    { name: 'Brand Photography',  desc: "Directed sessions that build a library of on-brand images: people, spaces, products, and atmosphere." },
     { name: 'Product Photography',desc: "Commercial photography optimized for digital and print, built to communicate quality and desirability." },
     { name: 'Brand Film',         desc: "Short-form films (60–180 seconds) that communicate who you are, why you exist, and why it matters." },
     { name: 'Documentary Content',desc: "Behind-the-scenes and process content that builds trust by showing how you actually work." },
@@ -62,9 +62,9 @@ const DELIVERABLES: Record<string, { name: string; desc: string }[]> = {
   ],
   'brand-guardianship': [
     { name: 'Monthly Strategy Session',desc: "A structured 60-minute session each month to address brand decisions, review materials, and assess market signals." },
-    { name: 'Async Brand Review',      desc: "Priority access to brand feedback on any asset, campaign, or communication — response within 24 business hours." },
+    { name: 'Async Brand Review',      desc: "Priority access to brand feedback on any asset, campaign, or communication. Response within 24 business hours." },
     { name: 'Quarterly Brand Audit',   desc: "A formal review of brand consistency, positioning, and competitive landscape every quarter." },
-    { name: 'Brand Health Monitoring', desc: "Ongoing tracking of how your brand is being used, interpreted, and perceived — inside and out." },
+    { name: 'Brand Health Monitoring', desc: "Ongoing tracking of how your brand is being used, interpreted, and perceived, inside and out." },
     { name: 'Strategic Guidance',      desc: "Access to Thinchronize's full strategic framework whenever a major brand decision needs a thinking partner." },
   ],
 }
@@ -72,14 +72,14 @@ const DELIVERABLES: Record<string, { name: string; desc: string }[]> = {
 const KPIS: Record<string, { metric: string; name: string; desc: string }[]> = {
   'brand-engagement': [
     { metric: '↑ 40%',   name: 'BRAND RECOGNITION', desc: 'Consistent identity and messaging increase recognition across all touchpoints' },
-    { metric: '3×',      name: 'LEAD QUALITY',       desc: 'Clearer positioning attracts the right clients — and filters out the wrong ones' },
+    { metric: '3×',      name: 'LEAD QUALITY',       desc: 'Clearer positioning attracts the right clients, filtering out the wrong ones' },
     { metric: 'Faster',  name: 'DECISION SPEED',     desc: 'A brand that matches your capability removes hesitation from buying decisions' },
     { metric: 'Aligned', name: 'TEAM COHESION',      desc: 'Every person communicates the brand consistently, from pitch to delivery' },
   ],
   'print-design': [
-    { metric: '↑ Trust', name: 'FIRST IMPRESSION',  desc: 'Physical materials create a lasting premium halo — before a word is spoken' },
+    { metric: '↑ Trust', name: 'FIRST IMPRESSION',  desc: 'Physical materials create a lasting premium halo, before a word is spoken' },
     { metric: 'Higher',  name: 'PRICE PERCEPTION',  desc: 'Elevated print supports higher price points and reduces price sensitivity' },
-    { metric: 'Longer',  name: 'MATERIAL LIFESPAN', desc: 'Designed print gets kept, shared, and referenced — not binned' },
+    { metric: 'Longer',  name: 'MATERIAL LIFESPAN', desc: 'Designed print gets kept, shared, and referenced, not binned' },
     { metric: 'Consistent', name: 'BRAND CONTINUITY', desc: 'Print aligned with digital creates a seamless experience across every interaction' },
   ],
   'digital-design': [
@@ -91,7 +91,7 @@ const KPIS: Record<string, { metric: string; name: string; desc: string }[]> = {
   'animation-motion': [
     { metric: '3×',     name: 'ENGAGEMENT',        desc: 'Motion content drives significantly higher interaction and retention than static' },
     { metric: '95%',    name: 'MESSAGE RETENTION', desc: 'Animated explainers increase how much audiences remember versus text alone' },
-    { metric: '↓ Skip', name: 'SCROLL BEHAVIOR',   desc: 'Motion stops the scroll — the first battle in every digital environment' },
+    { metric: '↓ Skip', name: 'SCROLL BEHAVIOR',   desc: 'Motion stops the scroll, the first battle in every digital environment' },
     { metric: 'Ownable',name: 'BRAND PERSONALITY', desc: 'Motion communicates tone and energy in ways static design cannot' },
   ],
   'photography-video': [
@@ -102,7 +102,7 @@ const KPIS: Record<string, { metric: string; name: string; desc: string }[]> = {
   ],
   'brand-guardianship': [
     { metric: 'Zero',   name: 'BRAND DRIFT',      desc: 'Regular oversight prevents the inconsistencies that compound into credibility damage' },
-    { metric: '24h',    name: 'RESPONSE TIME',    desc: 'Brand decisions never blocked — async access means fast answers when it matters' },
+    { metric: '24h',    name: 'RESPONSE TIME',    desc: 'Brand decisions never blocked. Async access means fast answers when it matters.' },
     { metric: '↓ Cost', name: 'ERROR PREVENTION', desc: 'Catching misalignments before they go public prevents expensive corrections' },
     { metric: '↑ Equity', name: 'LONG-TERM VALUE', desc: 'Actively maintained brands compound their value. Unmaintained ones erode.' },
   ],
@@ -126,7 +126,7 @@ const CHALLENGES: Record<string, string[]> = {
   'digital-design': [
     "Our website doesn't reflect where the company actually is today",
     "Our digital presence is inconsistent across platforms",
-    "We have no design system — every new piece starts from scratch",
+    "We have no design system. Every new piece starts from scratch.",
     "Our digital assets undermine the credibility of our physical brand",
     "We need materials that convert, not just impress",
   ],
@@ -138,7 +138,7 @@ const CHALLENGES: Record<string, string[]> = {
     "We need content that stands out in a crowded feed",
   ],
   'photography-video': [
-    "We're using stock photos — and it shows",
+    "We're using stock photos, and it shows",
     "Our product looks much better in person than it does in photos",
     "We have no visual content that shows our team, culture, or process",
     "Every campaign looks slightly different because we have no consistent library",
@@ -212,7 +212,7 @@ function ServiceAccordionItem({
             color:      '#919191',
             flexShrink: 0,
             maxWidth:   360,
-            textAlign:  'right',
+            textAlign:  'justify',
           }}
         >
           {service.tagline}
@@ -220,16 +220,15 @@ function ServiceAccordionItem({
 
         <span style={{
           fontFamily:  PP,
-          fontSize:    24,
-          fontWeight:  400,
-          color:       RED,
+          fontSize:    28,
+          fontWeight:  900,
+          color:       nameHovered || isOpen ? '#D0274B' : '#292929',
           flexShrink:  0,
           lineHeight:  1,
           userSelect:  'none',
-          transition:  'transform 0.3s',
-          transform:   isOpen ? 'rotate(45deg)' : 'none',
+          transition:  'color 0.3s ease',
         }}>
-          +
+          {isOpen ? '×' : '+'}
         </span>
       </div>
 
@@ -544,7 +543,7 @@ export default function ServicesEditorialClient() {
               lineHeight:  1.75,
               marginTop:   24,
             }}>
-              Brand Alumni is how we reward clients who commit to the craft. Once you qualify, every production project you brief us on — print, digital, motion, photography — comes at a permanent 25–30% discount. Not a promotion. Not a limited offer. A permanent rate that applies for as long as we work together.
+              Brand Alumni is how we reward clients who commit to the craft. Once you qualify, every production project you brief us on (print, digital, motion, photography) comes at a permanent 25–30% discount. Not a promotion. Not a limited offer. A permanent rate that applies for as long as we work together.
             </p>
           </div>
 
@@ -559,7 +558,7 @@ export default function ServicesEditorialClient() {
                 Complete any Brand Engagement
               </p>
               <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 14, color: 'rgba(255,255,255,0.6)', marginTop: 12, lineHeight: 1.6 }}>
-                Completing a full Brand Engagement with Thinchronize earns you Alumni status immediately — regardless of the scope or duration of the project.
+                Completing a full Brand Engagement with Thinchronize earns you Alumni status immediately, regardless of the scope or duration of the project.
               </p>
             </div>
 
@@ -572,7 +571,7 @@ export default function ServicesEditorialClient() {
                 $3,000 in cumulative production spend
               </p>
               <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 14, color: 'rgba(255,255,255,0.6)', marginTop: 12, lineHeight: 1.6 }}>
-                Reach $3,000 in total production billing across any combination of print, digital, motion, or photography work — and Alumni status is yours, permanently.
+                Reach $3,000 in total production billing across any combination of print, digital, motion, or photography work, and Alumni status is yours, permanently.
               </p>
             </div>
 

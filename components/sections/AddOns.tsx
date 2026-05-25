@@ -177,7 +177,7 @@ export default function AddOns() {
               color:      '#919191',
             }}
           >
-            Quoted per scope — no packages, no padding.
+            Quoted per scope. No packages, no padding.
           </p>
           <Link
             href="/#contact"

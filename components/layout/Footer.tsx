@@ -29,14 +29,14 @@ const footerLinks: Record<string, FooterLink[]> = {
 
 export default function Footer() {
   return (
-    <footer style={{ backgroundColor: '#D0274B' }}>
+    <footer style={{ backgroundColor: '#000000' }}>
       <div className="container mx-auto py-20">
 
         {/* Top row */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-20">
 
           {/* Brand */}
-          <div className="md:col-span-5">
+          <div className="md:col-span-4">
             <Link href="/" className="flex items-center mb-6">
               <Image
                 src="/logo-wordmark-white.png"
@@ -63,7 +63,7 @@ export default function Footer() {
 
           {/* Nav columns */}
           {Object.entries(footerLinks).map(([section, links]) => (
-            <div key={section} className="md:col-span-3">
+            <div key={section} className="md:col-span-2">
               <p
                 className="mb-5"
                 style={{
@@ -103,40 +103,21 @@ export default function Footer() {
             </div>
           ))}
 
-          {/* CTA */}
-          <div className="md:col-span-4 flex flex-col justify-between">
-            <p
-              className="text-display-sm text-white mb-8 uppercase leading-tight"
-              style={{ fontFamily: PP, fontWeight: 900 }}
-            >
-              Ready to build something that lasts?
-            </p>
-            <Link
-              href="/contact"
-              className="self-start group inline-flex items-center gap-3 px-6 py-3 bg-white rounded-full will-change-transform"
+          {/* Stacked logo — right column */}
+          <div className="md:col-span-4 flex items-center justify-center md:justify-end">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/logo-stacked.png"
+              alt="Thinchronize"
               style={{
-                fontFamily:    PP,
-                fontWeight:    800,
-                fontSize:      12,
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-                color:         '#D0274B',
-                transition:    'all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                height:     '180px',
+                width:      'auto',
+                objectFit:  'contain',
+                opacity:    0.9,
+                display:    'block',
               }}
-              onMouseEnter={(e) => {
-                const el = e.currentTarget as HTMLAnchorElement
-                el.style.backgroundColor = '#292929'
-                el.style.color = '#fff'
-              }}
-              onMouseLeave={(e) => {
-                const el = e.currentTarget as HTMLAnchorElement
-                el.style.backgroundColor = '#fff'
-                el.style.color = '#D0274B'
-              }}
-            >
-              Start a Project
-              <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
-            </Link>
+              className="footer-stacked-logo"
+            />
           </div>
         </div>
 
@@ -151,6 +132,11 @@ export default function Footer() {
         </div>
 
       </div>
+      <style dangerouslySetInnerHTML={{ __html: `
+        @media (max-width: 767px) {
+          .footer-stacked-logo { height: 100px !important; }
+        }
+      ` }} />
     </footer>
   )
 }

@@ -253,10 +253,30 @@ export default function AboutClient() {
             lineHeight:    1.0,
             letterSpacing: '-0.02em',
             textTransform: 'uppercase',
-            marginBottom:  28,
+            marginBottom:  40,
           }}>
             Thinchronize
           </h1>
+
+          {/* Signage image */}
+          <div style={{
+            width:    '100%',
+            maxWidth: '700px',
+            margin:   '0 auto 40px',
+          }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/about-signage.jpg"
+              alt="Thinchronize Studio"
+              style={{
+                width:      '100%',
+                height:     'auto',
+                display:    'block',
+                objectFit:  'cover',
+              }}
+            />
+          </div>
+
           <p style={{
             fontFamily: PP,
             fontWeight: 400,
@@ -267,7 +287,7 @@ export default function AboutClient() {
             margin:     '0 auto',
             textTransform: 'uppercase',
           }}>
-            A strategy-led creative studio based in Lebanon — building brands that know what they stand for.
+            A strategy-led creative studio based in Lebanon, building brands that know what they stand for.
           </p>
         </div>
       </section>
@@ -312,7 +332,7 @@ export default function AboutClient() {
               lineHeight: 1.8,
               marginBottom: 24,
             }}>
-              The MENA market is flooded with brands that look the part but say nothing. Thinchronize was built as an answer to that. We partner with founders, marketing leads, and brand teams who are done with generic — and ready for work that means something.
+              The MENA market is flooded with brands that look the part but say nothing. Thinchronize was built as an answer to that. We partner with founders, marketing leads, and brand teams who are done with generic, ready for work that means something.
             </p>
             <p style={{
               fontFamily: PP,
@@ -328,7 +348,7 @@ export default function AboutClient() {
       </section>
 
       {/* ══ SECTION 3 — Vision Statement ════════════════════════════ */}
-      <section style={{ background: '#292929', padding: 'clamp(80px, 10vw, 120px) clamp(24px, 6vw, 80px)' }}>
+      <section style={{ background: '#000000', padding: 'clamp(80px, 10vw, 120px) clamp(24px, 6vw, 80px)' }}>
         <div
           ref={rVision.ref}
           style={{
@@ -358,7 +378,7 @@ export default function AboutClient() {
             letterSpacing: '-0.01em',
             textTransform: 'uppercase',
           }}>
-            &ldquo;A Lebanon where every serious brand has the tools, strategy, and craft to compete — not just locally, but on any stage that matters.&rdquo;
+            &ldquo;A Lebanon where every serious brand has the tools, strategy, and craft to compete, not just locally, but on any stage that matters.&rdquo;
           </p>
         </div>
       </section>
@@ -443,7 +463,7 @@ export default function AboutClient() {
             <FounderCard
               name="Anthony Lahoud"
               role="Vision & Growth"
-              bio="Anthony leads strategy, positioning, and client relationships. He built Thinchronize on the belief that Lebanese brands deserve sharper thinking — and that the gap between a local brand and a global-ready one is almost always a strategy problem, not a design problem."
+              bio="Anthony leads strategy, positioning, and client relationships. He built Thinchronize on the belief that Lebanese brands deserve sharper thinking, and that the gap between a local brand and a global-ready one is almost always a strategy problem, not a design problem."
             />
             <FounderCard
               name="Wassim Halabi"
@@ -455,7 +475,7 @@ export default function AboutClient() {
       </section>
 
       {/* ══ SECTION 6 — Values ═══════════════════════════════════════ */}
-      <section style={{ background: '#292929', padding: 'clamp(80px, 10vw, 120px) clamp(24px, 6vw, 80px)' }}>
+      <section style={{ background: '#000000', padding: 'clamp(80px, 10vw, 120px) clamp(24px, 6vw, 80px)' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
           <p style={{
             fontFamily:    PP,
@@ -500,6 +520,21 @@ export default function AboutClient() {
               delay={0.15}
             />
           </div>
+
+          {/* "LIVE FROM BEIRUT!" label */}
+          <div style={{ textAlign: 'center', padding: '64px 0 0' }}>
+            <span style={{
+              fontFamily:    PP,
+              fontWeight:    900,
+              fontSize:      11,
+              color:         '#D0274B',
+              letterSpacing: '0.4em',
+              textTransform: 'uppercase',
+            }}>
+              ✦ LIVE FROM BEIRUT! ✦
+            </span>
+          </div>
+
         </div>
       </section>
 
@@ -522,7 +557,7 @@ export default function AboutClient() {
               num="01"
               verb="Detect"
               label="the gap"
-              desc="We audit where the brand stands — positioning, visual identity, messaging — and map the distance between where you are and where you need to be."
+              desc="We audit where the brand stands: positioning, visual identity, messaging. We map the distance between where you are and where you need to be."
             />
             <ProcessStep
               num="02"
@@ -534,20 +569,20 @@ export default function AboutClient() {
               num="03"
               verb="Design"
               label="the system"
-              desc="Identity, collateral, digital — everything built as a system, not a collection of one-offs. Coherent across every touchpoint."
+              desc="Identity, collateral, digital: everything built as a system, not a collection of one-offs. Coherent across every touchpoint."
             />
             <ProcessStep
               num="04"
               verb="Deliver"
               label="and protect"
-              desc="Handoff includes guidelines, asset libraries, and — for clients who stay — ongoing Brand Guardianship to keep standards high."
+              desc="Handoff includes guidelines, asset libraries, and ongoing Brand Guardianship to keep standards high."
             />
           </div>
         </div>
       </section>
 
       {/* ══ SECTION 8 — CTA ══════════════════════════════════════════ */}
-      <section style={{ background: '#292929', padding: 'clamp(80px, 10vw, 120px) clamp(24px, 6vw, 80px)' }}>
+      <section style={{ background: '#000000', padding: 'clamp(80px, 10vw, 120px) clamp(24px, 6vw, 80px)' }}>
         <div
           ref={rCTA.ref}
           style={{

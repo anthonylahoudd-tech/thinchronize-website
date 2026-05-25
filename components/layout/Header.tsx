@@ -17,10 +17,9 @@ const navLinks = [
   { label: 'About',     href: '/about' },
   { label: 'Portfolio', href: '/portfolio' },
   { label: 'Journal',   href: '/journal' },
-  { label: 'Contact',   href: '/contact' },
 ]
 
-const DIAGNOSTIC_HREF = '/diagnostic'
+const DIAGNOSTIC_HREF = '/contact'
 
 export default function Header() {
   const headerRef = useRef<HTMLElement>(null)
@@ -71,7 +70,7 @@ export default function Header() {
           padding:      scrolled ? '16px 0' : '24px 0',
           background:   isLight
             ? (scrolled ? 'rgba(255,255,255,0.96)' : '#FFFFFF')
-            : (scrolled ? 'rgba(41,41,41,0.92)' : 'transparent'),
+            : (scrolled ? 'rgba(0,0,0,0.92)' : 'transparent'),
           backdropFilter: scrolled ? 'blur(12px)' : 'none',
           borderBottom: scrolled
             ? (isLight ? '1px solid #E8E8E8' : '1px solid rgba(255,255,255,0.05)')
@@ -120,16 +119,17 @@ export default function Header() {
 
             <button
               onClick={() => scrollToSection(DIAGNOSTIC_HREF)}
-              className="ml-4 px-5 py-2.5 will-change-transform"
+              className="ml-4 will-change-transform"
               style={{
                 fontFamily:    "'PPNeueCorp', system-ui, sans-serif",
                 fontWeight:    800,
-                fontSize:      11,
-                letterSpacing: '0.12em',
+                fontSize:      14,
+                letterSpacing: '0.05em',
                 textTransform: 'uppercase',
                 background:    '#D0274B',
-                color:         '#fff',
-                borderRadius:  4,
+                color:         '#FFFFFF',
+                padding:       '10px 24px',
+                borderRadius:  0,
                 border:        'none',
                 cursor:        'pointer',
                 transition:    'background 0.25s',
@@ -179,16 +179,17 @@ export default function Header() {
           ))}
           <button
             onClick={() => scrollToSection(DIAGNOSTIC_HREF)}
-            className="self-start mt-8 px-6 py-3 will-change-transform"
+            className="self-start mt-8 will-change-transform"
             style={{
               fontFamily:    "'PPNeueCorp', system-ui, sans-serif",
               fontWeight:    800,
-              fontSize:      12,
-              letterSpacing: '0.12em',
+              fontSize:      14,
+              letterSpacing: '0.05em',
               textTransform: 'uppercase',
               background:    '#D0274B',
-              color:         '#fff',
-              borderRadius:  4,
+              color:         '#FFFFFF',
+              padding:       '10px 24px',
+              borderRadius:  0,
               border:        'none',
               cursor:        'pointer',
               transition:    'background 0.25s',

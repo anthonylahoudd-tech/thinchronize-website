@@ -221,7 +221,7 @@ export default function WhatsubPage() {
             The Challenge
           </p>
           <p style={{ fontFamily: PP, fontWeight: 800, fontSize: 'clamp(22px, 3vw, 32px)', color: '#292929', lineHeight: 1.5, textTransform: 'uppercase' }}>
-            A new sub brand entering Washington D.C.&rsquo;s saturated fast casual market needed more than a logo. They needed a street-ready identity that could carry the brand from a food truck window to a restaurant wall to a takeaway bag — without losing its character.
+            A new sub brand entering Washington D.C.&rsquo;s saturated fast casual market needed more than a logo. They needed a street-ready identity that could carry the brand from a food truck window to a restaurant wall to a takeaway bag, without losing its character.
           </p>
         </div>
       </section>
@@ -246,7 +246,7 @@ export default function WhatsubPage() {
               The Diagnosis
             </p>
             <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 18, color: '#292929', lineHeight: 1.75 }}>
-              Fast casual visual language in D.C. was converging on the same clean, minimal aesthetic. The gap was personality. The target audience — urban, street food-native, 18–35 — expected brands that felt crafted and confident, not templated. Generic would be invisible here.
+              Fast casual visual language in D.C. was converging on the same clean, minimal aesthetic. The gap was personality. The target audience (urban, street food-native, 18–35) expected brands that felt crafted and confident, not templated. Generic would be invisible here.
             </p>
           </div>
           <div ref={rBuilt.ref} style={{ ...rBuilt.style, flex: '1 1 280px' }}>
@@ -273,13 +273,13 @@ export default function WhatsubPage() {
       </section>
 
       {/* ══ 6 — The Result (dark) ════════════════════════════════════ */}
-      <section style={{ background: '#292929', padding: 'clamp(60px, 8vw, 120px) clamp(24px, 6vw, 80px)' }}>
+      <section style={{ background: '#000000', padding: 'clamp(60px, 8vw, 120px) clamp(24px, 6vw, 80px)' }}>
         <div ref={rResult.ref} style={rResult.style}>
           <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', color: RED, marginBottom: 24 }}>
             The Result
           </p>
           <p style={{ fontFamily: PP, fontWeight: 800, fontSize: 'clamp(24px, 3.5vw, 36px)', color: '#FFFFFF', lineHeight: 1.5, textTransform: 'uppercase', maxWidth: 720, marginBottom: 28 }}>
-            Whatsub launched in early 2025 with a complete visual system that translated across every touchpoint — from the 20-foot truck wrap to the condiment packet — without losing consistency or character.
+            Whatsub launched in early 2025 with a complete visual system that translated across every touchpoint, from the 20-foot truck wrap to the condiment packet, without losing consistency or character.
           </p>
           <p style={{ fontFamily: PP, fontSize: 18, color: '#919191', lineHeight: 1.7, maxWidth: 640, marginBottom: 40 }}>
             The brand identity was delivered across 12+ production-ready formats and activated across environmental, print, packaging, and outdoor within a single Brand Engagement.

@@ -20,6 +20,32 @@ export default async function HomePage() {
   return (
     <>
       <Hero />
+
+      {/* ── "LIVE FROM BEIRUT!" strip ──────────────────────────────── */}
+      <div style={{
+        width:      '100%',
+        background: '#000000',
+        padding:    '18px 80px',
+        display:    'flex',
+        alignItems: 'center',
+        gap:        '48px',
+        overflow:   'hidden',
+      }}>
+        {Array(8).fill('LIVE FROM BEIRUT!').map((text: string, i: number) => (
+          <span key={i} style={{
+            fontFamily:  "'PPNeueCorp', system-ui, sans-serif",
+            fontSize:    '13px',
+            color:       '#D0274B',
+            letterSpacing: '0.3em',
+            whiteSpace:  'nowrap',
+            flexShrink:  0,
+          }}>
+            {text}
+            {i < 7 && <span style={{ color: '#333333', margin: '0 24px' }}>·</span>}
+          </span>
+        ))}
+      </div>
+
       <MindfulDesignReveal />
       <Marquee dark />
       <About />

@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     template: '%s — Thinchronize',
   },
   description:
-    'Thinchronize is a strategic creative studio based in Lebanon. We build brands that speak — through precise, intentional design.',
+    'Thinchronize is a strategic creative studio based in Lebanon. We build brands that speak through precise, intentional design.',
   keywords: ['brand strategy', 'visual identity', 'creative studio', 'Lebanon', 'brand design'],
   openGraph: {
     title: 'Thinchronize — Mindful Design',

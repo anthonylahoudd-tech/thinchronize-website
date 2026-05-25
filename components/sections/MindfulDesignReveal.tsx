@@ -42,7 +42,7 @@ export default function MindfulDesignReveal() {
           letterSpacing: '0.1em',
           textTransform: 'uppercase',
         }}>
-          Strategy-Led Creative Studio — Beirut
+          Strategy-Led Creative Studio · Beirut
         </p>
       </motion.div>
     </section>

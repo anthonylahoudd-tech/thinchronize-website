@@ -73,7 +73,7 @@ export default function ContactClient() {
               marginBottom:  24,
             }}
           >
-            Let&apos;s build something true.
+            Message Bin
           </motion.h1>
           <motion.p
             {...fadeUp(0.1)}

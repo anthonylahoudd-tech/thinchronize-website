@@ -51,7 +51,7 @@ export default function AlumniProgram() {
             flex:       '1 1 260px',
           }}
         >
-          Complete a brand engagement or reach $3,000 in production work — earn a permanent
+          Complete a brand engagement or reach $3,000 in production work to earn a permanent
           25–30% discount on all future production. For clients who build with us.
         </p>
 

@@ -14,25 +14,25 @@ const process = [
     number: '01',
     title: 'Detect',
     description:
-      'We begin by listening — to the market, the audience, and the brand itself. Uncovering latent tensions, mapping the competitive landscape, and finding the space where your brand can live with conviction.',
+      'We begin by listening: to the market, the audience, and the brand itself. Uncovering latent tensions, mapping the competitive landscape, and finding the space where your brand can live with conviction.',
   },
   {
     number: '02',
     title: 'Define',
     description:
-      'Strategy is the backbone of everything we build. We articulate who you are, what you stand for, and how you should speak — shaping a brand platform that acts as the compass for every creative decision.',
+      'Strategy is the backbone of everything we build. We articulate who you are, what you stand for, and how you should speak, shaping a brand platform that acts as the compass for every creative decision.',
   },
   {
     number: '03',
     title: 'Design',
     description:
-      'Form follows meaning. Only once the strategy is settled do we build the visual system — typography, colour, communication architecture — everything coherent, nothing arbitrary.',
+      'Form follows meaning. Only once the strategy is settled do we build the visual system: typography, colour, communication architecture. Everything coherent, nothing arbitrary.',
   },
   {
     number: '04',
     title: 'Deliver',
     description:
-      'A brand only works if it works in the world. We launch, document, and guard the brand over time — ensuring it remains coherent as it meets new contexts, channels, and audiences.',
+      'A brand only works if it works in the world. We launch, document, and guard the brand over time, ensuring it remains coherent as it meets new contexts, channels, and audiences.',
   },
 ]
 
@@ -144,8 +144,8 @@ export default function About() {
               color:      '#919191',
             }}>
               Thinchronize is a strategy-led creative studio. We are not here to make your brand
-              look better. We are here to make it true. Every engagement starts with a diagnosis —
-              not a brief — because we don&apos;t design until we understand.
+              look better. We are here to make it true. Every engagement starts with a diagnosis,
+              not a brief, because we don&apos;t design until we understand.
             </p>
           </div>
           <div className="md:col-span-4 md:col-start-9">
@@ -162,7 +162,7 @@ export default function About() {
                 fontSize:   14,
                 color:      '#919191',
               }}>
-                clients built on referral — across Lebanon, the Gulf, and Europe.
+                clients built on referral, across Lebanon, the Gulf, and Europe.
               </p>
             </div>
           </div>

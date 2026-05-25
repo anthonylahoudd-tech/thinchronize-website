@@ -14,7 +14,7 @@ const services = [
     title: 'Brand Engagement',
     headline: 'Build it right, the first time.',
     description:
-      'For brands being born or reborn. We take you through strategy, positioning, naming, and full visual identity — creating a complete brand system that is ready to face the world.',
+      'For brands being born or reborn. We take you through strategy, positioning, naming, and full visual identity, creating a complete brand system that is ready to face the world.',
     deliverables: [
       'Brand Strategy & Positioning',
       'Naming & Verbal Identity',
@@ -29,7 +29,7 @@ const services = [
     title: 'Brand Guardianship',
     headline: 'Keep it coherent, always.',
     description:
-      'For established brands that need to stay sharp. We act as your ongoing creative partner — reviewing touchpoints, evolving the system, and protecting the integrity of the brand over time.',
+      'For established brands that need to stay sharp. We act as your ongoing creative partner, reviewing touchpoints, evolving the system, and protecting the integrity of the brand over time.',
     deliverables: [
       'Brand Audits',
       'Creative Direction',
@@ -116,7 +116,11 @@ export default function Services() {
               <div
                 key={service.id}
                 className="service-card group bg-white rounded-2xl p-10 md:p-14 border border-dark/5 will-change-transform"
-                style={{ transition: 'border-color 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94)' }}
+                style={{
+                  transition: 'border-color 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                  overflow: 'hidden',
+                  maxWidth: '100%',
+                }}
                 onMouseEnter={(e) => (e.currentTarget.style.borderColor = 'rgba(208,39,75,0.2)')}
                 onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'rgba(0,0,0,0.05)')}
               >
@@ -126,7 +130,10 @@ export default function Services() {
                   <div className="w-8 h-px bg-dark/20 origin-right mt-2" />
                 </div>
 
-                <h3 className="text-dark font-display font-black text-display-sm uppercase mb-4 leading-tight">
+                <h3
+                  className="text-dark font-display font-black uppercase mb-4 leading-tight"
+                  style={{ fontSize: 'clamp(18px, 2vw, 22px)' }}
+                >
                   {service.title}
                 </h3>
                 <p className="text-dark/40 text-lg font-sans font-medium mb-6 italic">{service.headline}</p>
