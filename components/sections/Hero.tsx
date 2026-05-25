@@ -1,7 +1,6 @@
 'use client'
 
 import { useRef } from 'react'
-import Image from 'next/image'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
@@ -42,18 +41,40 @@ export default function Hero() {
     <section
       ref={sectionRef}
       id="hero"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      style={{
+        position:   'relative',
+        width:      '100%',
+        height:     '100vh',
+        minHeight:  '600px',
+        overflow:   'hidden',
+        display:    'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
     >
-      {/* ── Background photo — full clarity, no overlay ───────────── */}
-      <Image
+      {/* ── Background image ──────────────────────────────────────── */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
         src="/images/hero-main.jpg"
         alt=""
-        fill
-        priority
-        quality={90}
-        className="object-cover object-center"
-        style={{ zIndex: 0 }}
+        style={{
+          position:       'absolute',
+          inset:          0,
+          width:          '100%',
+          height:         '100%',
+          objectFit:      'cover',
+          objectPosition: 'center',
+          zIndex:         0,
+        }}
       />
+
+      {/* ── Dark overlay ──────────────────────────────────────────── */}
+      <div style={{
+        position:   'absolute',
+        inset:      0,
+        background: 'rgba(0,0,0,0.45)',
+        zIndex:     1,
+      }} />
 
       {/* ── Bottom meta row ───────────────────────────────────────── */}
       <div

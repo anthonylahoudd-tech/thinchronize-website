@@ -265,10 +265,10 @@ export default function AboutClient() {
             alt="Thinchronize Studio"
             style={{
               width:    '100%',
-              maxWidth: '700px',
+              maxWidth: '720px',
               height:   'auto',
               display:  'block',
-              margin:   '0 auto 40px',
+              margin:   '48px auto 0',
             }}
           />
 

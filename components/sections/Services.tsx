@@ -162,9 +162,11 @@ export default function Services() {
           {/* CTA */}
           <div className="flex flex-col items-center text-center gap-8 py-16 md:py-24 border-t border-dark/10">
             <p className="eyebrow" style={{ color: 'rgba(0,0,0,0.5)' }}>Ready to begin?</p>
-            <p className="text-display-sm text-dark font-display font-black uppercase max-w-lg leading-tight">
-              Every great brand starts with a single conversation.
-            </p>
+            <div className="text-display-sm text-dark font-display font-black uppercase max-w-lg leading-tight text-center">
+              {['Every great brand', 'starts with a', 'single conversation.'].map((line) => (
+                <div key={line}>{line}</div>
+              ))}
+            </div>
             <MagneticButton
               className="group inline-flex items-center gap-3 px-8 py-4 bg-dark text-white rounded-full text-sm font-display font-bold tracking-widest uppercase will-change-transform hover:bg-red"
               style={{ transition: 'all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94)' }}
