@@ -651,7 +651,7 @@ export default function ServicesEditorialClient() {
       </section>
 
       {/* ── Responsive styles ──────────────────────────────────────── */}
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         /* Deliverables: 2-col desktop, 1-col mobile */
         .deliverables-grid {
           display: grid;
@@ -699,7 +699,7 @@ export default function ServicesEditorialClient() {
           }
           .alumni-grid { grid-template-columns: 1fr; gap: 48px; }
         }
-      `}</style>
+      ` }} />
 
     </div>
   )

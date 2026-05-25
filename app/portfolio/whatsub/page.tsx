@@ -378,7 +378,7 @@ export default function WhatsubPage() {
         </section>
       )}
 
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         @media (max-width: 640px) {
           .process-grid { grid-template-columns: 1fr !important; }
           .gallery-grid  { grid-template-columns: 1fr !important; }
@@ -386,7 +386,7 @@ export default function WhatsubPage() {
         @media (min-width: 641px) and (max-width: 900px) {
           .process-grid { grid-template-columns: repeat(2, 1fr) !important; }
         }
-      `}</style>
+      ` }} />
     </div>
   )
 }

@@ -227,7 +227,7 @@ export default function PortfolioPageClient() {
         {/* Mobile / tablet fallback handled via CSS in globals */}
       </div>
 
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         @media (max-width: 767px) {
           .portfolio-grid-desktop > * {
             grid-column: 1 / -1 !important;
@@ -243,7 +243,7 @@ export default function PortfolioPageClient() {
             aspect-ratio: 4/3 !important;
           }
         }
-      `}</style>
+      ` }} />
     </div>
   )
 }

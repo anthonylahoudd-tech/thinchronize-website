@@ -576,12 +576,12 @@ export default function AboutClient() {
         </div>
       </section>
 
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         @media (max-width: 640px) {
           .numbers-grid > div { border-right: none !important; border-bottom: 1px solid #E8E8E8; }
           .numbers-grid > div:last-child { border-bottom: none; }
         }
-      `}</style>
+      ` }} />
     </div>
   )
 }
