@@ -8,7 +8,8 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  return PROJECTS.map(p => ({ slug: p.id }))
+  // Exclude 'whatsub' — it has its own dedicated page at app/portfolio/whatsub/page.tsx
+  return PROJECTS.filter(p => p.id !== 'whatsub').map(p => ({ slug: p.id }))
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
