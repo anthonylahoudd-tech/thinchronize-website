@@ -67,6 +67,7 @@ function FounderCard({ name, role, bio }: { name: string; role: string; bio: str
         lineHeight:  1.1,
         marginBottom: 20,
         letterSpacing: '-0.01em',
+        textTransform: 'uppercase',
       }}>
         {name}
       </h3>
@@ -108,6 +109,7 @@ function ValueItem({ num, title, desc, delay }: { num: string; title: string; de
           color:         '#FFFFFF',
           marginBottom:  10,
           letterSpacing: '-0.01em',
+          textTransform: 'uppercase',
         }}>
           {title}
         </h4>
@@ -159,6 +161,7 @@ function ProcessStep({ num, verb, label, desc }: { num: string; verb: string; la
         lineHeight:    1.1,
         letterSpacing: '-0.01em',
         marginBottom:  14,
+        textTransform: 'uppercase',
         transition:    'color 0.3s',
       }}>
         {verb}
@@ -249,6 +252,7 @@ export default function AboutClient() {
             color:         '#FFFFFF',
             lineHeight:    1.0,
             letterSpacing: '-0.02em',
+            textTransform: 'uppercase',
             marginBottom:  28,
           }}>
             Thinchronize
@@ -261,6 +265,7 @@ export default function AboutClient() {
             lineHeight: 1.6,
             maxWidth:   640,
             margin:     '0 auto',
+            textTransform: 'uppercase',
           }}>
             A strategy-led creative studio based in Lebanon — building brands that know what they stand for.
           </p>
@@ -291,6 +296,7 @@ export default function AboutClient() {
               color:         '#292929',
               lineHeight:    1.2,
               letterSpacing: '-0.015em',
+              textTransform: 'uppercase',
             }}>
               We build brands that earn their place in the room.
             </h2>
@@ -350,6 +356,7 @@ export default function AboutClient() {
             color:         '#FFFFFF',
             lineHeight:    1.4,
             letterSpacing: '-0.01em',
+            textTransform: 'uppercase',
           }}>
             &ldquo;A Lebanon where every serious brand has the tools, strategy, and craft to compete — not just locally, but on any stage that matters.&rdquo;
           </p>
@@ -568,6 +575,7 @@ export default function AboutClient() {
             color:         '#FFFFFF',
             lineHeight:    1.1,
             letterSpacing: '-0.02em',
+            textTransform: 'uppercase',
             marginBottom:  40,
           }}>
             Let&rsquo;s build something that matters.

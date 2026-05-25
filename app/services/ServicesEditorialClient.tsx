@@ -194,6 +194,7 @@ function ServiceAccordionItem({
             fontFamily:  PP,
             fontWeight:  900,
             fontSize:    'clamp(24px, 3vw, 40px)',
+            textTransform: 'uppercase',
             color:       nameHovered || isOpen ? RED : '#292929',
             transition:  'color 0.3s',
             lineHeight:  1.1,
@@ -412,6 +413,7 @@ export default function ServicesEditorialClient() {
           fontFamily:    PP,
           fontWeight:    900,
           fontSize:      'clamp(32px, 5vw, 64px)',
+          textTransform: 'uppercase',
           color:         '#FFFFFF',
           lineHeight:    1.1,
           letterSpacing: '-0.02em',
@@ -487,6 +489,7 @@ export default function ServicesEditorialClient() {
             fontFamily:    PP,
             fontWeight:    900,
             fontSize:      'clamp(48px, 8vw, 72px)',
+            textTransform: 'uppercase',
             color:         '#292929',
             lineHeight:    1.0,
             letterSpacing: '-0.02em',
@@ -522,13 +525,14 @@ export default function ServicesEditorialClient() {
               Brand Alumni
             </p>
             <h2 style={{
-              fontFamily:  PP,
-              fontWeight:  900,
-              fontSize:    'clamp(28px, 3.5vw, 40px)',
-              color:       '#FFFFFF',
-              lineHeight:  1.3,
-              marginTop:   16,
-              maxWidth:    480,
+              fontFamily:    PP,
+              fontWeight:    900,
+              fontSize:      'clamp(28px, 3.5vw, 40px)',
+              textTransform: 'uppercase',
+              color:         '#FFFFFF',
+              lineHeight:    1.3,
+              marginTop:     16,
+              maxWidth:      480,
             }}>
               The longer we work together, the less you pay for production.
             </h2>
@@ -551,7 +555,7 @@ export default function ServicesEditorialClient() {
               <p style={{ fontFamily: PP, fontWeight: 800, fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.12em', color: RED }}>
                 Path A
               </p>
-              <p style={{ fontFamily: PP, fontWeight: 800, fontSize: 18, color: '#FFFFFF', marginTop: 8 }}>
+              <p style={{ fontFamily: PP, fontWeight: 800, fontSize: 18, textTransform: 'uppercase', color: '#FFFFFF', marginTop: 8 }}>
                 Complete any Brand Engagement
               </p>
               <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 14, color: 'rgba(255,255,255,0.6)', marginTop: 12, lineHeight: 1.6 }}>
@@ -564,7 +568,7 @@ export default function ServicesEditorialClient() {
               <p style={{ fontFamily: PP, fontWeight: 800, fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.12em', color: RED }}>
                 Path B
               </p>
-              <p style={{ fontFamily: PP, fontWeight: 800, fontSize: 18, color: '#FFFFFF', marginTop: 8 }}>
+              <p style={{ fontFamily: PP, fontWeight: 800, fontSize: 18, textTransform: 'uppercase', color: '#FFFFFF', marginTop: 8 }}>
                 $3,000 in cumulative production spend
               </p>
               <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 14, color: 'rgba(255,255,255,0.6)', marginTop: 12, lineHeight: 1.6 }}>
@@ -599,6 +603,7 @@ export default function ServicesEditorialClient() {
           fontFamily:    PP,
           fontWeight:    900,
           fontSize:      'clamp(32px, 5vw, 48px)',
+          textTransform: 'uppercase',
           color:         '#292929',
           lineHeight:    1.1,
           letterSpacing: '-0.02em',

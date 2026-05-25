@@ -66,9 +66,9 @@ export default function ContactClient() {
               fontFamily:    PP,
               fontWeight:    900,
               fontSize:      'clamp(48px, 8vw, 120px)',
+              textTransform: 'uppercase',
               lineHeight:    0.92,
               letterSpacing: '-0.02em',
-              textTransform: 'uppercase',
               color:         '#fff',
               marginBottom:  24,
             }}

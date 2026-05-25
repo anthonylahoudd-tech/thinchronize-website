@@ -88,7 +88,7 @@ function MoreWorkCard({ id, title, category, coverImage, market, year }: {
       <p style={{ fontFamily: PP, fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#919191', marginBottom: 6 }}>
         {category}
       </p>
-      <h3 style={{ fontFamily: PP, fontWeight: 900, fontSize: 20, color: hov ? RED : '#292929', transition: 'color 0.25s', lineHeight: 1.15 }}>
+      <h3 style={{ fontFamily: PP, fontWeight: 900, fontSize: 20, color: hov ? RED : '#292929', transition: 'color 0.25s', lineHeight: 1.15, textTransform: 'uppercase' }}>
         {title}
       </h3>
       <p style={{ fontFamily: PP, fontSize: 13, color: '#919191', marginTop: 4 }}>
@@ -194,10 +194,10 @@ export default function WhatsubPage() {
           <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 12, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.7)', marginBottom: 16 }}>
             Case Study — 2025
           </p>
-          <h1 style={{ fontFamily: PP, fontWeight: 900, fontSize: 'clamp(48px, 7vw, 96px)', color: '#FFFFFF', lineHeight: 1.0, letterSpacing: '-0.02em', marginBottom: 16 }}>
+          <h1 style={{ fontFamily: PP, fontWeight: 900, fontSize: 'clamp(48px, 7vw, 96px)', color: '#FFFFFF', lineHeight: 1.0, letterSpacing: '-0.02em', textTransform: 'uppercase', marginBottom: 16 }}>
             Whatsub
           </h1>
-          <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 22, color: 'rgba(255,255,255,0.75)', marginBottom: 32, lineHeight: 1.4 }}>
+          <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 22, color: 'rgba(255,255,255,0.75)', marginBottom: 32, lineHeight: 1.4, textTransform: 'uppercase' }}>
             Brand Identity &amp; Visual System
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 24 }}>
@@ -220,7 +220,7 @@ export default function WhatsubPage() {
           <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#919191', marginBottom: 24 }}>
             The Challenge
           </p>
-          <p style={{ fontFamily: PP, fontWeight: 800, fontSize: 'clamp(22px, 3vw, 32px)', color: '#292929', lineHeight: 1.5 }}>
+          <p style={{ fontFamily: PP, fontWeight: 800, fontSize: 'clamp(22px, 3vw, 32px)', color: '#292929', lineHeight: 1.5, textTransform: 'uppercase' }}>
             A new sub brand entering Washington D.C.&rsquo;s saturated fast casual market needed more than a logo. They needed a street-ready identity that could carry the brand from a food truck window to a restaurant wall to a takeaway bag — without losing its character.
           </p>
         </div>
@@ -278,7 +278,7 @@ export default function WhatsubPage() {
           <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', color: RED, marginBottom: 24 }}>
             The Result
           </p>
-          <p style={{ fontFamily: PP, fontWeight: 800, fontSize: 'clamp(24px, 3.5vw, 36px)', color: '#FFFFFF', lineHeight: 1.5, maxWidth: 720, marginBottom: 28 }}>
+          <p style={{ fontFamily: PP, fontWeight: 800, fontSize: 'clamp(24px, 3.5vw, 36px)', color: '#FFFFFF', lineHeight: 1.5, textTransform: 'uppercase', maxWidth: 720, marginBottom: 28 }}>
             Whatsub launched in early 2025 with a complete visual system that translated across every touchpoint — from the 20-foot truck wrap to the condiment packet — without losing consistency or character.
           </p>
           <p style={{ fontFamily: PP, fontSize: 18, color: '#919191', lineHeight: 1.7, maxWidth: 640, marginBottom: 40 }}>
@@ -297,7 +297,7 @@ export default function WhatsubPage() {
           <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 12, letterSpacing: '0.2em', textTransform: 'uppercase', color: RED, marginBottom: 16 }}>
             The Process
           </p>
-          <h2 style={{ fontFamily: PP, fontWeight: 800, fontSize: 'clamp(28px, 3.5vw, 40px)', color: '#292929', letterSpacing: '-0.015em', marginBottom: 48 }}>
+          <h2 style={{ fontFamily: PP, fontWeight: 800, fontSize: 'clamp(28px, 3.5vw, 40px)', color: '#292929', letterSpacing: '-0.015em', textTransform: 'uppercase', marginBottom: 48 }}>
             From Sketch to Street.
           </h2>
           <div className="process-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '32px 24px' }}>

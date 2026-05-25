@@ -60,7 +60,7 @@ function MoreWorkCard({ project }: { project: Project }) {
       <p style={{ fontFamily: PP, fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#919191', marginBottom: 6 }}>
         {project.category}
       </p>
-      <h3 style={{ fontFamily: PP, fontWeight: 900, fontSize: 20, color: hov ? RED : '#292929', transition: 'color 0.25s', lineHeight: 1.15 }}>
+      <h3 style={{ fontFamily: PP, fontWeight: 900, fontSize: 20, color: hov ? RED : '#292929', transition: 'color 0.25s', lineHeight: 1.15, textTransform: 'uppercase' }}>
         {project.title}
       </h3>
       <p style={{ fontFamily: PP, fontSize: 13, color: '#919191', marginTop: 4 }}>
@@ -169,6 +169,7 @@ export default function PortfolioProjectClient({ project, moreWork }: Props) {
             color:         '#FFFFFF',
             lineHeight:    1.0,
             letterSpacing: '-0.02em',
+            textTransform: 'uppercase',
             marginBottom:  16,
           }}>
             {project.title}
@@ -180,6 +181,7 @@ export default function PortfolioProjectClient({ project, moreWork }: Props) {
             color:       'rgba(255,255,255,0.75)',
             marginBottom: 32,
             lineHeight:  1.4,
+            textTransform: 'uppercase',
           }}>
             {project.subtitle}
           </p>
@@ -229,6 +231,7 @@ export default function PortfolioProjectClient({ project, moreWork }: Props) {
             fontSize:    'clamp(22px, 3vw, 32px)',
             color:       '#292929',
             lineHeight:  1.5,
+            textTransform: 'uppercase',
           }}>
             {project.brief}
           </p>
@@ -330,6 +333,7 @@ export default function PortfolioProjectClient({ project, moreWork }: Props) {
             fontSize:    'clamp(24px, 3.5vw, 36px)',
             color:       '#FFFFFF',
             lineHeight:  1.5,
+            textTransform: 'uppercase',
             maxWidth:    720,
             marginBottom: 40,
           }}>

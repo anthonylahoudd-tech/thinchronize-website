@@ -104,6 +104,7 @@ function ProjectCard({
             color:        hovered ? RED : '#292929',
             marginBottom: 4,
             lineHeight:   1.15,
+            textTransform: 'uppercase',
             transition:   'color 0.25s',
           }}>
             {project.title}
@@ -149,6 +150,7 @@ export default function PortfolioPageClient() {
             color:         '#292929',
             lineHeight:    1.0,
             letterSpacing: '-0.02em',
+            textTransform: 'uppercase',
           }}>
             Portfolio
           </h1>

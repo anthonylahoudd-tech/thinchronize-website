@@ -277,7 +277,7 @@ function ProjectWindow({ project, onBack, onClose }: ProjectWindowProps) {
           </div>
 
           {/* Title */}
-          <h1 style={{ fontFamily: PP, fontWeight: 900, fontSize: 46, color: '#292929', lineHeight: 1.1, marginBottom: 0 }}>
+          <h1 style={{ fontFamily: PP, fontWeight: 900, fontSize: 46, textTransform: 'uppercase', color: '#292929', lineHeight: 1.1, marginBottom: 0 }}>
             {project.title}
           </h1>
 
@@ -317,7 +317,7 @@ function ProjectWindow({ project, onBack, onClose }: ProjectWindowProps) {
 
           {/* CTA */}
           <div style={{ borderTop: '1px solid #EEEEEE', paddingTop: 40, marginBottom: 80 }}>
-            <h2 style={{ fontFamily: PP, fontWeight: 900, fontSize: 26, color: '#292929', marginBottom: 10, lineHeight: 1.2 }}>
+            <h2 style={{ fontFamily: PP, fontWeight: 900, fontSize: 26, textTransform: 'uppercase', color: '#292929', marginBottom: 10, lineHeight: 1.2 }}>
               Ready to diagnose your brand?
             </h2>
             <p style={{ fontFamily: PP, fontSize: 15, color: '#888', marginBottom: 28, lineHeight: 1.6 }}>
@@ -474,7 +474,7 @@ function ServiceWindow({ service, onProjectClick, onBack, onClose }: ServiceWind
 
           {/* CTA */}
           <div style={{ borderTop: '1px solid #EEEEEE', paddingTop: 40, marginBottom: 80 }}>
-            <h2 style={{ fontFamily: PP, fontWeight: 900, fontSize: 26, color: '#292929', marginBottom: 10 }}>
+            <h2 style={{ fontFamily: PP, fontWeight: 900, fontSize: 26, textTransform: 'uppercase', color: '#292929', marginBottom: 10 }}>
               Ready to diagnose your brand?
             </h2>
             <p style={{ fontFamily: PP, fontSize: 15, color: '#888', marginBottom: 28 }}>
