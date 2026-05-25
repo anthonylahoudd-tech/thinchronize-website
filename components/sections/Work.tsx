@@ -98,6 +98,9 @@ export default function Work({ caseStudies }: Props) {
         <div ref={trackRef} className="horizontal-scroll-track h-full will-change-transform">
           <div className="flex-shrink-0 w-[clamp(20px,5vw,80px)] h-full" />
 
+          {/* Whatsub — static first card with real photo */}
+          <WhatsubCard />
+
           {caseStudies.map((cs, i) => (
             <CaseStudyCard
               key={cs._id}
@@ -131,6 +134,76 @@ export default function Work({ caseStudies }: Props) {
         </div>
       </div>
     </section>
+  )
+}
+
+function WhatsubCard() {
+  return (
+    <div className="flex-shrink-0 w-[320px] md:w-[420px] lg:w-[480px] h-full flex items-center px-4">
+      <Link href="/portfolio/whatsub" className="block w-full work-card group">
+        <div
+          className="relative w-full rounded-2xl overflow-hidden will-change-transform"
+          style={{
+            height: 'min(520px, 72vh)',
+            transform: 'translateZ(0)',
+            transition: 'transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+          }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLDivElement).style.transform = 'translateZ(0) scale(1.02)'
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLDivElement).style.transform = 'translateZ(0) scale(1)'
+          }}
+        >
+          {/* Real photo background */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/work/whatsub/truck.jpg"
+            alt="Whatsub"
+            style={{
+              position: 'absolute',
+              inset: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              objectPosition: 'center',
+            }}
+          />
+
+          {/* Dark gradient overlay for legibility */}
+          <div
+            className="absolute inset-0"
+            style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.65) 100%)' }}
+          />
+
+          {/* Red dot brand mark */}
+          <div className="absolute top-8 right-8 w-12 h-12 rounded-full bg-red/20 border border-red/40 flex items-center justify-center">
+            <span className="w-2 h-2 rounded-full bg-red" />
+          </div>
+
+          {/* Bottom info */}
+          <div className="absolute bottom-0 left-0 right-0 p-8">
+            <p className="eyebrow mb-2">Brand Identity · 2025</p>
+            <h3
+              className="text-white font-display font-black text-2xl md:text-3xl uppercase mb-2 leading-none"
+              style={{ transition: 'color 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94)' }}
+            >
+              Whatsub
+            </h3>
+            <p className="text-white/60 text-sm leading-relaxed max-w-xs font-sans">
+              Full brand identity for a D.C. sub sandwich brand
+            </p>
+          </div>
+
+          {/* Hover overlay */}
+          <div className="work-card-overlay rounded-2xl">
+            <span className="text-white font-display font-black text-xl uppercase tracking-widest">
+              View Project →
+            </span>
+          </div>
+        </div>
+      </Link>
+    </div>
   )
 }
 

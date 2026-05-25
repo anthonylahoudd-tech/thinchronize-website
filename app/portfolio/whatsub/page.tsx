@@ -318,24 +318,62 @@ export default function WhatsubPage() {
         </div>
       </section>
 
-      {/* ══ 8 — Brand in Action: 4 images in 2×2 ════════════════════ */}
-      {/* packaging → menu → poster-1 → poster-2 */}
-      <section style={{ background: '#F7F7F7', padding: 'clamp(60px, 8vw, 100px) clamp(24px, 6vw, 80px)' }}>
-        <div ref={rGallery.ref} style={{ ...rGallery.style, maxWidth: 1400, margin: '0 auto' }}>
-          <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 12, letterSpacing: '0.2em', textTransform: 'uppercase', color: RED, marginBottom: 48 }}>
-            Brand in Action
-          </p>
-          <div className="gallery-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 24 }}>
-            {GALLERY_IMAGES.map(({ file, alt }) => (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                key={file}
-                src={`${BASE}/${file}`}
-                alt={alt}
-                style={{ aspectRatio: '4/3', objectFit: 'cover', width: '100%', display: 'block' }}
-              />
-            ))}
+      {/* ══ 8 — Brand in Action: editorial alternating layout ════════ */}
+      {/* packaging (full) → menu (right 65%) → poster-1 (full) → poster-2 (left 65%) */}
+      <section style={{ background: '#FFFFFF' }}>
+        <div ref={rGallery.ref} style={rGallery.style}>
+
+          {/* Label */}
+          <div style={{ padding: 'clamp(60px, 8vw, 100px) clamp(24px, 6vw, 80px) 0' }}>
+            <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 12, letterSpacing: '0.2em', textTransform: 'uppercase', color: RED, marginBottom: 0 }}>
+              Brand in Action
+            </p>
           </div>
+
+          {/* packaging.jpg — full width */}
+          <div style={{ overflow: 'hidden', marginTop: 48 }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={`${BASE}/packaging.jpg`}
+              alt="Whatsub packaging system"
+              style={{ width: '100%', height: '70vh', objectFit: 'cover', display: 'block' }}
+            />
+          </div>
+
+          {/* menu.jpg — right-aligned 65% */}
+          <div style={{ padding: '80px clamp(24px, 6vw, 80px)' }}>
+            <div style={{ marginLeft: 'auto', width: '65%', minWidth: 280 }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={`${BASE}/menu.jpg`}
+                alt="Whatsub menu design"
+                style={{ width: '100%', height: 500, objectFit: 'cover', display: 'block' }}
+              />
+            </div>
+          </div>
+
+          {/* poster-1.jpg — full width */}
+          <div style={{ overflow: 'hidden' }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={`${BASE}/poster-1.jpg`}
+              alt="Whatsub poster"
+              style={{ width: '100%', height: '70vh', objectFit: 'cover', display: 'block' }}
+            />
+          </div>
+
+          {/* poster-2.jpg — left-aligned 65% */}
+          <div style={{ padding: '80px clamp(24px, 6vw, 80px) 0' }}>
+            <div style={{ marginRight: 'auto', width: '65%', minWidth: 280 }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={`${BASE}/poster-2.jpg`}
+                alt="Whatsub poster 2"
+                style={{ width: '100%', height: 500, objectFit: 'cover', display: 'block' }}
+              />
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -381,7 +419,6 @@ export default function WhatsubPage() {
       <style dangerouslySetInnerHTML={{ __html: `
         @media (max-width: 640px) {
           .process-grid { grid-template-columns: 1fr !important; }
-          .gallery-grid  { grid-template-columns: 1fr !important; }
         }
         @media (min-width: 641px) and (max-width: 900px) {
           .process-grid { grid-template-columns: repeat(2, 1fr) !important; }
