@@ -75,7 +75,7 @@ export default function Work({ caseStudies }: Props) {
   )
 
   return (
-    <section ref={sectionRef} id="work" className="bg-dark overflow-hidden">
+    <section ref={sectionRef} id="work" className="overflow-hidden" style={{ background: '#000000' }}>
       {/* Header */}
       <div className="work-label container mx-auto pt-section pb-12 opacity-0">
         <div className="flex items-center justify-between">

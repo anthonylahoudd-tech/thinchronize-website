@@ -29,7 +29,7 @@ const footerLinks: Record<string, FooterLink[]> = {
 
 export default function Footer() {
   return (
-    <footer style={{ backgroundColor: '#000000' }}>
+    <footer style={{ backgroundColor: '#D0274B' }}>
       <div className="container mx-auto py-20">
 
         {/* Top row */}
@@ -107,7 +107,7 @@ export default function Footer() {
           <div className="md:col-span-4 flex items-center justify-center md:justify-end">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/images/logo-stacked.png"
+              src="/images/Thinchronize-Logo.png"
               alt="Thinchronize"
               style={{
                 height:     '180px',

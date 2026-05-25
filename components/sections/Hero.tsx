@@ -55,7 +55,7 @@ export default function Hero() {
       {/* ── Background image ──────────────────────────────────────── */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/images/hero-main.jpg"
+        src="/images/Thinc-First-Image.jpg"
         alt=""
         style={{
           position:       'absolute',

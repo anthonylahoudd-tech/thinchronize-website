@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
-import { SERVICES, DIAGNOSTIC_ANSWERS_SERVICES } from '@/lib/services-data'
+import { SERVICES } from '@/lib/services-data'
 
 const PP  = "'PPNeueCorp', system-ui, sans-serif"
 const RED = '#D0274B'
@@ -155,6 +155,45 @@ const CHALLENGES: Record<string, string[]> = {
 
 const ALUMNI_ELIGIBLE = new Set(['print-design', 'digital-design', 'animation-motion', 'photography-video'])
 
+// ─── New diagnostic data ──────────────────────────────────────────────────────
+
+const questions = [
+  'What does your brand need?',
+  'Where is your brand stuck?',
+  'What are you building toward?',
+  'What problem needs solving first?',
+]
+
+const diagnosticOptions: { num: string; text: string; services: string[]; isOther?: boolean }[] = [
+  { num: '01', text: "My brand no longer reflects what we've built",  services: ['brand-engagement'] },
+  { num: '02', text: "I'm building a brand from scratch",             services: ['brand-engagement'] },
+  { num: '03', text: "I need print or digital design assets",         services: ['print-design', 'digital-design'] },
+  { num: '04', text: "I need animation, motion or video content",     services: ['animation-motion', 'photography-video'] },
+  { num: '05', text: "My brand is solid — I need ongoing guidance",   services: ['brand-guardianship'] },
+  { num: '06', text: "Other — describe what you need",                services: [], isOther: true },
+]
+
+const keywordMap: Record<string, string[]> = {
+  'brand-engagement':   ['logo', 'identity', 'rebrand', 'brand', 'strategy', 'positioning', 'direction', 'confused', 'stuck', 'start', 'refresh', 'new brand', 'foundation', 'visual identity', 'who we are'],
+  'print-design':       ['print', 'brochure', 'flyer', 'poster', 'business card', 'menu', 'catalog', 'packaging', 'leaflet', 'stationery'],
+  'digital-design':     ['website', 'digital', 'social', 'banner', 'online', 'web', 'instagram', 'ui', 'app', 'email', 'facebook', 'linkedin'],
+  'animation-motion':   ['animation', 'motion', 'animated', 'explainer', 'reel', 'gif', 'moving', 'intro', 'transition'],
+  'photography-video':  ['photo', 'photography', 'shoot', 'film', 'video', 'commercial', 'campaign', 'content', 'footage', 'production'],
+  'brand-guardianship': ['guidance', 'ongoing', 'retainer', 'monthly', 'support', 'maintain', 'consistency', 'advise', 'advisory', 'check', 'review'],
+}
+
+function matchFromText(input: string): string[] {
+  const lower = input.toLowerCase()
+  const scores: Record<string, number> = {}
+  for (const [serviceId, keywords] of Object.entries(keywordMap)) {
+    scores[serviceId] = keywords.filter(k => lower.includes(k)).length
+  }
+  const best = Object.entries(scores).sort((a, b) => b[1] - a[1])
+  const top = best[0]
+  if (!top || top[1] === 0) return ['brand-engagement']
+  return [top[0]]
+}
+
 // ─── Service accordion item ───────────────────────────────────────────────────
 
 function ServiceAccordionItem({
@@ -271,7 +310,7 @@ function ServiceAccordionItem({
 
           {/* C — DELIVERABLES */}
           <p style={{ fontFamily: PP, fontWeight: 800, fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#919191', marginBottom: 24 }}>
-            What's Included
+            What&apos;s Included
           </p>
           <div className="deliverables-grid" style={{ marginBottom: 48 }}>
             {deliverables.map(d => (
@@ -374,16 +413,92 @@ function ServiceAccordionItem({
 // ─── Main component ───────────────────────────────────────────────────────────
 
 export default function ServicesEditorialClient() {
-  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
   const [openServiceIds, setOpenServiceIds] = useState<string[]>([])
 
-  const handleAnswerClick = (answerId: number) => {
-    setSelectedAnswer(answerId)
-    const matched = SERVICES.filter(s => s.diagnosticAnswers.includes(answerId)).map(s => s.id)
-    setOpenServiceIds(matched)
+  // Typewriter state
+  const [displayText, setDisplayText] = useState('')
+  const [qIndex, setQIndex] = useState(0)
+  const [charIndex, setCharIndex] = useState(0)
+  const [typing, setTyping] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
+  const [signalShown, setSignalShown] = useState(false)
+  const [selectedOption, setSelectedOption] = useState<number | null>(null)
+  const [otherInput, setOtherInput] = useState('')
+  const [otherMatched, setOtherMatched] = useState(false)
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  // ── Typewriter effect ────────────────────────────────────────────────────────
+  useEffect(() => {
+    if (isOpen) return
+    const q = questions[qIndex]
+    if (typing) {
+      if (charIndex <= q.length) {
+        setDisplayText(q.slice(0, charIndex))
+        if (charIndex === q.length) {
+          if (!signalShown) setSignalShown(true)
+          timerRef.current = setTimeout(() => setTyping(false), 2600)
+        } else {
+          timerRef.current = setTimeout(
+            () => setCharIndex(c => c + 1),
+            charIndex === 0 ? 500 : 46
+          )
+        }
+      }
+    } else {
+      if (charIndex > 0) {
+        timerRef.current = setTimeout(() => {
+          setCharIndex(c => c - 1)
+          setDisplayText(q.slice(0, charIndex - 1))
+        }, 22)
+      } else {
+        timerRef.current = setTimeout(() => {
+          setQIndex(i => (i + 1) % questions.length)
+          setTyping(true)
+        }, 400)
+      }
+    }
+    return () => { if (timerRef.current) clearTimeout(timerRef.current) }
+  }, [displayText, charIndex, typing, qIndex, isOpen, signalShown])
+
+  // ── Handlers ────────────────────────────────────────────────────────────────
+  function openDropdown() {
+    if (isOpen) return
+    if (timerRef.current) clearTimeout(timerRef.current)
+    setIsOpen(true)
+    setDisplayText('What does your brand need?')
+  }
+
+  function handleSelect(index: number, option: typeof diagnosticOptions[0]) {
+    setSelectedOption(index)
+    if (option.isOther) return
+    setOpenServiceIds(option.services)
     setTimeout(() => {
-      document.getElementById('services-accordion')?.scrollIntoView({ behavior: 'smooth' })
-    }, 300)
+      const el = document.getElementById('services-accordion')
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 500)
+  }
+
+  function handleOtherSubmit() {
+    if (!otherInput.trim()) return
+    const matched = matchFromText(otherInput)
+    setOpenServiceIds(matched)
+    setOtherMatched(true)
+    setTimeout(() => {
+      const el = document.getElementById('services-accordion')
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 600)
+  }
+
+  function getServiceLabel(id: string): string {
+    const map: Record<string, string> = {
+      'brand-engagement':  'Brand Engagement',
+      'print-design':      'Print Design',
+      'digital-design':    'Digital Design',
+      'animation-motion':  'Animation & Motion',
+      'photography-video': 'Photography & Video',
+      'brand-guardianship':'Brand Guardianship',
+    }
+    return map[id] || 'Brand Engagement'
   }
 
   const toggleService = (id: string) => {
@@ -392,86 +507,283 @@ export default function ServicesEditorialClient() {
     )
   }
 
-  const matchCount = selectedAnswer !== null
-    ? SERVICES.filter(s => s.diagnosticAnswers.includes(selectedAnswer)).length
-    : 0
-
   return (
     <div style={{ backgroundColor: '#FFFFFF' }}>
 
       {/* ════════════════════════════════════════════════════════════
-          SECTION 1 — DIAGNOSTIC
+          SECTION 1 — CINEMATIC TYPEWRITER DIAGNOSTIC
       ════════════════════════════════════════════════════════════ */}
-      <section style={{ backgroundColor: '#292929', padding: 'clamp(120px, 12vw, 160px) clamp(24px, 6vw, 80px) 100px' }}>
+      <section
+        style={{
+          position:        'relative',
+          width:           '100%',
+          minHeight:       '100vh',
+          background:      '#000000',
+          display:         'flex',
+          flexDirection:   'column',
+          alignItems:      'center',
+          justifyContent:  'center',
+          padding:         '80px 24px',
+          overflow:        'hidden',
+        }}
+      >
+        {/* Vignette */}
+        <div style={{
+          position:      'absolute',
+          inset:         0,
+          background:    'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.75) 100%)',
+          pointerEvents: 'none',
+          zIndex:        0,
+        }} />
 
-        <p style={{ fontFamily: PP, fontWeight: 800, fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', color: RED, marginBottom: 0 }}>
-          Start Here
-        </p>
-
-        <h1 style={{
-          fontFamily:    PP,
-          fontWeight:    900,
-          fontSize:      'clamp(32px, 5vw, 64px)',
-          textTransform: 'uppercase',
-          color:         '#FFFFFF',
-          lineHeight:    1.1,
-          letterSpacing: '-0.02em',
-          maxWidth:      720,
-          marginTop:     16,
-          marginBottom:  0,
+        <div style={{
+          position:       'relative',
+          zIndex:         1,
+          width:          '100%',
+          maxWidth:       '600px',
+          display:        'flex',
+          flexDirection:  'column',
+          alignItems:     'center',
         }}>
-          What does your brand need?
-        </h1>
 
-        <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 16, color: 'rgba(255,255,255,0.5)', marginTop: 16, marginBottom: 0 }}>
-          Answer honestly. We'll show you exactly where to focus.
-        </p>
-
-        {/* Answer buttons */}
-        <div style={{ marginTop: 48 }}>
-          {DIAGNOSTIC_ANSWERS_SERVICES.map((ans, i) => (
-            <AnswerButton
-              key={ans.id}
-              index={i}
-              label={ans.label}
-              selected={selectedAnswer === ans.id}
-              onClick={() => handleAnswerClick(ans.id)}
-            />
-          ))}
-        </div>
-
-        {/* Feedback line */}
-        {selectedAnswer !== null && (
+          {/* Eyebrow */}
           <p style={{
-            fontFamily:  PP,
-            fontWeight:  400,
-            fontSize:    14,
-            color:       RED,
-            marginTop:   20,
-            transition:  'opacity 0.4s',
+            fontFamily:    PP,
+            fontWeight:    400,
+            fontSize:      '10px',
+            letterSpacing: '0.3em',
+            color:         'rgba(208,39,75,0.6)',
+            textTransform: 'uppercase',
+            marginBottom:  '48px',
+            textAlign:     'center',
           }}>
-            ↓ We found {matchCount} service{matchCount !== 1 ? 's' : ''} that match. Scroll down to explore.
+            Find Your Starting Point
           </p>
-        )}
 
-        {/* Explore all link */}
-        <p
-          onClick={() => document.getElementById('services-accordion')?.scrollIntoView({ behavior: 'smooth' })}
-          style={{
-            fontFamily:  PP,
-            fontWeight:  400,
-            fontSize:    13,
-            color:       'rgba(255,255,255,0.4)',
-            marginTop:   32,
-            cursor:      'pointer',
-            transition:  'color 0.2s',
-          }}
-          onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.7)')}
-          onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.4)')}
-        >
-          Or explore all services below →
-        </p>
+          {/* Typed question */}
+          <div
+            onClick={openDropdown}
+            style={{
+              fontFamily:  PP,
+              fontWeight:  900,
+              fontSize:    'clamp(26px, 5vw, 52px)',
+              color:       'rgba(255,255,255,0.92)',
+              textAlign:   'center',
+              letterSpacing: '-0.02em',
+              lineHeight:  1.15,
+              cursor:      isOpen ? 'default' : 'pointer',
+              userSelect:  'none',
+              minHeight:   '60px',
+            }}
+          >
+            {displayText}
+            {!isOpen && (
+              <span style={{
+                display:        'inline-block',
+                width:          '3px',
+                height:         '0.9em',
+                background:     '#D0274B',
+                verticalAlign:  'text-bottom',
+                marginLeft:     '3px',
+                animation:      'diagnosticBlink 1s step-end infinite',
+              }} />
+            )}
+          </div>
 
+          {/* Red underline — appears once, stays */}
+          <div style={{
+            height:     '1px',
+            background: 'linear-gradient(90deg, transparent, rgba(208,39,75,0.7), transparent)',
+            width:      signalShown ? '260px' : '0px',
+            maxWidth:   '260px',
+            margin:     '14px auto 0',
+            transition: 'width 0.7s ease',
+          }} />
+
+          {/* Chevron — appears once, stays */}
+          {signalShown && !isOpen && (
+            <div
+              onClick={openDropdown}
+              style={{
+                marginTop:      '16px',
+                display:        'flex',
+                flexDirection:  'column',
+                alignItems:     'center',
+                gap:            '4px',
+                cursor:         'pointer',
+              }}
+            >
+              <span style={{
+                fontSize:  '18px',
+                color:     'rgba(255,255,255,0.3)',
+                display:   'block',
+                animation: 'diagnosticBounce 1.6s ease-in-out infinite',
+              }}>↓</span>
+              <span style={{
+                fontFamily:    PP,
+                fontWeight:    400,
+                fontSize:      '9px',
+                letterSpacing: '0.22em',
+                color:         'rgba(255,255,255,0.22)',
+                textTransform: 'uppercase',
+                animation:     'diagnosticPulse 2s ease-in-out infinite',
+              }}>tap to answer</span>
+            </div>
+          )}
+
+          {/* Dropdown options */}
+          {isOpen && (
+            <div style={{ width: '100%', marginTop: '40px' }}>
+              {diagnosticOptions.map((option, i) => (
+                <div key={i}>
+                  <div
+                    onClick={() => handleSelect(i, option)}
+                    style={{
+                      display:         'flex',
+                      alignItems:      'center',
+                      justifyContent:  'center',
+                      gap:             '16px',
+                      padding:         '14px 0',
+                      cursor:          'pointer',
+                      borderTop:       i === 0 ? 'none' : '1px solid rgba(255,255,255,0.05)',
+                      opacity:         selectedOption !== null && selectedOption !== i ? 0.3 : 1,
+                      transition:      'opacity 0.2s',
+                      animation:       'diagnosticFadeUp 0.35s ease both',
+                      animationDelay:  `${i * 55}ms`,
+                    }}
+                  >
+                    <span style={{
+                      fontFamily:    PP,
+                      fontWeight:    400,
+                      fontSize:      '10px',
+                      color:         selectedOption === i ? '#D0274B' : 'rgba(255,255,255,0.2)',
+                      letterSpacing: '0.1em',
+                      minWidth:      '20px',
+                      textAlign:     'right',
+                      transition:    'color 0.18s',
+                    }}>{option.num}</span>
+                    <span style={{
+                      fontFamily:  PP,
+                      fontWeight:  selectedOption === i ? 900 : 400,
+                      fontSize:    '14px',
+                      color:       selectedOption === i ? '#fff' : 'rgba(255,255,255,0.4)',
+                      textAlign:   'center',
+                      lineHeight:  1.4,
+                      maxWidth:    '400px',
+                      transition:  'color 0.18s',
+                    }}>{option.text}</span>
+                  </div>
+
+                  {/* Other input — expands inline when 06 selected */}
+                  {option.isOther && selectedOption === i && (
+                    <div style={{
+                      padding:        '16px 0 8px',
+                      display:        'flex',
+                      flexDirection:  'column',
+                      alignItems:     'center',
+                      gap:            '16px',
+                      animation:      'diagnosticFadeUp 0.3s ease both',
+                    }}>
+                      <div style={{
+                        display:       'flex',
+                        alignItems:    'center',
+                        gap:           '12px',
+                        width:         '100%',
+                        maxWidth:      '440px',
+                        borderBottom:  '1px solid rgba(255,255,255,0.15)',
+                        paddingBottom: '10px',
+                      }}>
+                        <input
+                          autoFocus
+                          type="text"
+                          placeholder="Describe what you need..."
+                          value={otherInput}
+                          onChange={e => { setOtherInput(e.target.value); setOtherMatched(false) }}
+                          onKeyDown={e => e.key === 'Enter' && handleOtherSubmit()}
+                          style={{
+                            flex:        1,
+                            background:  'transparent',
+                            border:      'none',
+                            outline:     'none',
+                            fontFamily:  PP,
+                            fontWeight:  400,
+                            fontSize:    '15px',
+                            color:       '#fff',
+                            letterSpacing: '-0.01em',
+                            caretColor:  '#D0274B',
+                          }}
+                        />
+                        <span
+                          onClick={handleOtherSubmit}
+                          style={{
+                            fontSize:   '16px',
+                            color:      otherInput.trim() ? '#D0274B' : 'rgba(255,255,255,0.15)',
+                            cursor:     otherInput.trim() ? 'pointer' : 'default',
+                            transition: 'color 0.2s',
+                            userSelect: 'none',
+                          }}
+                        >→</span>
+                      </div>
+                      <p style={{
+                        fontFamily:    PP,
+                        fontWeight:    400,
+                        fontSize:      '10px',
+                        color:         'rgba(255,255,255,0.18)',
+                        letterSpacing: '0.1em',
+                        textTransform: 'uppercase',
+                        textAlign:     'center',
+                      }}>Press Enter or → to match</p>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Result reveal */}
+          {((selectedOption !== null && !diagnosticOptions[selectedOption]?.isOther) || otherMatched) && (
+            <div style={{
+              marginTop:  '44px',
+              textAlign:  'center',
+              animation:  'diagnosticFadeUp 0.4s ease both',
+            }}>
+              <p style={{
+                fontFamily:    PP,
+                fontWeight:    400,
+                fontSize:      '10px',
+                letterSpacing: '0.22em',
+                textTransform: 'uppercase',
+                color:         'rgba(255,255,255,0.25)',
+                marginBottom:  '8px',
+              }}>Your match</p>
+              <p style={{
+                fontFamily:    PP,
+                fontWeight:    900,
+                fontSize:      'clamp(18px, 3vw, 26px)',
+                color:         '#D0274B',
+                letterSpacing: '-0.01em',
+              }}>
+                {otherMatched
+                  ? getServiceLabel(matchFromText(otherInput)[0])
+                  : selectedOption !== null
+                    ? getServiceLabel(diagnosticOptions[selectedOption].services[0])
+                    : ''}
+              </p>
+              <p style={{
+                marginTop:     '10px',
+                fontFamily:    PP,
+                fontWeight:    400,
+                fontSize:      '9px',
+                letterSpacing: '0.22em',
+                color:         'rgba(255,255,255,0.18)',
+                textTransform: 'uppercase',
+                animation:     'diagnosticBounce 1.8s ease-in-out infinite',
+                display:       'inline-block',
+              }}>↓ scrolling to service</p>
+            </div>
+          )}
+
+        </div>
       </section>
 
       {/* ════════════════════════════════════════════════════════════
@@ -616,18 +928,18 @@ export default function ServicesEditorialClient() {
           <Link
             href="/diagnostic"
             style={{
-              display:       'inline-block',
-              padding:       '18px 48px',
-              background:    RED,
-              color:         '#FFFFFF',
-              fontFamily:    PP,
-              fontWeight:    800,
-              fontSize:      14,
-              letterSpacing: '0.05em',
-              textTransform: 'uppercase',
-              textDecoration:'none',
-              borderRadius:  0,
-              transition:    'background 0.2s',
+              display:        'inline-block',
+              padding:        '18px 48px',
+              background:     RED,
+              color:          '#FFFFFF',
+              fontFamily:     PP,
+              fontWeight:     800,
+              fontSize:       14,
+              letterSpacing:  '0.05em',
+              textTransform:  'uppercase',
+              textDecoration: 'none',
+              borderRadius:   0,
+              transition:     'background 0.2s',
             }}
             onMouseEnter={e => (e.currentTarget.style.background = '#b8223f')}
             onMouseLeave={e => (e.currentTarget.style.background = RED)}
@@ -654,7 +966,7 @@ export default function ServicesEditorialClient() {
         </div>
       </section>
 
-      {/* ── Responsive styles ──────────────────────────────────────── */}
+      {/* ── Responsive + keyframe styles ──────────────────────────── */}
       <style dangerouslySetInnerHTML={{ __html: `
         /* Deliverables: 2-col desktop, 1-col mobile */
         .deliverables-grid {
@@ -703,58 +1015,26 @@ export default function ServicesEditorialClient() {
           }
           .alumni-grid { grid-template-columns: 1fr; gap: 48px; }
         }
+
+        /* Diagnostic keyframes */
+        @keyframes diagnosticBlink {
+          0%, 100% { opacity: 1; }
+          50%       { opacity: 0; }
+        }
+        @keyframes diagnosticBounce {
+          0%, 100% { transform: translateY(0);   opacity: 0.3; }
+          50%       { transform: translateY(5px); opacity: 0.7; }
+        }
+        @keyframes diagnosticPulse {
+          0%, 100% { opacity: 0.22; }
+          50%       { opacity: 0.5;  }
+        }
+        @keyframes diagnosticFadeUp {
+          from { opacity: 0; transform: translateY(10px); }
+          to   { opacity: 1; transform: translateY(0);    }
+        }
       ` }} />
 
     </div>
-  )
-}
-
-// ─── Answer button component ──────────────────────────────────────────────────
-
-function AnswerButton({
-  index,
-  label,
-  selected,
-  onClick,
-}: {
-  index:    number
-  label:    string
-  selected: boolean
-  onClick:  () => void
-}) {
-  const [hovered, setHovered] = useState(false)
-
-  return (
-    <button
-      onClick={onClick}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        display:      'block',
-        width:        '100%',
-        textAlign:    'left',
-        padding:      '20px 28px',
-        border:       `1px solid ${selected || hovered ? RED : 'rgba(255,255,255,0.15)'}`,
-        borderRadius: 4,
-        background:   selected
-          ? 'rgba(208,39,75,0.12)'
-          : hovered
-            ? 'rgba(208,39,75,0.08)'
-            : 'transparent',
-        color:        selected || hovered ? '#FFFFFF' : 'rgba(255,255,255,0.7)',
-        fontFamily:   PP,
-        fontWeight:   400,
-        fontSize:     16,
-        marginBottom: 12,
-        cursor:       'pointer',
-        transition:   'all 0.25s ease',
-      }}
-    >
-      {selected && <span style={{ color: RED, marginRight: 12, fontWeight: 800 }}>✓</span>}
-      <span style={{ color: RED, fontSize: 11, marginRight: 20, fontWeight: 800, verticalAlign: 'middle' }}>
-        {String(index + 1).padStart(2, '0')}
-      </span>
-      {label}
-    </button>
   )
 }

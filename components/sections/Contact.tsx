@@ -89,7 +89,7 @@ export default function Contact() {
   }
 
   return (
-    <section ref={sectionRef} id="contact" className="bg-dark section-padding border-t border-white/10">
+    <section ref={sectionRef} id="contact" className="section-padding border-t border-white/10" style={{ background: '#000000' }}>
       <div className="container mx-auto">
         {/* Header */}
         <div className="flex items-center gap-4 mb-16">

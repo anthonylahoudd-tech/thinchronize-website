@@ -8,7 +8,7 @@ export default function MindfulDesignReveal() {
   return (
     <section style={{
       minHeight:       '100vh',
-      backgroundColor: '#292929',
+      backgroundColor: '#000000',
       display:         'flex',
       flexDirection:   'column',
       alignItems:      'center',

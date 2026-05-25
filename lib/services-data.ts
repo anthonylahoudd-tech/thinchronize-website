@@ -17,7 +17,7 @@ export const DIAGNOSTIC_ANSWERS_SERVICES = [
   { id: 1, label: "I need animation, motion, or video content", keywords: ['animation', 'motion', 'video', 'reel', 'content', 'moving', 'animate', 'film'] },
   { id: 2, label: "I need print materials or digital assets", keywords: ['print', 'materials', 'brochure', 'digital', 'social', 'assets', 'collateral', 'folder', 'deck'] },
   { id: 3, label: "I'm building a brand from scratch", keywords: ['scratch', 'new', 'startup', 'launch', 'first', 'beginning', 'build', 'create'] },
-  { id: 4, label: "Our brand is built — we need ongoing guidance", keywords: ['guidance', 'maintain', 'ongoing', 'advisory', 'retainer', 'monthly', 'guardianship', 'after'] },
+  { id: 4, label: "Our brand is built. We need ongoing guidance.", keywords: ['guidance', 'maintain', 'ongoing', 'advisory', 'retainer', 'monthly', 'guardianship', 'after'] },
 ]
 
 export const SERVICES: Service[] = [
