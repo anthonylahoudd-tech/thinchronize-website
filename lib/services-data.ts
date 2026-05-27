@@ -29,7 +29,7 @@ export const SERVICES: Service[] = [
     description: 'Our flagship. The complete brand build — strategy and identity built from the same brain. Starts with a diagnosis, not a brief. Available as Brand Clarity (strategy only), Brand Refresh (visual identity only), or Full Engagement (all 10 phases).',
     deliverables: ['Brand Foundation', 'Positioning & Differentiation', 'Visual Identity System', 'Brandbook & Standards', 'Brand Launch Strategy'],
     diagnosticAnswers: [0, 2, 3],
-    projectIds: ['don-bosco', 'latelier', 'tryo', 'whatsub'],
+    projectIds: ['don-bosco', 'latelier', 'tryo', 'cafe-bdooz', 'whatsub'],
     orbitAngle: 0,
     orbitRadius: 440,
     orbitSpeed: 0.004,

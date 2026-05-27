@@ -19,6 +19,7 @@ const GRID_CONFIG = [
   { gridColumn: '1 / 6',  aspectRatio: '3/4'  }, // [5] Pattern C — small left
   { gridColumn: '6 / 13', aspectRatio: '4/3'  }, // [6] Pattern C — large right
   { gridColumn: '1 / 13', aspectRatio: '21/9' }, // [7] Pattern D — full-width hero
+  { gridColumn: '1 / 7',  aspectRatio: '4/3'  }, // [8] Pattern A — large left
 ]
 
 // ─── Filter bar ───────────────────────────────────────────────────────────────

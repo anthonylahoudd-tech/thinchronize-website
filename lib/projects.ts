@@ -137,6 +137,22 @@ export const PROJECTS: Project[] = [
     market: 'Lebanon'
   },
   {
+    id: 'cafe-bdooz',
+    title: 'Cafe BDOOZ',
+    subtitle: 'Brand Identity',
+    category: 'Brand Identity',
+    coverImage: '/images/work/cafe-bdooz/cover.jpg',
+    diagnosticAnswers: [0, 3],
+    keywords: ['cafe', 'coffee', 'restaurant', 'brand identity', 'logo', 'lebanon', 'neighbourhood', 'warmth', 'character', 'hospitality'],
+    brief: "A Lebanese café with a strong neighbourhood personality needed an identity that would make people feel something before they ordered.",
+    diagnosis: "The space had warmth, the product was strong, and the name had character — but nothing was connecting them visually. The brand was invisible where it mattered most: before someone walked through the door.",
+    built: "An identity built around warmth and return. Typographic personality that feels handcrafted without being hand-drawn. A colour palette that communicates comfort and confidence. A system that works on a cup, a sign, and a social feed without losing its soul.",
+    result: "A brand that makes the café feel like a place people already know — before they've ever been.",
+    services: ['Brand Foundation', 'Visual Identity System', 'Brand Standards'],
+    year: '2025',
+    market: 'Lebanon'
+  },
+  {
     id: 'whatsub',
     title: 'Whatsub',
     subtitle: 'Brand Identity & Visual System',
