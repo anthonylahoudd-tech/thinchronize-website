@@ -14,7 +14,6 @@ export default function MindfulDesignReveal() {
   const sectionRef  = useRef<HTMLElement>(null)
   const wrapRef     = useRef<HTMLDivElement>(null)
   const imgRef      = useRef<HTMLImageElement>(null)
-  const overlayRef  = useRef<HTMLDivElement>(null)
 
   useGSAP(
     () => {
@@ -56,23 +55,7 @@ export default function MindfulDesignReveal() {
         }
       )
 
-      // ── 3. Overlay fades in as section exits viewport ─────────────
-      if (overlayRef.current) {
-        gsap.fromTo(
-          overlayRef.current,
-          { opacity: 0.3 },
-          {
-            opacity: 0.65,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: section,
-              start:   'top center',
-              end:     'bottom center',
-              scrub:   true,
-            },
-          }
-        )
-      }
+
     },
     { scope: sectionRef }
   )
@@ -117,15 +100,7 @@ export default function MindfulDesignReveal() {
           }}
         />
 
-        {/* Gradient overlay */}
-        <div
-          ref={overlayRef}
-          style={{
-            position:   'absolute',
-            inset:      0,
-            background: 'linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.55) 60%, rgba(0,0,0,0.75) 100%)',
-          }}
-        />
+        {/* Gradient overlay — removed */}
       </div>
 
       {/* ── Text overlay ── */}
