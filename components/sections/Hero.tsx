@@ -52,12 +52,28 @@ export default function Hero() {
         justifyContent: 'center',
       }}
     >
-      {/* ── Background — solid fallback until hero-main.jpg is added ── */}
+      {/* ── Background image ──────────────────────────────────────── */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/images/hero-main.jpg"
+        alt=""
+        style={{
+          position:       'absolute',
+          inset:          0,
+          width:          '100%',
+          height:         '100%',
+          objectFit:      'cover',
+          objectPosition: 'center',
+          zIndex:         0,
+        }}
+      />
+
+      {/* ── Dark overlay ──────────────────────────────────────────── */}
       <div style={{
         position:   'absolute',
         inset:      0,
-        background: '#1a0a0a',
-        zIndex:     0,
+        background: 'rgba(0,0,0,0.45)',
+        zIndex:     1,
       }} />
 
       {/* ── Bottom meta row ───────────────────────────────────────── */}
