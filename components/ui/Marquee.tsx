@@ -1,5 +1,5 @@
 export default function Marquee({ dark = true }: { dark?: boolean }) {
-  const text = 'BRAND STRATEGY · VISUAL IDENTITY · MINDFUL DESIGN · BEIRUT, LEBANON · EST. 2020 · '
+  const text = 'BRAND STRATEGY · VISUAL IDENTITY · MINDFUL DESIGN · BEIRUT, LEBANON · EST. 2016 · '
   // Repeat enough times to fill double width for seamless loop
   const repeated = Array(8).fill(text).join('')
 

@@ -91,7 +91,7 @@ export default function Hero() {
           color:         'rgba(255,255,255,0.75)',
           textShadow:    '0 1px 6px rgba(0,0,0,0.6)',
         }}>
-          Est. 2020 · Beirut, LB
+          Est. 2016 · Beirut, LB
         </p>
         <p style={{
           fontFamily:    "'PPNeueCorp', system-ui, sans-serif",

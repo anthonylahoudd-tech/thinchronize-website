@@ -21,36 +21,6 @@ export default async function HomePage() {
     <>
       <Hero />
 
-      {/* ── "LIVE FROM BEIRUT!" strip ──────────────────────────────── */}
-      <div style={{
-        width:            '100%',
-        background:       'rgba(255,255,255,0.06)',
-        backdropFilter:   'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
-        borderTop:        '1px solid rgba(255,255,255,0.1)',
-        borderBottom:     '1px solid rgba(255,255,255,0.1)',
-        padding:          '20px 80px',
-        display:          'flex',
-        alignItems:       'center',
-        gap:              '48px',
-        overflow:         'hidden',
-      }}>
-        {Array(8).fill('LIVE FROM BEIRUT!').map((text: string, i: number) => (
-          <span key={i} style={{
-            fontFamily:    "'PPNeueCorp', system-ui, sans-serif",
-            fontWeight:    900,
-            fontSize:      '18px',
-            color:         '#D0274B',
-            letterSpacing: '0.28em',
-            whiteSpace:    'nowrap',
-            flexShrink:    0,
-          }}>
-            {text}
-            {i < 7 && <span style={{ color: 'rgba(255,255,255,0.25)', margin: '0 24px' }}>·</span>}
-          </span>
-        ))}
-      </div>
-
       <MindfulDesignReveal />
       <Marquee dark />
       <About />
