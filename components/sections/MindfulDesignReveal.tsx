@@ -4,11 +4,7 @@ import { useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
-import { motion } from 'framer-motion'
-
 gsap.registerPlugin(ScrollTrigger)
-
-const PP = "'PPNeueCorp', system-ui, sans-serif"
 
 export default function MindfulDesignReveal() {
   const sectionRef  = useRef<HTMLElement>(null)
@@ -103,52 +99,6 @@ export default function MindfulDesignReveal() {
         {/* Gradient overlay — removed */}
       </div>
 
-      {/* ── Text overlay ── */}
-      <div style={{
-        position:  'relative',
-        zIndex:    1,
-        textAlign: 'center',
-        padding:   '0 clamp(20px, 5vw, 80px)',
-        display:   'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap:        20,
-      }}>
-        <motion.h2
-          initial={{ opacity: 0, y: 28 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94] }}
-          style={{
-            fontFamily:    PP,
-            fontWeight:    900,
-            fontSize:      'clamp(52px, 9vw, 120px)',
-            lineHeight:    0.92,
-            letterSpacing: '0.06em',
-            textTransform: 'uppercase',
-            color:         '#FFFFFF',
-          }}
-        >
-          Mindful Design
-        </motion.h2>
-
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.8, delay: 0.18, ease: [0.25, 0.46, 0.45, 0.94] }}
-          style={{
-            fontFamily:    PP,
-            fontWeight:    400,
-            fontSize:      13,
-            color:         'rgba(255,255,255,0.5)',
-            letterSpacing: '0.18em',
-            textTransform: 'uppercase',
-          }}
-        >
-          Strategy-Led Creative Studio · Beirut
-        </motion.p>
-      </div>
     </section>
   )
 }

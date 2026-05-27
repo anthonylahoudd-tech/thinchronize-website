@@ -105,18 +105,19 @@ export default function Footer() {
 
           {/* Stacked logo — right column */}
           <div className="md:col-span-4 flex items-center justify-center md:justify-end">
-            <span style={{
-              fontFamily:    "'PPNeueCorp', system-ui, sans-serif",
-              fontWeight:    900,
-              fontSize:      'clamp(48px, 7vw, 96px)',
-              color:         '#FFFFFF',
-              letterSpacing: '-0.02em',
-              lineHeight:    1,
-              opacity:       0.9,
-              userSelect:    'none',
-            }}>
-              thinc.
-            </span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/logo-stacked.png"
+              alt="Thinchronize"
+              style={{
+                height:    '180px',
+                width:     'auto',
+                objectFit: 'contain',
+                opacity:   0.9,
+                display:   'block',
+              }}
+              className="footer-stacked-logo"
+            />
           </div>
         </div>
 
