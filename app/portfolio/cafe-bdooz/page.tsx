@@ -144,13 +144,8 @@ const DELIVERABLES = [
   'Social Media Templates', 'Brand Collateral', 'Brand Standards',
 ]
 
-const GALLERY_IMAGES = [
-  { file: 'image-1.jpg', alt: 'Cafe BDOOZ brand identity' },
-  { file: 'image-2.jpg', alt: 'Cafe BDOOZ menu design' },
-  { file: 'image-3.jpg', alt: 'Cafe BDOOZ packaging' },
-  { file: 'image-4.jpg', alt: 'Cafe BDOOZ environmental signage' },
-  { file: 'image-5.jpg', alt: 'Cafe BDOOZ brand collateral' },
-]
+// 14 images available: Cover + Image-1 through Image-14
+const IMGS = (n: number) => `${BASE}/Image-${n}-Bdooz.png`
 
 const moreWork = PROJECTS.filter(p => p.id !== 'cafe-bdooz').slice(0, 2)
 
@@ -173,7 +168,7 @@ export default function CafeBdoozPage() {
       <section style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'flex-end' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={`${BASE}/cover.jpg`}
+          src={`${BASE}/Cover-Bdooz.png`}
           alt="Cafe BDOOZ"
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
         />
@@ -220,7 +215,7 @@ export default function CafeBdoozPage() {
         <div style={{ overflow: 'hidden' }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={`${BASE}/image-1.jpg`}
+            src={`${BASE}/Image-1-Bdooz.png`}
             alt="Cafe BDOOZ brand identity"
             style={{ width: '100%', height: '70vh', objectFit: 'cover', display: 'block' }}
           />
@@ -254,7 +249,7 @@ export default function CafeBdoozPage() {
         <div style={{ marginLeft: 'auto', width: '65%', minWidth: 280 }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={`${BASE}/image-2.jpg`}
+            src={`${BASE}/Image-2-Bdooz.png`}
             alt="Cafe BDOOZ identity detail"
             style={{ width: '100%', height: 500, objectFit: 'cover', display: 'block' }}
           />
@@ -279,49 +274,90 @@ export default function CafeBdoozPage() {
         </div>
       </section>
 
-      {/* ══ 7 — Brand in Action: editorial alternating layout ═══════════ */}
+      {/* ══ 7 — Brand in Action ══════════════════════════════════════════ */}
       <section style={{ background: '#FFFFFF' }}>
         <div ref={rGallery.ref} style={rGallery.style}>
 
-          {/* Label */}
           <div style={{ padding: 'clamp(60px, 8vw, 100px) clamp(24px, 6vw, 80px) 0' }}>
             <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 12, letterSpacing: '0.2em', textTransform: 'uppercase', color: RED }}>
               Brand in Action
             </p>
           </div>
 
-          {/* image-3.jpg — full width */}
+          {/* Image-3 — full width */}
           <div style={{ overflow: 'hidden', marginTop: 48 }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={`${BASE}/image-3.jpg`}
-              alt="Cafe BDOOZ brand in context"
-              style={{ width: '100%', height: '70vh', objectFit: 'cover', display: 'block' }}
-            />
+            <img src={IMGS(3)} alt="Cafe BDOOZ brand in context"
+              style={{ width: '100%', height: '70vh', objectFit: 'cover', display: 'block' }} />
           </div>
 
-          {/* image-4.jpg — right-aligned 65% */}
+          {/* Image-4 + Image-5 — side by side */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0, marginTop: 0 }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={IMGS(4)} alt="Cafe BDOOZ detail"
+              style={{ width: '100%', height: 500, objectFit: 'cover', display: 'block' }} />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={IMGS(5)} alt="Cafe BDOOZ detail"
+              style={{ width: '100%', height: 500, objectFit: 'cover', display: 'block' }} />
+          </div>
+
+          {/* Image-6 — right-aligned 65% */}
           <div style={{ padding: '80px clamp(24px, 6vw, 80px)' }}>
             <div style={{ marginLeft: 'auto', width: '65%', minWidth: 280 }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={`${BASE}/image-4.jpg`}
-                alt="Cafe BDOOZ packaging detail"
-                style={{ width: '100%', height: 500, objectFit: 'cover', display: 'block' }}
-              />
+              <img src={IMGS(6)} alt="Cafe BDOOZ packaging"
+                style={{ width: '100%', height: 500, objectFit: 'cover', display: 'block' }} />
             </div>
           </div>
 
-          {/* image-5.jpg — left-aligned 65% */}
-          <div style={{ padding: '0 clamp(24px, 6vw, 80px) 80px' }}>
+          {/* Image-7 — full width */}
+          <div style={{ overflow: 'hidden' }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={IMGS(7)} alt="Cafe BDOOZ environmental"
+              style={{ width: '100%', height: '70vh', objectFit: 'cover', display: 'block' }} />
+          </div>
+
+          {/* Image-8 + Image-9 — side by side */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0 }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={IMGS(8)} alt="Cafe BDOOZ detail"
+              style={{ width: '100%', height: 500, objectFit: 'cover', display: 'block' }} />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={IMGS(9)} alt="Cafe BDOOZ detail"
+              style={{ width: '100%', height: 500, objectFit: 'cover', display: 'block' }} />
+          </div>
+
+          {/* Image-10 — left-aligned 65% */}
+          <div style={{ padding: '80px clamp(24px, 6vw, 80px)' }}>
             <div style={{ marginRight: 'auto', width: '65%', minWidth: 280 }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={`${BASE}/image-5.jpg`}
-                alt="Cafe BDOOZ collateral"
-                style={{ width: '100%', height: 500, objectFit: 'cover', display: 'block' }}
-              />
+              <img src={IMGS(10)} alt="Cafe BDOOZ collateral"
+                style={{ width: '100%', height: 500, objectFit: 'cover', display: 'block' }} />
             </div>
+          </div>
+
+          {/* Image-11 — full width */}
+          <div style={{ overflow: 'hidden' }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={IMGS(11)} alt="Cafe BDOOZ brand"
+              style={{ width: '100%', height: '70vh', objectFit: 'cover', display: 'block' }} />
+          </div>
+
+          {/* Image-12 + Image-13 — side by side */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0 }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={IMGS(12)} alt="Cafe BDOOZ detail"
+              style={{ width: '100%', height: 500, objectFit: 'cover', display: 'block' }} />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={IMGS(13)} alt="Cafe BDOOZ detail"
+              style={{ width: '100%', height: 500, objectFit: 'cover', display: 'block' }} />
+          </div>
+
+          {/* Image-14 — full width finale */}
+          <div style={{ overflow: 'hidden', paddingBottom: 0 }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={IMGS(14)} alt="Cafe BDOOZ final"
+              style={{ width: '100%', height: '70vh', objectFit: 'cover', display: 'block' }} />
           </div>
 
         </div>
