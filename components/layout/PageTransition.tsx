@@ -7,7 +7,7 @@ import { onTransitionNavigate, transitionTo } from '@/lib/pageTransition'
 // ─── Config ───────────────────────────────────────────────────────────────────
 const COLORS       = ['#D0274B', '#292929', '#000000', '#919191', '#FFFFFF']
 const LIGHT_COLORS = new Set(['#FFFFFF', '#919191'])
-const SLIDE_MS     = 500
+const SLIDE_MS     = 750
 const HOLD_MS      = 400
 const EASE_IN      = 'cubic-bezier(0.76, 0, 0.24, 1)'   // easeInOutQuart
 const EASE_OUT     = 'cubic-bezier(0.23, 1, 0.32, 1)'   // easeOutQuint
