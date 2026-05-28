@@ -197,7 +197,6 @@ export default function MethodPage() {
   const phaseEls       = useRef<(HTMLDivElement | null)[]>([null, null, null, null])
 
   // ── Reveal hooks for non-phase sections ───────────────────────────────────
-  const rCircleTagline = useReveal(0.2)
   const rWhyLeft       = useReveal(0)
   const rWhy1        = useReveal(0)
   const rWhy2        = useReveal(0.15)
@@ -402,9 +401,18 @@ export default function MethodPage() {
           </div>
 
           <p style={{
+            fontSize: 13, color: '#D0274B', maxWidth: 580, margin: '0 auto 20px',
+            lineHeight: 1.6, fontWeight: 400, fontFamily: PP,
+            letterSpacing: '0.12em', textTransform: 'uppercase',
+            animation: mounted ? `methodFadeUp 0.6s ${EASE} 0.9s both` : 'none',
+          }}>
+            Detect. Define. Design. Deliver. In that order. Always.
+          </p>
+
+          <p style={{
             fontSize: 22, color: '#919191', maxWidth: 580, margin: '0 auto',
             lineHeight: 1.7, fontWeight: 400, fontFamily: PP,
-            animation: mounted ? `methodFadeUp 0.6s ${EASE} 1s both` : 'none',
+            animation: mounted ? `methodFadeUp 0.6s ${EASE} 1.1s both` : 'none',
           }}>
             A four-phase method built on one belief — we don&apos;t design until we understand.
           </p>
@@ -432,20 +440,9 @@ export default function MethodPage() {
         ref={circleIntroRef}
         style={{
           height: '100vh', background: '#000',
-          display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
-          paddingBottom: 'clamp(60px, 8vh, 100px)',
           position: 'relative',
         }}
-      >
-        <div ref={rCircleTagline.ref} style={rCircleTagline.style}>
-          <p style={{
-            color: '#919191', fontSize: 14, fontWeight: 400,
-            letterSpacing: '0.1em', textAlign: 'center', fontFamily: PP,
-          }}>
-            Detect. Define. Design. Deliver. In that order. Always.
-          </p>
-        </div>
-      </section>
+      />
 
       {/* ══ 3 — 4D PHASES — SCROLL-DRIVEN SINGLE CIRCLE ════════════════════════
           ONE circle. Starts centered (large, 500px). As user scrolls into the
