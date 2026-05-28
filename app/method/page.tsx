@@ -98,22 +98,22 @@ function SVGCircle({ activePhase }: { activePhase: number }) {
         <circle cx="250" cy="250" r="200" fill="none" stroke="#D0274B" strokeWidth={1} opacity={0.25} />
 
         {/* DETECT — top dot (250, 50) */}
-        <circle cx="250" cy="50" r="6" fill={dot(0)} />
+        <circle cx="250" cy="50" r="10" fill={dot(0)} />
         <text x="250" y="18" textAnchor="middle" dominantBaseline="middle"
           fill={lbl(0)} fontSize={14} letterSpacing={2} fontFamily={PP} style={ccw(250, 18)}>DETECT</text>
 
         {/* DEFINE — right dot (450, 250) */}
-        <circle cx="450" cy="250" r="6" fill={dot(1)} />
+        <circle cx="450" cy="250" r="10" fill={dot(1)} />
         <text x="494" y="250" textAnchor="middle" dominantBaseline="middle"
           fill={lbl(1)} fontSize={14} letterSpacing={2} fontFamily={PP} style={ccw(494, 250)}>DEFINE</text>
 
         {/* DESIGN — bottom dot (250, 450) */}
-        <circle cx="250" cy="450" r="6" fill={dot(2)} />
+        <circle cx="250" cy="450" r="10" fill={dot(2)} />
         <text x="250" y="482" textAnchor="middle" dominantBaseline="middle"
           fill={lbl(2)} fontSize={14} letterSpacing={2} fontFamily={PP} style={ccw(250, 482)}>DESIGN</text>
 
         {/* DELIVER — left dot (50, 250) */}
-        <circle cx="50" cy="250" r="6" fill={dot(3)} />
+        <circle cx="50" cy="250" r="10" fill={dot(3)} />
         <text x="6" y="250" textAnchor="middle" dominantBaseline="middle"
           fill={lbl(3)} fontSize={14} letterSpacing={2} fontFamily={PP} style={ccw(6, 250)}>DELIVER</text>
       </g>
@@ -277,7 +277,7 @@ export default function MethodPage() {
 
       // ── Sizes ──────────────────────────────────────────────────────────
       const wIntro  = Math.min(0.80 * vh, 0.80 * vw)   // big, commanding
-      const wPhases = Math.min(0.45 * vw, 500)           // fills right half
+      const wPhases = Math.min(0.40 * vw, 440)           // right half, breathing room
 
       // ── Hero (0 → vh×0.85): circle rises from below screen to centre ──
       // At scrollY=0 the circle is fully below the viewport — the user
@@ -291,7 +291,10 @@ export default function MethodPage() {
       // arrives, so it is already parked on the right as you begin reading.
       const introProgress = clamp((sy - vh) / 400, 0, 1)
       const w  = lerp(wIntro, wPhases, introProgress)
-      const cx = lerp(0.5 * vw, 0.75 * vw, introProgress)
+      // Keep left edge at least 4% past the 50% text column boundary
+      const targetCx = 0.68 * vw
+      const minCx    = 0.5 * vw + wPhases / 2 + vw * 0.04
+      const cx = lerp(0.5 * vw, Math.max(targetCx, minCx), introProgress)
 
       el.style.position   = 'fixed'
       el.style.top        = `${topPx}px`
