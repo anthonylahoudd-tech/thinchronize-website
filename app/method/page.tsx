@@ -354,7 +354,7 @@ export default function MethodPage() {
 
       {/* ══ 1 — HERO ════════════════════════════════════════════════════════════ */}
       <section style={{
-        height: '100vh', background: '#000', overflow: 'hidden',
+        height: '100vh', background: '#FFFFFF', overflow: 'hidden',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         position: 'relative',
       }}>
@@ -362,7 +362,7 @@ export default function MethodPage() {
           position: 'absolute',
           top: 'clamp(120px, 14vh, 160px)',
           left: 'clamp(36px, 7.5vw, 120px)',
-          color: '#919191', fontSize: 12, letterSpacing: '0.2em',
+          color: '#999999', fontSize: 12, letterSpacing: '0.2em',
           textTransform: 'uppercase', fontWeight: 400, fontFamily: PP,
           animation: mounted ? `methodFadeUp 0.6s ${EASE} 0.3s both` : 'none',
         }}>
@@ -390,7 +390,7 @@ export default function MethodPage() {
             <h1
               key={phraseIdx}
               style={{
-                fontSize: 'clamp(44px, 6.5vw, 80px)', fontWeight: 900, color: 'white',
+                fontSize: 'clamp(44px, 6.5vw, 80px)', fontWeight: 900, color: '#292929',
                 lineHeight: 1.1, margin: 0, fontFamily: PP,
                 animation: !mounted
                   ? 'none'
@@ -415,7 +415,7 @@ export default function MethodPage() {
           </p>
 
           <p style={{
-            fontSize: 22, color: '#919191', maxWidth: 580, margin: '0 auto',
+            fontSize: 22, color: '#666666', maxWidth: 580, margin: '0 auto',
             lineHeight: 1.7, fontWeight: 400, fontFamily: PP,
             animation: mounted ? `methodFadeUp 0.6s ${EASE} 1.1s both` : 'none',
           }}>
@@ -426,7 +426,7 @@ export default function MethodPage() {
         <div style={{
           position: 'absolute', bottom: 56, left: '50%', transform: 'translateX(-50%)',
           display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8,
-          color: '#919191', fontSize: 12, letterSpacing: '0.2em', textTransform: 'uppercase',
+          color: '#999999', fontSize: 12, letterSpacing: '0.2em', textTransform: 'uppercase',
           fontFamily: PP, userSelect: 'none',
           opacity: showScroll ? 1 : 0,
           transition: `opacity 0.4s ${EASE}`,
