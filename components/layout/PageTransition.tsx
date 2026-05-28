@@ -4,16 +4,19 @@ import { useEffect, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import Image from 'next/image'
 
-// Shuffles between red, black, and 90%-black
 const COLORS = ['#D0274B', '#000000', '#1A1A1A']
 
+// Timings
+const SLIDE_MS = 560   // slide-in / slide-out duration
+const HOLD_MS  = 700   // how long the panel stays fully covering the screen
+
 export default function PageTransition() {
-  const pathname      = usePathname()
-  const [visible,  setVisible] = useState(false)
-  const [phase,    setPhase]   = useState<'in' | 'hold' | 'out'>('in')
-  const [color,    setColor]   = useState(COLORS[0])
-  const colorIndexRef          = useRef(0)
-  const isFirst                = useRef(true)
+  const pathname       = usePathname()
+  const [visible, setVisible] = useState(false)
+  const [phase,   setPhase]   = useState<'in' | 'out'>('in')
+  const [color,   setColor]   = useState(COLORS[0])
+  const colorIndexRef         = useRef(0)
+  const isFirst               = useRef(true)
 
   useEffect(() => {
     if (isFirst.current) { isFirst.current = false; return }
@@ -23,14 +26,12 @@ export default function PageTransition() {
     setPhase('in')
     setVisible(true)
 
-    // 380ms  → slide-in done, logo fades in
-    // 880ms  → logo fades out, slide-out begins  (500ms hold)
-    // 1260ms → slide-out done, overlay removed
-    const t1 = setTimeout(() => setPhase('hold'), 380)
-    const t2 = setTimeout(() => setPhase('out'),  880)
-    const t3 = setTimeout(() => setVisible(false), 1260)
+    // After slide-in + hold, kick off the exit
+    const tOut  = setTimeout(() => setPhase('out'),  SLIDE_MS + HOLD_MS)
+    // After exit slide finishes, remove from DOM
+    const tDone = setTimeout(() => setVisible(false), SLIDE_MS + HOLD_MS + SLIDE_MS)
 
-    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3) }
+    return () => { clearTimeout(tOut); clearTimeout(tDone) }
   }, [pathname])
 
   if (!visible) return null
@@ -45,26 +46,25 @@ export default function PageTransition() {
         display:         'flex',
         alignItems:      'center',
         justifyContent:  'center',
+        // Logo lives INSIDE the panel — it rides up and out with it naturally,
+        // no separate fade needed.
         animation:
-          phase === 'in'  ? 'pageSlideUp  380ms cubic-bezier(0.76, 0, 0.24, 1) forwards' :
-          phase === 'out' ? 'pageSlideOut 380ms cubic-bezier(0.76, 0, 0.24, 1) forwards' :
-          'none',
+          phase === 'in'
+            ? `pageSlideUp  ${SLIDE_MS}ms cubic-bezier(0.76, 0, 0.24, 1) forwards`
+            : `pageSlideOut ${SLIDE_MS}ms cubic-bezier(0.76, 0, 0.24, 1) forwards`,
         pointerEvents: 'all',
       }}
     >
-      {/* Stacked logo — always white on all dark backgrounds */}
       <Image
         src="/images/logo-stacked.png"
         alt="Thinchronize"
         width={120}
         height={120}
         style={{
-          height:     90,
-          width:      'auto',
-          objectFit:  'contain',
-          opacity:    phase === 'hold' ? 1 : 0,
-          transition: 'opacity 150ms ease',
-          filter:     'brightness(0) invert(1)',
+          height:    90,
+          width:     'auto',
+          objectFit: 'contain',
+          filter:    'brightness(0) invert(1)',
         }}
         priority
       />
