@@ -163,11 +163,11 @@ export default function Header() {
         className="hidden md:flex"
         style={{
           position:      'fixed',
-          top:           scrolled ? 20 : 24,
-          right:         PAD_H,
+          top:           scrolled ? 28 : 32,
+          right:         40,
           zIndex:        150,
           alignItems:    'center',
-          gap:           28,
+          gap:           32,
           opacity:       scrolled && !menuOpen ? 1 : 0,
           pointerEvents: scrolled && !menuOpen ? 'auto' : 'none',
           transition:    `opacity 600ms ${EASE}, top 300ms ${EASE}`,
@@ -176,21 +176,21 @@ export default function Header() {
         <button
           onClick={() => transitionTo('/contact')}
           style={{
-            fontFamily:    PP,
-            fontWeight:    800,
-            fontSize:      11,
-            letterSpacing: '0.12em',
-            textTransform: 'uppercase',
-            color:         'white',
-            background:    'none',
-            border:        'none',
-            borderBottom:  '1px solid rgba(255,255,255,0.5)',
-            paddingBottom: 2,
-            cursor:        'pointer',
-            transition:    'border-color 0.2s ease, color 0.2s ease',
+            fontFamily:          PP,
+            fontWeight:          400,
+            fontSize:            13,
+            letterSpacing:       '3px',
+            textTransform:       'uppercase',
+            color:               'white',
+            background:          'none',
+            border:              'none',
+            cursor:              'pointer',
+            textDecoration:      'underline',
+            textUnderlineOffset: '4px',
+            transition:          'opacity 0.2s ease',
           }}
-          onMouseEnter={e => { e.currentTarget.style.borderBottomColor = 'white'; e.currentTarget.style.color = 'white' }}
-          onMouseLeave={e => { e.currentTarget.style.borderBottomColor = 'rgba(255,255,255,0.5)'; e.currentTarget.style.color = 'white' }}
+          onMouseEnter={e => (e.currentTarget.style.opacity = '0.6')}
+          onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
         >
           Work With Us
         </button>
@@ -198,21 +198,21 @@ export default function Header() {
         <button
           onClick={() => setMenuOpen(true)}
           style={{
-            fontFamily:    PP,
-            fontWeight:    800,
-            fontSize:      11,
-            letterSpacing: '0.12em',
-            textTransform: 'uppercase',
-            color:         'white',
-            background:    'none',
-            border:        'none',
-            borderBottom:  '1px solid rgba(255,255,255,0.5)',
-            paddingBottom: 2,
-            cursor:        'pointer',
-            transition:    'border-color 0.2s ease',
+            fontFamily:          PP,
+            fontWeight:          400,
+            fontSize:            13,
+            letterSpacing:       '3px',
+            textTransform:       'uppercase',
+            color:               'white',
+            background:          'none',
+            border:              'none',
+            cursor:              'pointer',
+            textDecoration:      'underline',
+            textUnderlineOffset: '4px',
+            transition:          'opacity 0.2s ease',
           }}
-          onMouseEnter={e => (e.currentTarget.style.borderBottomColor = 'white')}
-          onMouseLeave={e => (e.currentTarget.style.borderBottomColor = 'rgba(255,255,255,0.5)')}
+          onMouseEnter={e => (e.currentTarget.style.opacity = '0.6')}
+          onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
         >
           Menu
         </button>
