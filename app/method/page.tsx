@@ -119,7 +119,7 @@ function SVGCircle({ activePhase }: { activePhase: number }) {
       </g>
 
       {/* ── Centre: static — shows active phase number + keyword ── */}
-      <circle cx="250" cy="250" r="55" fill="#D0274B" />
+      <circle id="method-circle-core" cx="250" cy="250" r="55" fill="#D0274B" />
       <text x="250" y="237" textAnchor="middle" dominantBaseline="middle"
         fill="rgba(255,255,255,0.55)" fontSize={9} fontFamily={PP} fontWeight={400} letterSpacing={3}>
         {`0${activePhase + 1} / 04`}
@@ -270,34 +270,32 @@ export default function MethodPage() {
 
       const phasesBot = sectionRef.current.getBoundingClientRect().bottom
 
-      // Hide as soon as the phases section exits the viewport from the bottom
-      // (phasesBot < innerHeight = section bottom has left the visible area).
-      // This ensures the circle disappears exactly when the white section ends.
-      if (phasesBot < window.innerHeight) { el.style.opacity = '0'; return }
+      // Hide on hero (circle has its own section below the phrases)
+      // Hide as soon as phases section exits the viewport
+      if (sy < vh || phasesBot < vh) { el.style.opacity = '0'; return }
 
       // ── Sizes ──────────────────────────────────────────────────────────
-      const wIntro  = Math.min(0.80 * vh, 0.80 * vw)   // big, commanding
-      const wPhases = Math.min(0.40 * vw, 440)           // right half, breathing room
+      const wIntro  = Math.min(0.80 * vh, 0.80 * vw)   // big, centred in intro
+      const wPhases = Math.min(0.46 * vw, 500)           // bigger on phases
 
-      // ── Hero (0 → vh×0.85): circle rises from below screen to centre ──
-      // At scrollY=0 the circle is fully below the viewport — the user
-      // sees nothing. As they scroll the hero the top arc appears, then
-      // the full circle rises into view, "waiting" before the phases.
-      const heroProgress  = clamp(sy / (vh * 0.85), 0, 1)
-      const topPx         = lerp(vh * 1.5, vh * 0.5, heroProgress)
-
-      // ── Intro→phases (vh → vh+400 px): moves right and shrinks ────────
-      // Circle reaches its phases position before the first phase card
-      // arrives, so it is already parked on the right as you begin reading.
+      // ── Intro→phases (vh → vh+400 px): moves right, shrinks, darkens ──
+      // Circle is centred and fully formed when circle-intro section begins.
+      // Over the first 400px it moves to the right panel, ready for phases.
       const introProgress = clamp((sy - vh) / 400, 0, 1)
       const w  = lerp(wIntro, wPhases, introProgress)
-      // Keep left edge at least 4% past the 50% text column boundary
-      const targetCx = 0.68 * vw
-      const minCx    = 0.5 * vw + wPhases / 2 + vw * 0.04
-      const cx = lerp(0.5 * vw, Math.max(targetCx, minCx), introProgress)
+      const cx = lerp(0.5 * vw, 0.66 * vw, introProgress)
+
+      // ── Centre circle: red → near-black as circle moves to phases ──────
+      const core = el.querySelector<SVGCircleElement>('#method-circle-core')
+      if (core) {
+        const r = Math.round(lerp(0xD0, 0x18, introProgress))
+        const g = Math.round(lerp(0x27, 0x18, introProgress))
+        const b = Math.round(lerp(0x4B, 0x18, introProgress))
+        core.setAttribute('fill', `rgb(${r},${g},${b})`)
+      }
 
       el.style.position   = 'fixed'
-      el.style.top        = `${topPx}px`
+      el.style.top        = '50%'
       el.style.left       = `${cx}px`
       el.style.right      = ''
       el.style.transform  = 'translate(-50%, -50%)'
@@ -353,7 +351,7 @@ export default function MethodPage() {
         ref={circleRef}
         style={{
           position: 'fixed',
-          top: '150%',              /* below viewport until drive() fires  */
+          top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
           width: '80vmin',
@@ -508,7 +506,7 @@ export default function MethodPage() {
 
                 {/* Phase name — red when active, dark otherwise */}
                 <h2 style={{
-                  fontSize: 'clamp(56px, 7vw, 96px)',
+                  fontSize: 'clamp(36px, 4.5vw, 64px)',
                   fontWeight: 900,
                   textTransform: 'uppercase',
                   lineHeight: 0.95,
