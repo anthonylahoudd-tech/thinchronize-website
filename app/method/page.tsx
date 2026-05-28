@@ -70,54 +70,63 @@ function useReveal(delay = 0) {
 }
 
 // ─── SVGCircle ────────────────────────────────────────────────────────────────
-// TWO layers:
-//   Layer 1 (rotating <g>, CW 18s): outer ring + 4 dots ONLY
-//   Layer 2 (static): 4 text labels at fixed compass positions — always readable
-// Inner ring orbits CCW 30s via CSS. Centre "4D" is always static.
-// Dot: active=#D0274B, inactive=#444444. Label: active=#D0274B, inactive=#666666.
+// Rotating <g> (CW 18s): outer ring + 4 dots + 4 labels.
+// Each label counter-rotates at its OWN centre (orbit-reverse 18s) so it
+// orbits WITH its dot but stays horizontal — always readable, never tilted.
+// Centre circle: static, shows the active phase number + keyword.
 function SVGCircle({ activePhase }: { activePhase: number }) {
-  const dot   = (i: number) => activePhase === i ? '#D0274B' : '#444444'
-  const lbl   = (i: number) => activePhase === i ? '#D0274B' : '#666666'
+  const dot = (i: number) => activePhase === i ? '#D0274B' : '#444444'
+  const lbl = (i: number) => activePhase === i ? '#D0274B' : '#888888'
+
+  // Apply to each label: orbits with parent group but counter-rotates at
+  // its own visual centre → position follows dot, orientation stays upright.
+  const ccw = (cx: number, cy: number): React.CSSProperties => ({
+    transformOrigin: `${cx}px ${cy}px`,
+    animation: 'orbit-reverse 18s linear infinite',
+  })
 
   return (
-    <svg
-      viewBox="0 0 500 500"
-      width="100%"
-      height="100%"
-      style={{ display: 'block', overflow: 'visible' }}
-      aria-hidden="true"
-    >
-      {/* ── Inner ring CCW via CSS ── */}
-      <circle
-        cx="250" cy="250" r="140"
-        fill="none" stroke="#999999" strokeWidth={0.5} opacity={0.18}
-        style={{ transformOrigin: '250px 250px', animation: 'orbit-reverse 30s linear infinite' }}
-      />
+    <svg viewBox="0 0 500 500" width="100%" height="100%"
+      style={{ display: 'block', overflow: 'visible' }} aria-hidden="true">
 
-      {/* ── Layer 1 (rotating): outer ring + 4 dots ONLY — CW 18s ── */}
+      {/* Inner ring CCW */}
+      <circle cx="250" cy="250" r="140" fill="none" stroke="#999999" strokeWidth={0.5} opacity={0.18}
+        style={{ transformOrigin: '250px 250px', animation: 'orbit-reverse 30s linear infinite' }} />
+
+      {/* ── Rotating layer: ring + dots + upright labels ── */}
       <g style={{ transformOrigin: '250px 250px', animation: 'orbit 18s linear infinite' }}>
         <circle cx="250" cy="250" r="200" fill="none" stroke="#D0274B" strokeWidth={1} opacity={0.25} />
-        <circle cx="250" cy="50"  r="6" fill={dot(0)} />
+
+        {/* DETECT — top dot (250, 50) */}
+        <circle cx="250" cy="50" r="6" fill={dot(0)} />
+        <text x="250" y="18" textAnchor="middle" dominantBaseline="middle"
+          fill={lbl(0)} fontSize={14} letterSpacing={2} fontFamily={PP} style={ccw(250, 18)}>DETECT</text>
+
+        {/* DEFINE — right dot (450, 250) */}
         <circle cx="450" cy="250" r="6" fill={dot(1)} />
+        <text x="494" y="250" textAnchor="middle" dominantBaseline="middle"
+          fill={lbl(1)} fontSize={14} letterSpacing={2} fontFamily={PP} style={ccw(494, 250)}>DEFINE</text>
+
+        {/* DESIGN — bottom dot (250, 450) */}
         <circle cx="250" cy="450" r="6" fill={dot(2)} />
-        <circle cx="50"  cy="250" r="6" fill={dot(3)} />
+        <text x="250" y="482" textAnchor="middle" dominantBaseline="middle"
+          fill={lbl(2)} fontSize={14} letterSpacing={2} fontFamily={PP} style={ccw(250, 482)}>DESIGN</text>
+
+        {/* DELIVER — left dot (50, 250) */}
+        <circle cx="50" cy="250" r="6" fill={dot(3)} />
+        <text x="6" y="250" textAnchor="middle" dominantBaseline="middle"
+          fill={lbl(3)} fontSize={14} letterSpacing={2} fontFamily={PP} style={ccw(6, 250)}>DELIVER</text>
       </g>
 
-      {/* ── Layer 2 (static): labels at fixed compass positions — never rotate ── */}
-      <text x="250" y="30"  textAnchor="middle" fill={lbl(0)} fontSize={11} letterSpacing={2} fontFamily={PP}>DETECT</text>
-      <text x="490" y="258" textAnchor="start"  fill={lbl(1)} fontSize={11} letterSpacing={2} fontFamily={PP}>DEFINE</text>
-      <text x="250" y="490" textAnchor="middle" fill={lbl(2)} fontSize={11} letterSpacing={2} fontFamily={PP}>DESIGN</text>
-      <text x="10"  y="258" textAnchor="end"    fill={lbl(3)} fontSize={11} letterSpacing={2} fontFamily={PP}>DELIVER</text>
-
-      {/* ── Centre: fixed ── */}
+      {/* ── Centre: static — shows active phase number + keyword ── */}
       <circle cx="250" cy="250" r="55" fill="#D0274B" />
-      <text
-        x="250" y="250"
-        textAnchor="middle"
-        dominantBaseline="middle"
-        fill="white" fontSize={13} fontFamily={PP} fontWeight={900}
-      >
-        4D
+      <text x="250" y="237" textAnchor="middle" dominantBaseline="middle"
+        fill="rgba(255,255,255,0.55)" fontSize={9} fontFamily={PP} fontWeight={400} letterSpacing={3}>
+        {`0${activePhase + 1} / 04`}
+      </text>
+      <text x="250" y="258" textAnchor="middle" dominantBaseline="middle"
+        fill="white" fontSize={14} fontFamily={PP} fontWeight={900} letterSpacing={1}>
+        {PHASES[activePhase].keyword}
       </text>
     </svg>
   )
@@ -261,8 +270,10 @@ export default function MethodPage() {
 
       const phasesBot = sectionRef.current.getBoundingClientRect().bottom
 
-      // Hide only after the phases section has fully scrolled away
-      if (phasesBot < 0) { el.style.opacity = '0'; return }
+      // Hide as soon as the phases section exits the viewport from the bottom
+      // (phasesBot < innerHeight = section bottom has left the visible area).
+      // This ensures the circle disappears exactly when the white section ends.
+      if (phasesBot < window.innerHeight) { el.style.opacity = '0'; return }
 
       // ── Sizes ──────────────────────────────────────────────────────────
       const wIntro  = Math.min(0.80 * vh, 0.80 * vw)   // big, commanding
