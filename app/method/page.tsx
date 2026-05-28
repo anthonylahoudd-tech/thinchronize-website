@@ -251,7 +251,7 @@ export default function MethodPage() {
     const lerp  = (a: number, b: number, t: number)   => a + (b - a) * t
 
     const drive = () => {
-      if (!circleIntroRef.current || !sectionRef.current || !circleRef.current) return
+      if (!sectionRef.current || !circleRef.current) return
       const el = circleRef.current
       const vw = window.innerWidth
       const vh = window.innerHeight
@@ -259,11 +259,13 @@ export default function MethodPage() {
       // Suppress on mobile
       if (vw < 768) { el.style.opacity = '0'; return }
 
-      const introRect = circleIntroRef.current.getBoundingClientRect()
       const phasesBot = sectionRef.current.getBoundingClientRect().bottom
 
-      // Hidden before circle-intro or after phases — binary, no fade
-      if (introRect.top >= vh || phasesBot < 0) { el.style.opacity = '0'; return }
+      // Hide while the hero is still on screen (hero = height 100vh, so
+      // scrollY < innerHeight means its content is still in the viewport).
+      // Hide again once phases have fully scrolled past.
+      // Using scrollY avoids sub-pixel getBoundingClientRect rounding issues.
+      if (window.scrollY < window.innerHeight || phasesBot < 0) { el.style.opacity = '0'; return }
 
       // Progress: 0 = intro/centered, 1 = phases/right-panel
       const phaseTrigger = sectionRef.current.offsetTop
