@@ -265,29 +265,39 @@ export default function MethodPage() {
       const vh  = window.innerHeight
       const sy  = window.scrollY
 
-      // Suppress on mobile
       if (vw < 768) { el.style.opacity = '0'; return }
 
       const phasesBot = sectionRef.current.getBoundingClientRect().bottom
-
-      // Hide on hero (circle has its own section below the phrases)
-      // Hide as soon as phases section exits the viewport
-      if (sy < vh || phasesBot < vh) { el.style.opacity = '0'; return }
+      if (phasesBot < vh) { el.style.opacity = '0'; return }
 
       // ── Sizes ──────────────────────────────────────────────────────────
-      const wIntro  = Math.min(0.80 * vh, 0.80 * vw)   // big, centred in intro
-      const wPhases = Math.min(0.46 * vw, 500)           // bigger on phases
+      const wIntro  = Math.min(0.80 * vh, 0.80 * vw)
+      const wPhases = Math.min(0.46 * vw, 500)
 
-      // ── Intro→phases: circle stays CENTRED the whole circle-intro section.
-      // It only starts moving 400 px BEFORE the phases section begins, so it
-      // arrives at its right-panel position exactly when phase 1 appears.
-      // This means the circle is fully formed and waiting — no mid-section pop.
+      // ── Vertical position ───────────────────────────────────────────────
+      // The hero text has a parallax of 0.3× — by sy=0.75×vh the text has
+      // already been pushed ABOVE the viewport, so the circle can safely
+      // rise from the bottom with no overlap.
+      //
+      // Hero (last 25 %): circle rises from hidden → just peeking at bottom
+      const heroProgress = clamp((sy - vh * 0.75) / (vh * 0.25), 0, 1)
+      const heroTopPx    = lerp(vh * 1.5, vh * 1.05, heroProgress)
+      //   sy=0.75×vh → center=1.50×vh (off screen)
+      //   sy=1.00×vh → center=1.05×vh (top arc + labels peek up ~35 %)
+      //
+      // Circle-intro (first 40 %): rises quickly from peek → fully centred
+      const riseProgress = clamp((sy - vh) / (vh * 0.4), 0, 1)
+      const introTopPx   = lerp(vh * 1.05, vh * 0.5, riseProgress)
+
+      const topPx = sy < vh ? heroTopPx : introTopPx
+
+      // ── Horizontal + size: lerp starts 400 px before phases section ────
       const phaseStart    = sectionRef.current.offsetTop
       const introProgress = clamp((sy - (phaseStart - 400)) / 400, 0, 1)
       const w  = lerp(wIntro, wPhases, introProgress)
       const cx = lerp(0.5 * vw, 0.66 * vw, introProgress)
 
-      // ── Centre circle: red → near-black as circle moves to phases ──────
+      // ── Centre colour: red → near-black as circle moves into phases ─────
       const core = el.querySelector<SVGCircleElement>('#method-circle-core')
       if (core) {
         const r = Math.round(lerp(0xD0, 0x18, introProgress))
@@ -297,7 +307,7 @@ export default function MethodPage() {
       }
 
       el.style.position   = 'fixed'
-      el.style.top        = '50%'
+      el.style.top        = `${topPx}px`
       el.style.left       = `${cx}px`
       el.style.right      = ''
       el.style.transform  = 'translate(-50%, -50%)'
