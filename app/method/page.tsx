@@ -251,44 +251,46 @@ export default function MethodPage() {
 
     const drive = () => {
       if (!sectionRef.current || !circleRef.current) return
-      const el = circleRef.current
-      const vw = window.innerWidth
-      const vh = window.innerHeight
+      const el  = circleRef.current
+      const vw  = window.innerWidth
+      const vh  = window.innerHeight
+      const sy  = window.scrollY
 
       // Suppress on mobile
       if (vw < 768) { el.style.opacity = '0'; return }
 
       const phasesBot = sectionRef.current.getBoundingClientRect().bottom
 
-      // Hide while the hero is still on screen (hero = height 100vh, so
-      // scrollY < innerHeight means its content is still in the viewport).
-      // Hide again once phases have fully scrolled past.
-      // Using scrollY avoids sub-pixel getBoundingClientRect rounding issues.
-      if (window.scrollY < window.innerHeight || phasesBot < 0) { el.style.opacity = '0'; return }
+      // Hide only after the phases section has fully scrolled away
+      if (phasesBot < 0) { el.style.opacity = '0'; return }
 
-      // Lerp starts the instant circle-intro begins (right after hero ends).
-      // Over 400px of scroll the circle moves from centered+big → right+small,
-      // so it is already in phases position BEFORE the first phase arrives.
-      const introStart = window.innerHeight
-      const progress   = clamp((window.scrollY - introStart) / 400, 0, 1)
+      // ── Sizes ──────────────────────────────────────────────────────────
+      const wIntro  = Math.min(0.80 * vh, 0.80 * vw)   // big, commanding
+      const wPhases = Math.min(0.45 * vw, 500)           // fills right half
 
-      // Intro: big and commanding. Phases: fills right half.
-      const wIntro  = Math.min(0.80 * vh, 0.80 * vw)
-      const wPhases = Math.min(0.45 * vw, 500)
-      const w       = lerp(wIntro, wPhases, progress)
+      // ── Hero (0 → vh×0.85): circle rises from below screen to centre ──
+      // At scrollY=0 the circle is fully below the viewport — the user
+      // sees nothing. As they scroll the hero the top arc appears, then
+      // the full circle rises into view, "waiting" before the phases.
+      const heroProgress  = clamp(sy / (vh * 0.85), 0, 1)
+      const topPx         = lerp(vh * 1.5, vh * 0.5, heroProgress)
 
-      // Center X: viewport center (intro) → 75% of viewport (phases)
-      const cx = lerp(0.5 * vw, 0.75 * vw, progress)
+      // ── Intro→phases (vh → vh+400 px): moves right and shrinks ────────
+      // Circle reaches its phases position before the first phase card
+      // arrives, so it is already parked on the right as you begin reading.
+      const introProgress = clamp((sy - vh) / 400, 0, 1)
+      const w  = lerp(wIntro, wPhases, introProgress)
+      const cx = lerp(0.5 * vw, 0.75 * vw, introProgress)
 
-      el.style.position  = 'fixed'
-      el.style.top       = '50%'
-      el.style.left      = `${cx}px`
-      el.style.right     = ''
-      el.style.transform = 'translate(-50%, -50%)'
-      el.style.width     = `${w}px`
-      el.style.height    = `${w}px`
-      el.style.margin    = ''
-      el.style.opacity   = '1'
+      el.style.position   = 'fixed'
+      el.style.top        = `${topPx}px`
+      el.style.left       = `${cx}px`
+      el.style.right      = ''
+      el.style.transform  = 'translate(-50%, -50%)'
+      el.style.width      = `${w}px`
+      el.style.height     = `${w}px`
+      el.style.margin     = ''
+      el.style.opacity    = '1'
       el.style.transition = 'none'
     }
 
@@ -328,22 +330,23 @@ export default function MethodPage() {
   return (
     <div style={{ background: '#000', minHeight: '100vh', fontFamily: PP, color: 'white' }}>
 
-      {/* ── Single fixed circle — always position:fixed, scroll-driven lerp ──
-          Starts centered at 480px (progress=0), moves right and shrinks to
-          360px at right:60px (progress=1). One DOM element, no duplication.  */}
+      {/* ── Single fixed circle — rises from below viewport on first scroll ──
+          Positioned below the fold at page load. As the user scrolls the
+          hero section the circle rises to centre. It then shifts right as
+          the phases section approaches. One DOM element, no duplication.  */}
       <div
         id="method-circle"
         ref={circleRef}
         style={{
           position: 'fixed',
-          top: '50%',
+          top: '150%',              /* below viewport until drive() fires  */
           left: '50%',
           transform: 'translate(-50%, -50%)',
           width: '80vmin',
           height: '80vmin',
           zIndex: 10,
           pointerEvents: 'none',
-          opacity: 0,               /* hidden until scroll handler fires */
+          opacity: 0,
         }}
       >
         <SVGCircle activePhase={activePhase} />
@@ -441,7 +444,7 @@ export default function MethodPage() {
       <section
         ref={circleIntroRef}
         style={{
-          height: '100vh', background: '#000',
+          height: '100vh', background: '#FFFFFF',
           position: 'relative',
         }}
       />
