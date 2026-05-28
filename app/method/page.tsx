@@ -73,9 +73,10 @@ function useReveal(delay = 0) {
 // ONE circle. Outer ring + 4 dots + labels ALL orbit together as a <g> group
 // (CSS @keyframes orbit, CW 18s). transform-origin: 250px 250px = SVG centre.
 // Inner ring orbits CCW 30s via CSS (orbit-reverse). Centre shows "4D", fixed.
-// Active dot/label → #D0274B; others → #444444.
+// Dot: active=#D0274B, inactive=#444444. Label: active=#D0274B, inactive=#666666.
 function SVGCircle({ activePhase }: { activePhase: number }) {
-  const c = (i: number) => activePhase === i ? '#D0274B' : '#444444'
+  const dot   = (i: number) => activePhase === i ? '#D0274B' : '#444444'
+  const label = (i: number) => activePhase === i ? '#D0274B' : '#666666'
 
   return (
     <svg
@@ -97,20 +98,20 @@ function SVGCircle({ activePhase }: { activePhase: number }) {
         <circle cx="250" cy="250" r="200" fill="none" stroke="#D0274B" strokeWidth={1} opacity={0.25} />
 
         {/* DETECT — top */}
-        <circle cx="250" cy="50" r="6" fill={c(0)} />
-        <text x="250" y="25" textAnchor="middle" fill={c(0)} fontSize={11} fontFamily={PP}>DETECT</text>
+        <circle cx="250" cy="50" r="6" fill={dot(0)} />
+        <text x="250" y="25" textAnchor="middle" fill={label(0)} fontSize={11} fontFamily={PP}>DETECT</text>
 
         {/* DEFINE — right */}
-        <circle cx="450" cy="250" r="6" fill={c(1)} />
-        <text x="490" y="255" textAnchor="middle" fill={c(1)} fontSize={11} fontFamily={PP}>DEFINE</text>
+        <circle cx="450" cy="250" r="6" fill={dot(1)} />
+        <text x="490" y="255" textAnchor="middle" fill={label(1)} fontSize={11} fontFamily={PP}>DEFINE</text>
 
         {/* DESIGN — bottom */}
-        <circle cx="250" cy="450" r="6" fill={c(2)} />
-        <text x="250" y="490" textAnchor="middle" fill={c(2)} fontSize={11} fontFamily={PP}>DESIGN</text>
+        <circle cx="250" cy="450" r="6" fill={dot(2)} />
+        <text x="250" y="490" textAnchor="middle" fill={label(2)} fontSize={11} fontFamily={PP}>DESIGN</text>
 
         {/* DELIVER — left */}
-        <circle cx="50" cy="250" r="6" fill={c(3)} />
-        <text x="10" y="255" textAnchor="middle" fill={c(3)} fontSize={11} fontFamily={PP}>DELIVER</text>
+        <circle cx="50" cy="250" r="6" fill={dot(3)} />
+        <text x="10" y="255" textAnchor="middle" fill={label(3)} fontSize={11} fontFamily={PP}>DELIVER</text>
       </g>
 
       {/* ── Centre: fixed ── */}
@@ -304,63 +305,45 @@ export default function MethodPage() {
   }, [])
 
   // ── Circle scroll driver (direct DOM, no re-renders) ─────────────────────
-  // progress = clamp(1 - sectionTop/windowH, 0, 1)
-  // 0 → position:relative centered (before section enters viewport)
-  // 0→1 → position:fixed right:80px, width shrinks 480→380px
-  // after section → back to relative, opacity 0
+  // Circle is ALWAYS position:fixed — one element, never switches to relative.
+  // progress = clamp((scrollY - triggerPoint) / 400, 0, 1)
+  // At progress=0: centered (left=(vw-480)/2, width=480)
+  // At progress=1: right:60px (left=vw-420, width=360)
+  // Lerp left and width smoothly between these two states.
+  // Hidden only when the phases section has fully scrolled above the viewport.
   useEffect(() => {
     const clamp = (v: number, lo: number, hi: number) => Math.min(Math.max(v, lo), hi)
+    const lerp  = (a: number, b: number, t: number)   => a + (b - a) * t
 
     const drive = () => {
       if (!sectionRef.current || !circleRef.current) return
-
-      const el   = circleRef.current
-      const vw   = window.innerWidth
-      const wh   = window.innerHeight
+      const el = circleRef.current
+      const vw = window.innerWidth
 
       // Suppress on mobile
       if (vw < 768) { el.style.opacity = '0'; return }
 
-      const rect       = sectionRef.current.getBoundingClientRect()
-      const sectionTop = rect.top
-      const sectionBot = rect.bottom
-      const progress   = clamp(1 - sectionTop / wh, 0, 1)
-
-      if (progress === 0) {
-        // Section below viewport — circle in flow, centered
-        el.style.position  = 'relative'
-        el.style.right     = ''
-        el.style.top       = ''
-        el.style.left      = ''
-        el.style.transform = ''
-        el.style.width     = '480px'
-        el.style.margin    = '80px auto'
-        el.style.opacity   = '1'
-        el.style.transition = 'none'
+      // Hide when section has fully scrolled above viewport
+      if (sectionRef.current.getBoundingClientRect().bottom < 0) {
+        el.style.opacity = '0'
         return
       }
 
-      if (sectionBot < 0) {
-        // Section fully above viewport — circle hidden, back in flow
-        el.style.position  = 'relative'
-        el.style.right     = ''
-        el.style.top       = ''
-        el.style.left      = ''
-        el.style.transform = ''
-        el.style.width     = '480px'
-        el.style.margin    = '80px auto'
-        el.style.opacity   = '0'
-        el.style.transition = 'none'
-        return
-      }
+      const trigger  = sectionRef.current.offsetTop
+      const progress = clamp((window.scrollY - trigger) / 400, 0, 1)
 
-      // Active — fixed right, width shrinks 480→380px
+      const w = lerp(480, 360, progress)
+      // At progress=0: left=(vw-480)/2 → circle centered
+      // At progress=1: left=vw-420      → right edge 60px from viewport right
+      const l = lerp((vw - 480) / 2, vw - 420, progress)
+
       el.style.position  = 'fixed'
-      el.style.right     = '80px'
       el.style.top       = '50%'
+      el.style.left      = `${l}px`
+      el.style.right     = ''
       el.style.transform = 'translateY(-50%)'
-      el.style.width     = `${480 - progress * 100}px`
-      el.style.left      = ''
+      el.style.width     = `${w}px`
+      el.style.height    = `${w}px`
       el.style.margin    = ''
       el.style.opacity   = '1'
       el.style.transition = 'none'
@@ -401,6 +384,26 @@ export default function MethodPage() {
 
   return (
     <div style={{ background: '#000', minHeight: '100vh', fontFamily: PP, color: 'white' }}>
+
+      {/* ── Single fixed circle — always position:fixed, scroll-driven lerp ──
+          Starts centered at 480px (progress=0), moves right and shrinks to
+          360px at right:60px (progress=1). One DOM element, no duplication.  */}
+      <div
+        id="method-circle"
+        ref={circleRef}
+        style={{
+          position: 'fixed',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: 480,
+          height: 480,
+          zIndex: 10,
+          pointerEvents: 'none',
+        }}
+      >
+        <SVGCircle activePhase={activePhase} />
+      </div>
 
       {/* ══ 1 — HERO ════════════════════════════════════════════════════════════ */}
       <section style={{
@@ -516,23 +519,6 @@ export default function MethodPage() {
           standalone elements — only "01 / 04" label above phase name.
       ══════════════════════════════════════════════════════════════════════════ */}
       <section ref={sectionRef} style={{ position: 'relative', background: '#000' }}>
-
-        {/* Circle — starts position:relative centered in flow.
-            Scroll handler switches to position:fixed right when progress > 0. */}
-        <div
-          id="method-circle"
-          ref={circleRef}
-          style={{
-            position: 'relative',
-            width: 480,
-            aspectRatio: '1 / 1',
-            margin: '80px auto',
-            zIndex: 10,
-            pointerEvents: 'none',
-          }}
-        >
-          <SVGCircle activePhase={activePhase} />
-        </div>
 
         {/* Phase content — left side only, inline width 50% */}
         <div className="method-phases-left" style={{ width: '50%', marginLeft: 0 }}>
