@@ -90,7 +90,7 @@ function SVGCircle({ activePhase }: { activePhase: number }) {
       {/* ── Inner ring CCW via CSS ── */}
       <circle
         cx="250" cy="250" r="140"
-        fill="none" stroke="#ffffff" strokeWidth={0.5} opacity={0.08}
+        fill="none" stroke="#999999" strokeWidth={0.5} opacity={0.18}
         style={{ transformOrigin: '250px 250px', animation: 'orbit-reverse 30s linear infinite' }}
       />
 
@@ -266,9 +266,11 @@ export default function MethodPage() {
       // Using scrollY avoids sub-pixel getBoundingClientRect rounding issues.
       if (window.scrollY < window.innerHeight || phasesBot < 0) { el.style.opacity = '0'; return }
 
-      // Progress: 0 = intro/centered, 1 = phases/right-panel
-      const phaseTrigger = sectionRef.current.offsetTop
-      const progress     = clamp((window.scrollY - phaseTrigger) / 400, 0, 1)
+      // Lerp starts the instant circle-intro begins (right after hero ends).
+      // Over 400px of scroll the circle moves from centered+big → right+small,
+      // so it is already in phases position BEFORE the first phase arrives.
+      const introStart = window.innerHeight
+      const progress   = clamp((window.scrollY - introStart) / 400, 0, 1)
 
       // Intro: big and commanding. Phases: fills right half.
       const wIntro  = Math.min(0.80 * vh, 0.80 * vw)
@@ -455,10 +457,10 @@ export default function MethodPage() {
           No background text. No duplicate circles. No phase numbers as
           standalone elements — only "01 / 04" label above phase name.
       ══════════════════════════════════════════════════════════════════════════ */}
-      <section ref={sectionRef} style={{ position: 'relative', background: '#000' }}>
+      <section ref={sectionRef} style={{ position: 'relative', background: '#FFFFFF' }}>
 
         {/* Phase content — left side only, inline width 50% */}
-        <div className="method-phases-left" style={{ width: '50%', marginLeft: 0 }}>
+        <div className="method-phases-left" style={{ width: '50%', marginLeft: 0, position: 'relative', zIndex: 20 }}>
           {PHASES.map((phase, i) => (
             <div
               key={phase.num}
@@ -480,20 +482,20 @@ export default function MethodPage() {
               }}>
                 {/* Phase counter: "01 / 04" */}
                 <p style={{
-                  color: '#919191', fontSize: 12, letterSpacing: '0.2em',
+                  color: '#999999', fontSize: 12, letterSpacing: '0.2em',
                   textTransform: 'uppercase', fontWeight: 400,
                   marginBottom: 24, fontFamily: PP,
                 }}>
                   {phase.num} / 04
                 </p>
 
-                {/* Phase name — red when active, white otherwise */}
+                {/* Phase name — red when active, dark otherwise */}
                 <h2 style={{
                   fontSize: 'clamp(56px, 7vw, 96px)',
                   fontWeight: 900,
                   textTransform: 'uppercase',
                   lineHeight: 0.95,
-                  color: activePhase === i ? '#D0274B' : '#FFFFFF',
+                  color: activePhase === i ? '#D0274B' : '#292929',
                   transition: `color 0.4s ${EASE}`,
                   fontFamily: PP,
                   marginBottom: 36,
@@ -510,7 +512,7 @@ export default function MethodPage() {
 
                 {/* Description */}
                 <p style={{
-                  fontSize: 18, color: '#919191', lineHeight: 1.8,
+                  fontSize: 18, color: '#555555', lineHeight: 1.8,
                   fontWeight: 400, fontFamily: PP, maxWidth: 480,
                 }}>
                   {phase.desc}
