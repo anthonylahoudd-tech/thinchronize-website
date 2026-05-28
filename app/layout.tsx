@@ -4,6 +4,7 @@ import SmoothScroll from '@/components/layout/SmoothScroll'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import CustomCursor from '@/components/ui/CustomCursor'
+import PageTransition from '@/components/layout/PageTransition'
 
 export const metadata: Metadata = {
   title: {
@@ -40,6 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="icon" href="/favicon.ico" sizes="32x32" />
       </head>
       <body className="bg-dark text-white">
+        <PageTransition />
         <CustomCursor />
         <SmoothScroll>
           <Header />
