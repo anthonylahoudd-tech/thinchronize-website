@@ -44,7 +44,7 @@ const CLIENTS: ClientItem[] = [
 ]
 
 // ─── Scroll-reveal hook ───────────────────────────────────────────────────────
-// threshold:0 so it fires the moment any pixel enters the viewport
+// threshold:0 fires the moment any pixel enters the viewport
 function useReveal(delay = 0) {
   const ref  = useRef<HTMLDivElement>(null)
   const [vis, setVis] = useState(false)
@@ -71,15 +71,16 @@ function useReveal(delay = 0) {
 }
 
 // ─── Live Circle ──────────────────────────────────────────────────────────────
-// Solid rings + orbiting marker dots for visible rotation.
-// animateTransform on the marker dots (not the rings themselves).
-// Nodes are OUTSIDE any rotating group.
+// FIX 1: Outer ring + 4 phase dots rotate together as a group (CSS spin, CW 20s).
+//         Labels stay FIXED at cardinal positions — always readable.
+//         Active dot gets phase colour; others are #333333.
+// FIX: No phase numbers anywhere in or around the circle.
+//       Centre shows active phase name only.
 function LiveCircle({ activePhase, phaseChanging }: { activePhase: number; phaseChanging: boolean }) {
   const cx = 250, cy = 250
-  const rOuter  = 210
-  const rInner  = 155
-  const rNode   = 172
-  const rCenter = 68
+  const rOuter  = 200   // outer ring + dot orbit radius
+  const rInner  = 140   // inner decorative ring
+  const rCenter = 65    // centre fill circle
 
   const toRad = (deg: number) => (deg * Math.PI) / 180
   const pt    = (deg: number, r: number) => ({
@@ -87,11 +88,12 @@ function LiveCircle({ activePhase, phaseChanging }: { activePhase: number; phase
     y: cy + r * Math.sin(toRad(deg)),
   })
 
+  // Node order matches PHASES array indices
   const nodes = [
-    { angle: -90, idx: 0, label: 'DETECT'  },
-    { angle:   0, idx: 1, label: 'DEFINE'  },
-    { angle:  90, idx: 2, label: 'DESIGN'  },
-    { angle: 180, idx: 3, label: 'DELIVER' },
+    { angle: -90, idx: 0, label: 'DETECT'  },  // top
+    { angle:   0, idx: 1, label: 'DEFINE'  },  // right
+    { angle:  90, idx: 2, label: 'DESIGN'  },  // bottom
+    { angle: 180, idx: 3, label: 'DELIVER' },  // left
   ]
 
   const accent = PHASE_COLORS[activePhase]
@@ -99,25 +101,39 @@ function LiveCircle({ activePhase, phaseChanging }: { activePhase: number; phase
   return (
     <svg
       viewBox="0 0 500 500"
-      style={{ width: '100%', maxWidth: 'min(260px, 28vh)', display: 'block', overflow: 'visible', margin: '0 auto' }}
+      style={{ width: '100%', maxWidth: 'min(500px, 85%)', display: 'block', overflow: 'visible', margin: '0 auto' }}
       aria-hidden="true"
     >
-      {/* ── Solid outer ring ── */}
-      <circle cx={cx} cy={cy} r={rOuter} fill="none" stroke={accent} strokeWidth={1.5} opacity={0.35} />
+      {/* ── Fixed labels — outside rotating group, always at cardinal positions ── */}
+      {nodes.map(({ angle, idx, label }) => {
+        const p = pt(angle, rOuter)
+        let lx = p.x, ly = p.y
+        let anchor: 'start' | 'middle' | 'end' = 'middle'
+        if (angle === -90) { ly -= 24;       anchor = 'middle' }
+        if (angle ===   0) { lx += 26; ly += 4; anchor = 'start'  }
+        if (angle ===  90) { ly += 28;       anchor = 'middle' }
+        if (angle === 180) { lx -= 26; ly += 4; anchor = 'end'    }
 
-      {/* ── Orbiting dot on outer ring — CW 20s — makes rotation visible ── */}
-      <circle cx={cx + rOuter} cy={cy} r={4} fill={accent} opacity={0.8}>
-        <animateTransform
-          attributeName="transform" type="rotate"
-          from={`0 ${cx} ${cy}`} to={`360 ${cx} ${cy}`}
-          dur="20s" repeatCount="indefinite"
-        />
-      </circle>
+        const isActive = idx === activePhase
+        return (
+          <text
+            key={label}
+            x={lx} y={ly}
+            textAnchor={anchor}
+            fill={isActive ? '#ffffff' : '#555555'}
+            fontSize={11}
+            fontFamily={PP}
+            fontWeight={isActive ? 900 : 400}
+            letterSpacing="0.06em"
+            style={{ transition: `fill 0.5s ${EASE}` }}
+          >
+            {label}
+          </text>
+        )
+      })}
 
-      {/* ── Solid inner ring ── */}
+      {/* ── Inner ring (static) + CCW orbiting dot — 35s ── */}
       <circle cx={cx} cy={cy} r={rInner} fill="none" stroke="white" strokeWidth={0.75} opacity={0.1} />
-
-      {/* ── Orbiting dot on inner ring — CCW 35s ── */}
       <circle cx={cx + rInner} cy={cy} r={3} fill="white" opacity={0.3}>
         <animateTransform
           attributeName="transform" type="rotate"
@@ -126,58 +142,52 @@ function LiveCircle({ activePhase, phaseChanging }: { activePhase: number; phase
         />
       </circle>
 
-      {/* ── Center circle — accent fill ── */}
-      <circle cx={cx} cy={cy} r={rCenter} fill={accent}
-        style={{ transition: `fill 0.6s ${EASE}` }} />
+      {/* ── Rotating group: outer ring + 4 coloured dots — CW 20s ──
+          Uses CSS @keyframes spin defined in globals.css.
+          transformBox fill-box + transformOrigin center → rotates around (250,250). ── */}
+      <g style={{
+        transformBox:    'fill-box',
+        transformOrigin: 'center',
+        animation:       'spin 20s linear infinite',
+      }}>
+        {/* Outer ring — colour follows active phase */}
+        <circle
+          cx={cx} cy={cy} r={rOuter}
+          fill="none" stroke={accent} strokeWidth={1.5} opacity={0.4}
+          style={{ transition: `stroke 0.5s ${EASE}` }}
+        />
+        {/* 4 dots — active phase colour, others #333333 */}
+        {nodes.map(({ angle, idx, label }) => {
+          const p        = pt(angle, rOuter)
+          const isActive = idx === activePhase
+          return (
+            <circle
+              key={label}
+              cx={p.x} cy={p.y}
+              r={9}
+              fill={isActive ? PHASE_COLORS[idx] : '#333333'}
+              style={{ transition: `fill 0.5s ${EASE}` }}
+            />
+          )
+        })}
+      </g>
 
-      {/* ── Center text — fades during phase change ── */}
+      {/* ── Centre circle — accent fill ── */}
+      <circle
+        cx={cx} cy={cy} r={rCenter}
+        fill={accent}
+        style={{ transition: `fill 0.6s ${EASE}` }}
+      />
+
+      {/* ── Centre text: active phase name only — NO numbers ── */}
       <text
         x={cx} y={cy + 6}
         textAnchor="middle"
-        fill="white" fontSize={13} fontFamily={PP} fontWeight={900} letterSpacing="0.1em"
+        fill="white" fontSize={14} fontFamily={PP} fontWeight={900} letterSpacing="0.1em"
         style={{ opacity: phaseChanging ? 0 : 1, transition: `opacity 0.35s ${EASE}` }}
       >
         {PHASES[activePhase].keyword}
       </text>
-
-      {/* ── Fixed nodes at N/E/S/W ── */}
-      {nodes.map(({ angle, idx, label }) => {
-        const p        = pt(angle, rNode)
-        const isActive = idx === activePhase
-        const fill     = isActive ? PHASE_COLORS[idx] : '#2a2a2a'
-        const txtColor = isActive ? '#ffffff' : '#555555'
-
-        let lx = p.x, ly = p.y
-        let anchor: 'start' | 'middle' | 'end' = 'middle'
-        if (angle === -90) { ly = p.y - 26; anchor = 'middle' }
-        if (angle ===   0) { lx = p.x + 26; ly = p.y + 4; anchor = 'start' }
-        if (angle ===  90) { ly = p.y + 30; anchor = 'middle' }
-        if (angle === 180) { lx = p.x - 26; ly = p.y + 4; anchor = 'end'   }
-
-        return (
-          <g key={label}>
-            {isActive && (
-              <circle cx={p.x} cy={p.y} r={18} fill={fill} opacity={0.18}
-                style={{ transition: `fill 0.5s ${EASE}` }} />
-            )}
-            <circle cx={p.x} cy={p.y} r={10} fill={fill}
-              style={{
-                transformBox: 'fill-box', transformOrigin: 'center',
-                transform:  isActive ? 'scale(1.5)' : 'scale(1)',
-                transition: `transform 0.5s ${EASE}, fill 0.5s ${EASE}`,
-                filter:     isActive ? `drop-shadow(0 0 5px ${fill})` : 'none',
-              }} />
-            <text
-              x={lx} y={ly} textAnchor={anchor}
-              fill={txtColor} fontSize={11} fontFamily={PP}
-              fontWeight={isActive ? 900 : 400} letterSpacing="0.06em"
-              style={{ transition: `fill 0.5s ${EASE}` }}
-            >
-              {label}
-            </text>
-          </g>
-        )
-      })}
     </svg>
   )
 }
@@ -303,11 +313,9 @@ export default function MethodPage() {
   useEffect(() => { setMounted(true) }, [])
 
   // ── Hero cycling text ──────────────────────────────────────────────────────
-  // phraseIdx drives content; cycled tracks whether a transition has happened
-  // so we only apply the enter animation after the first phrase leaves
   const [phraseIdx, setPhraseIdx] = useState(0)
   const [leaving,   setLeaving]   = useState(false)
-  const [cycled,    setCycled]    = useState(false) // true after first phrase swap
+  const [cycled,    setCycled]    = useState(false)
 
   // ── Scroll + parallax ─────────────────────────────────────────────────────
   const [showScroll, setShowScroll] = useState(true)
@@ -316,6 +324,11 @@ export default function MethodPage() {
   // ── Click-based phase state ────────────────────────────────────────────────
   const [activePhase,   setActivePhase]   = useState(0)
   const [phaseChanging, setPhaseChanging] = useState(false)
+
+  // ── Circle slide-in state ──────────────────────────────────────────────────
+  // FIX 2: circle lives on the right and slides in from the right on scroll
+  const [circleVisible,   setCircleVisible]   = useState(false)
+  const circleContainerRef = useRef<HTMLDivElement>(null)
 
   // ── Reveal hooks ──────────────────────────────────────────────────────────
   const rDiagramHead = useReveal(0)
@@ -342,7 +355,7 @@ export default function MethodPage() {
         setLeaving(false)
       }, 900)
       timers.push(t2)
-    }, 4200) // hold duration
+    }, 4200)
     timers.push(t1)
     return () => timers.forEach(clearTimeout)
   }, [phraseIdx, mounted])
@@ -355,6 +368,18 @@ export default function MethodPage() {
     }
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  // ── Circle slide-in: fires when right panel enters viewport ───────────────
+  useEffect(() => {
+    const el = circleContainerRef.current
+    if (!el) return
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setCircleVisible(true); obs.disconnect() } },
+      { threshold: 0 }
+    )
+    obs.observe(el)
+    return () => obs.disconnect()
   }, [])
 
   // ── Click-based phase advance ─────────────────────────────────────────────
@@ -409,21 +434,13 @@ export default function MethodPage() {
             The 4D Method
           </div>
 
-          {/* ── Cycling headline ──
-              FIX: keyframes live in globals.css so they're always loaded.
-              FIX: mounted guard — no animation on SSR (text visible by default).
-              FIX: cycled guard — first phrase has no enter animation (avoids flash).
-          */}
+          {/* Cycling headline */}
           <div style={{ overflow: 'hidden', marginBottom: 48 }}>
             <h1
               key={phraseIdx}
               style={{
                 fontSize: 'clamp(44px, 6.5vw, 80px)', fontWeight: 900, color: 'white',
                 lineHeight: 1.1, margin: 0, fontFamily: PP,
-                // Before mount: fully visible, no animation
-                // After mount + leaving: slide out
-                // After mount + new phrase entered (cycled=true): slide in
-                // After mount + first phrase (cycled=false): just visible
                 animation: !mounted
                   ? 'none'
                   : leaving
@@ -489,14 +506,15 @@ export default function MethodPage() {
       </div>
 
       {/* ══ 3 — 4D PHASES — CLICK-BASED ════════════════════════════════════════
-          Replaces scroll IO with click-driven state.
-          Left panel: circle + content (updates on click).
-          Right panel: faint keyword text only, no phase numbers.
+          FIX 2: Circle lives exclusively on the RIGHT panel.
+                 LEFT panel: phase text only (label / name / divider / desc / button).
+                 RIGHT panel: circle, centered, slides in from right on scroll entry.
+          FIX 3: RIGHT panel has NO background text — clean black space + circle only.
       ══════════════════════════════════════════════════════════════════════════ */}
       <section style={{ background: '#000' }}>
         <div style={{ display: 'flex', alignItems: 'stretch', minHeight: '100vh' }}>
 
-          {/* LEFT — circle + content */}
+          {/* LEFT — phase text only (no circle) */}
           <div
             className="method-phase-left"
             style={{
@@ -516,12 +534,7 @@ export default function MethodPage() {
 
             <div style={{ position: 'relative', zIndex: 1, maxWidth: 440 }}>
 
-              {/* Live circle */}
-              <div style={{ marginBottom: 36, overflow: 'visible' }}>
-                <LiveCircle activePhase={activePhase} phaseChanging={phaseChanging} />
-              </div>
-
-              {/* Phase counter */}
+              {/* Phase label */}
               <p style={{
                 color: '#444', fontSize: 12, letterSpacing: '0.2em',
                 textTransform: 'uppercase', fontWeight: 400,
@@ -530,7 +543,7 @@ export default function MethodPage() {
                 Phase {phase.num} / 04
               </p>
 
-              {/* Phase name — accent color, blur+fade on change */}
+              {/* Phase name — accent colour, blur+fade on change */}
               <h2 style={{
                 fontSize: 'clamp(40px, 5vw, 72px)', fontWeight: 900,
                 textTransform: 'uppercase', lineHeight: 1, fontFamily: PP,
@@ -550,7 +563,7 @@ export default function MethodPage() {
                 transition: `background 0.5s ${EASE}`,
               }} />
 
-              {/* Description body copy — always rendered, #919191, 16px, lh 1.8 */}
+              {/* Description — always rendered, #919191, 16px, lh 1.8 */}
               <p style={{
                 fontSize: 16, color: '#919191', lineHeight: 1.8,
                 fontWeight: 400, maxWidth: 440, fontFamily: PP,
@@ -602,25 +615,21 @@ export default function MethodPage() {
             </div>
           </div>
 
-          {/* RIGHT — faint keyword only. NO phase numbers. */}
+          {/* RIGHT — circle only. Slides in from right. NO background text. */}
           <div
+            ref={circleContainerRef}
             className="method-phase-right"
             style={{
               width: '50%', flexShrink: 0,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              position: 'relative', overflow: 'hidden',
+              padding: '40px',
+              // FIX 2: slide in from right on first scroll entry
+              opacity:   circleVisible ? 1 : 0,
+              transform: circleVisible ? 'translateX(0)' : 'translateX(80px)',
+              transition: `opacity 0.8s ${EASE}, transform 0.8s ${EASE}`,
             }}
           >
-            <span style={{
-              fontSize: 'clamp(72px, 14vw, 200px)', fontWeight: 900,
-              color: 'white',
-              opacity: phaseChanging ? 0 : 0.04,
-              letterSpacing: '-0.04em', whiteSpace: 'nowrap', fontFamily: PP,
-              transition: `opacity 0.4s ${EASE}`,
-              userSelect: 'none', pointerEvents: 'none',
-            }}>
-              {PHASES[activePhase].keyword}
-            </span>
+            <LiveCircle activePhase={activePhase} phaseChanging={phaseChanging} />
           </div>
         </div>
 
