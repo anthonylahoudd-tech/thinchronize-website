@@ -89,33 +89,35 @@ function SVGCircle({ activePhase }: { activePhase: number }) {
     <svg viewBox="0 0 500 500" width="100%" height="100%"
       style={{ display: 'block', overflow: 'visible' }} aria-hidden="true">
 
-      {/* Inner ring CCW */}
-      <circle cx="250" cy="250" r="140" fill="none" stroke="#999999" strokeWidth={0.5} opacity={0.18}
+      {/* Inner ring CCW — visible on white */}
+      <circle cx="250" cy="250" r="140" fill="none" stroke="#CCCCCC" strokeWidth={1.5} opacity={0.45}
         style={{ transformOrigin: '250px 250px', animation: 'orbit-reverse 30s linear infinite' }} />
 
       {/* ── Rotating layer: ring + dots + upright labels ── */}
       <g style={{ transformOrigin: '250px 250px', animation: 'orbit 18s linear infinite' }}>
-        <circle cx="250" cy="250" r="200" fill="none" stroke="#D0274B" strokeWidth={1} opacity={0.25} />
+
+        {/* Outer orbit ring — clearly visible on white */}
+        <circle cx="250" cy="250" r="200" fill="none" stroke="#D0274B" strokeWidth={2} opacity={0.55} />
 
         {/* DETECT — top dot (250, 50) */}
         <circle cx="250" cy="50" r="10" fill={dot(0)} />
-        <text x="250" y="18" textAnchor="middle" dominantBaseline="middle"
-          fill={lbl(0)} fontSize={14} letterSpacing={2} fontFamily={PP} style={ccw(250, 18)}>DETECT</text>
+        <text x="250" y="25" textAnchor="middle" dominantBaseline="middle"
+          fill={lbl(0)} fontSize={14} letterSpacing={2} fontFamily={PP} style={ccw(250, 25)}>DETECT</text>
 
         {/* DEFINE — right dot (450, 250) */}
         <circle cx="450" cy="250" r="10" fill={dot(1)} />
-        <text x="494" y="250" textAnchor="middle" dominantBaseline="middle"
-          fill={lbl(1)} fontSize={14} letterSpacing={2} fontFamily={PP} style={ccw(494, 250)}>DEFINE</text>
+        <text x="490" y="250" textAnchor="middle" dominantBaseline="middle"
+          fill={lbl(1)} fontSize={14} letterSpacing={2} fontFamily={PP} style={ccw(490, 250)}>DEFINE</text>
 
         {/* DESIGN — bottom dot (250, 450) */}
         <circle cx="250" cy="450" r="10" fill={dot(2)} />
-        <text x="250" y="482" textAnchor="middle" dominantBaseline="middle"
-          fill={lbl(2)} fontSize={14} letterSpacing={2} fontFamily={PP} style={ccw(250, 482)}>DESIGN</text>
+        <text x="250" y="475" textAnchor="middle" dominantBaseline="middle"
+          fill={lbl(2)} fontSize={14} letterSpacing={2} fontFamily={PP} style={ccw(250, 475)}>DESIGN</text>
 
         {/* DELIVER — left dot (50, 250) */}
         <circle cx="50" cy="250" r="10" fill={dot(3)} />
-        <text x="6" y="250" textAnchor="middle" dominantBaseline="middle"
-          fill={lbl(3)} fontSize={14} letterSpacing={2} fontFamily={PP} style={ccw(6, 250)}>DELIVER</text>
+        <text x="10" y="250" textAnchor="middle" dominantBaseline="middle"
+          fill={lbl(3)} fontSize={14} letterSpacing={2} fontFamily={PP} style={ccw(10, 250)}>DELIVER</text>
       </g>
 
       {/* ── Centre: static — shows active phase number + keyword ── */}
