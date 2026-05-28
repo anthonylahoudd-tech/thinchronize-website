@@ -27,6 +27,24 @@
   font-display: swap;
 }
 
+/* ─── Method page keyframes — defined globally so they load before the component ── */
+@keyframes methodPhraseIn {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes methodPhraseOut {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-24px); }
+}
+@keyframes methodFadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes methodBounce {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(8px); }
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
