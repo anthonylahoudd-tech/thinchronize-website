@@ -128,71 +128,6 @@ function SVGCircle({ activePhase }: { activePhase: number }) {
   )
 }
 
-// ─── Static diagram — section 2 ───────────────────────────────────────────────
-function MethodDiagram() {
-  const cx = 250, cy = 250, r2 = 180
-  const toRad = (deg: number) => (deg * Math.PI) / 180
-  const pt    = (deg: number, r: number) => ({
-    x: cx + r * Math.cos(toRad(deg)),
-    y: cy + r * Math.sin(toRad(deg)),
-  })
-  const RED = '#D0274B'
-
-  const nodes = [
-    { angle: -90, num: '01', name: 'DETECT'  },
-    { angle:   0, num: '02', name: 'DEFINE'  },
-    { angle:  90, num: '03', name: 'DESIGN'  },
-    { angle: 180, num: '04', name: 'DELIVER' },
-  ]
-
-  return (
-    <svg viewBox="0 0 500 500"
-      style={{ width: '100%', maxWidth: 500, display: 'block', overflow: 'visible' }}
-      aria-hidden="true">
-
-      <circle cx={cx} cy={cy} r={220} fill="none" stroke={RED} strokeWidth={1} opacity={0.3} />
-      <circle cx={cx + 220} cy={cy} r={4} fill={RED} opacity={0.6}>
-        <animateTransform attributeName="transform" type="rotate"
-          from={`0 ${cx} ${cy}`} to={`360 ${cx} ${cy}`} dur="30s" repeatCount="indefinite" />
-      </circle>
-
-      <circle cx={cx} cy={cy} r={r2} fill="none" stroke="white" strokeWidth={0.5} opacity={0.1} />
-      <circle cx={cx + r2} cy={cy} r={3} fill="white" opacity={0.25}>
-        <animateTransform attributeName="transform" type="rotate"
-          from={`0 ${cx} ${cy}`} to={`-360 ${cx} ${cy}`} dur="45s" repeatCount="indefinite" />
-      </circle>
-
-      <circle cx={cx} cy={cy} r={70} fill={RED} />
-      <text x={cx} y={cy - 8}  textAnchor="middle" fill="white" fontSize={15} fontFamily={PP} fontWeight={900}>Brand</text>
-      <text x={cx} y={cy + 12} textAnchor="middle" fill="white" fontSize={15} fontFamily={PP} fontWeight={900}>Truth</text>
-
-      {nodes.map(({ angle, name }) => {
-        const p = pt(angle, r2)
-        return <circle key={name} cx={p.x} cy={p.y} r={6} fill="white" />
-      })}
-
-      {nodes.map(({ angle, num, name }) => {
-        const p = pt(angle, r2)
-        let lx = p.x, ly = p.y
-        let anchor: 'start' | 'middle' | 'end' = 'middle'
-        let dy1 = 0, dy2 = 0
-        if      (angle === -90) { ly -= 22; dy1 = -16; dy2 = 0;  anchor = 'middle' }
-        else if (angle ===   0) { lx += 22; dy1 = -6;  dy2 = 10; anchor = 'start'  }
-        else if (angle ===  90) { ly += 22; dy1 = 16;  dy2 = 30; anchor = 'middle' }
-        else                    { lx -= 22; dy1 = -6;  dy2 = 10; anchor = 'end'    }
-        return (
-          <g key={name}>
-            <text x={lx} y={ly + dy1} textAnchor={anchor} fill={RED}
-              fontSize={11} fontFamily={PP} fontWeight={400} letterSpacing="0.15em">{num}</text>
-            <text x={lx} y={ly + dy2} textAnchor={anchor} fill="white"
-              fontSize={13} fontFamily={PP} fontWeight={900} letterSpacing="0.04em">{name}</text>
-          </g>
-        )
-      })}
-    </svg>
-  )
-}
-
 // ─── Client card ──────────────────────────────────────────────────────────────
 function ClientCard({ category, name, desc, href }: ClientItem) {
   const [hov, setHov] = useState(false)
@@ -257,18 +192,18 @@ export default function MethodPage() {
   const [revealedPhases, setRevealedPhases] = useState<Set<number>>(new Set([0]))
 
   // ── Refs ──────────────────────────────────────────────────────────────────
-  // sectionRef: the phases section — used to compute scroll progress
-  // circleRef:  the circle container — styles set directly, no re-render
-  // phaseEls:   the 4 phase content divs — IO targets
-  const sectionRef = useRef<HTMLElement>(null)
-  const circleRef  = useRef<HTMLDivElement>(null)
-  const phaseEls   = useRef<(HTMLDivElement | null)[]>([null, null, null, null])
+  // circleIntroRef: circle-intro section — circle first appears here (centered)
+  // sectionRef:     phases section — scroll trigger for circle to move right
+  // circleRef:      the circle container — styles set directly, no re-render
+  // phaseEls:       the 4 phase content divs — IO targets
+  const circleIntroRef = useRef<HTMLElement>(null)
+  const sectionRef     = useRef<HTMLElement>(null)
+  const circleRef      = useRef<HTMLDivElement>(null)
+  const phaseEls       = useRef<(HTMLDivElement | null)[]>([null, null, null, null])
 
   // ── Reveal hooks for non-phase sections ───────────────────────────────────
-  const rDiagramHead = useReveal(0)
-  const rDiagram     = useReveal(0.1)
-  const rDiagramSub  = useReveal(0.2)
-  const rWhyLeft     = useReveal(0)
+  const rCircleTagline = useReveal(0.2)
+  const rWhyLeft       = useReveal(0)
   const rWhy1        = useReveal(0)
   const rWhy2        = useReveal(0.15)
   const rWhy3        = useReveal(0.3)
@@ -306,36 +241,51 @@ export default function MethodPage() {
 
   // ── Circle scroll driver (direct DOM, no re-renders) ─────────────────────
   // Circle is ALWAYS position:fixed — one element, never switches to relative.
-  // progress = clamp((scrollY - triggerPoint) / 400, 0, 1)
-  // At progress=0: centered (left=(vw-480)/2, width=480)
-  // At progress=1: right:60px (left=vw-420, width=360)
-  // Lerp left and width smoothly between these two states.
-  // Hidden only when the phases section has fully scrolled above the viewport.
+  //
+  // Visibility:
+  //   • Hidden (opacity:0) while hero is showing (before circle-intro section)
+  //   • Fades in as circle-intro section scrolls up into viewport
+  //   • Hidden again after phases section passes the viewport
+  //
+  // Position lerp driven by phases section entry:
+  //   progress = clamp((scrollY - phasesOffsetTop) / 400, 0, 1)
+  //   progress=0 → centered, width=460px
+  //   progress=1 → left:75%vw (center of right half), width=420px
   useEffect(() => {
     const clamp = (v: number, lo: number, hi: number) => Math.min(Math.max(v, lo), hi)
     const lerp  = (a: number, b: number, t: number)   => a + (b - a) * t
 
     const drive = () => {
-      if (!sectionRef.current || !circleRef.current) return
+      if (!circleIntroRef.current || !sectionRef.current || !circleRef.current) return
       const el = circleRef.current
       const vw = window.innerWidth
+      const vh = window.innerHeight
 
       // Suppress on mobile
       if (vw < 768) { el.style.opacity = '0'; return }
 
-      // Hide when section has fully scrolled above viewport
-      if (sectionRef.current.getBoundingClientRect().bottom < 0) {
-        el.style.opacity = '0'
-        return
-      }
+      const introRect  = circleIntroRef.current.getBoundingClientRect()
+      const phasesBot  = sectionRef.current.getBoundingClientRect().bottom
 
-      const trigger  = sectionRef.current.offsetTop
-      const progress = clamp((window.scrollY - trigger) / 400, 0, 1)
+      // Hide before circle-intro section enters the viewport
+      if (introRect.top >= vh) { el.style.opacity = '0'; return }
 
-      const w = lerp(480, 360, progress)
-      // At progress=0: left=(vw-480)/2 → circle centered
-      // At progress=1: left=vw-420      → right edge 60px from viewport right
-      const l = lerp((vw - 480) / 2, vw - 420, progress)
+      // Hide after phases section has fully passed the viewport
+      if (phasesBot < 0) { el.style.opacity = '0'; return }
+
+      // Fade in as circle-intro section rises into view from below
+      const fadeIn = clamp(1 - introRect.top / vh, 0, 1)
+
+      // Progress: 0 = centered (intro state), 1 = right-panel (phases state)
+      const phaseTrigger = sectionRef.current.offsetTop
+      const progress     = clamp((window.scrollY - phaseTrigger) / 400, 0, 1)
+
+      // Width: 460px (intro) → 420px (phases)
+      const w = lerp(460, 420, progress)
+      // Left: centered at progress=0, centered at 75% viewport at progress=1
+      //   progress=0: left = (vw-460)/2         → circle center = vw/2
+      //   progress=1: left = 0.75*vw - 210      → circle center = 75% of vw
+      const l = lerp((vw - 460) / 2, 0.75 * vw - 210, progress)
 
       el.style.position  = 'fixed'
       el.style.top       = '50%'
@@ -345,7 +295,7 @@ export default function MethodPage() {
       el.style.width     = `${w}px`
       el.style.height    = `${w}px`
       el.style.margin    = ''
-      el.style.opacity   = '1'
+      el.style.opacity   = String(fadeIn)
       el.style.transition = 'none'
     }
 
@@ -396,10 +346,11 @@ export default function MethodPage() {
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          width: 480,
-          height: 480,
+          width: 460,
+          height: 460,
           zIndex: 10,
           pointerEvents: 'none',
+          opacity: 0,
         }}
       >
         <SVGCircle activePhase={activePhase} />
@@ -480,32 +431,29 @@ export default function MethodPage() {
         </div>
       </section>
 
-      {/* ══ 2 — METHOD DIAGRAM ══════════════════════════════════════════════════ */}
-      <section style={{ background: '#000', padding: '160px 0', textAlign: 'center' }}>
-        <div ref={rDiagramHead.ref}
-          style={{ ...rDiagramHead.style, padding: '0 clamp(36px, 6vw, 80px)', marginBottom: 80 }}>
-          <h2 style={{ fontSize: 'clamp(32px, 5vw, 72px)', fontWeight: 900, color: 'white', fontFamily: PP }}>
-            Four phases. One destination.
-          </h2>
-        </div>
-
-        <div ref={rDiagram.ref}
-          style={{ ...rDiagram.style, maxWidth: 500, margin: '0 auto', padding: '0 40px' }}>
-          <MethodDiagram />
-        </div>
-
-        <div ref={rDiagramSub.ref}
-          style={{ ...rDiagramSub.style, marginTop: 60, padding: '0 clamp(36px, 6vw, 80px)' }}>
-          <p style={{ color: '#919191', fontSize: 14, fontWeight: 400, letterSpacing: '0.1em', fontFamily: PP }}>
+      {/* ══ 2 — CIRCLE INTRO ════════════════════════════════════════════════════
+          The circle first appears HERE, centered on screen. The circle itself
+          is position:fixed so it overlays this 100vh section naturally.
+          The tagline sits at the bottom of the section below the circle.
+      ══════════════════════════════════════════════════════════════════════════ */}
+      <section
+        ref={circleIntroRef}
+        style={{
+          height: '100vh', background: '#000',
+          display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
+          paddingBottom: 'clamp(60px, 8vh, 100px)',
+          position: 'relative',
+        }}
+      >
+        <div ref={rCircleTagline.ref} style={rCircleTagline.style}>
+          <p style={{
+            color: '#919191', fontSize: 14, fontWeight: 400,
+            letterSpacing: '0.1em', textAlign: 'center', fontFamily: PP,
+          }}>
             Detect. Define. Design. Deliver. In that order. Always.
           </p>
         </div>
       </section>
-
-      {/* ── Breath divider ────────────────────────────────────────────────────── */}
-      <div style={{ padding: '80px clamp(36px, 6vw, 80px)' }}>
-        <div style={{ width: '100%', height: 1, background: '#1a1a1a' }} />
-      </div>
 
       {/* ══ 3 — 4D PHASES — SCROLL-DRIVEN SINGLE CIRCLE ════════════════════════
           ONE circle. Starts centered (large, 500px). As user scrolls into the
@@ -550,13 +498,14 @@ export default function MethodPage() {
                   {phase.num} / 04
                 </p>
 
-                {/* Phase name — 96px, white, PP Extended Ultra Bold */}
+                {/* Phase name — red when active, white otherwise */}
                 <h2 style={{
                   fontSize: 'clamp(56px, 7vw, 96px)',
                   fontWeight: 900,
                   textTransform: 'uppercase',
                   lineHeight: 0.95,
-                  color: 'white',
+                  color: activePhase === i ? '#D0274B' : '#FFFFFF',
+                  transition: `color 0.4s ${EASE}`,
                   fontFamily: PP,
                   marginBottom: 36,
                 }}>
