@@ -272,7 +272,7 @@ export default function MethodPage() {
 
       // ── Sizes ──────────────────────────────────────────────────────────
       const wIntro  = Math.min(0.80 * vh, 0.80 * vw)
-      const wPhases = Math.min(0.46 * vw, 500)
+      const wPhases = Math.min(0.42 * vw, 460)
 
       // ── Vertical position ───────────────────────────────────────────────
       // The hero text has a parallax of 0.3× — by sy=0.75×vh the text has
@@ -295,7 +295,7 @@ export default function MethodPage() {
       const phaseStart    = sectionRef.current.offsetTop
       const introProgress = clamp((sy - (phaseStart - 400)) / 400, 0, 1)
       const w  = lerp(wIntro, wPhases, introProgress)
-      const cx = lerp(0.5 * vw, 0.66 * vw, introProgress)
+      const cx = lerp(0.5 * vw, 0.60 * vw, introProgress)
 
       // ── Centre colour: red → near-black as circle moves into phases ─────
       const core = el.querySelector<SVGCircleElement>('#method-circle-core')
@@ -518,7 +518,7 @@ export default function MethodPage() {
 
                 {/* Phase name — red when active, dark otherwise */}
                 <h2 style={{
-                  fontSize: 'clamp(36px, 4.5vw, 64px)',
+                  fontSize: 'clamp(48px, 5.5vw, 78px)',
                   fontWeight: 900,
                   textTransform: 'uppercase',
                   lineHeight: 0.95,
@@ -533,7 +533,7 @@ export default function MethodPage() {
                 {/* Divider — each phase its own colour */}
                 <div style={{
                   width: 60, height: 2,
-                  background: PHASE_COLORS[i],
+                  background: '#D0274B',
                   marginBottom: 36,
                 }} />
 
