@@ -287,9 +287,9 @@ export default function MethodPage() {
       //   sy=0.75×vh → center=1.50×vh (off screen)
       //   sy=1.00×vh → center=1.05×vh (top arc + labels peek up ~35 %)
       //
-      // Circle-intro (first 40 %): rises quickly from peek → fully centred
+      // Circle-intro (first 40 %): rises quickly from peek → upper third
       const riseProgress = clamp((sy - vh) / (vh * 0.4), 0, 1)
-      const introTopPx   = lerp(vh * 1.05, vh * 0.5, riseProgress)
+      const introTopPx   = lerp(vh * 1.05, vh * 0.38, riseProgress)
 
       const topPx = sy < vh ? heroTopPx : introTopPx
 
