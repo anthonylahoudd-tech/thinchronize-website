@@ -25,11 +25,11 @@ export default function PageTransition() {
     setVisible(true)
 
     // 350ms  → slide-in complete, show logo
-    // 550ms  → hide logo, start slide-out
-    // 900ms  → slide-out complete, remove overlay
+    // 850ms  → hide logo, start slide-out  (500ms hold)
+    // 1200ms → slide-out complete, remove overlay
     const t1 = setTimeout(() => setPhase('hold'), 350)
-    const t2 = setTimeout(() => setPhase('out'),  550)
-    const t3 = setTimeout(() => setVisible(false), 900)
+    const t2 = setTimeout(() => setPhase('out'),  850)
+    const t3 = setTimeout(() => setVisible(false), 1200)
 
     return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3) }
   }, [pathname])
