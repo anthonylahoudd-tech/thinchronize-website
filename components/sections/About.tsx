@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
+import Link from 'next/link'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
@@ -250,6 +251,30 @@ export default function About() {
               </p>
             </div>
           ))}
+        </div>
+
+        {/* Method page link */}
+        <div className="mt-12">
+          <Link
+            href="/method"
+            style={{
+              fontFamily:    PP,
+              fontWeight:    400,
+              fontSize:      14,
+              letterSpacing: '0.1em',
+              color:         'white',
+              textDecoration: 'none',
+              transition:    'color 0.25s ease',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.textDecoration = 'underline'
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.textDecoration = 'none'
+            }}
+          >
+            See the full method →
+          </Link>
         </div>
 
       </div>

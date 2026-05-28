@@ -14,6 +14,7 @@ const LIGHT_PAGES = ['/services', '/portfolio', '/about']
 const navLinks = [
   { label: 'Home',      href: '/' },
   { label: 'Services',  href: '/services' },
+  { label: 'Method',    href: '/method' },
   { label: 'About',     href: '/about' },
   { label: 'Portfolio', href: '/portfolio' },
   { label: 'Journal',   href: '/journal' },
