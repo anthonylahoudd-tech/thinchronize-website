@@ -72,96 +72,54 @@ function useReveal(delay = 0) {
 // ─── SVGCircle ────────────────────────────────────────────────────────────────
 // ONE circle. Outer ring + 4 dots + labels ALL orbit together as a <g> group
 // (CSS @keyframes orbit, CW 18s). transform-origin: 250px 250px = SVG centre.
-// Inner ring orbits CCW 30s via SMIL (independent). Centre shows "4D", fixed.
-// Active dot → #D0274B; others → dim. Labels rotate with dots.
+// Inner ring orbits CCW 30s via CSS (orbit-reverse). Centre shows "4D", fixed.
+// Active dot/label → #D0274B; others → #444444.
 function SVGCircle({ activePhase }: { activePhase: number }) {
-  const cx = 250, cy = 250
-  const rOuter  = 200
-  const rInner  = 140
-  const rCenter = 65
-
-  const toRad = (deg: number) => (deg * Math.PI) / 180
-  const pt    = (deg: number, r: number) => ({
-    x: cx + r * Math.cos(toRad(deg)),
-    y: cy + r * Math.sin(toRad(deg)),
-  })
-
-  const nodes = [
-    { angle: -90, idx: 0, label: 'DETECT'  },
-    { angle:   0, idx: 1, label: 'DEFINE'  },
-    { angle:  90, idx: 2, label: 'DESIGN'  },
-    { angle: 180, idx: 3, label: 'DELIVER' },
-  ]
+  const c = (i: number) => activePhase === i ? '#D0274B' : '#444444'
 
   return (
     <svg
       viewBox="0 0 500 500"
-      width="500"
-      height="500"
+      width="100%"
+      height="100%"
       style={{ display: 'block', overflow: 'visible' }}
       aria-hidden="true"
     >
-      {/* ── Inner ring (static) + CCW orbiting dot 30s ── */}
-      <circle cx={cx} cy={cy} r={rInner} fill="none" stroke="white" strokeWidth={0.75} opacity={0.08} />
-      <circle cx={cx + rInner} cy={cy} r={3} fill="white" opacity={0.2}>
-        <animateTransform
-          attributeName="transform" type="rotate"
-          from={`0 ${cx} ${cy}`} to={`-360 ${cx} ${cy}`}
-          dur="30s" repeatCount="indefinite"
-        />
-      </circle>
+      {/* ── Inner ring CCW via CSS ── */}
+      <circle
+        cx="250" cy="250" r="140"
+        fill="none" stroke="#ffffff" strokeWidth={0.5} opacity={0.08}
+        style={{ transformOrigin: '250px 250px', animation: 'orbit-reverse 30s linear infinite' }}
+      />
 
-      {/* ── Rotating group: outer ring + 4 dots + labels — CW 18s ──
-          transformOrigin: 250px 250px = centre of 500×500 viewBox            ── */}
+      {/* ── Rotating group: outer ring + 4 dots + labels — CW 18s ── */}
       <g style={{ transformOrigin: '250px 250px', animation: 'orbit 18s linear infinite' }}>
-        {/* Outer ring */}
-        <circle
-          cx={cx} cy={cy} r={rOuter}
-          fill="none" stroke="#D0274B" strokeWidth={1} opacity={0.25}
-        />
+        <circle cx="250" cy="250" r="200" fill="none" stroke="#D0274B" strokeWidth={1} opacity={0.25} />
 
-        {/* 4 dots + labels (orbit together, text rotates with group) */}
-        {nodes.map(({ angle, idx, label }) => {
-          const p = pt(angle, rOuter)
-          const isActive  = idx === activePhase
-          const dotColor   = isActive ? '#D0274B' : '#2a2a2a'
-          const labelColor = isActive ? '#D0274B' : '#444444'
+        {/* DETECT — top */}
+        <circle cx="250" cy="50" r="6" fill={c(0)} />
+        <text x="250" y="25" textAnchor="middle" fill={c(0)} fontSize={11} fontFamily={PP}>DETECT</text>
 
-          // Label position just outside the dot
-          let lx = p.x, ly = p.y
-          let anchor: 'start' | 'middle' | 'end' = 'middle'
-          if (angle === -90) { ly -= 22; anchor = 'middle' }
-          if (angle ===   0) { lx += 20; ly += 4; anchor = 'start'  }
-          if (angle ===  90) { ly += 26; anchor = 'middle' }
-          if (angle === 180) { lx -= 20; ly += 4; anchor = 'end'    }
+        {/* DEFINE — right */}
+        <circle cx="450" cy="250" r="6" fill={c(1)} />
+        <text x="490" y="255" textAnchor="middle" fill={c(1)} fontSize={11} fontFamily={PP}>DEFINE</text>
 
-          return (
-            <g key={label}>
-              <circle
-                cx={p.x} cy={p.y} r={isActive ? 9 : 7}
-                style={{ fill: dotColor, transition: 'fill 0.4s ease' }}
-              />
-              <text
-                x={lx} y={ly} textAnchor={anchor}
-                fontSize={10} fontFamily={PP}
-                fontWeight={isActive ? 900 : 400}
-                letterSpacing="0.08em"
-                style={{ fill: labelColor, transition: 'fill 0.4s ease' }}
-              >
-                {label}
-              </text>
-            </g>
-          )
-        })}
+        {/* DESIGN — bottom */}
+        <circle cx="250" cy="450" r="6" fill={c(2)} />
+        <text x="250" y="490" textAnchor="middle" fill={c(2)} fontSize={11} fontFamily={PP}>DESIGN</text>
+
+        {/* DELIVER — left */}
+        <circle cx="50" cy="250" r="6" fill={c(3)} />
+        <text x="10" y="255" textAnchor="middle" fill={c(3)} fontSize={11} fontFamily={PP}>DELIVER</text>
       </g>
 
-      {/* ── Centre: fixed circle + "4D" label (NOT in rotating group) ── */}
-      <circle cx={cx} cy={cy} r={rCenter} fill="#D0274B" />
+      {/* ── Centre: fixed ── */}
+      <circle cx="250" cy="250" r="55" fill="#D0274B" />
       <text
-        x={cx} y={cy + 9}
+        x="250" y="250"
         textAnchor="middle"
-        fill="white" fontSize={24} fontFamily={PP} fontWeight={900}
-        letterSpacing="0.05em"
+        dominantBaseline="middle"
+        fill="white" fontSize={13} fontFamily={PP} fontWeight={900}
       >
         4D
       </text>
@@ -346,53 +304,71 @@ export default function MethodPage() {
   }, [])
 
   // ── Circle scroll driver (direct DOM, no re-renders) ─────────────────────
-  // progress = clamp((scrollY - sectionTop) / 500, 0, 1)
-  // 0 → circle centered large; 1 → circle fixed right small
-  // startLeft = (vw - 500) / 2
-  // endLeft   = vw - 467.5  → visual right edge ≈ 80px from viewport right
-  //   (element left = vw - 467.5; element center = vw - 217.5;
-  //    visual right  = center + 500*0.55/2 = center + 137.5 = vw - 80) ✓
+  // progress = clamp(1 - sectionTop/windowH, 0, 1)
+  // 0 → position:relative centered (before section enters viewport)
+  // 0→1 → position:fixed right:80px, width shrinks 480→380px
+  // after section → back to relative, opacity 0
   useEffect(() => {
+    const clamp = (v: number, lo: number, hi: number) => Math.min(Math.max(v, lo), hi)
+
     const drive = () => {
       if (!sectionRef.current || !circleRef.current) return
 
-      const el      = circleRef.current
-      const sect    = sectionRef.current
-      const sTop    = sect.offsetTop
-      const sHeight = sect.offsetHeight
-      const sy      = window.scrollY
-      const vh      = window.innerHeight
-      const vw      = window.innerWidth
+      const el   = circleRef.current
+      const vw   = window.innerWidth
+      const wh   = window.innerHeight
 
       // Suppress on mobile
       if (vw < 768) { el.style.opacity = '0'; return }
 
-      // Hide before section is near viewport or after section ends
-      if (sy + vh < sTop - 50 || sy > sTop + sHeight) {
-        el.style.opacity = '0'
+      const rect       = sectionRef.current.getBoundingClientRect()
+      const sectionTop = rect.top
+      const sectionBot = rect.bottom
+      const progress   = clamp(1 - sectionTop / wh, 0, 1)
+
+      if (progress === 0) {
+        // Section below viewport — circle in flow, centered
+        el.style.position  = 'relative'
+        el.style.right     = ''
+        el.style.top       = ''
+        el.style.left      = ''
+        el.style.transform = ''
+        el.style.width     = '480px'
+        el.style.margin    = '80px auto'
+        el.style.opacity   = '1'
+        el.style.transition = 'none'
         return
       }
 
-      el.style.opacity = '1'
+      if (sectionBot < 0) {
+        // Section fully above viewport — circle hidden, back in flow
+        el.style.position  = 'relative'
+        el.style.right     = ''
+        el.style.top       = ''
+        el.style.left      = ''
+        el.style.transform = ''
+        el.style.width     = '480px'
+        el.style.margin    = '80px auto'
+        el.style.opacity   = '0'
+        el.style.transition = 'none'
+        return
+      }
 
-      const p         = Math.min(Math.max((sy - sTop) / 500, 0), 1)
-      const startLeft = (vw - 500) / 2
-      const endLeft   = vw - 467.5
-      const curLeft   = startLeft + (endLeft - startLeft) * p
-      const curScale  = 1 + (0.55 - 1) * p   // 1 → 0.55
-
+      // Active — fixed right, width shrinks 480→380px
       el.style.position  = 'fixed'
-      el.style.left      = `${curLeft}px`
-      el.style.top       = 'calc(50vh - 250px)'
-      el.style.right     = ''
-      el.style.bottom    = ''
-      el.style.transform = `scale(${curScale})`
+      el.style.right     = '80px'
+      el.style.top       = '50%'
+      el.style.transform = 'translateY(-50%)'
+      el.style.width     = `${480 - progress * 100}px`
+      el.style.left      = ''
+      el.style.margin    = ''
+      el.style.opacity   = '1'
       el.style.transition = 'none'
     }
 
     window.addEventListener('scroll', drive, { passive: true })
     window.addEventListener('resize', drive, { passive: true })
-    drive()  // initial position
+    drive()
     return () => {
       window.removeEventListener('scroll', drive)
       window.removeEventListener('resize', drive)
@@ -415,7 +391,7 @@ export default function MethodPage() {
             })
           }
         },
-        { threshold: 0.5 }
+        { threshold: 0.6 }
       )
       obs.observe(el)
       observers.push(obs)
@@ -541,25 +517,25 @@ export default function MethodPage() {
       ══════════════════════════════════════════════════════════════════════════ */}
       <section ref={sectionRef} style={{ position: 'relative', background: '#000' }}>
 
-        {/* Circle — position/scale set directly via DOM in scroll handler.
-            Starts hidden (opacity:0). Scroll handler reveals + positions it. */}
+        {/* Circle — starts position:relative centered in flow.
+            Scroll handler switches to position:fixed right when progress > 0. */}
         <div
+          id="method-circle"
           ref={circleRef}
           style={{
-            position: 'fixed',
-            width: 500,
-            height: 500,
+            position: 'relative',
+            width: 480,
+            aspectRatio: '1 / 1',
+            margin: '80px auto',
             zIndex: 10,
             pointerEvents: 'none',
-            opacity: 0,
-            willChange: 'transform, left, top, opacity',
           }}
         >
           <SVGCircle activePhase={activePhase} />
         </div>
 
-        {/* Phase content — left side, normal scroll, max-width 50% */}
-        <div className="method-phases-left">
+        {/* Phase content — left side only, inline width 50% */}
+        <div className="method-phases-left" style={{ width: '50%', marginLeft: 0 }}>
           {PHASES.map((phase, i) => (
             <div
               key={phase.num}
@@ -620,14 +596,11 @@ export default function MethodPage() {
           ))}
         </div>
 
-        {/* Mobile: full width */}
+        {/* Mobile: override inline width to full */}
         <style>{`
-          .method-phases-left {
-            max-width: 50%;
-          }
           @media (max-width: 768px) {
             .method-phases-left {
-              max-width: 100%;
+              width: 100% !important;
             }
           }
         `}</style>
