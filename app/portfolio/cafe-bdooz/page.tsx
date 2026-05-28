@@ -7,19 +7,22 @@ import { PROJECTS } from '@/lib/projects'
 const PP   = "'PPNeueCorp', system-ui, sans-serif"
 const RED  = '#D0274B'
 const BASE = '/images/work/cafe-bdooz'
+const IMGS = (n: number) => `${BASE}/Image-${n}-Bdooz.png`
 
-// ─── Scroll-reveal hook ───────────────────────────────────────────────────────
+// ─── Simple fade-in for TEXT blocks only (not images) ─────────────────────────
+// Uses margin-based root so it fires well before the element reaches the edge,
+// which avoids Lenis smooth-scroll / transform-scroll interference.
 
 function useReveal(delay = 0) {
   const ref  = useRef<HTMLDivElement>(null)
   const [vis, setVis] = useState(false)
 
   useEffect(() => {
-    const el  = ref.current
+    const el = ref.current
     if (!el) return
     const obs = new IntersectionObserver(
       ([entry]) => { if (entry.isIntersecting) { setVis(true); obs.disconnect() } },
-      { threshold: 0.08 }
+      { threshold: 0, rootMargin: '0px 0px -60px 0px' }
     )
     obs.observe(el)
     return () => obs.disconnect()
@@ -29,8 +32,8 @@ function useReveal(delay = 0) {
     ref,
     style: {
       opacity:    vis ? 1 : 0,
-      transform:  vis ? 'translateY(0)' : 'translateY(20px)',
-      transition: `opacity 0.7s ease-out ${delay}s, transform 0.7s ease-out ${delay}s`,
+      transform:  vis ? 'translateY(0)' : 'translateY(24px)',
+      transition: `opacity 0.65s ease ${delay}s, transform 0.65s ease ${delay}s`,
     } as React.CSSProperties,
   }
 }
@@ -54,9 +57,7 @@ function DeliverableChip({ label }: { label: string }) {
         transition:   'border-color 0.2s, color 0.2s',
         cursor:       'default',
       }}
-    >
-      {label}
-    </span>
+    >{label}</span>
   )
 }
 
@@ -75,25 +76,14 @@ function MoreWorkCard({ id, title, category, coverImage, market, year }: {
     >
       <div style={{ overflow: 'hidden', aspectRatio: '4/3', marginBottom: 16 }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={coverImage}
-          alt={title}
-          style={{
-            width: '100%', height: '100%', objectFit: 'cover', display: 'block',
-            transform: hov ? 'scale(1.03)' : 'scale(1)',
-            transition: 'transform 0.5s ease',
-          }}
-        />
+        <img src={coverImage} alt={title} style={{
+          width: '100%', height: '100%', objectFit: 'cover', display: 'block',
+          transform: hov ? 'scale(1.03)' : 'scale(1)', transition: 'transform 0.5s ease',
+        }} />
       </div>
-      <p style={{ fontFamily: PP, fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#919191', marginBottom: 6 }}>
-        {category}
-      </p>
-      <h3 style={{ fontFamily: PP, fontWeight: 900, fontSize: 20, color: hov ? RED : '#292929', transition: 'color 0.25s', lineHeight: 1.15, textTransform: 'uppercase' }}>
-        {title}
-      </h3>
-      <p style={{ fontFamily: PP, fontSize: 13, color: '#919191', marginTop: 4 }}>
-        {market} · {year}
-      </p>
+      <p style={{ fontFamily: PP, fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#919191', marginBottom: 6 }}>{category}</p>
+      <h3 style={{ fontFamily: PP, fontWeight: 900, fontSize: 20, color: hov ? RED : '#292929', transition: 'color 0.25s', lineHeight: 1.15, textTransform: 'uppercase' }}>{title}</h3>
+      <p style={{ fontFamily: PP, fontSize: 13, color: '#919191', marginTop: 4 }}>{market} · {year}</p>
     </Link>
   )
 }
@@ -103,18 +93,11 @@ function MoreWorkCard({ id, title, category, coverImage, market, year }: {
 function NavLink({ href, label, red }: { href: string; label: string; red?: boolean }) {
   const [hov, setHov] = useState(false)
   return (
-    <Link
-      href={href}
+    <Link href={href}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
-      style={{
-        fontFamily: PP, fontWeight: 400, fontSize: 14,
-        color: red ? (hov ? '#b8223f' : RED) : (hov ? RED : '#292929'),
-        textDecoration: 'none', transition: 'color 0.2s',
-      }}
-    >
-      {label}
-    </Link>
+      style={{ fontFamily: PP, fontWeight: 400, fontSize: 14, color: red ? (hov ? '#b8223f' : RED) : (hov ? RED : '#292929'), textDecoration: 'none', transition: 'color 0.2s' }}
+    >{label}</Link>
   )
 }
 
@@ -122,11 +105,7 @@ function NavLink({ href, label, red }: { href: string; label: string; red?: bool
 
 function ScrollIndicator() {
   return (
-    <div style={{
-      position: 'absolute', bottom: 48, left: '50%', transform: 'translateX(-50%)',
-      display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8,
-      color: 'rgba(255,255,255,0.5)',
-    }}>
+    <div style={{ position: 'absolute', bottom: 48, left: '50%', transform: 'translateX(-50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, color: 'rgba(255,255,255,0.5)' }}>
       <span style={{ fontFamily: PP, fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase' }}>Scroll</span>
       <svg width="16" height="24" viewBox="0 0 16 24" fill="none" style={{ animation: 'bounce 1.8s infinite' }}>
         <path d="M8 0v20M1 13l7 7 7-7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -144,19 +123,22 @@ const DELIVERABLES = [
   'Social Media Templates', 'Brand Collateral', 'Brand Standards',
 ]
 
-// 14 images available: Cover + Image-1 through Image-14
-const IMGS = (n: number) => `${BASE}/Image-${n}-Bdooz.png`
-
 const moreWork = PROJECTS.filter(p => p.id !== 'cafe-bdooz').slice(0, 2)
+
+// ─── Image helpers (no opacity wrapping — images are always visible) ──────────
+
+const imgFull = { width: '100%', height: '70vh', objectFit: 'cover' as const, display: 'block' }
+const imgHalf = { width: '100%', height: 500, objectFit: 'cover' as const, display: 'block' }
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
 export default function CafeBdoozPage() {
+  // Text-block reveals only
   const rChallenge = useReveal()
   const rDiagnosis = useReveal()
-  const rBuilt     = useReveal(0.15)
+  const rBuilt     = useReveal(0.12)
   const rResult    = useReveal()
-  const rGallery   = useReveal()
+  const rGalleryLbl = useReveal()
   const rDeliv     = useReveal()
   const rNav       = useReveal()
   const rMore      = useReveal()
@@ -167,13 +149,9 @@ export default function CafeBdoozPage() {
       {/* ══ 1 — Hero ════════════════════════════════════════════════════ */}
       <section style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'flex-end' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={`${BASE}/Cover-Bdooz.png`}
-          alt="Cafe BDOOZ"
-          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
-        />
+        <img src={`${BASE}/Cover-Bdooz.png`} alt="Cafe BDOOZ"
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }} />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.65) 100%)' }} />
-
         <div style={{ position: 'relative', padding: 'clamp(40px, 5vw, 80px)', maxWidth: 900 }}>
           <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 12, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.7)', marginBottom: 16 }}>
             Case Study — 2025
@@ -186,14 +164,10 @@ export default function CafeBdoozPage() {
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 24 }}>
             {['Brand Identity', 'Café', 'Hospitality', 'Lebanon'].map(s => (
-              <span key={s} style={{ border: '1px solid rgba(255,255,255,0.4)', borderRadius: 20, padding: '6px 14px', fontFamily: PP, fontWeight: 400, fontSize: 11, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.8)' }}>
-                {s}
-              </span>
+              <span key={s} style={{ border: '1px solid rgba(255,255,255,0.4)', borderRadius: 20, padding: '6px 14px', fontFamily: PP, fontWeight: 400, fontSize: 11, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.8)' }}>{s}</span>
             ))}
           </div>
-          <p style={{ fontFamily: PP, fontSize: 13, color: 'rgba(255,255,255,0.45)', letterSpacing: '0.05em' }}>
-            Lebanon · 2025
-          </p>
+          <p style={{ fontFamily: PP, fontSize: 13, color: 'rgba(255,255,255,0.45)', letterSpacing: '0.05em' }}>Lebanon · 2025</p>
         </div>
         <ScrollIndicator />
       </section>
@@ -201,42 +175,30 @@ export default function CafeBdoozPage() {
       {/* ══ 2 — The Challenge ════════════════════════════════════════════ */}
       <section style={{ padding: '120px 0' }}>
         <div ref={rChallenge.ref} style={{ ...rChallenge.style, maxWidth: 800, margin: '0 auto', padding: '0 clamp(24px, 6vw, 80px)' }}>
-          <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#919191', marginBottom: 24 }}>
-            The Challenge
-          </p>
+          <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#919191', marginBottom: 24 }}>The Challenge</p>
           <p style={{ fontFamily: PP, fontWeight: 800, fontSize: 'clamp(22px, 3vw, 32px)', color: '#292929', lineHeight: 1.5, textTransform: 'uppercase' }}>
             A Lebanese café built on warmth, character, and neighbourhood culture needed an identity that could carry all of that before a single word was spoken — from the sign above the door to the cup in your hand.
           </p>
         </div>
       </section>
 
-      {/* ══ 3 — Large image: image-1.jpg ════════════════════════════════ */}
+      {/* ══ 3 — Image-1 full width ══════════════════════════════════════ */}
       <section>
-        <div style={{ overflow: 'hidden' }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={`${BASE}/Image-1-Bdooz.png`}
-            alt="Cafe BDOOZ brand identity"
-            style={{ width: '100%', height: '70vh', objectFit: 'cover', display: 'block' }}
-          />
-        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={`${BASE}/Image-1-Bdooz.png`} alt="Cafe BDOOZ brand identity" style={imgFull} />
       </section>
 
       {/* ══ 4 — Diagnosis + Solution ════════════════════════════════════ */}
       <section style={{ padding: 'clamp(60px, 8vw, 120px) clamp(24px, 6vw, 80px)' }}>
         <div style={{ display: 'flex', gap: 'clamp(32px, 6vw, 80px)', flexWrap: 'wrap' }}>
           <div ref={rDiagnosis.ref} style={{ ...rDiagnosis.style, flex: '1 1 280px' }}>
-            <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#919191', marginBottom: 24 }}>
-              The Diagnosis
-            </p>
+            <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#919191', marginBottom: 24 }}>The Diagnosis</p>
             <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 18, color: '#292929', lineHeight: 1.75 }}>
               The café had genuine personality — a name with rhythm, a space with warmth, and a product people kept coming back for. But nothing in the visual language was capturing any of that. The brand was invisible where it mattered most: on the street, in the hand, and on the wall.
             </p>
           </div>
           <div ref={rBuilt.ref} style={{ ...rBuilt.style, flex: '1 1 280px' }}>
-            <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#919191', marginBottom: 24 }}>
-              What We Built
-            </p>
+            <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#919191', marginBottom: 24 }}>What We Built</p>
             <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 18, color: '#292929', lineHeight: 1.75 }}>
               An identity built around the feeling of return. A logotype with warmth and typographic character — crafted, not templated. A colour palette grounded in comfort and confidence. A complete brand system deployed across signage, packaging, menu, takeaway materials, and social — with a consistency that makes every touchpoint feel like the same place.
             </p>
@@ -244,131 +206,100 @@ export default function CafeBdoozPage() {
         </div>
       </section>
 
-      {/* ══ 5 — Right-aligned image: image-2.jpg ════════════════════════ */}
+      {/* ══ 5 — Image-2 right-aligned ═══════════════════════════════════ */}
       <section style={{ padding: '0 clamp(24px, 6vw, 80px) 120px' }}>
         <div style={{ marginLeft: 'auto', width: '65%', minWidth: 280 }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={`${BASE}/Image-2-Bdooz.png`}
-            alt="Cafe BDOOZ identity detail"
-            style={{ width: '100%', height: 500, objectFit: 'cover', display: 'block' }}
-          />
+          <img src={`${BASE}/Image-2-Bdooz.png`} alt="Cafe BDOOZ identity detail" style={{ ...imgHalf, height: 500 }} />
         </div>
       </section>
 
       {/* ══ 6 — The Result (dark) ════════════════════════════════════════ */}
       <section style={{ background: '#000000', padding: 'clamp(60px, 8vw, 120px) clamp(24px, 6vw, 80px)' }}>
         <div ref={rResult.ref} style={rResult.style}>
-          <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', color: RED, marginBottom: 24 }}>
-            The Result
-          </p>
+          <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', color: RED, marginBottom: 24 }}>The Result</p>
           <p style={{ fontFamily: PP, fontWeight: 800, fontSize: 'clamp(24px, 3.5vw, 36px)', color: '#FFFFFF', lineHeight: 1.5, textTransform: 'uppercase', maxWidth: 720, marginBottom: 28 }}>
             Cafe BDOOZ launched in 2025 with a complete identity that captures the spirit of a place people return to — not just for the coffee, but for how it makes them feel.
           </p>
           <p style={{ fontFamily: PP, fontSize: 18, color: '#919191', lineHeight: 1.7, maxWidth: 640, marginBottom: 40 }}>
             The identity was delivered across 10+ production-ready formats and activated across environmental, packaging, print, and digital — all from a single Brand Engagement.
           </p>
-          <p style={{ fontFamily: PP, fontSize: 14, color: 'rgba(255,255,255,0.4)' }}>
-            Lebanon · 2025
-          </p>
+          <p style={{ fontFamily: PP, fontSize: 14, color: 'rgba(255,255,255,0.4)' }}>Lebanon · 2025</p>
         </div>
       </section>
 
-      {/* ══ 7 — Brand in Action ══════════════════════════════════════════ */}
+      {/* ══ 7 — Brand in Action — ALL 12 images, always visible ══════════ */}
       <section style={{ background: '#FFFFFF' }}>
-        <div ref={rGallery.ref} style={rGallery.style}>
 
-          <div style={{ padding: 'clamp(60px, 8vw, 100px) clamp(24px, 6vw, 80px) 0' }}>
-            <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 12, letterSpacing: '0.2em', textTransform: 'uppercase', color: RED }}>
-              Brand in Action
-            </p>
-          </div>
-
-          {/* Image-3 — full width */}
-          <div style={{ overflow: 'hidden', marginTop: 48 }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={IMGS(3)} alt="Cafe BDOOZ brand in context"
-              style={{ width: '100%', height: '70vh', objectFit: 'cover', display: 'block' }} />
-          </div>
-
-          {/* Image-4 + Image-5 — side by side */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0, marginTop: 0 }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={IMGS(4)} alt="Cafe BDOOZ detail"
-              style={{ width: '100%', height: 500, objectFit: 'cover', display: 'block' }} />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={IMGS(5)} alt="Cafe BDOOZ detail"
-              style={{ width: '100%', height: 500, objectFit: 'cover', display: 'block' }} />
-          </div>
-
-          {/* Image-6 — right-aligned 65% */}
-          <div style={{ padding: '80px clamp(24px, 6vw, 80px)' }}>
-            <div style={{ marginLeft: 'auto', width: '65%', minWidth: 280 }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={IMGS(6)} alt="Cafe BDOOZ packaging"
-                style={{ width: '100%', height: 500, objectFit: 'cover', display: 'block' }} />
-            </div>
-          </div>
-
-          {/* Image-7 — full width */}
-          <div style={{ overflow: 'hidden' }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={IMGS(7)} alt="Cafe BDOOZ environmental"
-              style={{ width: '100%', height: '70vh', objectFit: 'cover', display: 'block' }} />
-          </div>
-
-          {/* Image-8 + Image-9 — side by side */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0 }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={IMGS(8)} alt="Cafe BDOOZ detail"
-              style={{ width: '100%', height: 500, objectFit: 'cover', display: 'block' }} />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={IMGS(9)} alt="Cafe BDOOZ detail"
-              style={{ width: '100%', height: 500, objectFit: 'cover', display: 'block' }} />
-          </div>
-
-          {/* Image-10 — left-aligned 65% */}
-          <div style={{ padding: '80px clamp(24px, 6vw, 80px)' }}>
-            <div style={{ marginRight: 'auto', width: '65%', minWidth: 280 }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={IMGS(10)} alt="Cafe BDOOZ collateral"
-                style={{ width: '100%', height: 500, objectFit: 'cover', display: 'block' }} />
-            </div>
-          </div>
-
-          {/* Image-11 — full width */}
-          <div style={{ overflow: 'hidden' }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={IMGS(11)} alt="Cafe BDOOZ brand"
-              style={{ width: '100%', height: '70vh', objectFit: 'cover', display: 'block' }} />
-          </div>
-
-          {/* Image-12 + Image-13 — side by side */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0 }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={IMGS(12)} alt="Cafe BDOOZ detail"
-              style={{ width: '100%', height: 500, objectFit: 'cover', display: 'block' }} />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={IMGS(13)} alt="Cafe BDOOZ detail"
-              style={{ width: '100%', height: 500, objectFit: 'cover', display: 'block' }} />
-          </div>
-
-          {/* Image-14 — full width finale */}
-          <div style={{ overflow: 'hidden', paddingBottom: 0 }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={IMGS(14)} alt="Cafe BDOOZ final"
-              style={{ width: '100%', height: '70vh', objectFit: 'cover', display: 'block' }} />
-          </div>
-
+        {/* Label */}
+        <div ref={rGalleryLbl.ref} style={{ ...rGalleryLbl.style, padding: 'clamp(60px, 8vw, 100px) clamp(24px, 6vw, 80px) 48px' }}>
+          <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 12, letterSpacing: '0.2em', textTransform: 'uppercase', color: RED }}>
+            Brand in Action
+          </p>
         </div>
+
+        {/* Image-3 — full width */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={IMGS(3)} alt="Cafe BDOOZ brand in context" style={imgFull} />
+
+        {/* Image-4 + Image-5 — side by side */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={IMGS(4)} alt="Cafe BDOOZ detail" style={imgHalf} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={IMGS(5)} alt="Cafe BDOOZ detail" style={imgHalf} />
+        </div>
+
+        {/* Image-6 — right-aligned 65% */}
+        <div style={{ padding: '80px clamp(24px, 6vw, 80px)' }}>
+          <div style={{ marginLeft: 'auto', width: '65%', minWidth: 280 }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={IMGS(6)} alt="Cafe BDOOZ packaging" style={imgHalf} />
+          </div>
+        </div>
+
+        {/* Image-7 — full width */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={IMGS(7)} alt="Cafe BDOOZ environmental" style={imgFull} />
+
+        {/* Image-8 + Image-9 — side by side */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={IMGS(8)} alt="Cafe BDOOZ detail" style={imgHalf} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={IMGS(9)} alt="Cafe BDOOZ detail" style={imgHalf} />
+        </div>
+
+        {/* Image-10 — left-aligned 65% */}
+        <div style={{ padding: '80px clamp(24px, 6vw, 80px)' }}>
+          <div style={{ marginRight: 'auto', width: '65%', minWidth: 280 }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={IMGS(10)} alt="Cafe BDOOZ collateral" style={imgHalf} />
+          </div>
+        </div>
+
+        {/* Image-11 — full width */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={IMGS(11)} alt="Cafe BDOOZ brand" style={imgFull} />
+
+        {/* Image-12 + Image-13 — side by side */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={IMGS(12)} alt="Cafe BDOOZ detail" style={imgHalf} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={IMGS(13)} alt="Cafe BDOOZ detail" style={imgHalf} />
+        </div>
+
+        {/* Image-14 — full width finale */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={IMGS(14)} alt="Cafe BDOOZ final" style={imgFull} />
+
       </section>
 
       {/* ══ 8 — Deliverables ════════════════════════════════════════════ */}
       <section style={{ background: '#FFFFFF', padding: 'clamp(60px, 8vw, 120px) clamp(24px, 6vw, 80px)' }}>
         <div ref={rDeliv.ref} style={rDeliv.style}>
-          <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#919191', marginBottom: 32 }}>
-            Deliverables
-          </p>
+          <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#919191', marginBottom: 32 }}>Deliverables</p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
             {DELIVERABLES.map(d => <DeliverableChip key={d} label={d} />)}
           </div>
@@ -379,9 +310,7 @@ export default function CafeBdoozPage() {
       <section style={{ padding: '80px clamp(24px, 6vw, 80px)', borderTop: '1px solid #E8E8E8' }}>
         <div ref={rNav.ref} style={{ ...rNav.style, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 24 }}>
           <NavLink href="/portfolio" label="← Back to Portfolio" />
-          <span style={{ fontFamily: PP, fontWeight: 900, fontSize: 12, color: '#292929', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-            Thinchronize
-          </span>
+          <span style={{ fontFamily: PP, fontWeight: 900, fontSize: 12, color: '#292929', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Thinchronize</span>
           <NavLink href="/contact" label="Start a project →" red />
         </div>
       </section>
@@ -390,9 +319,7 @@ export default function CafeBdoozPage() {
       {moreWork.length > 0 && (
         <section style={{ padding: '0 clamp(24px, 6vw, 80px) 80px' }}>
           <div ref={rMore.ref} style={rMore.style}>
-            <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#919191', marginBottom: 40 }}>
-              More Work
-            </p>
+            <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#919191', marginBottom: 40 }}>More Work</p>
             <div style={{ display: 'flex', gap: 40, flexWrap: 'wrap' }}>
               {moreWork.map(p => (
                 <MoreWorkCard key={p.id} id={p.id} title={p.title} category={p.category} coverImage={p.coverImage} market={p.market} year={p.year} />
