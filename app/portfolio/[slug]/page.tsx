@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
+import fs from 'fs'
+import path from 'path'
 import { PROJECTS, getProjectBySlug, type Project } from '@/lib/projects'
 import PortfolioProjectClient from './PortfolioProjectClient'
 
@@ -7,9 +9,15 @@ interface Props {
   params: { slug: string }
 }
 
+// Auto-detect: if a dedicated app/portfolio/[id]/page.tsx exists, skip it here.
+// You never need to touch this file again — just create the folder and it works.
+function hasDedicatedPage(id: string): boolean {
+  const p = path.join(process.cwd(), 'app', 'portfolio', id, 'page.tsx')
+  return fs.existsSync(p)
+}
+
 export async function generateStaticParams() {
-  // Exclude 'whatsub' and 'cafe-bdooz' — they have dedicated pages
-  return PROJECTS.filter(p => p.id !== 'whatsub' && p.id !== 'cafe-bdooz').map(p => ({ slug: p.id }))
+  return PROJECTS.filter(p => !hasDedicatedPage(p.id)).map(p => ({ slug: p.id }))
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
