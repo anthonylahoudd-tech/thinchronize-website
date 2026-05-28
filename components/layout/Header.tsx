@@ -9,7 +9,7 @@ import { Menu, X } from 'lucide-react'
 import clsx from 'clsx'
 
 // Pages with white (#FFFFFF) backgrounds — header must use dark text + white bg
-const LIGHT_PAGES = ['/services', '/portfolio', '/about']
+const LIGHT_PAGES = ['/services', '/portfolio', '/about', '/method']
 
 const navLinks = [
   { label: 'Home',      href: '/' },

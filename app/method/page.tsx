@@ -278,10 +278,12 @@ export default function MethodPage() {
       const wIntro  = Math.min(0.80 * vh, 0.80 * vw)   // big, centred in intro
       const wPhases = Math.min(0.46 * vw, 500)           // bigger on phases
 
-      // ── Intro→phases (vh → vh+400 px): moves right, shrinks, darkens ──
-      // Circle is centred and fully formed when circle-intro section begins.
-      // Over the first 400px it moves to the right panel, ready for phases.
-      const introProgress = clamp((sy - vh) / 400, 0, 1)
+      // ── Intro→phases: circle stays CENTRED the whole circle-intro section.
+      // It only starts moving 400 px BEFORE the phases section begins, so it
+      // arrives at its right-panel position exactly when phase 1 appears.
+      // This means the circle is fully formed and waiting — no mid-section pop.
+      const phaseStart    = sectionRef.current.offsetTop
+      const introProgress = clamp((sy - (phaseStart - 400)) / 400, 0, 1)
       const w  = lerp(wIntro, wPhases, introProgress)
       const cx = lerp(0.5 * vw, 0.66 * vw, introProgress)
 
@@ -366,7 +368,7 @@ export default function MethodPage() {
 
       {/* ══ 1 — HERO ════════════════════════════════════════════════════════════ */}
       <section style={{
-        height: '100vh', background: '#FFFFFF', overflow: 'hidden',
+        height: '100vh', background: '#FFFFFF',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         position: 'relative',
       }}>
