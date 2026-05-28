@@ -4,19 +4,18 @@ import { useEffect, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import Image from 'next/image'
 
-// Cycles through these on every navigation
-const COLORS = ['#D0274B', '#292929', '#000000', '#919191', '#FFFFFF']
+// Shuffles between red, black, and 90%-black
+const COLORS = ['#D0274B', '#000000', '#1A1A1A']
 
 export default function PageTransition() {
-  const pathname                        = usePathname()
-  const [visible,  setVisible]          = useState(false)
-  const [phase,    setPhase]            = useState<'in' | 'hold' | 'out'>('in')
-  const [color,    setColor]            = useState(COLORS[0])
-  const colorIndexRef                   = useRef(0)
-  const isFirst                         = useRef(true)
+  const pathname      = usePathname()
+  const [visible,  setVisible] = useState(false)
+  const [phase,    setPhase]   = useState<'in' | 'hold' | 'out'>('in')
+  const [color,    setColor]   = useState(COLORS[0])
+  const colorIndexRef          = useRef(0)
+  const isFirst                = useRef(true)
 
   useEffect(() => {
-    // Skip the very first render (page load — no transition needed)
     if (isFirst.current) { isFirst.current = false; return }
 
     colorIndexRef.current = (colorIndexRef.current + 1) % COLORS.length
@@ -24,19 +23,17 @@ export default function PageTransition() {
     setPhase('in')
     setVisible(true)
 
-    // 350ms  → slide-in complete, show logo
-    // 850ms  → hide logo, start slide-out  (500ms hold)
-    // 1200ms → slide-out complete, remove overlay
-    const t1 = setTimeout(() => setPhase('hold'), 350)
-    const t2 = setTimeout(() => setPhase('out'),  850)
-    const t3 = setTimeout(() => setVisible(false), 1200)
+    // 380ms  → slide-in done, logo fades in
+    // 880ms  → logo fades out, slide-out begins  (500ms hold)
+    // 1260ms → slide-out done, overlay removed
+    const t1 = setTimeout(() => setPhase('hold'), 380)
+    const t2 = setTimeout(() => setPhase('out'),  880)
+    const t3 = setTimeout(() => setVisible(false), 1260)
 
     return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3) }
   }, [pathname])
 
   if (!visible) return null
-
-  const isLight = color === '#FFFFFF' || color === '#919191'
 
   return (
     <div
@@ -48,27 +45,26 @@ export default function PageTransition() {
         display:         'flex',
         alignItems:      'center',
         justifyContent:  'center',
-        // 'in'  → panel slides up from bottom
-        // 'hold'→ panel sits at translateY(0), no animation (forwards fill holds it)
-        // 'out' → panel slides up off the top
         animation:
-          phase === 'in'  ? 'pageSlideUp 350ms ease-in-out forwards' :
-          phase === 'out' ? 'pageSlideOut 350ms ease-in-out forwards' :
+          phase === 'in'  ? 'pageSlideUp  380ms cubic-bezier(0.76, 0, 0.24, 1) forwards' :
+          phase === 'out' ? 'pageSlideOut 380ms cubic-bezier(0.76, 0, 0.24, 1) forwards' :
           'none',
         pointerEvents: 'all',
       }}
     >
+      {/* Stacked logo — always white on all dark backgrounds */}
       <Image
-        src={isLight ? '/logo-wordmark-red.png' : '/logo-wordmark-white.png'}
+        src="/images/logo-stacked.png"
         alt="Thinchronize"
-        width={180}
-        height={28}
+        width={120}
+        height={120}
         style={{
-          height:     26,
+          height:     90,
           width:      'auto',
           objectFit:  'contain',
           opacity:    phase === 'hold' ? 1 : 0,
-          transition: 'opacity 120ms ease',
+          transition: 'opacity 150ms ease',
+          filter:     'brightness(0) invert(1)',
         }}
         priority
       />
