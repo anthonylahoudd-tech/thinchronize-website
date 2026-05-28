@@ -1,18 +1,17 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
-import Link from 'next/link'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { gsap } from 'gsap'
-import { Menu, X } from 'lucide-react'
-import clsx from 'clsx'
 import { transitionTo } from '@/lib/pageTransition'
+import MenuOverlay from './MenuOverlay'
 
-// Pages with white (#FFFFFF) backgrounds — header must use dark text + white bg
+const PP          = "'PPNeueCorp', system-ui, sans-serif"
+const EASE        = 'cubic-bezier(0.19, 1, 0.22, 1)'
 const LIGHT_PAGES = ['/services', '/portfolio', '/about', '/method']
 
-const navLinks = [
+const NAV_LINKS = [
   { label: 'Home',      href: '/' },
   { label: 'Services',  href: '/services' },
   { label: 'Method',    href: '/method' },
@@ -21,85 +20,100 @@ const navLinks = [
   { label: 'Journal',   href: '/journal' },
 ]
 
-const DIAGNOSTIC_HREF = '/contact'
-
 export default function Header() {
-  const headerRef = useRef<HTMLElement>(null)
+  const logoRef   = useRef<HTMLDivElement>(null)
+  const navRef    = useRef<HTMLElement>(null)
   const [scrolled,  setScrolled]  = useState(false)
   const [menuOpen,  setMenuOpen]  = useState(false)
   const pathname = usePathname()
 
-  // Is this a white-background page?
   const isLight = LIGHT_PAGES.some(p => pathname === p || pathname.startsWith(p + '/'))
 
+  // ── Scroll tracking ────────────────────────────────────────────────────────
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 60)
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
+    const onScroll = () => setScrolled(window.scrollY > 80)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    onScroll()
+    return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  // ── Body scroll lock ───────────────────────────────────────────────────────
   useEffect(() => {
-    gsap.fromTo(
-      headerRef.current,
-      { y: -20, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1, ease: 'power3.out', delay: 1.2 }
-    )
+    document.body.style.overflow = menuOpen ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [menuOpen])
+
+  // ── Entrance animation ─────────────────────────────────────────────────────
+  useEffect(() => {
+    gsap.fromTo(logoRef.current,  { y: -20, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: 'power3.out', delay: 1.2 })
+    gsap.fromTo(navRef.current,   { y: -20, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: 'power3.out', delay: 1.2 })
   }, [])
 
-  const scrollToSection = (href: string) => {
-    setMenuOpen(false)
-    if (!href.startsWith('/#')) {
-      transitionTo(href)
-      return
-    }
-    const id = href.slice(2)
-    const el = document.getElementById(id)
-    if (!el) return
-    const lenis = (window as typeof window & { lenis?: { scrollTo: (el: Element, opts?: object) => void } }).lenis
-    lenis
-      ? lenis.scrollTo(el, { offset: -80, duration: 1.4 })
-      : el.scrollIntoView({ behavior: 'smooth' })
-  }
+  // ── Stable close handler (memoised so MenuOverlay never re-renders mid-animation)
+  const handleClose = useCallback(() => setMenuOpen(false), [])
+
+  const logoSrc = (isLight && !menuOpen) ? '/logo-wordmark-red.png' : '/logo-wordmark-white.png'
+  const PAD_H   = 'clamp(20px, 4vw, 48px)'
 
   return (
     <>
-      <header
-        ref={headerRef}
-        className="fixed top-0 left-0 right-0 z-50 will-change-transform transition-all duration-500"
+      {/* ════════════════════════════════════════════════════════════════════════
+          LOGO — always fixed top-left, z:200, never fades, above overlay
+      ════════════════════════════════════════════════════════════════════════ */}
+      <div
+        ref={logoRef}
         style={{
-          transform:    'translateZ(0)',
-          padding:      scrolled ? '16px 0' : '24px 0',
-          background:   isLight
-            ? (scrolled ? 'rgba(255,255,255,0.96)' : '#FFFFFF')
-            : (scrolled ? 'rgba(0,0,0,0.92)' : 'transparent'),
-          backdropFilter: scrolled ? 'blur(12px)' : 'none',
-          borderBottom: scrolled
-            ? (isLight ? '1px solid #E8E8E8' : '1px solid rgba(255,255,255,0.05)')
-            : 'none',
+          position:   'fixed',
+          top:        scrolled ? 16 : 24,
+          left:       PAD_H,
+          zIndex:     200,
+          transition: `top 300ms ${EASE}`,
         }}
       >
-        <div className="container mx-auto flex items-center justify-between">
+        <button
+          onClick={() => transitionTo('/')}
+          style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', display: 'block' }}
+          aria-label="Go to homepage"
+        >
+          <Image
+            src={logoSrc}
+            alt="Thinchronize"
+            width={180}
+            height={28}
+            style={{ height: 26, width: 'auto', display: 'block' }}
+            priority
+          />
+        </button>
+      </div>
 
-          {/* Logo */}
-          <Link href="/" className="flex items-center">
-            <Image
-              src="/logo-wordmark-red.png"
-              alt="Thinchronize"
-              width={180}
-              height={28}
-              style={{ height: 26, width: 'auto' }}
-              priority
-            />
-          </Link>
-
-          {/* Desktop nav — NormalUltrabold (800) */}
-          <nav className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
+      {/* ════════════════════════════════════════════════════════════════════════
+          FULL NAV BAR — desktop only, fades out after 80px scroll
+      ════════════════════════════════════════════════════════════════════════ */}
+      <header
+        ref={navRef}
+        className="hidden md:block"
+        style={{
+          position:      'fixed',
+          top:           0,
+          left:          0,
+          right:         0,
+          zIndex:        50,
+          padding:       `24px ${PAD_H}`,
+          background:    isLight ? '#FFFFFF' : 'transparent',
+          opacity:       scrolled ? 0 : 1,
+          pointerEvents: scrolled ? 'none' : 'auto',
+          transition:    `opacity 600ms ${EASE}`,
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+          <nav style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
+            {NAV_LINKS.map(link => (
               <button
                 key={link.label}
-                onClick={() => scrollToSection(link.href)}
+                onClick={() => transitionTo(link.href)}
+                className="link-underline"
                 style={{
-                  fontFamily:    "'PPNeueCorp', system-ui, sans-serif",
+                  fontFamily:    PP,
                   fontWeight:    800,
                   fontSize:      12,
                   letterSpacing: '0.1em',
@@ -108,21 +122,19 @@ export default function Header() {
                   background:    'none',
                   border:        'none',
                   cursor:        'pointer',
-                  transition:    'color 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                  transition:    'color 0.25s ease',
                 }}
-                onMouseEnter={(e) => ((e.currentTarget as HTMLButtonElement).style.color = isLight ? '#292929' : '#fff')}
-                onMouseLeave={(e) => ((e.currentTarget as HTMLButtonElement).style.color = isLight ? 'rgba(41,41,41,0.6)' : 'rgba(255,255,255,0.65)')}
-                className="link-underline"
+                onMouseEnter={e => (e.currentTarget.style.color = isLight ? '#292929' : '#fff')}
+                onMouseLeave={e => (e.currentTarget.style.color = isLight ? 'rgba(41,41,41,0.6)' : 'rgba(255,255,255,0.65)')}
               >
                 {link.label}
               </button>
             ))}
 
             <button
-              onClick={() => scrollToSection(DIAGNOSTIC_HREF)}
-              className="ml-4 will-change-transform"
+              onClick={() => transitionTo('/contact')}
               style={{
-                fontFamily:    "'PPNeueCorp', system-ui, sans-serif",
+                fontFamily:    PP,
                 fontWeight:    800,
                 fontSize:      14,
                 letterSpacing: '0.05em',
@@ -130,76 +142,121 @@ export default function Header() {
                 background:    '#D0274B',
                 color:         '#FFFFFF',
                 padding:       '10px 24px',
-                borderRadius:  0,
                 border:        'none',
                 cursor:        'pointer',
-                transition:    'background 0.25s',
+                transition:    'background 0.25s ease',
+                marginLeft:    16,
               }}
-              onMouseEnter={e => ((e.currentTarget as HTMLButtonElement).style.background = '#b8223f')}
-              onMouseLeave={e => ((e.currentTarget as HTMLButtonElement).style.background = '#D0274B')}
+              onMouseEnter={e => (e.currentTarget.style.background = '#b8223f')}
+              onMouseLeave={e => (e.currentTarget.style.background = '#D0274B')}
             >
               Message Bin
             </button>
           </nav>
-
-          {/* Mobile toggle */}
-          <button
-            className="md:hidden p-2"
-            style={{ color: isLight ? '#292929' : '#fff' }}
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Toggle menu"
-          >
-            {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
         </div>
       </header>
 
-      {/* Mobile overlay */}
+      {/* ════════════════════════════════════════════════════════════════════════
+          FLOATING BUTTONS (desktop) — WORK WITH US + MENU, fade IN after scroll
+      ════════════════════════════════════════════════════════════════════════ */}
       <div
-        className={clsx(
-          'fixed inset-0 z-40 bg-dark flex flex-col justify-center transition-all duration-500 md:hidden',
-          menuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-        )}
+        className="hidden md:flex"
+        style={{
+          position:      'fixed',
+          top:           scrolled ? 20 : 24,
+          right:         PAD_H,
+          zIndex:        150,
+          alignItems:    'center',
+          gap:           28,
+          opacity:       scrolled && !menuOpen ? 1 : 0,
+          pointerEvents: scrolled && !menuOpen ? 'auto' : 'none',
+          transition:    `opacity 600ms ${EASE}, top 300ms ${EASE}`,
+        }}
       >
-        <nav className="container mx-auto flex flex-col gap-8">
-          {navLinks.map((link, i) => (
-            <button
-              key={link.label}
-              onClick={() => scrollToSection(link.href)}
-              className="text-left text-display-sm text-white hover:text-red"
-              style={{
-                fontFamily:      "'PPNeueCorp', system-ui, sans-serif",
-                fontWeight:      900,
-                textTransform:   'uppercase',
-                transitionDelay: menuOpen ? `${i * 60}ms` : '0ms',
-                transition:      'color 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-              }}
-            >
-              {link.label}
-            </button>
-          ))}
-          <button
-            onClick={() => scrollToSection(DIAGNOSTIC_HREF)}
-            className="self-start mt-8 will-change-transform"
-            style={{
-              fontFamily:    "'PPNeueCorp', system-ui, sans-serif",
-              fontWeight:    800,
-              fontSize:      14,
-              letterSpacing: '0.05em',
-              textTransform: 'uppercase',
-              background:    '#D0274B',
-              color:         '#FFFFFF',
-              padding:       '10px 24px',
-              borderRadius:  0,
-              border:        'none',
-              cursor:        'pointer',
-              transition:    'background 0.25s',
-            }}
-          >
-            Message Bin
-          </button>
-        </nav>
+        <button
+          onClick={() => transitionTo('/contact')}
+          style={{
+            fontFamily:    PP,
+            fontWeight:    800,
+            fontSize:      11,
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            color:         'white',
+            background:    'none',
+            border:        'none',
+            borderBottom:  '1px solid rgba(255,255,255,0.5)',
+            paddingBottom: 2,
+            cursor:        'pointer',
+            transition:    'border-color 0.2s ease, color 0.2s ease',
+          }}
+          onMouseEnter={e => { e.currentTarget.style.borderBottomColor = 'white'; e.currentTarget.style.color = 'white' }}
+          onMouseLeave={e => { e.currentTarget.style.borderBottomColor = 'rgba(255,255,255,0.5)'; e.currentTarget.style.color = 'white' }}
+        >
+          Work With Us
+        </button>
+
+        <button
+          onClick={() => setMenuOpen(true)}
+          style={{
+            fontFamily:    PP,
+            fontWeight:    800,
+            fontSize:      11,
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            color:         'white',
+            background:    'none',
+            border:        'none',
+            borderBottom:  '1px solid rgba(255,255,255,0.5)',
+            paddingBottom: 2,
+            cursor:        'pointer',
+            transition:    'border-color 0.2s ease',
+          }}
+          onMouseEnter={e => (e.currentTarget.style.borderBottomColor = 'white')}
+          onMouseLeave={e => (e.currentTarget.style.borderBottomColor = 'rgba(255,255,255,0.5)')}
+        >
+          Menu
+        </button>
       </div>
+
+      {/* ════════════════════════════════════════════════════════════════════════
+          MOBILE MENU BUTTON — always visible top-right on mobile, adapts to bg
+      ════════════════════════════════════════════════════════════════════════ */}
+      <div
+        className="md:hidden"
+        style={{
+          position:      'fixed',
+          top:           24,
+          right:         PAD_H,
+          zIndex:        150,
+          opacity:       menuOpen ? 0 : 1,
+          pointerEvents: menuOpen ? 'none' : 'auto',
+          transition:    `opacity 300ms ${EASE}`,
+        }}
+      >
+        <button
+          onClick={() => setMenuOpen(true)}
+          style={{
+            fontFamily:    PP,
+            fontWeight:    800,
+            fontSize:      11,
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            color:         isLight ? '#292929' : 'white',
+            background:    'none',
+            border:        'none',
+            borderBottom:  `1px solid ${isLight ? 'rgba(41,41,41,0.4)' : 'rgba(255,255,255,0.5)'}`,
+            paddingBottom: 2,
+            cursor:        'pointer',
+          }}
+        >
+          Menu
+        </button>
+      </div>
+
+      {/* ════════════════════════════════════════════════════════════════════════
+          FULL-SCREEN OVERLAY — memoised, two-panel trick, slides DOWN from top
+      ════════════════════════════════════════════════════════════════════════ */}
+      <MenuOverlay open={menuOpen} onClose={handleClose} />
     </>
   )
 }
