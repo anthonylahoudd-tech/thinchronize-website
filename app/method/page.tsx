@@ -70,13 +70,14 @@ function useReveal(delay = 0) {
 }
 
 // ─── SVGCircle ────────────────────────────────────────────────────────────────
-// ONE circle. Outer ring + 4 dots + labels ALL orbit together as a <g> group
-// (CSS @keyframes orbit, CW 18s). transform-origin: 250px 250px = SVG centre.
-// Inner ring orbits CCW 30s via CSS (orbit-reverse). Centre shows "4D", fixed.
+// TWO layers:
+//   Layer 1 (rotating <g>, CW 18s): outer ring + 4 dots ONLY
+//   Layer 2 (static): 4 text labels at fixed compass positions — always readable
+// Inner ring orbits CCW 30s via CSS. Centre "4D" is always static.
 // Dot: active=#D0274B, inactive=#444444. Label: active=#D0274B, inactive=#666666.
 function SVGCircle({ activePhase }: { activePhase: number }) {
   const dot   = (i: number) => activePhase === i ? '#D0274B' : '#444444'
-  const label = (i: number) => activePhase === i ? '#D0274B' : '#666666'
+  const lbl   = (i: number) => activePhase === i ? '#D0274B' : '#666666'
 
   return (
     <svg
@@ -93,26 +94,20 @@ function SVGCircle({ activePhase }: { activePhase: number }) {
         style={{ transformOrigin: '250px 250px', animation: 'orbit-reverse 30s linear infinite' }}
       />
 
-      {/* ── Rotating group: outer ring + 4 dots + labels — CW 18s ── */}
+      {/* ── Layer 1 (rotating): outer ring + 4 dots ONLY — CW 18s ── */}
       <g style={{ transformOrigin: '250px 250px', animation: 'orbit 18s linear infinite' }}>
         <circle cx="250" cy="250" r="200" fill="none" stroke="#D0274B" strokeWidth={1} opacity={0.25} />
-
-        {/* DETECT — top */}
-        <circle cx="250" cy="50" r="6" fill={dot(0)} />
-        <text x="250" y="25" textAnchor="middle" fill={label(0)} fontSize={11} fontFamily={PP}>DETECT</text>
-
-        {/* DEFINE — right */}
+        <circle cx="250" cy="50"  r="6" fill={dot(0)} />
         <circle cx="450" cy="250" r="6" fill={dot(1)} />
-        <text x="490" y="255" textAnchor="middle" fill={label(1)} fontSize={11} fontFamily={PP}>DEFINE</text>
-
-        {/* DESIGN — bottom */}
         <circle cx="250" cy="450" r="6" fill={dot(2)} />
-        <text x="250" y="490" textAnchor="middle" fill={label(2)} fontSize={11} fontFamily={PP}>DESIGN</text>
-
-        {/* DELIVER — left */}
-        <circle cx="50" cy="250" r="6" fill={dot(3)} />
-        <text x="10" y="255" textAnchor="middle" fill={label(3)} fontSize={11} fontFamily={PP}>DELIVER</text>
+        <circle cx="50"  cy="250" r="6" fill={dot(3)} />
       </g>
+
+      {/* ── Layer 2 (static): labels at fixed compass positions — never rotate ── */}
+      <text x="250" y="30"  textAnchor="middle" fill={lbl(0)} fontSize={11} letterSpacing={2} fontFamily={PP}>DETECT</text>
+      <text x="490" y="258" textAnchor="start"  fill={lbl(1)} fontSize={11} letterSpacing={2} fontFamily={PP}>DEFINE</text>
+      <text x="250" y="490" textAnchor="middle" fill={lbl(2)} fontSize={11} letterSpacing={2} fontFamily={PP}>DESIGN</text>
+      <text x="10"  y="258" textAnchor="end"    fill={lbl(3)} fontSize={11} letterSpacing={2} fontFamily={PP}>DELIVER</text>
 
       {/* ── Centre: fixed ── */}
       <circle cx="250" cy="250" r="55" fill="#D0274B" />
@@ -240,17 +235,17 @@ export default function MethodPage() {
   }, [])
 
   // ── Circle scroll driver (direct DOM, no re-renders) ─────────────────────
-  // Circle is ALWAYS position:fixed — one element, never switches to relative.
+  // Circle is ALWAYS position:fixed — one element, transform: translate(-50%,-50%).
   //
-  // Visibility:
-  //   • Hidden (opacity:0) while hero is showing (before circle-intro section)
-  //   • Fades in as circle-intro section scrolls up into viewport
-  //   • Hidden again after phases section passes the viewport
+  // Visibility: binary snap (no fade-in animation):
+  //   • opacity=0 before circle-intro section enters viewport
+  //   • opacity=1 the moment it's visible — full size, no reveal transition
+  //   • opacity=0 after phases section passes the viewport
   //
-  // Position lerp driven by phases section entry:
+  // Size + position lerp driven by phases section entry:
   //   progress = clamp((scrollY - phasesOffsetTop) / 400, 0, 1)
-  //   progress=0 → centered, width=460px
-  //   progress=1 → left:75%vw (center of right half), width=420px
+  //   progress=0 → centered, width=min(80vh,80vw)   (big, commanding)
+  //   progress=1 → left=75%vw, width=min(45vw,500px) (fills right half)
   useEffect(() => {
     const clamp = (v: number, lo: number, hi: number) => Math.min(Math.max(v, lo), hi)
     const lerp  = (a: number, b: number, t: number)   => a + (b - a) * t
@@ -264,38 +259,33 @@ export default function MethodPage() {
       // Suppress on mobile
       if (vw < 768) { el.style.opacity = '0'; return }
 
-      const introRect  = circleIntroRef.current.getBoundingClientRect()
-      const phasesBot  = sectionRef.current.getBoundingClientRect().bottom
+      const introRect = circleIntroRef.current.getBoundingClientRect()
+      const phasesBot = sectionRef.current.getBoundingClientRect().bottom
 
-      // Hide before circle-intro section enters the viewport
-      if (introRect.top >= vh) { el.style.opacity = '0'; return }
+      // Hidden before circle-intro or after phases — binary, no fade
+      if (introRect.top >= vh || phasesBot < 0) { el.style.opacity = '0'; return }
 
-      // Hide after phases section has fully passed the viewport
-      if (phasesBot < 0) { el.style.opacity = '0'; return }
-
-      // Fade in as circle-intro section rises into view from below
-      const fadeIn = clamp(1 - introRect.top / vh, 0, 1)
-
-      // Progress: 0 = centered (intro state), 1 = right-panel (phases state)
+      // Progress: 0 = intro/centered, 1 = phases/right-panel
       const phaseTrigger = sectionRef.current.offsetTop
       const progress     = clamp((window.scrollY - phaseTrigger) / 400, 0, 1)
 
-      // Width: 460px (intro) → 420px (phases)
-      const w = lerp(460, 420, progress)
-      // Left: centered at progress=0, centered at 75% viewport at progress=1
-      //   progress=0: left = (vw-460)/2         → circle center = vw/2
-      //   progress=1: left = 0.75*vw - 210      → circle center = 75% of vw
-      const l = lerp((vw - 460) / 2, 0.75 * vw - 210, progress)
+      // Intro: big and commanding. Phases: fills right half.
+      const wIntro  = Math.min(0.80 * vh, 0.80 * vw)
+      const wPhases = Math.min(0.45 * vw, 500)
+      const w       = lerp(wIntro, wPhases, progress)
+
+      // Center X: viewport center (intro) → 75% of viewport (phases)
+      const cx = lerp(0.5 * vw, 0.75 * vw, progress)
 
       el.style.position  = 'fixed'
       el.style.top       = '50%'
-      el.style.left      = `${l}px`
+      el.style.left      = `${cx}px`
       el.style.right     = ''
-      el.style.transform = 'translateY(-50%)'
+      el.style.transform = 'translate(-50%, -50%)'
       el.style.width     = `${w}px`
       el.style.height    = `${w}px`
       el.style.margin    = ''
-      el.style.opacity   = String(fadeIn)
+      el.style.opacity   = '1'
       el.style.transition = 'none'
     }
 
@@ -346,11 +336,11 @@ export default function MethodPage() {
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          width: 460,
-          height: 460,
+          width: '80vmin',
+          height: '80vmin',
           zIndex: 10,
           pointerEvents: 'none',
-          opacity: 0,
+          opacity: 0,               /* hidden until scroll handler fires */
         }}
       >
         <SVGCircle activePhase={activePhase} />
