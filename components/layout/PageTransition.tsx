@@ -1,38 +1,74 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
-import { usePathname } from 'next/navigation'
+import { useEffect, useRef, useState, useCallback } from 'react'
+import { useRouter } from 'next/navigation'
 import Image from 'next/image'
+import { onTransitionNavigate, transitionTo } from '@/lib/pageTransition'
 
-const COLORS = ['#D0274B', '#000000', '#1A1A1A']
-
-// Timings
-const SLIDE_MS = 560   // slide-in / slide-out duration
-const HOLD_MS  = 700   // how long the panel stays fully covering the screen
+const COLORS  = ['#D0274B', '#000000', '#1A1A1A']
+const SLIDE_MS = 560
+const HOLD_MS  = 700
 
 export default function PageTransition() {
-  const pathname       = usePathname()
+  const router        = useRouter()
   const [visible, setVisible] = useState(false)
   const [phase,   setPhase]   = useState<'in' | 'out'>('in')
   const [color,   setColor]   = useState(COLORS[0])
-  const colorIndexRef         = useRef(0)
-  const isFirst               = useRef(true)
+  const colorIndexRef = useRef(0)
+  const timers        = useRef<ReturnType<typeof setTimeout>[]>([])
 
-  useEffect(() => {
-    if (isFirst.current) { isFirst.current = false; return }
+  // ── Core: fire animation then navigate ──────────────────────────────────────
+  const fire = useCallback((href: string) => {
+    // Cancel any in-flight transition
+    timers.current.forEach(clearTimeout)
 
     colorIndexRef.current = (colorIndexRef.current + 1) % COLORS.length
     setColor(COLORS[colorIndexRef.current])
     setPhase('in')
     setVisible(true)
 
-    // After slide-in + hold, kick off the exit
-    const tOut  = setTimeout(() => setPhase('out'),  SLIDE_MS + HOLD_MS)
-    // After exit slide finishes, remove from DOM
-    const tDone = setTimeout(() => setVisible(false), SLIDE_MS + HOLD_MS + SLIDE_MS)
+    // Navigate AFTER the panel has fully covered the screen
+    const t1 = setTimeout(() => router.push(href),   SLIDE_MS)
+    // Start exit
+    const t2 = setTimeout(() => setPhase('out'),      SLIDE_MS + HOLD_MS)
+    // Remove from DOM
+    const t3 = setTimeout(() => setVisible(false),    SLIDE_MS * 2 + HOLD_MS)
 
-    return () => { clearTimeout(tOut); clearTimeout(tDone) }
-  }, [pathname])
+    timers.current = [t1, t2, t3]
+  }, [router])
+
+  // ── Listen for programmatic navigate calls (e.g. from Header buttons) ───────
+  useEffect(() => onTransitionNavigate(fire), [fire])
+
+  // ── Intercept ALL internal anchor clicks (covers every <Link> on the site) ──
+  // Uses capture phase so we get it before Next.js's own click handler.
+  useEffect(() => {
+    const handle = (e: MouseEvent) => {
+      const anchor = (e.target as Element).closest('a[href]') as HTMLAnchorElement | null
+      if (!anchor) return
+
+      const raw = anchor.getAttribute('href') ?? ''
+
+      // Skip: external, hash-only anchors, mailto, tel, etc.
+      if (!raw.startsWith('/') && !raw.startsWith(window.location.origin)) return
+      if (raw.startsWith('/#') || raw === '#') return
+
+      // Resolve to a path
+      const path = raw.startsWith(window.location.origin)
+        ? raw.slice(window.location.origin.length) || '/'
+        : raw
+
+      // Skip same-page links
+      if (path === window.location.pathname) return
+
+      e.preventDefault()
+      e.stopPropagation()
+      transitionTo(path)
+    }
+
+    document.addEventListener('click', handle, true)   // capture = fires first
+    return () => document.removeEventListener('click', handle, true)
+  }, [])
 
   if (!visible) return null
 
@@ -46,8 +82,6 @@ export default function PageTransition() {
         display:         'flex',
         alignItems:      'center',
         justifyContent:  'center',
-        // Logo lives INSIDE the panel — it rides up and out with it naturally,
-        // no separate fade needed.
         animation:
           phase === 'in'
             ? `pageSlideUp  ${SLIDE_MS}ms cubic-bezier(0.76, 0, 0.24, 1) forwards`

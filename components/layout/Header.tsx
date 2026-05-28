@@ -3,10 +3,11 @@
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useRouter, usePathname } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { gsap } from 'gsap'
 import { Menu, X } from 'lucide-react'
 import clsx from 'clsx'
+import { transitionTo } from '@/lib/pageTransition'
 
 // Pages with white (#FFFFFF) backgrounds — header must use dark text + white bg
 const LIGHT_PAGES = ['/services', '/portfolio', '/about', '/method']
@@ -26,7 +27,6 @@ export default function Header() {
   const headerRef = useRef<HTMLElement>(null)
   const [scrolled,  setScrolled]  = useState(false)
   const [menuOpen,  setMenuOpen]  = useState(false)
-  const router   = useRouter()
   const pathname = usePathname()
 
   // Is this a white-background page?
@@ -49,7 +49,7 @@ export default function Header() {
   const scrollToSection = (href: string) => {
     setMenuOpen(false)
     if (!href.startsWith('/#')) {
-      router.push(href)
+      transitionTo(href)
       return
     }
     const id = href.slice(2)
