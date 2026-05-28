@@ -97,7 +97,7 @@ export default function Journal({ posts }: Props) {
                 }}>
                   {getCoverUrl(featured) ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img
+                    <img loading="lazy"
                       src={getCoverUrl(featured)!}
                       alt={featured.title}
                       style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
@@ -183,7 +183,7 @@ export default function Journal({ posts }: Props) {
                   }}>
                     {getCoverUrl(post) ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img
+                      <img loading="lazy"
                         src={getCoverUrl(post)!}
                         alt={post.title}
                         style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}

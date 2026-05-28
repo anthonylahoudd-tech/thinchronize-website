@@ -75,7 +75,7 @@ function MoreWorkCard({ id, title, category, coverImage, market, year }: {
     >
       <div style={{ overflow: 'hidden', aspectRatio: '4/3', marginBottom: 16 }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <img loading="lazy"
           src={coverImage}
           alt={title}
           style={{
@@ -183,7 +183,7 @@ export default function WhatsubPage() {
       {/* ══ 1 — Hero (truck.jpg) ══════════════════════════════════════ */}
       <section style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'flex-end' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <img loading="lazy"
           src={`${BASE}/truck.jpg`}
           alt="Whatsub food truck"
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
@@ -230,7 +230,7 @@ export default function WhatsubPage() {
       <section>
         <div style={{ overflow: 'hidden' }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <img loading="lazy"
             src={`${BASE}/mural.jpg`}
             alt="Whatsub restaurant mural"
             style={{ width: '100%', height: '70vh', objectFit: 'cover', display: 'block' }}
@@ -264,7 +264,7 @@ export default function WhatsubPage() {
       <section style={{ padding: '0 clamp(24px, 6vw, 80px) 120px' }}>
         <div style={{ marginLeft: 'auto', width: '65%', minWidth: 280 }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <img loading="lazy"
             src={`${BASE}/collateral.jpg`}
             alt="Whatsub collateral system"
             style={{ width: '100%', height: 500, objectFit: 'cover', display: 'block' }}
@@ -304,7 +304,7 @@ export default function WhatsubPage() {
             {PROCESS_IMAGES.map(({ file, caption }) => (
               <div key={file}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <img loading="lazy"
                   src={`${BASE}/${file}`}
                   alt={caption}
                   style={{ aspectRatio: '4/3', objectFit: 'cover', width: '100%', display: 'block' }}
@@ -333,7 +333,7 @@ export default function WhatsubPage() {
           {/* packaging.jpg — full width */}
           <div style={{ overflow: 'hidden', marginTop: 48 }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <img loading="lazy"
               src={`${BASE}/packaging.jpg`}
               alt="Whatsub packaging system"
               style={{ width: '100%', height: '70vh', objectFit: 'cover', display: 'block' }}
@@ -344,7 +344,7 @@ export default function WhatsubPage() {
           <div style={{ padding: '80px clamp(24px, 6vw, 80px)' }}>
             <div style={{ marginLeft: 'auto', width: '65%', minWidth: 280 }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <img loading="lazy"
                 src={`${BASE}/menu.jpg`}
                 alt="Whatsub menu design"
                 style={{ width: '100%', height: 500, objectFit: 'cover', display: 'block' }}
@@ -355,7 +355,7 @@ export default function WhatsubPage() {
           {/* poster-1.jpg — full width */}
           <div style={{ overflow: 'hidden' }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <img loading="lazy"
               src={`${BASE}/poster-1.jpg`}
               alt="Whatsub poster"
               style={{ width: '100%', height: '70vh', objectFit: 'cover', display: 'block' }}
@@ -366,7 +366,7 @@ export default function WhatsubPage() {
           <div style={{ padding: '80px clamp(24px, 6vw, 80px) 0' }}>
             <div style={{ marginRight: 'auto', width: '65%', minWidth: 280 }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <img loading="lazy"
                 src={`${BASE}/poster-2.jpg`}
                 alt="Whatsub poster 2"
                 style={{ width: '100%', height: 500, objectFit: 'cover', display: 'block' }}

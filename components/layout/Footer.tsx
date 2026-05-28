@@ -106,7 +106,7 @@ export default function Footer() {
           {/* Stacked logo — right column */}
           <div className="md:col-span-4 flex items-center justify-center md:justify-end">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <img loading="lazy"
               src="/images/logo-stacked.png"
               alt="Thinchronize"
               style={{

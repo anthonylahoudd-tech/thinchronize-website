@@ -32,6 +32,13 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
+      <head>
+        {/* Preload critical fonts (WOFF2 — ~48% smaller than OTF) */}
+        <link rel="preload" href="/fonts/PPNeueCorp-NormalUltrabold.woff2"  as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/PPNeueCorp-ExtendedUltrabold.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/PPNeueCorp-NormalMedium.woff2"      as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="icon" href="/favicon.ico" sizes="32x32" />
+      </head>
       <body className="bg-dark text-white">
         <CustomCursor />
         <SmoothScroll>

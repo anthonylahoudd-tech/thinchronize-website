@@ -71,7 +71,7 @@ function ProjectCard({
           width:    '100%',
         }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <img loading="lazy"
             src={project.coverImage}
             alt={project.title}
             style={{

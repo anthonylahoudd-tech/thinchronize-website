@@ -76,7 +76,7 @@ function MoreWorkCard({ id, title, category, coverImage, market, year }: {
     >
       <div style={{ overflow: 'hidden', aspectRatio: '4/3', marginBottom: 16 }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={coverImage} alt={title} style={{
+        <img loading="lazy" src={coverImage} alt={title} style={{
           width: '100%', height: '100%', objectFit: 'cover', display: 'block',
           transform: hov ? 'scale(1.03)' : 'scale(1)', transition: 'transform 0.5s ease',
         }} />
@@ -149,7 +149,7 @@ export default function CafeBdoozPage() {
       {/* ══ 1 — Hero ════════════════════════════════════════════════════ */}
       <section style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'flex-end' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={`${BASE}/Cover-Bdooz.png`} alt="Cafe BDOOZ"
+        <img loading="lazy" src={`${BASE}/Cover-Bdooz.png`} alt="Cafe BDOOZ"
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }} />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.65) 100%)' }} />
         <div style={{ position: 'relative', padding: 'clamp(40px, 5vw, 80px)', maxWidth: 900 }}>
@@ -185,7 +185,7 @@ export default function CafeBdoozPage() {
       {/* ══ 3 — Image-1 full width ══════════════════════════════════════ */}
       <section>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={`${BASE}/Image-1-Bdooz.png`} alt="Cafe BDOOZ brand identity" style={imgFull} />
+        <img loading="lazy" src={`${BASE}/Image-1-Bdooz.png`} alt="Cafe BDOOZ brand identity" style={imgFull} />
       </section>
 
       {/* ══ 4 — Diagnosis + Solution ════════════════════════════════════ */}
@@ -210,7 +210,7 @@ export default function CafeBdoozPage() {
       <section style={{ padding: '0 clamp(24px, 6vw, 80px) 120px' }}>
         <div style={{ marginLeft: 'auto', width: '65%', minWidth: 280 }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={`${BASE}/Image-2-Bdooz.png`} alt="Cafe BDOOZ identity detail" style={{ ...imgHalf, height: 500 }} />
+          <img loading="lazy" src={`${BASE}/Image-2-Bdooz.png`} alt="Cafe BDOOZ identity detail" style={{ ...imgHalf, height: 500 }} />
         </div>
       </section>
 
@@ -240,59 +240,59 @@ export default function CafeBdoozPage() {
 
         {/* Image-3 — full width */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={IMGS(3)} alt="Cafe BDOOZ brand in context" style={imgFull} />
+        <img loading="lazy" src={IMGS(3)} alt="Cafe BDOOZ brand in context" style={imgFull} />
 
         {/* Image-4 + Image-5 — side by side */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={IMGS(4)} alt="Cafe BDOOZ detail" style={imgHalf} />
+          <img loading="lazy" src={IMGS(4)} alt="Cafe BDOOZ detail" style={imgHalf} />
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={IMGS(5)} alt="Cafe BDOOZ detail" style={imgHalf} />
+          <img loading="lazy" src={IMGS(5)} alt="Cafe BDOOZ detail" style={imgHalf} />
         </div>
 
         {/* Image-6 — right-aligned 65% */}
         <div style={{ padding: '80px clamp(24px, 6vw, 80px)' }}>
           <div style={{ marginLeft: 'auto', width: '65%', minWidth: 280 }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={IMGS(6)} alt="Cafe BDOOZ packaging" style={imgHalf} />
+            <img loading="lazy" src={IMGS(6)} alt="Cafe BDOOZ packaging" style={imgHalf} />
           </div>
         </div>
 
         {/* Image-7 — full width */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={IMGS(7)} alt="Cafe BDOOZ environmental" style={imgFull} />
+        <img loading="lazy" src={IMGS(7)} alt="Cafe BDOOZ environmental" style={imgFull} />
 
         {/* Image-8 + Image-9 — side by side */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={IMGS(8)} alt="Cafe BDOOZ detail" style={imgHalf} />
+          <img loading="lazy" src={IMGS(8)} alt="Cafe BDOOZ detail" style={imgHalf} />
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={IMGS(9)} alt="Cafe BDOOZ detail" style={imgHalf} />
+          <img loading="lazy" src={IMGS(9)} alt="Cafe BDOOZ detail" style={imgHalf} />
         </div>
 
         {/* Image-10 — left-aligned 65% */}
         <div style={{ padding: '80px clamp(24px, 6vw, 80px)' }}>
           <div style={{ marginRight: 'auto', width: '65%', minWidth: 280 }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={IMGS(10)} alt="Cafe BDOOZ collateral" style={imgHalf} />
+            <img loading="lazy" src={IMGS(10)} alt="Cafe BDOOZ collateral" style={imgHalf} />
           </div>
         </div>
 
         {/* Image-11 — full width */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={IMGS(11)} alt="Cafe BDOOZ brand" style={imgFull} />
+        <img loading="lazy" src={IMGS(11)} alt="Cafe BDOOZ brand" style={imgFull} />
 
         {/* Image-12 + Image-13 — side by side */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={IMGS(12)} alt="Cafe BDOOZ detail" style={imgHalf} />
+          <img loading="lazy" src={IMGS(12)} alt="Cafe BDOOZ detail" style={imgHalf} />
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={IMGS(13)} alt="Cafe BDOOZ detail" style={imgHalf} />
+          <img loading="lazy" src={IMGS(13)} alt="Cafe BDOOZ detail" style={imgHalf} />
         </div>
 
         {/* Image-14 — full width finale */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={IMGS(14)} alt="Cafe BDOOZ final" style={imgFull} />
+        <img loading="lazy" src={IMGS(14)} alt="Cafe BDOOZ final" style={imgFull} />
 
       </section>
 

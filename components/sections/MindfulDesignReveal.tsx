@@ -69,7 +69,7 @@ export default function MindfulDesignReveal() {
         }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <img loading="lazy"
           src="/images/Thinchronize-Mindful-Design-Website.jpg"
           alt="Thinchronize — Mindful Design"
           style={{

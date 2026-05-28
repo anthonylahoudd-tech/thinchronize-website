@@ -204,7 +204,7 @@ export default function AboutClient() {
       }}>
         {/* Background */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <img loading="lazy"
           src="/about-hero.jpg"
           alt="Thinchronize studio"
           style={{
@@ -260,7 +260,7 @@ export default function AboutClient() {
 
           {/* Signage image */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <img loading="lazy"
             src="/images/about-signage.jpg"
             alt="Thinchronize Studio"
             style={{

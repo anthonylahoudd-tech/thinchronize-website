@@ -160,7 +160,7 @@ function WhatsubCard() {
         >
           {/* Real photo background */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <img loading="lazy"
             src="/images/work/whatsub/mural.jpg"
             alt="Whatsub"
             style={{
@@ -230,7 +230,7 @@ function CafeBdoozCard() {
         >
           {/* Real photo background */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <img loading="lazy"
             src="/images/work/cafe-bdooz/Cover-Bdooz.png"
             alt="Cafe BDOOZ"
             style={{

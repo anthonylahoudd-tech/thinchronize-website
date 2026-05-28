@@ -2,7 +2,8 @@
 
 @font-face {
   font-family: 'PPNeueCorp';
-  src: url('/fonts/PPNeueCorp-ExtendedUltrabold.otf') format('opentype');
+  src: url('/fonts/PPNeueCorp-ExtendedUltrabold.woff2') format('woff2'),
+       url('/fonts/PPNeueCorp-ExtendedUltrabold.otf')   format('opentype');
   font-weight: 900;
   font-style: normal;
   font-display: swap;
@@ -10,7 +11,8 @@
 
 @font-face {
   font-family: 'PPNeueCorp';
-  src: url('/fonts/PPNeueCorp-NormalUltrabold.otf') format('opentype');
+  src: url('/fonts/PPNeueCorp-NormalUltrabold.woff2') format('woff2'),
+       url('/fonts/PPNeueCorp-NormalUltrabold.otf')   format('opentype');
   font-weight: 800;
   font-style: normal;
   font-display: swap;
@@ -18,7 +20,8 @@
 
 @font-face {
   font-family: 'PPNeueCorp';
-  src: url('/fonts/PPNeueCorp-NormalMedium.otf') format('opentype');
+  src: url('/fonts/PPNeueCorp-NormalMedium.woff2') format('woff2'),
+       url('/fonts/PPNeueCorp-NormalMedium.otf')   format('opentype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;

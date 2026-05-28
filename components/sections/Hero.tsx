@@ -57,6 +57,9 @@ export default function Hero() {
       <img
         src="/images/hero-main.jpg"
         alt=""
+        fetchPriority="high"
+        loading="eager"
+        decoding="async"
         style={{
           position:       'absolute',
           inset:          0,

@@ -47,7 +47,7 @@ function MoreWorkCard({ project }: { project: Project }) {
     >
       <div style={{ overflow: 'hidden', aspectRatio: '4/3', marginBottom: 16 }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <img loading="lazy"
           src={project.coverImage}
           alt={project.title}
           style={{
@@ -126,7 +126,7 @@ export default function PortfolioProjectClient({ project, moreWork }: Props) {
       }}>
         {/* Background image */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <img loading="lazy"
           src={project.coverImage}
           alt={project.title}
           style={{
@@ -242,7 +242,7 @@ export default function PortfolioProjectClient({ project, moreWork }: Props) {
       <section>
         <div ref={rImage1.ref} style={{ ...rImage1.style, overflow: 'hidden' }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <img loading="lazy"
             src={project.coverImage}
             alt={`${project.title} — detail`}
             style={{
@@ -300,7 +300,7 @@ export default function PortfolioProjectClient({ project, moreWork }: Props) {
       <section style={{ padding: '0 clamp(24px, 6vw, 80px) 120px' }}>
         <div ref={rImage2.ref} style={{ ...rImage2.style, marginLeft: 'auto', width: '65%', minWidth: 280 }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <img loading="lazy"
             src={project.coverImage}
             alt={`${project.title} — work`}
             style={{

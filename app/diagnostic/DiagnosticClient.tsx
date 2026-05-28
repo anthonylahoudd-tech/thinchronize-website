@@ -153,7 +153,7 @@ function ServiceCard({ service, onProjectClick }: ServiceCardProps) {
             {relatedProjects.map(proj => (
               <div key={proj.id} style={{ textAlign: 'center', cursor: 'pointer' }} onClick={() => onProjectClick(proj.id)}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <img loading="lazy"
                   src={proj.coverImage}
                   alt={proj.title}
                   style={{
@@ -257,7 +257,7 @@ function ProjectWindow({ project, onBack, onClose }: ProjectWindowProps) {
 
         {/* Hero image */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <img loading="lazy"
           src={project.coverImage}
           alt={project.title}
           style={{ width: '100%', height: 360, objectFit: 'cover', display: 'block' }}
@@ -454,7 +454,7 @@ function ServiceWindow({ service, onProjectClick, onBack, onClose }: ServiceWind
                 {relatedProjects.map(proj => (
                   <div key={proj.id} style={{ textAlign: 'center', cursor: 'pointer' }} onClick={() => onProjectClick(proj.id)}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
+                    <img loading="lazy"
                       src={proj.coverImage}
                       alt={proj.title}
                       style={{
