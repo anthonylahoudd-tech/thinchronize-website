@@ -320,14 +320,3 @@ nav button, nav a {
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
-/* ─── Page transition overlay ───────────────────────────────────────────────── */
-
-@keyframes pageSlideUp {
-  from { transform: translateY(100%); }
-  to   { transform: translateY(0%);   }
-}
-
-@keyframes pageSlideOut {
-  from { transform: translateY(0%);     }
-  to   { transform: translateY(-100%);  }
-}

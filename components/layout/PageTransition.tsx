@@ -1,64 +1,103 @@
 'use client'
 
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
-import Image from 'next/image'
 import { onTransitionNavigate, transitionTo } from '@/lib/pageTransition'
 
-const COLORS  = ['#D0274B', '#000000', '#1A1A1A']
-const SLIDE_MS = 560
-const HOLD_MS  = 700
+// ─── Config ───────────────────────────────────────────────────────────────────
+const COLORS       = ['#D0274B', '#292929', '#000000', '#919191', '#FFFFFF']
+const LIGHT_COLORS = new Set(['#FFFFFF', '#919191'])
+const SLIDE_MS     = 500
+const HOLD_MS      = 150
+const EASE_IN      = 'cubic-bezier(0.76, 0, 0.24, 1)'   // easeInOutQuart
+const EASE_OUT     = 'cubic-bezier(0.23, 1, 0.32, 1)'   // easeOutQuint
 
+// ─── Component ────────────────────────────────────────────────────────────────
+// Always mounted — never unmounts so refs are always ready.
+// All animation is direct DOM manipulation; React never re-renders after mount,
+// so React's reconciler can't fight our transforms.
 export default function PageTransition() {
-  const router        = useRouter()
-  const [visible, setVisible] = useState(false)
-  const [phase,   setPhase]   = useState<'in' | 'out'>('in')
-  const [color,   setColor]   = useState(COLORS[0])
-  const colorIndexRef = useRef(0)
-  const timers        = useRef<ReturnType<typeof setTimeout>[]>([])
+  const router       = useRouter()
+  const curtainRef   = useRef<HTMLDivElement>(null)
+  const logoWrapRef  = useRef<HTMLDivElement>(null)
+  const logoRef      = useRef<HTMLImageElement>(null)
+  const colorIdxRef  = useRef(-1)
+  const timers       = useRef<ReturnType<typeof setTimeout>[]>([])
 
-  // ── Core: fire animation then navigate ──────────────────────────────────────
+  // ── Core fire: animate the curtain, navigate mid-slide ──────────────────────
   const fire = useCallback((href: string) => {
-    // Cancel any in-flight transition
     timers.current.forEach(clearTimeout)
+    timers.current = []
 
-    colorIndexRef.current = (colorIndexRef.current + 1) % COLORS.length
-    setColor(COLORS[colorIndexRef.current])
-    setPhase('in')
-    setVisible(true)
+    const curtain  = curtainRef.current
+    const logoWrap = logoWrapRef.current
+    const logo     = logoRef.current
+    if (!curtain || !logoWrap) return
 
-    // Navigate AFTER the panel has fully covered the screen
-    const t1 = setTimeout(() => router.push(href),   SLIDE_MS)
-    // Start exit
-    const t2 = setTimeout(() => setPhase('out'),      SLIDE_MS + HOLD_MS)
-    // Remove from DOM
-    const t3 = setTimeout(() => setVisible(false),    SLIDE_MS * 2 + HOLD_MS)
+    // Pick next colour
+    colorIdxRef.current = (colorIdxRef.current + 1) % COLORS.length
+    const color   = COLORS[colorIdxRef.current]
+    const isLight = LIGHT_COLORS.has(color)
 
-    timers.current = [t1, t2, t3]
+    // Update colour + logo filter directly (no React state = no reconcile)
+    curtain.style.backgroundColor = color
+    if (logo) {
+      logo.style.filter = isLight
+        ? 'brightness(0)'           // dark logo on light bg
+        : 'brightness(0) invert(1)' // white logo on dark bg
+    }
+
+    // ── PHASE 1: snap to start, then slide IN ─────────────────────────────────
+    curtain.style.transition  = 'none'
+    logoWrap.style.transition = 'none'
+    curtain.style.transform   = 'translateY(100%)'
+    logoWrap.style.transform  = 'translateY(-100%)'
+
+    // Double rAF — ensures the browser has painted the reset before we animate
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        curtain.style.transition  = `transform ${SLIDE_MS}ms ${EASE_IN}`
+        logoWrap.style.transition = `transform ${SLIDE_MS}ms ${EASE_IN}`
+        curtain.style.transform   = 'translateY(0%)'
+        logoWrap.style.transform  = 'translateY(0%)'
+      })
+    })
+
+    // Navigate AFTER the curtain fully covers the screen
+    const tNav = setTimeout(() => router.push(href), SLIDE_MS)
+
+    // ── PHASE 2: hold then slide OUT ──────────────────────────────────────────
+    const tOut = setTimeout(() => {
+      const c = curtainRef.current
+      const l = logoWrapRef.current
+      if (!c || !l) return
+      c.style.transition = `transform ${SLIDE_MS}ms ${EASE_OUT}`
+      l.style.transition = `transform ${SLIDE_MS}ms ${EASE_OUT}`
+      c.style.transform  = 'translateY(-100%)'
+      l.style.transform  = 'translateY(100%)'
+    }, SLIDE_MS + HOLD_MS)
+
+    timers.current = [tNav, tOut]
   }, [router])
 
-  // ── Listen for programmatic navigate calls (e.g. from Header buttons) ───────
+  // ── Subscribe to programmatic navigation (e.g. Header buttons) ──────────────
   useEffect(() => onTransitionNavigate(fire), [fire])
 
-  // ── Intercept ALL internal anchor clicks (covers every <Link> on the site) ──
-  // Uses capture phase so we get it before Next.js's own click handler.
+  // ── Intercept ALL internal <a> clicks (covers every <Link> site-wide) ───────
+  // Capture phase fires before Next.js's own click handler.
   useEffect(() => {
     const handle = (e: MouseEvent) => {
-      const anchor = (e.target as Element).closest('a[href]') as HTMLAnchorElement | null
-      if (!anchor) return
+      const a = (e.target as Element).closest('a[href]') as HTMLAnchorElement | null
+      if (!a) return
 
-      const raw = anchor.getAttribute('href') ?? ''
-
-      // Skip: external, hash-only anchors, mailto, tel, etc.
+      const raw = a.getAttribute('href') ?? ''
       if (!raw.startsWith('/') && !raw.startsWith(window.location.origin)) return
       if (raw.startsWith('/#') || raw === '#') return
 
-      // Resolve to a path
       const path = raw.startsWith(window.location.origin)
         ? raw.slice(window.location.origin.length) || '/'
         : raw
 
-      // Skip same-page links
       if (path === window.location.pathname) return
 
       e.preventDefault()
@@ -66,42 +105,54 @@ export default function PageTransition() {
       transitionTo(path)
     }
 
-    document.addEventListener('click', handle, true)   // capture = fires first
+    document.addEventListener('click', handle, true)
     return () => document.removeEventListener('click', handle, true)
   }, [])
 
-  if (!visible) return null
-
+  // ── TWO-PANEL CURTAIN ────────────────────────────────────────────────────────
+  // Outer (curtainRef)  : slides UP   from translateY(100%) → 0% → -100%
+  // Inner (logoWrapRef) : slides DOWN the opposite direction at same speed
+  // Net logo movement   : zero — logo appears stationary while curtain moves
   return (
     <div
+      ref={curtainRef}
       style={{
         position:        'fixed',
         inset:           0,
         zIndex:          9999,
-        backgroundColor: color,
-        display:         'flex',
-        alignItems:      'center',
-        justifyContent:  'center',
-        animation:
-          phase === 'in'
-            ? `pageSlideUp  ${SLIDE_MS}ms cubic-bezier(0.76, 0, 0.24, 1) forwards`
-            : `pageSlideOut ${SLIDE_MS}ms cubic-bezier(0.76, 0, 0.24, 1) forwards`,
-        pointerEvents: 'all',
+        backgroundColor: COLORS[0],   // overwritten imperatively on each fire
+        transform:       'translateY(100%)',
+        overflow:        'hidden',
+        pointerEvents:   'none',
+        willChange:      'transform',
       }}
     >
-      <Image
-        src="/images/logo-stacked.png"
-        alt="Thinchronize"
-        width={120}
-        height={120}
+      <div
+        ref={logoWrapRef}
         style={{
-          height:    90,
-          width:     'auto',
-          objectFit: 'contain',
-          filter:    'brightness(0) invert(1)',
+          position:       'absolute',
+          inset:          0,
+          display:        'flex',
+          alignItems:     'center',
+          justifyContent: 'center',
+          transform:      'translateY(-100%)',
+          willChange:     'transform',
         }}
-        priority
-      />
+      >
+        {/* Regular <img> so we can hold a ref for imperative filter changes */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          ref={logoRef}
+          src="/images/logo-stacked.png"
+          alt="Thinchronize"
+          width={72}
+          height={72}
+          style={{
+            objectFit: 'contain',
+            filter:    'brightness(0) invert(1)',  // default: white on dark
+          }}
+        />
+      </div>
     </div>
   )
 }
