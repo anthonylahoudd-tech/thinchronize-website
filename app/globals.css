@@ -378,10 +378,19 @@ nav button, nav a {
 }
 
 .menu-link__text {
-  font-family:   'PPNeueCorp', system-ui, sans-serif;
-  font-weight:   900;
-  font-size:     clamp(52px, 7vw, 88px);
+  font-family:    'PPNeueCorp', system-ui, sans-serif;
+  font-weight:    900;
+  font-size:      clamp(52px, 7vw, 88px);
   letter-spacing: -1px;
-  line-height:   1;
+  line-height:    1;
+}
+
+@media (max-width: 767px) {
+  .menu-link__text {
+    font-size: clamp(28px, 9vw, 44px);
+  }
+  .menu-link {
+    padding: 14px 24px;
+  }
 }
 

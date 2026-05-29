@@ -1,6 +1,7 @@
 'use client'
 
 import { memo, useEffect, useRef } from 'react'
+import Image from 'next/image'
 import { transitionTo } from '@/lib/pageTransition'
 
 const EASE_OPEN  = 'cubic-bezier(0.76, 0, 0.24, 1)'
@@ -166,10 +167,25 @@ function MenuOverlay({ open, onClose }: Props) {
         right:          0,
         height:         80,
         display:        'flex',
-        justifyContent: 'flex-end',
+        justifyContent: 'space-between',
         alignItems:     'center',
-        padding:        '0 40px',
+        padding:        '0 24px 0 24px',
       }}>
+        {/* Logo — always visible inside the overlay */}
+        <button
+          onClick={() => handleNav('/')}
+          style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', display: 'block' }}
+          aria-label="Go to homepage"
+        >
+          <Image
+            src="/logo-wordmark-white.png"
+            alt="Thinchronize"
+            width={140}
+            height={22}
+            style={{ height: 20, width: 'auto', display: 'block' }}
+          />
+        </button>
+
         <button
           onClick={onClose}
           style={{
