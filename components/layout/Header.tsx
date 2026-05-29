@@ -130,13 +130,16 @@ export default function Header() {
         ref={desktopHeaderRef}
         className="hidden md:block"
         style={{
-          position:   'fixed',
-          top:        0,
-          left:       0,
-          right:      0,
-          zIndex:     50,
-          height:     72,
-          background: isLight ? '#FFFFFF' : 'transparent',
+          position:        'fixed',
+          top:             0,
+          left:            0,
+          right:           0,
+          zIndex:          50,
+          height:          72,
+          background:      'transparent',
+          backdropFilter:  'none',
+          borderBottom:    'none',
+          boxShadow:       'none',
         }}
       >
 

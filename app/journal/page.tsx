@@ -17,7 +17,7 @@ export default async function JournalPage() {
       <div
         className="container mx-auto"
         style={{
-          paddingTop:    'clamp(140px, 18vw, 220px)',
+          paddingTop:    'clamp(96px, 12vh, 130px)',
           paddingBottom: 'clamp(80px, 10vw, 140px)',
         }}
       >

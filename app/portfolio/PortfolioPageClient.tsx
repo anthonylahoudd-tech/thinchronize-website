@@ -131,7 +131,7 @@ export default function PortfolioPageClient() {
     <div style={{ backgroundColor: '#FFFFFF', minHeight: '100vh' }}>
 
       {/* ── Header ──────────────────────────────────────────────────── */}
-      <div style={{ padding: 'clamp(100px, 12vw, 140px) clamp(24px, 6vw, 80px) 60px' }}>
+      <div style={{ padding: 'clamp(96px, 12vh, 120px) clamp(24px, 6vw, 80px) 60px' }}>
         <p style={{
           fontFamily:    PP,
           fontWeight:    400,
