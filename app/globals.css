@@ -380,14 +380,14 @@ nav button, nav a {
 .menu-link__text {
   font-family:    'PPNeueCorp', system-ui, sans-serif;
   font-weight:    900;
-  font-size:      clamp(52px, 7vw, 88px);
-  letter-spacing: -1px;
+  font-size:      clamp(72px, 10vw, 130px);
+  letter-spacing: -2px;
   line-height:    1;
 }
 
 @media (max-width: 767px) {
   .menu-link__text {
-    font-size: clamp(28px, 9vw, 44px);
+    font-size: clamp(36px, 12vw, 56px);
   }
   .menu-link {
     padding: 14px 24px;

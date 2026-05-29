@@ -220,8 +220,9 @@ export default function Header() {
               letterSpacing: '1.5px',
               background:    '#D0274B',
               color:         '#FFFFFF',
-              padding:       '10px 20px',
+              padding:       '10px 22px',
               border:        'none',
+              borderRadius:  '100px',
               cursor:        'pointer',
               transition:    'background 0.25s ease',
             }}
