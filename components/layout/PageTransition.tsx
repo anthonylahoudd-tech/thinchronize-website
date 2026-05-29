@@ -14,25 +14,26 @@ const EASE_OUT     = 'cubic-bezier(0.23, 1, 0.32, 1)'   // easeOutQuint
 
 // ─── Component ────────────────────────────────────────────────────────────────
 // Always mounted — never unmounts so refs are always ready.
-// All animation is direct DOM manipulation; React never re-renders after mount,
-// so React's reconciler can't fight our transforms.
+// Counter-translate removed: logo rides with the curtain.
+// The previous two-panel technique caused the logo to appear at viewport
+// position even when the curtain was off-screen (CSS overflow:hidden clips
+// to the ORIGINAL box, not the translated box — clip-path:inset(0) was also
+// unreliable). Riding with the curtain is simpler and artefact-free.
 export default function PageTransition() {
-  const router       = useRouter()
-  const curtainRef   = useRef<HTMLDivElement>(null)
-  const logoWrapRef  = useRef<HTMLDivElement>(null)
-  const logoRef      = useRef<HTMLImageElement>(null)
-  const colorIdxRef  = useRef(-1)
-  const timers       = useRef<ReturnType<typeof setTimeout>[]>([])
+  const router      = useRouter()
+  const curtainRef  = useRef<HTMLDivElement>(null)
+  const logoRef     = useRef<HTMLImageElement>(null)
+  const colorIdxRef = useRef(-1)
+  const timers      = useRef<ReturnType<typeof setTimeout>[]>([])
 
   // ── Core fire: animate the curtain, navigate mid-slide ──────────────────────
   const fire = useCallback((href: string) => {
     timers.current.forEach(clearTimeout)
     timers.current = []
 
-    const curtain  = curtainRef.current
-    const logoWrap = logoWrapRef.current
-    const logo     = logoRef.current
-    if (!curtain || !logoWrap) return
+    const curtain = curtainRef.current
+    const logo    = logoRef.current
+    if (!curtain) return
 
     // Pick next colour
     colorIdxRef.current = (colorIdxRef.current + 1) % COLORS.length
@@ -48,18 +49,14 @@ export default function PageTransition() {
     }
 
     // ── PHASE 1: snap to start, then slide IN ─────────────────────────────────
-    curtain.style.transition  = 'none'
-    logoWrap.style.transition = 'none'
-    curtain.style.transform   = 'translateY(100%)'
-    logoWrap.style.transform  = 'translateY(-100%)'
+    curtain.style.transition = 'none'
+    curtain.style.transform  = 'translateY(100%)'
 
     // Double rAF — ensures the browser has painted the reset before we animate
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        curtain.style.transition  = `transform ${SLIDE_MS}ms ${EASE_IN}`
-        logoWrap.style.transition = `transform ${SLIDE_MS}ms ${EASE_IN}`
-        curtain.style.transform   = 'translateY(0%)'
-        logoWrap.style.transform  = 'translateY(0%)'
+        curtain.style.transition = `transform ${SLIDE_MS}ms ${EASE_IN}`
+        curtain.style.transform  = 'translateY(0%)'
       })
     })
 
@@ -69,12 +66,9 @@ export default function PageTransition() {
     // ── PHASE 2: hold then slide OUT ──────────────────────────────────────────
     const tOut = setTimeout(() => {
       const c = curtainRef.current
-      const l = logoWrapRef.current
-      if (!c || !l) return
+      if (!c) return
       c.style.transition = `transform ${SLIDE_MS}ms ${EASE_OUT}`
-      l.style.transition = `transform ${SLIDE_MS}ms ${EASE_OUT}`
       c.style.transform  = 'translateY(-100%)'
-      l.style.transform  = 'translateY(100%)'
     }, SLIDE_MS + HOLD_MS)
 
     timers.current = [tNav, tOut]
@@ -109,10 +103,7 @@ export default function PageTransition() {
     return () => document.removeEventListener('click', handle, true)
   }, [])
 
-  // ── TWO-PANEL CURTAIN ────────────────────────────────────────────────────────
-  // Outer (curtainRef)  : slides UP   from translateY(100%) → 0% → -100%
-  // Inner (logoWrapRef) : slides DOWN the opposite direction at same speed
-  // Net logo movement   : zero — logo appears stationary while curtain moves
+  // ── CURTAIN — single panel, logo centered inside, rides with curtain ─────────
   return (
     <div
       ref={curtainRef}
@@ -122,24 +113,19 @@ export default function PageTransition() {
         zIndex:          9999,
         backgroundColor: COLORS[0],   // overwritten imperatively on each fire
         transform:       'translateY(100%)',
-        clipPath:        'inset(0)',
         pointerEvents:   'none',
         willChange:      'transform',
       }}
     >
       <div
-        ref={logoWrapRef}
         style={{
           position:       'absolute',
           inset:          0,
           display:        'flex',
           alignItems:     'center',
           justifyContent: 'center',
-          transform:      'translateY(-100%)',
-          willChange:     'transform',
         }}
       >
-        {/* Regular <img> so we can hold a ref for imperative filter changes */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           ref={logoRef}

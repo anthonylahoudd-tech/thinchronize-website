@@ -24,17 +24,17 @@ interface Props {
 
 function MenuOverlay({ open, onClose }: Props) {
   const panelRef    = useRef<HTMLDivElement>(null)
-  const contentRef  = useRef<HTMLDivElement>(null)
   const scrollRef   = useRef<HTMLDivElement>(null)
   const firstSetRef = useRef<HTMLDivElement>(null)
   const linkRefs    = useRef<(HTMLButtonElement | null)[]>([])
   const animTimers  = useRef<ReturnType<typeof setTimeout>[]>([])
 
   // ── Open / close panel animation ───────────────────────────────────────────
+  // Counter-translate removed: content rides with the panel so it is never
+  // visible at viewport position when the panel is off-screen.
   useEffect(() => {
-    const panel   = panelRef.current
-    const content = contentRef.current
-    if (!panel || !content) return
+    const panel = panelRef.current
+    if (!panel) return
 
     animTimers.current.forEach(clearTimeout)
     animTimers.current = []
@@ -49,17 +49,13 @@ function MenuOverlay({ open, onClose }: Props) {
       })
 
       // Snap reset
-      panel.style.transition   = 'none'
-      content.style.transition = 'none'
-      panel.style.transform    = 'translateY(-100%)'
-      content.style.transform  = 'translateY(100%)'
+      panel.style.transition = 'none'
+      panel.style.transform  = 'translateY(-100%)'
 
-      // Slide IN (double rAF ensures paint between reset and animate)
+      // Slide IN
       requestAnimationFrame(() => requestAnimationFrame(() => {
-        panel.style.transition   = `transform 600ms ${EASE_OPEN}`
-        content.style.transition = `transform 600ms ${EASE_OPEN}`
-        panel.style.transform    = 'translateY(0%)'
-        content.style.transform  = 'translateY(0%)'
+        panel.style.transition = `transform 600ms ${EASE_OPEN}`
+        panel.style.transform  = 'translateY(0%)'
       }))
 
       // Stagger links once panel has landed
@@ -75,14 +71,12 @@ function MenuOverlay({ open, onClose }: Props) {
       animTimers.current.push(tStagger)
 
     } else {
-      panel.style.transition   = `transform 500ms ${EASE_CLOSE}`
-      content.style.transition = `transform 500ms ${EASE_CLOSE}`
-      panel.style.transform    = 'translateY(-100%)'
-      content.style.transform  = 'translateY(100%)'
+      panel.style.transition = `transform 500ms ${EASE_CLOSE}`
+      panel.style.transform  = 'translateY(-100%)'
     }
   }, [open])
 
-  // ── Scroll reset + hint (fires on open) ────────────────────────────────────
+  // ── Scroll reset + hint on open ────────────────────────────────────────────
   useEffect(() => {
     if (!open) return
     const el = scrollRef.current
@@ -106,9 +100,7 @@ function MenuOverlay({ open, onClose }: Props) {
     const handleScroll = () => {
       const h = firstSet.offsetHeight
       if (!h) return
-      // Loop forward: past first set → jump back by one set height
       if (el.scrollTop >= h) el.scrollTop -= h
-      // Loop backward: above 0 (overscroll) → jump to equivalent position in set
       if (el.scrollTop < 0)  el.scrollTop = h + el.scrollTop
     }
 
@@ -128,7 +120,6 @@ function MenuOverlay({ open, onClose }: Props) {
     transitionTo(href)
   }
 
-  // Renders one full set of nav links
   const renderLinks = (withRefs: boolean) =>
     NAV_LINKS.map((link, i) => (
       <button
@@ -152,126 +143,115 @@ function MenuOverlay({ open, onClose }: Props) {
         zIndex:          100,
         backgroundColor: '#0a0a0a',
         transform:       'translateY(-100%)',
-        clipPath:        'inset(0)',
         pointerEvents:   open ? 'auto' : 'none',
         willChange:      'transform',
       }}
     >
-      <div
-        ref={contentRef}
-        style={{
-          position:  'absolute',
-          inset:     0,
-          transform: 'translateY(100%)',
-          willChange: 'transform',
-        }}
-      >
 
-        {/* ── Close bar (top 80 px) ────────────────────────────────────── */}
-        <div style={{
-          position:       'absolute',
-          top:            0,
-          left:           0,
-          right:          0,
-          height:         80,
-          display:        'flex',
-          justifyContent: 'flex-end',
-          alignItems:     'center',
-          padding:        '0 40px',
-        }}>
-          <button
-            onClick={onClose}
-            style={{
-              fontFamily:          PP,
-              fontWeight:          400,
-              fontSize:            13,
-              letterSpacing:       '3px',
-              textTransform:       'uppercase',
-              color:               'white',
-              background:          'none',
-              border:              'none',
-              cursor:              'pointer',
-              textDecoration:      'underline',
-              textUnderlineOffset: '4px',
-            }}
-          >
-            Close
-          </button>
-        </div>
-
-        {/* ── Infinite-scroll nav (fills between bars) ─────────────────── */}
-        <div
-          ref={scrollRef}
-          className="hide-scrollbar"
+      {/* ── Close bar (top 80 px) ────────────────────────────────────── */}
+      <div style={{
+        position:       'absolute',
+        top:            0,
+        left:           0,
+        right:          0,
+        height:         80,
+        display:        'flex',
+        justifyContent: 'flex-end',
+        alignItems:     'center',
+        padding:        '0 40px',
+      }}>
+        <button
+          onClick={onClose}
           style={{
-            position:  'absolute',
-            top:       80,
-            bottom:    80,
-            left:      0,
-            right:     0,
-            overflowY: 'scroll',
-            overflowX: 'hidden',
+            fontFamily:          PP,
+            fontWeight:          400,
+            fontSize:            13,
+            letterSpacing:       '3px',
+            textTransform:       'uppercase',
+            color:               'white',
+            background:          'none',
+            border:              'none',
+            cursor:              'pointer',
+            textDecoration:      'underline',
+            textUnderlineOffset: '4px',
           }}
         >
-          {/* Set A — refs attached, stagger-animated on open */}
-          <div ref={firstSetRef}>
-            {renderLinks(true)}
-          </div>
-
-          {/* Set B — seamless first repeat */}
-          <div aria-hidden="true">
-            {renderLinks(false)}
-          </div>
-
-          {/* Set C — safety buffer for fast scrollers */}
-          <div aria-hidden="true">
-            {NAV_LINKS.map((link, i) => (
-              <button
-                key={`c-${i}`}
-                className="menu-link"
-                onClick={() => handleNav(link.href)}
-              >
-                <span className="menu-link__num">{link.num}</span>
-                <span className="menu-link__text">{link.label.toUpperCase()}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* ── CTA bar (bottom 80 px) ────────────────────────────────────── */}
-        <div style={{
-          position:   'absolute',
-          bottom:     0,
-          left:       0,
-          right:      0,
-          height:     80,
-          display:    'flex',
-          alignItems: 'center',
-          padding:    '0 48px',
-          borderTop:  '1px solid rgba(255,255,255,0.08)',
-        }}>
-          <button
-            onClick={() => handleNav('/contact')}
-            style={{
-              fontFamily:    PP,
-              fontWeight:    900,
-              fontSize:      13,
-              letterSpacing: '4px',
-              textTransform: 'uppercase',
-              color:         '#D0274B',
-              background:    'none',
-              border:        'none',
-              cursor:        'pointer',
-              transition:    'opacity 0.2s ease',
-            }}
-            onMouseEnter={e => (e.currentTarget.style.opacity = '0.7')}
-            onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
-          >
-            Start A Project →
-          </button>
-        </div>
-
+          Close
+        </button>
       </div>
+
+      {/* ── Infinite-scroll nav (fills between bars) ─────────────────── */}
+      <div
+        ref={scrollRef}
+        className="hide-scrollbar"
+        style={{
+          position:  'absolute',
+          top:       80,
+          bottom:    80,
+          left:      0,
+          right:     0,
+          overflowY: 'scroll',
+          overflowX: 'hidden',
+        }}
+      >
+        {/* Set A — refs attached, stagger-animated on open */}
+        <div ref={firstSetRef}>
+          {renderLinks(true)}
+        </div>
+
+        {/* Set B — seamless first repeat */}
+        <div aria-hidden="true">
+          {renderLinks(false)}
+        </div>
+
+        {/* Set C — safety buffer for fast scrollers */}
+        <div aria-hidden="true">
+          {NAV_LINKS.map((link, i) => (
+            <button
+              key={`c-${i}`}
+              className="menu-link"
+              onClick={() => handleNav(link.href)}
+            >
+              <span className="menu-link__num">{link.num}</span>
+              <span className="menu-link__text">{link.label.toUpperCase()}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* ── CTA bar (bottom 80 px) ────────────────────────────────────── */}
+      <div style={{
+        position:   'absolute',
+        bottom:     0,
+        left:       0,
+        right:      0,
+        height:     80,
+        display:    'flex',
+        alignItems: 'center',
+        padding:    '0 48px',
+        borderTop:  '1px solid rgba(255,255,255,0.08)',
+      }}>
+        <button
+          onClick={() => handleNav('/contact')}
+          style={{
+            fontFamily:    PP,
+            fontWeight:    900,
+            fontSize:      13,
+            letterSpacing: '4px',
+            textTransform: 'uppercase',
+            color:         '#D0274B',
+            background:    'none',
+            border:        'none',
+            cursor:        'pointer',
+            transition:    'opacity 0.2s ease',
+          }}
+          onMouseEnter={e => (e.currentTarget.style.opacity = '0.7')}
+          onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
+        >
+          Start A Project →
+        </button>
+      </div>
+
     </div>
   )
 }

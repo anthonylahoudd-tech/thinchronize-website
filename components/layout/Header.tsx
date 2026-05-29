@@ -163,20 +163,18 @@ export default function Header() {
           </button>
         </div>
 
-        {/* ZONE 2 — Center links (fade + slide up when scrolled) ────────── */}
+        {/* ZONE 2 — Center links (fade out when scrolled) ───────────────── */}
         <div style={{
           position:      'absolute',
           top:           '50%',
           left:          '50%',
-          transform:     scrolled
-            ? `translate(-50%, calc(-50% - 6px))`
-            : `translate(-50%, -50%)`,
+          transform:     'translate(-50%, -50%)',
           display:       'flex',
           alignItems:    'center',
           gap:           40,
           opacity:       scrolled ? 0 : 1,
           pointerEvents: scrolled ? 'none' : 'auto',
-          transition:    `opacity 600ms ${EASE}, transform 600ms ${EASE}`,
+          transition:    'opacity 500ms ease',
           whiteSpace:    'nowrap',
         }}>
           {NAV_LINKS.map(link => (
@@ -209,12 +207,10 @@ export default function Header() {
           position:      'absolute',
           top:           '50%',
           right:         40,
-          transform:     scrolled
-            ? 'translateY(calc(-50% - 6px))'
-            : 'translateY(-50%)',
+          transform:     'translateY(-50%)',
           opacity:       scrolled ? 0 : 1,
           pointerEvents: scrolled ? 'none' : 'auto',
-          transition:    `opacity 600ms ${EASE}, transform 600ms ${EASE}`,
+          transition:    'opacity 500ms ease',
         }}>
           <button
             onClick={() => transitionTo('/contact')}
@@ -239,21 +235,19 @@ export default function Header() {
         </div>
 
         {/* ZONE 4 — MESSAGE BIN + MENU, scrolled state (fades in) ─────────
-            Both transitions: 600 ms easeOutExpo, same timing as Zone 2/3 fade-out.
-            Result: one choreographed crossfade, not two separate animations.        */}
+            Opacity 0→1 at 500ms ease — starts slowly so the fade is visible,
+            simultaneous with Zone 2+3 fading out for a single choreography.         */}
         <div style={{
           position:      'absolute',
           top:           '50%',
           right:         40,
-          transform:     scrolled
-            ? 'translateY(-50%)'
-            : 'translateY(calc(-50% + 6px))',
+          transform:     'translateY(-50%)',
           display:       'flex',
           alignItems:    'center',
           gap:           32,
           opacity:       scrolled && !menuOpen ? 1 : 0,
           pointerEvents: scrolled && !menuOpen ? 'auto' : 'none',
-          transition:    `opacity 600ms ${EASE}, transform 600ms ${EASE}`,
+          transition:    'opacity 500ms ease',
         }}>
           <button
             onClick={() => transitionTo('/contact')}
