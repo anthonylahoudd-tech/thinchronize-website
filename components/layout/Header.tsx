@@ -64,14 +64,13 @@ export default function Header() {
           Logo left · MENU button right · fades out when overlay is open
       ══════════════════════════════════════════════════════════════════════ */}
       <header
-        className="md:hidden"
+        className="flex md:hidden"
         style={{
           position:       'fixed',
           top:            0,
           left:           0,
           right:          0,
           zIndex:         150,
-          display:        'flex',
           alignItems:     'center',
           justifyContent: 'space-between',
           padding:        '20px 24px',
