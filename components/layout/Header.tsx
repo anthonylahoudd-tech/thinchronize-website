@@ -26,7 +26,7 @@ export default function Header() {
 
   // ── Scroll tracking ────────────────────────────────────────────────────────
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 80)
+    const onScroll = () => setScrolled(window.scrollY > 100)
     window.addEventListener('scroll', onScroll, { passive: true })
     onScroll()
     return () => window.removeEventListener('scroll', onScroll)
@@ -71,7 +71,7 @@ export default function Header() {
           zIndex:         150,
           alignItems:     'center',
           justifyContent: 'space-between',
-          padding:        '20px 24px',
+          padding:        '24px 28px',
           background:     'transparent',
           opacity:        menuOpen ? 0 : 1,
           pointerEvents:  menuOpen ? 'none' : 'auto',
@@ -88,7 +88,7 @@ export default function Header() {
             src="/logo-wordmark-white.png"
             alt="Thinchronize"
             width={130} height={22}
-            style={{ height: 20, width: 'auto', display: 'block' }}
+            style={{ height: 24, width: 'auto', display: 'block' }}
             priority
           />
         </button>
@@ -98,8 +98,8 @@ export default function Header() {
           style={{
             fontFamily:          PP,
             fontWeight:          400,
-            fontSize:            11,
-            letterSpacing:       '3.5px',
+            fontSize:            13,
+            letterSpacing:       '4px',
             textTransform:       'uppercase',
             color:               'white',
             background:          'none',
@@ -137,7 +137,7 @@ export default function Header() {
           left:         0,
           right:        0,
           zIndex:       50,
-          height:       72,
+          height:       96,
           background:   'transparent',
           mixBlendMode: 'difference',
         }}
@@ -147,7 +147,7 @@ export default function Header() {
         <div style={{
           position:  'absolute',
           top:       '50%',
-          left:      40,
+          left:      56,
           transform: 'translateY(-50%)',
         }}>
           {/* Wordmark — always present, fades out FIRST on scroll */}
@@ -161,7 +161,7 @@ export default function Header() {
               alt="Thinchronize"
               width={130} height={22}
               style={{
-                height:     20,
+                height:     30,
                 width:      'auto',
                 display:    'block',
                 opacity:    logoSwapped ? 0 : 1,
@@ -177,7 +177,7 @@ export default function Header() {
           <button
             onClick={() => transitionTo('/')}
             style={{
-              position: 'absolute', top: -10, left: -10,
+              position: 'absolute', top: -13, left: -12,
               background: 'none', border: 'none', padding: 0,
             }}
             aria-label="Go to homepage"
@@ -185,7 +185,7 @@ export default function Header() {
             <Image
               src="/images/logo-stacked.png"
               alt="Thinchronize"
-              width={44} height={44}
+              width={56} height={56}
               style={{
                 display:    'block',
                 opacity:    logoSwapped ? 1 : 0,
@@ -206,7 +206,7 @@ export default function Header() {
           transform:  'translate(-50%, -50%)',
           display:    'flex',
           alignItems: 'center',
-          gap:        40,
+          gap:        48,
           listStyle:  'none',
           padding:    0,
           margin:     0,
@@ -220,7 +220,7 @@ export default function Header() {
                 key={link.label}
                 style={{
                   opacity:       scrolled ? 0 : 1,
-                  transform:     scrolled ? 'translateY(-5px)' : 'translateY(0)',
+                  transform:     scrolled ? 'translateY(-8px)' : 'translateY(0)',
                   transition:    scrolled
                     ? `opacity 500ms ${EASE} ${disappearDelay}ms, transform 500ms ${EASE} ${disappearDelay}ms`
                     : `opacity 500ms ${EASE} ${appearDelay}ms,    transform 500ms ${EASE} ${appearDelay}ms`,
@@ -232,17 +232,17 @@ export default function Header() {
                   style={{
                     fontFamily:    PP,
                     fontWeight:    400,
-                    fontSize:      13,
-                    letterSpacing: '3.5px',
+                    fontSize:      15,
+                    letterSpacing: '4px',
                     textTransform: 'uppercase',
-                    color:         'rgba(255,255,255,0.8)',
+                    color:         'rgba(255,255,255,0.85)',
                     background:    'none',
                     border:        'none',
                     padding:       0,
                     transition:    'opacity 200ms ease',
                   }}
                   onMouseEnter={e => (e.currentTarget.style.opacity = '1')}
-                  onMouseLeave={e => (e.currentTarget.style.opacity = '0.8')}
+                  onMouseLeave={e => (e.currentTarget.style.opacity = '0.85')}
                 >
                   {link.label}
                 </button>
@@ -252,14 +252,14 @@ export default function Header() {
         </ul>
 
         {/* ── Zone 3 — Right: LET'S SYNC. always · MENU slides in on scroll ──
-            Container is right-anchored (right: 40).
-            As the MENU clip-wrapper grows (0 → 110px), it pushes LET'S SYNC.
+            Container is right-anchored (right: 56).
+            As the MENU clip-wrapper grows (0 → 130px), it pushes LET'S SYNC.
             to the left — giving the Motto-style "split reveal" on scroll.
         ──────────────────────────────────────────────────────────────────── */}
         <div style={{
           position:   'absolute',
           top:        '50%',
-          right:      40,
+          right:      56,
           transform:  'translateY(-50%)',
           display:    'flex',
           alignItems: 'center',
@@ -271,10 +271,10 @@ export default function Header() {
             style={{
               fontFamily:          PP,
               fontWeight:          400,
-              fontSize:            12,
-              letterSpacing:       '3.5px',
+              fontSize:            14,
+              letterSpacing:       '4px',
               textTransform:       'uppercase',
-              color:               'rgba(255,255,255,0.8)',
+              color:               'rgba(255,255,255,0.85)',
               background:          'none',
               border:              'none',
               padding:             0,
@@ -285,19 +285,19 @@ export default function Header() {
               whiteSpace:          'nowrap',
             }}
             onMouseEnter={e => (e.currentTarget.style.opacity = '1')}
-            onMouseLeave={e => (e.currentTarget.style.opacity = '0.8')}
+            onMouseLeave={e => (e.currentTarget.style.opacity = '0.85')}
           >
             LET&apos;S SYNC.
           </button>
 
           {/* MENU — clip-reveals on scroll, pushing SYNC left
               overflow:hidden on wrapper clips the inner content.
-              Width 0 → 110px drives the layout push (LET'S SYNC. slides left).
+              Width 0 → 130px drives the layout push (LET'S SYNC. slides left).
               The 36px paddingLeft on the inner div acts as the visual gap —
               it is clipped away when width is 0 (box-sizing: border-box). */}
           <div style={{
             overflow:   'hidden',
-            width:      scrolled ? '110px' : '0px',
+            width:      scrolled ? '130px' : '0px',
             transition: scrolled
               ? `width 600ms ${EASE} 80ms`
               : `width 500ms ${EASE} 0ms`,
@@ -310,10 +310,10 @@ export default function Header() {
                 style={{
                   fontFamily:          PP,
                   fontWeight:          400,
-                  fontSize:            12,
-                  letterSpacing:       '3.5px',
+                  fontSize:            14,
+                  letterSpacing:       '4px',
                   textTransform:       'uppercase',
-                  color:               'rgba(255,255,255,0.8)',
+                  color:               'rgba(255,255,255,0.85)',
                   background:          'none',
                   border:              'none',
                   padding:             0,
@@ -328,7 +328,7 @@ export default function Header() {
                   whiteSpace:          'nowrap',
                 }}
                 onMouseEnter={e => (e.currentTarget.style.opacity = '1')}
-                onMouseLeave={e => (e.currentTarget.style.opacity = '0.8')}
+                onMouseLeave={e => (e.currentTarget.style.opacity = '0.85')}
               >
                 MENU
               </button>
