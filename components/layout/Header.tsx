@@ -52,13 +52,14 @@ export default function Header() {
 
   const handleClose = useCallback(() => setMenuOpen(false), [])
 
-  // Logo state: wordmark visible at top, packed logo visible when scrolled/menu open
+  // Logo state: wordmark at top, packed logo when scrolled/menu open
   const logoSwapped = scrolled || menuOpen
 
   return (
     <>
       {/* ══════════════════════════════════════════════════════════════════════
-          MOBILE HEADER — logo left · MENU right · fades when overlay opens
+          MOBILE HEADER
+          mix-blend-mode: difference → logo + MENU text invert against any bg
       ══════════════════════════════════════════════════════════════════════ */}
       <header
         className="flex md:hidden"
@@ -75,11 +76,12 @@ export default function Header() {
           opacity:        menuOpen ? 0 : 1,
           pointerEvents:  menuOpen ? 'none' : 'auto',
           transition:     `opacity 300ms ${EASE}`,
+          mixBlendMode:   'difference',
         }}
       >
         <button
           onClick={() => transitionTo('/')}
-          style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+          style={{ background: 'none', border: 'none', padding: 0 }}
           aria-label="Go to homepage"
         >
           <Image
@@ -102,7 +104,6 @@ export default function Header() {
             color:               'white',
             background:          'none',
             border:              'none',
-            cursor:              'pointer',
             textDecoration:      'underline',
             textUnderlineOffset: '4px',
           }}
@@ -112,42 +113,47 @@ export default function Header() {
       </header>
 
       {/* ══════════════════════════════════════════════════════════════════════
-          DESKTOP HEADER — Motto-style choreography
+          DESKTOP HEADER
 
-          t=0ms:    Links disappear right-to-left · wordmark fades out
-          t=100ms:  LET'S SYNC.+MENU pair fades in
-          t=225ms:  Last (leftmost) link finishes fading
-          t=350ms:  Wordmark gone → packed logo fades in
-          t=600ms:  Settled
+          mix-blend-mode: difference ─────────────────────────────────────────
+          All white elements invert against whatever is painted beneath them.
+          Dark bg  → white stays white (|dark − white| ≈ white)
+          Light bg → white becomes black (|white − white| = 0)
+          Same effect as the custom cursor, applied to every nav element.
+
+          Scroll choreography ────────────────────────────────────────────────
+          t=0ms:   Links stagger out right→left · wordmark fades out first
+          t=80ms:  MENU wrapper begins expanding (width 0 → 110px)
+          t=150ms: MENU text slides/fades in
+          t=350ms: Packed logo fades in (wordmark fully gone)
+          t=600ms: Settled
       ══════════════════════════════════════════════════════════════════════ */}
       <header
         ref={desktopHeaderRef}
         className="hidden md:block"
         style={{
-          position:       'fixed',
-          top:            0,
-          left:           0,
-          right:          0,
-          zIndex:         50,
-          height:         72,
-          background:     'transparent',
-          backdropFilter: 'none',
-          borderBottom:   'none',
-          boxShadow:      'none',
+          position:     'fixed',
+          top:          0,
+          left:         0,
+          right:        0,
+          zIndex:       50,
+          height:       72,
+          background:   'transparent',
+          mixBlendMode: 'difference',
         }}
       >
 
-        {/* ── ZONE 1 — Logo cross-fade ──────────────────────────────────── */}
+        {/* ── Zone 1 — Logo cross-fade ──────────────────────────────────── */}
         <div style={{
           position:  'absolute',
           top:       '50%',
           left:      40,
           transform: 'translateY(-50%)',
         }}>
-          {/* Wordmark — visible at top, fades out FIRST (no delay) */}
+          {/* Wordmark — always present, fades out FIRST on scroll */}
           <button
             onClick={() => transitionTo('/')}
-            style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', display: 'block' }}
+            style={{ background: 'none', border: 'none', padding: 0, display: 'block' }}
             aria-label="Go to homepage"
           >
             <Image
@@ -160,19 +166,19 @@ export default function Header() {
                 display:    'block',
                 opacity:    logoSwapped ? 0 : 1,
                 transition: logoSwapped
-                  ? `opacity 350ms ${EASE} 0ms`     // fades out first
-                  : `opacity 350ms ${EASE} 350ms`,  // fades in after packed is gone
+                  ? `opacity 350ms ${EASE} 0ms`
+                  : `opacity 350ms ${EASE} 350ms`,
               }}
               priority
             />
           </button>
 
-          {/* Packed logo — fades in AFTER wordmark is gone (350ms delay) */}
+          {/* Packed logo — fades in AFTER wordmark gone (350ms delay) */}
           <button
             onClick={() => transitionTo('/')}
             style={{
               position: 'absolute', top: -10, left: -10,
-              background: 'none', border: 'none', padding: 0, cursor: 'pointer',
+              background: 'none', border: 'none', padding: 0,
             }}
             aria-label="Go to homepage"
           >
@@ -184,15 +190,15 @@ export default function Header() {
                 display:    'block',
                 opacity:    logoSwapped ? 1 : 0,
                 transition: logoSwapped
-                  ? `opacity 350ms ${EASE} 350ms`  // fades in after wordmark gone
-                  : `opacity 350ms ${EASE} 0ms`,   // fades out first
-                filter: 'brightness(0) invert(1)', // white version
+                  ? `opacity 350ms ${EASE} 350ms`
+                  : `opacity 350ms ${EASE} 0ms`,
+                filter:     'brightness(0) invert(1)',
               }}
             />
           </button>
         </div>
 
-        {/* ── ZONE 2 — Center links: staggered right-to-left disappear ─────── */}
+        {/* ── Zone 2 — Center links: staggered right→left disappear ────── */}
         <ul style={{
           position:   'absolute',
           top:        '50%',
@@ -207,7 +213,6 @@ export default function Header() {
           whiteSpace: 'nowrap',
         }}>
           {NAV_LINKS.map((link, i) => {
-            // right-to-left: last link (i=TOTAL-1) delay=0ms, first link delay=(TOTAL-1)*45ms
             const disappearDelay = (TOTAL - 1 - i) * 45
             const appearDelay    = i * 45
             return (
@@ -234,8 +239,7 @@ export default function Header() {
                     background:    'none',
                     border:        'none',
                     padding:       0,
-                    cursor:        'pointer',
-                    transition:    `opacity 200ms ease`,
+                    transition:    'opacity 200ms ease',
                   }}
                   onMouseEnter={e => (e.currentTarget.style.opacity = '1')}
                   onMouseLeave={e => (e.currentTarget.style.opacity = '0.8')}
@@ -247,53 +251,21 @@ export default function Header() {
           })}
         </ul>
 
-        {/* ── ZONE 3 — Full state: LET'S SYNC. pill (not scrolled) ────────── */}
+        {/* ── Zone 3 — Right: LET'S SYNC. always · MENU slides in on scroll ──
+            Container is right-anchored (right: 40).
+            As the MENU clip-wrapper grows (0 → 110px), it pushes LET'S SYNC.
+            to the left — giving the Motto-style "split reveal" on scroll.
+        ──────────────────────────────────────────────────────────────────── */}
         <div style={{
-          position:      'absolute',
-          top:           '50%',
-          right:         40,
-          transform:     scrolled ? 'translateY(calc(-50% - 5px))' : 'translateY(-50%)',
-          opacity:       scrolled ? 0 : 1,
-          transition:    `opacity 500ms ${EASE}, transform 500ms ${EASE}`,
-          pointerEvents: scrolled ? 'none' : 'auto',
+          position:   'absolute',
+          top:        '50%',
+          right:      40,
+          transform:  'translateY(-50%)',
+          display:    'flex',
+          alignItems: 'center',
         }}>
-          <button
-            onClick={() => transitionTo('/contact')}
-            style={{
-              fontFamily:    PP,
-              fontWeight:    400,
-              fontSize:      12,
-              letterSpacing: '3.5px',
-              textTransform: 'uppercase',
-              color:         '#FFFFFF',
-              background:    '#D0274B',
-              padding:       '10px 22px',
-              border:        'none',
-              borderRadius:  '100px',
-              cursor:        'pointer',
-              opacity:       0.9,
-              transition:    'background 0.25s ease',
-            }}
-            onMouseEnter={e => (e.currentTarget.style.background = '#b8223f')}
-            onMouseLeave={e => (e.currentTarget.style.background = '#D0274B')}
-          >
-            LET'S SYNC.
-          </button>
-        </div>
 
-        {/* ── ZONE 4 — Scrolled state: LET'S SYNC. + MENU (100ms delay) ───── */}
-        <div style={{
-          position:      'absolute',
-          top:           '50%',
-          right:         40,
-          transform:     scrolled ? 'translateY(-50%)' : 'translateY(calc(-50% + 5px))',
-          display:       'flex',
-          alignItems:    'center',
-          gap:           36,
-          opacity:       scrolled ? 1 : 0,
-          transition:    `opacity 500ms ${EASE} 100ms, transform 500ms ${EASE} 100ms`,
-          pointerEvents: scrolled ? 'auto' : 'none',
-        }}>
+          {/* LET'S SYNC. — always visible, plain underlined text (no pill) */}
           <button
             onClick={() => transitionTo('/contact')}
             style={{
@@ -306,46 +278,68 @@ export default function Header() {
               background:          'none',
               border:              'none',
               padding:             0,
-              cursor:              'pointer',
               textDecoration:      'underline',
               textUnderlineOffset: '4px',
               textDecorationColor: 'rgba(255,255,255,0.35)',
               transition:          'opacity 200ms ease',
+              whiteSpace:          'nowrap',
             }}
             onMouseEnter={e => (e.currentTarget.style.opacity = '1')}
             onMouseLeave={e => (e.currentTarget.style.opacity = '0.8')}
           >
-            LET'S SYNC.
+            LET&apos;S SYNC.
           </button>
 
-          <button
-            onClick={() => setMenuOpen(true)}
-            style={{
-              fontFamily:          PP,
-              fontWeight:          400,
-              fontSize:            12,
-              letterSpacing:       '3.5px',
-              textTransform:       'uppercase',
-              color:               'rgba(255,255,255,0.8)',
-              background:          'none',
-              border:              'none',
-              padding:             0,
-              cursor:              'pointer',
-              textDecoration:      'underline',
-              textUnderlineOffset: '4px',
-              textDecorationColor: 'rgba(255,255,255,0.35)',
-              transition:          'opacity 200ms ease',
-            }}
-            onMouseEnter={e => (e.currentTarget.style.opacity = '1')}
-            onMouseLeave={e => (e.currentTarget.style.opacity = '0.8')}
-          >
-            MENU
-          </button>
+          {/* MENU — clip-reveals on scroll, pushing SYNC left
+              overflow:hidden on wrapper clips the inner content.
+              Width 0 → 110px drives the layout push (LET'S SYNC. slides left).
+              The 36px paddingLeft on the inner div acts as the visual gap —
+              it is clipped away when width is 0 (box-sizing: border-box). */}
+          <div style={{
+            overflow:   'hidden',
+            width:      scrolled ? '110px' : '0px',
+            transition: scrolled
+              ? `width 600ms ${EASE} 80ms`
+              : `width 500ms ${EASE} 0ms`,
+            display:    'flex',
+            alignItems: 'center',
+          }}>
+            <div style={{ paddingLeft: 36, flexShrink: 0, display: 'flex', alignItems: 'center' }}>
+              <button
+                onClick={() => setMenuOpen(true)}
+                style={{
+                  fontFamily:          PP,
+                  fontWeight:          400,
+                  fontSize:            12,
+                  letterSpacing:       '3.5px',
+                  textTransform:       'uppercase',
+                  color:               'rgba(255,255,255,0.8)',
+                  background:          'none',
+                  border:              'none',
+                  padding:             0,
+                  textDecoration:      'underline',
+                  textUnderlineOffset: '4px',
+                  textDecorationColor: 'rgba(255,255,255,0.35)',
+                  opacity:             scrolled ? 1 : 0,
+                  transform:           scrolled ? 'translateX(0)' : 'translateX(8px)',
+                  transition:          scrolled
+                    ? `opacity 400ms ${EASE} 200ms, transform 500ms ${EASE} 150ms`
+                    : `opacity 200ms ease, transform 300ms ease`,
+                  whiteSpace:          'nowrap',
+                }}
+                onMouseEnter={e => (e.currentTarget.style.opacity = '1')}
+                onMouseLeave={e => (e.currentTarget.style.opacity = '0.8')}
+              >
+                MENU
+              </button>
+            </div>
+          </div>
+
         </div>
 
       </header>
 
-      {/* Full-screen overlay — works on all screen sizes */}
+      {/* Full-screen overlay — all screen sizes */}
       <MenuOverlay open={menuOpen} onClose={handleClose} />
     </>
   )
