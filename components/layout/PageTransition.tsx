@@ -122,7 +122,7 @@ export default function PageTransition() {
         zIndex:          9999,
         backgroundColor: COLORS[0],   // overwritten imperatively on each fire
         transform:       'translateY(100%)',
-        overflow:        'hidden',
+        clipPath:        'inset(0)',
         pointerEvents:   'none',
         willChange:      'transform',
       }}

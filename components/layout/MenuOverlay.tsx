@@ -152,7 +152,7 @@ function MenuOverlay({ open, onClose }: Props) {
         zIndex:          100,
         backgroundColor: '#0a0a0a',
         transform:       'translateY(-100%)',
-        overflow:        'hidden',
+        clipPath:        'inset(0)',
         pointerEvents:   open ? 'auto' : 'none',
         willChange:      'transform',
       }}
