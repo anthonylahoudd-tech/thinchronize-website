@@ -184,6 +184,7 @@ function MenuOverlay({ open, onClose }: Props) {
       <div
         ref={scrollRef}
         className="hide-scrollbar"
+        data-lenis-prevent
         style={{
           position:  'absolute',
           top:       80,

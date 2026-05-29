@@ -353,7 +353,7 @@ nav button, nav a {
   width:           100%;
   background:      none;
   text-align:      left;
-  color:           #1a1a1a;
+  color:           rgba(255, 255, 255, 0.18);
   transition:      color 400ms cubic-bezier(0.23, 1, 0.32, 1);
   text-decoration: none;
 }
@@ -361,13 +361,19 @@ nav button, nav a {
 .menu-link:hover { color: #FFFFFF; }
 
 .menu-link__num {
-  font-family:   'PPNeueCorp', system-ui, sans-serif;
-  font-weight:   400;
-  font-size:     11px;
+  font-family:    'PPNeueCorp', system-ui, sans-serif;
+  font-weight:    400;
+  font-size:      11px;
   letter-spacing: 2px;
-  opacity:       0.4;
-  padding-top:   4px;
-  flex-shrink:   0;
+  color:          rgba(255, 255, 255, 0.5);
+  opacity:        1;
+  padding-top:    4px;
+  flex-shrink:    0;
+  transition:     color 400ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.menu-link:hover .menu-link__num {
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .menu-link__text {

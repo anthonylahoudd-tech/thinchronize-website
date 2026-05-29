@@ -36,9 +36,12 @@ export default function Header() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // ── Body scroll lock ───────────────────────────────────────────────────────
+  // ── Body scroll lock + Lenis pause ────────────────────────────────────────
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : ''
+    const lenis = (window as typeof window & { lenis?: { stop: () => void; start: () => void } }).lenis
+    if (menuOpen) lenis?.stop()
+    else          lenis?.start()
     return () => { document.body.style.overflow = '' }
   }, [menuOpen])
 
