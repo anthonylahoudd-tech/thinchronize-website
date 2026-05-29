@@ -1,14 +1,13 @@
-import Hero                  from '@/components/sections/Hero'
-import MindfulDesignReveal  from '@/components/sections/MindfulDesignReveal'
-import About                from '@/components/sections/About'
-import Manifesto       from '@/components/sections/Manifesto'
-import Work            from '@/components/sections/Work'
-import Services        from '@/components/sections/Services'
-import AddOns          from '@/components/sections/AddOns'
-import AlumniProgram   from '@/components/sections/AlumniProgram'
-import Journal         from '@/components/sections/Journal'
-import Contact         from '@/components/sections/Contact'
-import Marquee         from '@/components/ui/Marquee'
+import About          from '@/components/sections/About'
+import MindfulDesignReveal from '@/components/sections/MindfulDesignReveal'
+import Manifesto      from '@/components/sections/Manifesto'
+import Work           from '@/components/sections/Work'
+import Services       from '@/components/sections/Services'
+import AddOns         from '@/components/sections/AddOns'
+import AlumniProgram  from '@/components/sections/AlumniProgram'
+import Journal        from '@/components/sections/Journal'
+import Contact        from '@/components/sections/Contact'
+import Marquee        from '@/components/ui/Marquee'
 import { getFeaturedCaseStudies, getJournalPosts } from '@/lib/sanity/queries'
 
 export default async function HomePage() {
@@ -19,11 +18,10 @@ export default async function HomePage() {
 
   return (
     <>
-      <Hero />
+      <About />
 
       <MindfulDesignReveal />
       <Marquee dark />
-      <About />
       <Manifesto />
       <Work caseStudies={caseStudies} />
       <Services />
