@@ -12,12 +12,11 @@ const EASE        = 'cubic-bezier(0.19, 1, 0.22, 1)'
 const LIGHT_PAGES = ['/services', '/portfolio', '/about', '/method']
 
 const NAV_LINKS = [
-  { label: 'Home',      href: '/'          },
-  { label: 'Services',  href: '/services'  },
-  { label: 'Method',    href: '/method'    },
-  { label: 'About',     href: '/about'     },
-  { label: 'Portfolio', href: '/portfolio' },
-  { label: 'Journal',   href: '/journal'   },
+  { label: 'Work',     href: '/portfolio' },
+  { label: 'About',   href: '/about'     },
+  { label: 'Method',  href: '/method'    },
+  { label: 'Services', href: '/services' },
+  { label: 'Ideas',   href: '/journal'   },
 ]
 
 export default function Header() {
@@ -104,8 +103,7 @@ export default function Header() {
             fontFamily:          PP,
             fontWeight:          400,
             fontSize:            11,
-            letterSpacing:       '3px',
-            textTransform:       'uppercase',
+            letterSpacing:       '1.5px',
             color:               isLight ? '#292929' : 'white',
             background:          'none',
             border:              'none',
@@ -187,8 +185,7 @@ export default function Header() {
                 fontFamily:    PP,
                 fontWeight:    400,
                 fontSize:      12,
-                letterSpacing: '3px',
-                textTransform: 'uppercase',
+                letterSpacing: '1.5px',
                 color:         linkColor,
                 background:    'none',
                 border:        'none',
@@ -220,8 +217,7 @@ export default function Header() {
               fontFamily:    PP,
               fontWeight:    400,
               fontSize:      11,
-              letterSpacing: '3px',
-              textTransform: 'uppercase',
+              letterSpacing: '1.5px',
               background:    '#D0274B',
               color:         '#FFFFFF',
               padding:       '10px 20px',
@@ -232,7 +228,7 @@ export default function Header() {
             onMouseEnter={e => (e.currentTarget.style.background = '#b8223f')}
             onMouseLeave={e => (e.currentTarget.style.background = '#D0274B')}
           >
-            Message Bin
+            Let's Sync.
           </button>
         </div>
 
@@ -257,8 +253,7 @@ export default function Header() {
               fontFamily:          PP,
               fontWeight:          400,
               fontSize:            12,
-              letterSpacing:       '3px',
-              textTransform:       'uppercase',
+              letterSpacing:       '1.5px',
               color:               'white',
               background:          'none',
               border:              'none',
@@ -271,7 +266,7 @@ export default function Header() {
             onMouseEnter={e => (e.currentTarget.style.opacity = '0.7')}
             onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
           >
-            Message Bin
+            Let's Sync.
           </button>
 
           <button
@@ -280,8 +275,7 @@ export default function Header() {
               fontFamily:          PP,
               fontWeight:          400,
               fontSize:            12,
-              letterSpacing:       '3px',
-              textTransform:       'uppercase',
+              letterSpacing:       '1.5px',
               color:               'white',
               background:          'none',
               border:              'none',

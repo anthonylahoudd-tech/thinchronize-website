@@ -10,12 +10,12 @@ const EASE_LINK  = 'cubic-bezier(0.23, 1, 0.32, 1)'
 const PP         = "'PPNeueCorp', system-ui, sans-serif"
 
 const NAV_LINKS = [
-  { num: '01', label: 'Home',      href: '/'          },
-  { num: '02', label: 'Services',  href: '/services'  },
-  { num: '03', label: 'Method',    href: '/method'    },
-  { num: '04', label: 'About',     href: '/about'     },
-  { num: '05', label: 'Portfolio', href: '/portfolio' },
-  { num: '06', label: 'Journal',   href: '/journal'   },
+  { num: '01', label: 'Home',     href: '/'          },
+  { num: '02', label: 'Work',     href: '/portfolio' },
+  { num: '03', label: 'About',    href: '/about'     },
+  { num: '04', label: 'Method',   href: '/method'    },
+  { num: '05', label: 'Services', href: '/services'  },
+  { num: '06', label: 'Ideas',    href: '/journal'   },
 ]
 
 interface Props {
