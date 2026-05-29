@@ -184,8 +184,8 @@ export default function Header() {
               style={{
                 fontFamily:    PP,
                 fontWeight:    400,
-                fontSize:      12,
-                letterSpacing: '1.5px',
+                fontSize:      15,
+                letterSpacing: '1px',
                 color:         linkColor,
                 background:    'none',
                 border:        'none',
