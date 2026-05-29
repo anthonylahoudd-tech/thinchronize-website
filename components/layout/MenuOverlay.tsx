@@ -6,6 +6,7 @@ import { transitionTo } from '@/lib/pageTransition'
 const EASE_OPEN  = 'cubic-bezier(0.76, 0, 0.24, 1)'
 const EASE_CLOSE = 'cubic-bezier(0.23, 1, 0.22, 1)'
 const EASE_LINK  = 'cubic-bezier(0.23, 1, 0.32, 1)'
+const PP         = "'PPNeueCorp', system-ui, sans-serif"
 
 const NAV_LINKS = [
   { num: '01', label: 'Home',      href: '/'          },
@@ -22,39 +23,24 @@ interface Props {
 }
 
 function MenuOverlay({ open, onClose }: Props) {
-  const panelRef   = useRef<HTMLDivElement>(null)
-  const contentRef = useRef<HTMLDivElement>(null)
-  const scrollRef  = useRef<HTMLDivElement>(null)
-  const listRef    = useRef<HTMLDivElement>(null)
-  const linkRefs   = useRef<(HTMLButtonElement | null)[]>([])
-  const timers     = useRef<ReturnType<typeof setTimeout>[]>([])
+  const panelRef    = useRef<HTMLDivElement>(null)
+  const contentRef  = useRef<HTMLDivElement>(null)
+  const scrollRef   = useRef<HTMLDivElement>(null)
+  const firstSetRef = useRef<HTMLDivElement>(null)
+  const linkRefs    = useRef<(HTMLButtonElement | null)[]>([])
+  const animTimers  = useRef<ReturnType<typeof setTimeout>[]>([])
 
-  // ── Infinite scroll: reset position when we pass the first full list ─────────
-  useEffect(() => {
-    const el   = scrollRef.current
-    const list = listRef.current
-    if (!el || !list) return
-    const onScroll = () => {
-      if (el.scrollTop >= list.offsetHeight) el.scrollTop -= list.offsetHeight
-    }
-    el.addEventListener('scroll', onScroll, { passive: true })
-    return () => el.removeEventListener('scroll', onScroll)
-  }, [])
-
-  // ── Open / close animation ────────────────────────────────────────────────────
+  // ── Open / close panel animation ───────────────────────────────────────────
   useEffect(() => {
     const panel   = panelRef.current
     const content = contentRef.current
     if (!panel || !content) return
 
-    timers.current.forEach(clearTimeout)
-    timers.current = []
+    animTimers.current.forEach(clearTimeout)
+    animTimers.current = []
 
     if (open) {
-      // Reset scroll
-      if (scrollRef.current) scrollRef.current.scrollTop = 0
-
-      // Hide original links (clone stays visible so loop looks seamless)
+      // Pre-hide links (clones stay visible — loop stays seamless)
       linkRefs.current.forEach(el => {
         if (!el) return
         el.style.transition = 'none'
@@ -62,13 +48,13 @@ function MenuOverlay({ open, onClose }: Props) {
         el.style.transform  = 'translateY(40px)'
       })
 
-      // Snap panel to start
+      // Snap reset
       panel.style.transition   = 'none'
       content.style.transition = 'none'
       panel.style.transform    = 'translateY(-100%)'
       content.style.transform  = 'translateY(100%)'
 
-      // Slide IN
+      // Slide IN (double rAF ensures paint between reset and animate)
       requestAnimationFrame(() => requestAnimationFrame(() => {
         panel.style.transition   = `transform 600ms ${EASE_OPEN}`
         content.style.transition = `transform 600ms ${EASE_OPEN}`
@@ -82,21 +68,11 @@ function MenuOverlay({ open, onClose }: Props) {
           if (!el) return
           el.style.transition = `opacity 600ms ${EASE_LINK} ${i * 55}ms,
                                   transform 600ms ${EASE_LINK} ${i * 55}ms`
-          el.style.opacity    = '1'
-          el.style.transform  = 'translateY(0px)'
+          el.style.opacity   = '1'
+          el.style.transform = 'translateY(0px)'
         })
       }, 600)
-      timers.current.push(tStagger)
-
-      // Auto-scroll hint: nudge down then back, tells user list is scrollable
-      const tHint = setTimeout(() => {
-        const el = scrollRef.current
-        if (!el) return
-        el.scrollTo({ top: 120, behavior: 'smooth' })
-        const tBack = setTimeout(() => el.scrollTo({ top: 0, behavior: 'smooth' }), 600)
-        timers.current.push(tBack)
-      }, 700)
-      timers.current.push(tHint)
+      animTimers.current.push(tStagger)
 
     } else {
       panel.style.transition   = `transform 500ms ${EASE_CLOSE}`
@@ -106,7 +82,41 @@ function MenuOverlay({ open, onClose }: Props) {
     }
   }, [open])
 
-  // Escape key
+  // ── Scroll reset + hint (fires on open) ────────────────────────────────────
+  useEffect(() => {
+    if (!open) return
+    const el = scrollRef.current
+    if (!el) return
+
+    el.scrollTop = 0
+
+    const t1 = setTimeout(() => el.scrollTo({ top: 100, behavior: 'smooth' }), 700)
+    const t2 = setTimeout(() => el.scrollTo({ top: 0,   behavior: 'smooth' }), 1100)
+
+    return () => { clearTimeout(t1); clearTimeout(t2) }
+  }, [open])
+
+  // ── Infinite scroll loop (active only while open) ──────────────────────────
+  useEffect(() => {
+    if (!open) return
+    const el       = scrollRef.current
+    const firstSet = firstSetRef.current
+    if (!el || !firstSet) return
+
+    const handleScroll = () => {
+      const h = firstSet.offsetHeight
+      if (!h) return
+      // Loop forward: past first set → jump back by one set height
+      if (el.scrollTop >= h) el.scrollTop -= h
+      // Loop backward: above 0 (overscroll) → jump to equivalent position in set
+      if (el.scrollTop < 0)  el.scrollTop = h + el.scrollTop
+    }
+
+    el.addEventListener('scroll', handleScroll, { passive: true })
+    return () => el.removeEventListener('scroll', handleScroll)
+  }, [open])
+
+  // ── Escape key ─────────────────────────────────────────────────────────────
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape' && open) onClose() }
     window.addEventListener('keydown', onKey)
@@ -118,11 +128,11 @@ function MenuOverlay({ open, onClose }: Props) {
     transitionTo(href)
   }
 
-  // ── Link list (rendered twice for infinite scroll) ────────────────────────────
+  // Renders one full set of nav links
   const renderLinks = (withRefs: boolean) =>
     NAV_LINKS.map((link, i) => (
       <button
-        key={link.label + (withRefs ? '-a' : '-b')}
+        key={`${link.label}-${withRefs ? 'a' : 'x'}-${i}`}
         ref={withRefs ? (el => { linkRefs.current[i] = el }) : undefined}
         onClick={() => handleNav(link.href)}
         className="menu-link"
@@ -150,26 +160,29 @@ function MenuOverlay({ open, onClose }: Props) {
       <div
         ref={contentRef}
         style={{
-          position:      'absolute',
-          inset:         0,
-          display:       'flex',
-          flexDirection: 'column',
-          transform:     'translateY(100%)',
-          willChange:    'transform',
+          position:  'absolute',
+          inset:     0,
+          transform: 'translateY(100%)',
+          willChange: 'transform',
         }}
       >
-        {/* ── Top row: CLOSE ── */}
+
+        {/* ── Close bar (top 80 px) ────────────────────────────────────── */}
         <div style={{
+          position:       'absolute',
+          top:            0,
+          left:           0,
+          right:          0,
+          height:         80,
           display:        'flex',
           justifyContent: 'flex-end',
           alignItems:     'center',
-          padding:        '28px 40px',
-          flexShrink:     0,
+          padding:        '0 40px',
         }}>
           <button
             onClick={onClose}
             style={{
-              fontFamily:          "'PPNeueCorp', system-ui, sans-serif",
+              fontFamily:          PP,
               fontWeight:          400,
               fontSize:            13,
               letterSpacing:       '3px',
@@ -186,37 +199,61 @@ function MenuOverlay({ open, onClose }: Props) {
           </button>
         </div>
 
-        {/* ── Infinite-scroll nav list ── */}
+        {/* ── Infinite-scroll nav (fills between bars) ─────────────────── */}
         <div
           ref={scrollRef}
-          className="menu-scroll"
+          className="hide-scrollbar"
           style={{
-            flex:            1,
-            overflowY:       'scroll',
-            minHeight:       0,           // required for flex + overflow to work
-            scrollbarWidth:  'none',
-          } as React.CSSProperties}
+            position:  'absolute',
+            top:       80,
+            bottom:    80,
+            left:      0,
+            right:     0,
+            overflowY: 'scroll',
+            overflowX: 'hidden',
+          }}
         >
-          {/* Original set — refs attached, stagger-animated on open */}
-          <div ref={listRef}>
+          {/* Set A — refs attached, stagger-animated on open */}
+          <div ref={firstSetRef}>
             {renderLinks(true)}
           </div>
-          {/* Clone — always fully visible, makes loop seamless */}
+
+          {/* Set B — seamless first repeat */}
           <div aria-hidden="true">
             {renderLinks(false)}
           </div>
+
+          {/* Set C — safety buffer for fast scrollers */}
+          <div aria-hidden="true">
+            {NAV_LINKS.map((link, i) => (
+              <button
+                key={`c-${i}`}
+                className="menu-link"
+                onClick={() => handleNav(link.href)}
+              >
+                <span className="menu-link__num">{link.num}</span>
+                <span className="menu-link__text">{link.label.toUpperCase()}</span>
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* ── Bottom CTA ── */}
+        {/* ── CTA bar (bottom 80 px) ────────────────────────────────────── */}
         <div style={{
-          flexShrink:  0,
-          padding:     '28px 48px',
-          borderTop:   '1px solid rgba(255,255,255,0.08)',
+          position:   'absolute',
+          bottom:     0,
+          left:       0,
+          right:      0,
+          height:     80,
+          display:    'flex',
+          alignItems: 'center',
+          padding:    '0 48px',
+          borderTop:  '1px solid rgba(255,255,255,0.08)',
         }}>
           <button
             onClick={() => handleNav('/contact')}
             style={{
-              fontFamily:    "'PPNeueCorp', system-ui, sans-serif",
+              fontFamily:    PP,
               fontWeight:    900,
               fontSize:      13,
               letterSpacing: '4px',
@@ -233,6 +270,7 @@ function MenuOverlay({ open, onClose }: Props) {
             Start A Project →
           </button>
         </div>
+
       </div>
     </div>
   )

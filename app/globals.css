@@ -325,7 +325,22 @@ nav button, nav a {
 
 /* ─── Menu Overlay ──────────────────────────────────────────────────────────── */
 
+/* Hide scrollbar — works across all browsers */
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+
+/* Legacy alias kept for any existing usage */
 .menu-scroll::-webkit-scrollbar { display: none; }
+
+/* ─── Accessibility + pointer isolation ────────────────────────────────────── */
+
+/* Cloned / decorative elements must never capture mouse events */
+[aria-hidden="true"] {
+  pointer-events: none;
+}
 
 .menu-link {
   display:         flex;

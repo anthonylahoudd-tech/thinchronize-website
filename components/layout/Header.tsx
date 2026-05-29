@@ -12,17 +12,16 @@ const EASE        = 'cubic-bezier(0.19, 1, 0.22, 1)'
 const LIGHT_PAGES = ['/services', '/portfolio', '/about', '/method']
 
 const NAV_LINKS = [
-  { label: 'Home',      href: '/' },
-  { label: 'Services',  href: '/services' },
-  { label: 'Method',    href: '/method' },
-  { label: 'About',     href: '/about' },
+  { label: 'Home',      href: '/'          },
+  { label: 'Services',  href: '/services'  },
+  { label: 'Method',    href: '/method'    },
+  { label: 'About',     href: '/about'     },
   { label: 'Portfolio', href: '/portfolio' },
-  { label: 'Journal',   href: '/journal' },
+  { label: 'Journal',   href: '/journal'   },
 ]
 
 export default function Header() {
-  const logoRef   = useRef<HTMLDivElement>(null)
-  const navRef    = useRef<HTMLElement>(null)
+  const desktopHeaderRef = useRef<HTMLElement>(null)
   const [scrolled,  setScrolled]  = useState(false)
   const [menuOpen,  setMenuOpen]  = useState(false)
   const pathname = usePathname()
@@ -43,24 +42,27 @@ export default function Header() {
     return () => { document.body.style.overflow = '' }
   }, [menuOpen])
 
-  // ── Entrance animation (desktop logo + nav only) ───────────────────────────
+  // ── Desktop entrance animation ─────────────────────────────────────────────
   useEffect(() => {
-    gsap.fromTo(logoRef.current,  { y: -20, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: 'power3.out', delay: 1.2 })
-    gsap.fromTo(navRef.current,   { y: -20, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: 'power3.out', delay: 1.2 })
+    gsap.fromTo(
+      desktopHeaderRef.current,
+      { y: -20, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1, ease: 'power3.out', delay: 1.2 }
+    )
   }, [])
 
-  // ── Stable close handler ───────────────────────────────────────────────────
   const handleClose = useCallback(() => setMenuOpen(false), [])
 
-  const logoSrc = (isLight && !menuOpen) ? '/logo-wordmark-red.png' : '/logo-wordmark-white.png'
-  const PAD_H   = 'clamp(20px, 4vw, 48px)'
+  const logoSrc   = (isLight && !menuOpen) ? '/logo-wordmark-red.png' : '/logo-wordmark-white.png'
+  const linkColor = isLight ? 'rgba(41,41,41,0.7)' : 'rgba(255,255,255,0.85)'
+  const linkHover = isLight ? '#292929' : '#ffffff'
 
   return (
     <>
-      {/* ════════════════════════════════════════════════════════════════════════
-          MOBILE HEADER — always visible on mobile, hidden on md+
-          Contains logo (left) + MENU button (right) in a proper header bar
-      ════════════════════════════════════════════════════════════════════════ */}
+      {/* ══════════════════════════════════════════════════════════════════════
+          MOBILE HEADER — always visible (md:hidden)
+          Logo left · MENU button right · fades out when overlay is open
+      ══════════════════════════════════════════════════════════════════════ */}
       <header
         className="md:hidden"
         style={{
@@ -79,10 +81,9 @@ export default function Header() {
           transition:     `opacity 300ms ${EASE}`,
         }}
       >
-        {/* Mobile logo */}
         <button
           onClick={() => transitionTo('/')}
-          style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', display: 'block' }}
+          style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
           aria-label="Go to homepage"
         >
           <Image
@@ -95,7 +96,6 @@ export default function Header() {
           />
         </button>
 
-        {/* Mobile MENU button */}
         <button
           onClick={() => setMenuOpen(true)}
           style={{
@@ -116,172 +116,195 @@ export default function Header() {
         </button>
       </header>
 
-      {/* ════════════════════════════════════════════════════════════════════════
-          DESKTOP LOGO — always fixed top-left, z:200, above overlay
-          Hidden on mobile (mobile header handles the logo there)
-      ════════════════════════════════════════════════════════════════════════ */}
-      <div
-        ref={logoRef}
+      {/* ══════════════════════════════════════════════════════════════════════
+          DESKTOP HEADER — three-zone choreography (hidden md:block)
+
+          ZONE 1 · Logo          — absolute left, always visible
+          ZONE 2 · Center links  — fade + slide up on scroll
+          ZONE 3 · MESSAGE BIN   — right, visible at top, fades out on scroll
+          ZONE 4 · MSG BIN+MENU  — right, hidden at top, fades in on scroll
+
+          Both fades use 600 ms easeOutExpo → one seamless choreography.
+      ══════════════════════════════════════════════════════════════════════ */}
+      <header
+        ref={desktopHeaderRef}
         className="hidden md:block"
         style={{
           position:   'fixed',
-          top:        scrolled ? 16 : 24,
-          left:       PAD_H,
-          zIndex:     200,
-          transition: `top 300ms ${EASE}`,
+          top:        0,
+          left:       0,
+          right:      0,
+          zIndex:     50,
+          height:     72,
+          background: isLight ? '#FFFFFF' : 'transparent',
         }}
       >
-        <button
-          onClick={() => transitionTo('/')}
-          style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', display: 'block' }}
-          aria-label="Go to homepage"
-        >
-          <Image
-            src={logoSrc}
-            alt="Thinchronize"
-            width={180}
-            height={28}
-            style={{ height: 26, width: 'auto', display: 'block' }}
-            priority
-          />
-        </button>
-      </div>
 
-      {/* ════════════════════════════════════════════════════════════════════════
-          FULL NAV BAR — desktop only, fades out after 80px scroll
-      ════════════════════════════════════════════════════════════════════════ */}
-      <header
-        ref={navRef}
-        className="hidden md:block"
-        style={{
-          position:      'fixed',
-          top:           0,
-          left:          0,
-          right:         0,
-          zIndex:        50,
-          padding:       `24px ${PAD_H}`,
-          background:    isLight ? '#FFFFFF' : 'transparent',
+        {/* ZONE 1 — Logo (always) ──────────────────────────────────────── */}
+        <div style={{
+          position:  'absolute',
+          top:       '50%',
+          left:      40,
+          transform: 'translateY(-50%)',
+        }}>
+          <button
+            onClick={() => transitionTo('/')}
+            style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', display: 'block' }}
+            aria-label="Go to homepage"
+          >
+            <Image
+              src={logoSrc}
+              alt="Thinchronize"
+              width={160}
+              height={26}
+              style={{ height: 24, width: 'auto', display: 'block' }}
+              priority
+            />
+          </button>
+        </div>
+
+        {/* ZONE 2 — Center links (fade + slide up when scrolled) ────────── */}
+        <div style={{
+          position:      'absolute',
+          top:           '50%',
+          left:          '50%',
+          transform:     scrolled
+            ? `translate(-50%, calc(-50% - 6px))`
+            : `translate(-50%, -50%)`,
+          display:       'flex',
+          alignItems:    'center',
+          gap:           40,
           opacity:       scrolled ? 0 : 1,
           pointerEvents: scrolled ? 'none' : 'auto',
-          transition:    `opacity 600ms ${EASE}`,
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-          <nav style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
-            {NAV_LINKS.map(link => (
-              <button
-                key={link.label}
-                onClick={() => transitionTo(link.href)}
-                className="link-underline"
-                style={{
-                  fontFamily:    PP,
-                  fontWeight:    800,
-                  fontSize:      12,
-                  letterSpacing: '0.1em',
-                  textTransform: 'uppercase',
-                  color:         isLight ? 'rgba(41,41,41,0.6)' : 'rgba(255,255,255,0.65)',
-                  background:    'none',
-                  border:        'none',
-                  cursor:        'pointer',
-                  transition:    'color 0.25s ease',
-                }}
-                onMouseEnter={e => (e.currentTarget.style.color = isLight ? '#292929' : '#fff')}
-                onMouseLeave={e => (e.currentTarget.style.color = isLight ? 'rgba(41,41,41,0.6)' : 'rgba(255,255,255,0.65)')}
-              >
-                {link.label}
-              </button>
-            ))}
-
+          transition:    `opacity 600ms ${EASE}, transform 600ms ${EASE}`,
+          whiteSpace:    'nowrap',
+        }}>
+          {NAV_LINKS.map(link => (
             <button
-              onClick={() => transitionTo('/contact')}
+              key={link.label}
+              onClick={() => transitionTo(link.href)}
               style={{
                 fontFamily:    PP,
-                fontWeight:    800,
-                fontSize:      14,
-                letterSpacing: '0.05em',
+                fontWeight:    400,
+                fontSize:      12,
+                letterSpacing: '3px',
                 textTransform: 'uppercase',
-                background:    '#D0274B',
-                color:         '#FFFFFF',
-                padding:       '10px 24px',
+                color:         linkColor,
+                background:    'none',
                 border:        'none',
+                padding:       0,
                 cursor:        'pointer',
-                transition:    'background 0.25s ease',
-                marginLeft:    16,
+                transition:    'color 300ms ease',
               }}
-              onMouseEnter={e => (e.currentTarget.style.background = '#b8223f')}
-              onMouseLeave={e => (e.currentTarget.style.background = '#D0274B')}
+              onMouseEnter={e => (e.currentTarget.style.color = linkHover)}
+              onMouseLeave={e => (e.currentTarget.style.color = linkColor)}
             >
-              Message Bin
+              {link.label}
             </button>
-          </nav>
+          ))}
         </div>
-      </header>
 
-      {/* ════════════════════════════════════════════════════════════════════════
-          FLOATING BUTTONS (desktop) — WORK WITH US + MENU, fade IN after scroll
-      ════════════════════════════════════════════════════════════════════════ */}
-      <div
-        className="hidden md:flex"
-        style={{
-          position:      'fixed',
-          top:           scrolled ? 28 : 32,
+        {/* ZONE 3 — MESSAGE BIN, top state (fades out when scrolled) ────── */}
+        <div style={{
+          position:      'absolute',
+          top:           '50%',
           right:         40,
-          zIndex:        150,
+          transform:     scrolled
+            ? 'translateY(calc(-50% - 6px))'
+            : 'translateY(-50%)',
+          opacity:       scrolled ? 0 : 1,
+          pointerEvents: scrolled ? 'none' : 'auto',
+          transition:    `opacity 600ms ${EASE}, transform 600ms ${EASE}`,
+        }}>
+          <button
+            onClick={() => transitionTo('/contact')}
+            style={{
+              fontFamily:    PP,
+              fontWeight:    400,
+              fontSize:      11,
+              letterSpacing: '3px',
+              textTransform: 'uppercase',
+              background:    '#D0274B',
+              color:         '#FFFFFF',
+              padding:       '10px 20px',
+              border:        'none',
+              cursor:        'pointer',
+              transition:    'background 0.25s ease',
+            }}
+            onMouseEnter={e => (e.currentTarget.style.background = '#b8223f')}
+            onMouseLeave={e => (e.currentTarget.style.background = '#D0274B')}
+          >
+            Message Bin
+          </button>
+        </div>
+
+        {/* ZONE 4 — MESSAGE BIN + MENU, scrolled state (fades in) ─────────
+            Both transitions: 600 ms easeOutExpo, same timing as Zone 2/3 fade-out.
+            Result: one choreographed crossfade, not two separate animations.        */}
+        <div style={{
+          position:      'absolute',
+          top:           '50%',
+          right:         40,
+          transform:     scrolled
+            ? 'translateY(-50%)'
+            : 'translateY(calc(-50% + 6px))',
+          display:       'flex',
           alignItems:    'center',
           gap:           32,
           opacity:       scrolled && !menuOpen ? 1 : 0,
           pointerEvents: scrolled && !menuOpen ? 'auto' : 'none',
-          transition:    `opacity 600ms ${EASE}, top 300ms ${EASE}`,
-        }}
-      >
-        <button
-          onClick={() => transitionTo('/contact')}
-          style={{
-            fontFamily:          PP,
-            fontWeight:          400,
-            fontSize:            13,
-            letterSpacing:       '3px',
-            textTransform:       'uppercase',
-            color:               'white',
-            background:          'none',
-            border:              'none',
-            cursor:              'pointer',
-            textDecoration:      'underline',
-            textUnderlineOffset: '4px',
-            transition:          'opacity 0.2s ease',
-          }}
-          onMouseEnter={e => (e.currentTarget.style.opacity = '0.6')}
-          onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
-        >
-          Work With Us
-        </button>
+          transition:    `opacity 600ms ${EASE}, transform 600ms ${EASE}`,
+        }}>
+          <button
+            onClick={() => transitionTo('/contact')}
+            style={{
+              fontFamily:          PP,
+              fontWeight:          400,
+              fontSize:            12,
+              letterSpacing:       '3px',
+              textTransform:       'uppercase',
+              color:               'white',
+              background:          'none',
+              border:              'none',
+              cursor:              'pointer',
+              textDecoration:      'underline',
+              textUnderlineOffset: '4px',
+              textDecorationColor: 'rgba(255,255,255,0.4)',
+              transition:          'opacity 0.2s ease',
+            }}
+            onMouseEnter={e => (e.currentTarget.style.opacity = '0.7')}
+            onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
+          >
+            Message Bin
+          </button>
 
-        <button
-          onClick={() => setMenuOpen(true)}
-          style={{
-            fontFamily:          PP,
-            fontWeight:          400,
-            fontSize:            13,
-            letterSpacing:       '3px',
-            textTransform:       'uppercase',
-            color:               'white',
-            background:          'none',
-            border:              'none',
-            cursor:              'pointer',
-            textDecoration:      'underline',
-            textUnderlineOffset: '4px',
-            transition:          'opacity 0.2s ease',
-          }}
-          onMouseEnter={e => (e.currentTarget.style.opacity = '0.6')}
-          onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
-        >
-          Menu
-        </button>
-      </div>
+          <button
+            onClick={() => setMenuOpen(true)}
+            style={{
+              fontFamily:          PP,
+              fontWeight:          400,
+              fontSize:            12,
+              letterSpacing:       '3px',
+              textTransform:       'uppercase',
+              color:               'white',
+              background:          'none',
+              border:              'none',
+              cursor:              'pointer',
+              textDecoration:      'underline',
+              textUnderlineOffset: '4px',
+              textDecorationColor: 'rgba(255,255,255,0.4)',
+              transition:          'opacity 0.2s ease',
+            }}
+            onMouseEnter={e => (e.currentTarget.style.opacity = '0.7')}
+            onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
+          >
+            Menu
+          </button>
+        </div>
 
-      {/* ════════════════════════════════════════════════════════════════════════
-          FULL-SCREEN OVERLAY — works on all screen sizes
-      ════════════════════════════════════════════════════════════════════════ */}
+      </header>
+
+      {/* Full-screen overlay — works on all screen sizes */}
       <MenuOverlay open={menuOpen} onClose={handleClose} />
     </>
   )
