@@ -43,13 +43,13 @@ export default function Header() {
     return () => { document.body.style.overflow = '' }
   }, [menuOpen])
 
-  // ── Entrance animation ─────────────────────────────────────────────────────
+  // ── Entrance animation (desktop logo + nav only) ───────────────────────────
   useEffect(() => {
     gsap.fromTo(logoRef.current,  { y: -20, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: 'power3.out', delay: 1.2 })
     gsap.fromTo(navRef.current,   { y: -20, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: 'power3.out', delay: 1.2 })
   }, [])
 
-  // ── Stable close handler (memoised so MenuOverlay never re-renders mid-animation)
+  // ── Stable close handler ───────────────────────────────────────────────────
   const handleClose = useCallback(() => setMenuOpen(false), [])
 
   const logoSrc = (isLight && !menuOpen) ? '/logo-wordmark-red.png' : '/logo-wordmark-white.png'
@@ -58,10 +58,71 @@ export default function Header() {
   return (
     <>
       {/* ════════════════════════════════════════════════════════════════════════
-          LOGO — always fixed top-left, z:200, never fades, above overlay
+          MOBILE HEADER — always visible on mobile, hidden on md+
+          Contains logo (left) + MENU button (right) in a proper header bar
+      ════════════════════════════════════════════════════════════════════════ */}
+      <header
+        className="md:hidden"
+        style={{
+          position:       'fixed',
+          top:            0,
+          left:           0,
+          right:          0,
+          zIndex:         150,
+          display:        'flex',
+          alignItems:     'center',
+          justifyContent: 'space-between',
+          padding:        '20px 24px',
+          background:     'transparent',
+          opacity:        menuOpen ? 0 : 1,
+          pointerEvents:  menuOpen ? 'none' : 'auto',
+          transition:     `opacity 300ms ${EASE}`,
+        }}
+      >
+        {/* Mobile logo */}
+        <button
+          onClick={() => transitionTo('/')}
+          style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', display: 'block' }}
+          aria-label="Go to homepage"
+        >
+          <Image
+            src={logoSrc}
+            alt="Thinchronize"
+            width={140}
+            height={22}
+            style={{ height: 20, width: 'auto', display: 'block' }}
+            priority
+          />
+        </button>
+
+        {/* Mobile MENU button */}
+        <button
+          onClick={() => setMenuOpen(true)}
+          style={{
+            fontFamily:          PP,
+            fontWeight:          400,
+            fontSize:            11,
+            letterSpacing:       '3px',
+            textTransform:       'uppercase',
+            color:               isLight ? '#292929' : 'white',
+            background:          'none',
+            border:              'none',
+            cursor:              'pointer',
+            textDecoration:      'underline',
+            textUnderlineOffset: '4px',
+          }}
+        >
+          Menu
+        </button>
+      </header>
+
+      {/* ════════════════════════════════════════════════════════════════════════
+          DESKTOP LOGO — always fixed top-left, z:200, above overlay
+          Hidden on mobile (mobile header handles the logo there)
       ════════════════════════════════════════════════════════════════════════ */}
       <div
         ref={logoRef}
+        className="hidden md:block"
         style={{
           position:   'fixed',
           top:        scrolled ? 16 : 24,
@@ -219,42 +280,7 @@ export default function Header() {
       </div>
 
       {/* ════════════════════════════════════════════════════════════════════════
-          MOBILE MENU BUTTON — always visible top-right on mobile, adapts to bg
-      ════════════════════════════════════════════════════════════════════════ */}
-      <div
-        className="md:hidden"
-        style={{
-          position:      'fixed',
-          top:           24,
-          right:         PAD_H,
-          zIndex:        150,
-          opacity:       menuOpen ? 0 : 1,
-          pointerEvents: menuOpen ? 'none' : 'auto',
-          transition:    `opacity 300ms ${EASE}`,
-        }}
-      >
-        <button
-          onClick={() => setMenuOpen(true)}
-          style={{
-            fontFamily:    PP,
-            fontWeight:    800,
-            fontSize:      11,
-            letterSpacing: '0.12em',
-            textTransform: 'uppercase',
-            color:         isLight ? '#292929' : 'white',
-            background:    'none',
-            border:        'none',
-            borderBottom:  `1px solid ${isLight ? 'rgba(41,41,41,0.4)' : 'rgba(255,255,255,0.5)'}`,
-            paddingBottom: 2,
-            cursor:        'pointer',
-          }}
-        >
-          Menu
-        </button>
-      </div>
-
-      {/* ════════════════════════════════════════════════════════════════════════
-          FULL-SCREEN OVERLAY — memoised, two-panel trick, slides DOWN from top
+          FULL-SCREEN OVERLAY — works on all screen sizes
       ════════════════════════════════════════════════════════════════════════ */}
       <MenuOverlay open={menuOpen} onClose={handleClose} />
     </>

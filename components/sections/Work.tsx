@@ -48,28 +48,34 @@ export default function Work({ caseStudies }: Props) {
       const wrapper = wrapperRef.current
       if (!track || !wrapper) return
 
-      const getScrollAmount = () => -(track.scrollWidth - window.innerWidth)
+      // Horizontal scroll — desktop (md+) only via matchMedia
+      const mm = gsap.matchMedia()
+      mm.add('(min-width: 768px)', () => {
+        const getScrollAmount = () => -(track.scrollWidth - window.innerWidth)
 
-      const tween = gsap.to(track, {
-        x: () => getScrollAmount(),
-        ease: 'none',
-        scrollTrigger: {
-          trigger: wrapper,
-          start: 'top top',
-          end: () => `+=${track.scrollWidth - window.innerWidth + 120}`,
-          pin: true,
-          scrub: 1.2,
-          invalidateOnRefresh: true,
-          anticipatePin: 1,
-        },
+        const tween = gsap.to(track, {
+          x: () => getScrollAmount(),
+          ease: 'none',
+          scrollTrigger: {
+            trigger: wrapper,
+            start: 'top top',
+            end: () => `+=${track.scrollWidth - window.innerWidth + 120}`,
+            pin: true,
+            scrub: 1.2,
+            invalidateOnRefresh: true,
+            anticipatePin: 1,
+          },
+        })
+
+        return () => {
+          tween.kill()
+          ScrollTrigger.getAll().forEach((t) => {
+            if (t.vars.trigger === wrapper) t.kill()
+          })
+        }
       })
 
-      return () => {
-        tween.kill()
-        ScrollTrigger.getAll().forEach((t) => {
-          if (t.vars.trigger === wrapper) t.kill()
-        })
-      }
+      return () => mm.revert()
     },
     { scope: sectionRef }
   )
@@ -93,10 +99,11 @@ export default function Work({ caseStudies }: Props) {
         </div>
       </div>
 
-      {/* Pinned horizontal scroll wrapper */}
-      <div ref={wrapperRef} className="w-full h-screen">
-        <div ref={trackRef} className="horizontal-scroll-track h-full will-change-transform">
-          <div className="flex-shrink-0 w-[clamp(20px,5vw,80px)] h-full" />
+      {/* Pinned horizontal scroll wrapper — full height on desktop, auto on mobile */}
+      <div ref={wrapperRef} className="w-full md:h-screen overflow-hidden">
+        <div ref={trackRef} className="flex flex-col md:flex-row md:h-full will-change-transform">
+          {/* Leading spacer — desktop only */}
+          <div className="hidden md:block flex-shrink-0 w-[clamp(20px,5vw,80px)] h-full" />
 
           {/* Whatsub — static first card with real photo */}
           <WhatsubCard />
@@ -114,7 +121,7 @@ export default function Work({ caseStudies }: Props) {
           ))}
 
           {/* End CTA card */}
-          <div className="flex-shrink-0 w-[380px] md:w-[480px] h-full flex items-center pr-[clamp(20px,5vw,80px)]">
+          <div className="flex-shrink-0 w-full md:w-[480px] md:h-full flex items-center px-4 pb-10 md:px-0 md:pb-0 md:pr-[clamp(20px,5vw,80px)]">
             <Link
               href="/work"
               className="group w-full border border-white/15 rounded-2xl p-10 flex flex-col justify-between min-h-[480px] hover:border-red/40 will-change-transform"
@@ -142,7 +149,7 @@ export default function Work({ caseStudies }: Props) {
 
 function WhatsubCard() {
   return (
-    <div className="flex-shrink-0 w-[320px] md:w-[420px] lg:w-[480px] h-full flex items-center px-4">
+    <div className="flex-shrink-0 w-full md:w-[420px] lg:w-[480px] md:h-full flex items-center px-4 py-6 md:py-0">
       <Link href="/portfolio/whatsub" className="block w-full work-card group">
         <div
           className="relative w-full rounded-2xl overflow-hidden will-change-transform"
@@ -212,7 +219,7 @@ function WhatsubCard() {
 
 function CafeBdoozCard() {
   return (
-    <div className="flex-shrink-0 w-[320px] md:w-[420px] lg:w-[480px] h-full flex items-center px-4">
+    <div className="flex-shrink-0 w-full md:w-[420px] lg:w-[480px] md:h-full flex items-center px-4 py-6 md:py-0">
       <Link href="/portfolio/cafe-bdooz" className="block w-full work-card group">
         <div
           className="relative w-full rounded-2xl overflow-hidden will-change-transform"
@@ -290,7 +297,7 @@ function CaseStudyCard({
   gradient: string[]
 }) {
   return (
-    <div className="flex-shrink-0 w-[320px] md:w-[420px] lg:w-[480px] h-full flex items-center px-4">
+    <div className="flex-shrink-0 w-full md:w-[420px] lg:w-[480px] md:h-full flex items-center px-4 py-6 md:py-0">
       <Link href={`/work/${cs.slug.current}`} className="block w-full work-card group">
         <div
           className="relative w-full rounded-2xl overflow-hidden will-change-transform"

@@ -166,7 +166,7 @@ export default function Services() {
               style={{ fontSize: 'clamp(28px, 4vw, 56px)', letterSpacing: '-0.01em' }}
             >
               {['Every great brand', 'starts with a', 'single conversation.'].map((line) => (
-                <div key={line} style={{ whiteSpace: 'nowrap' }}>{line}</div>
+                <div key={line}>{line}</div>
               ))}
             </div>
             <MagneticButton
