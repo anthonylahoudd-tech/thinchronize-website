@@ -67,6 +67,16 @@ function MenuOverlay({ open, onClose }: Props) {
           el.style.opacity   = '1'
           el.style.transform = 'translateY(0px)'
         })
+        // After all stagger animations finish, clear inline transition so
+        // CSS class "transition: color" takes over and hover colour works
+        const lastDelay = (NAV_LINKS.length - 1) * 55
+        const tClear = setTimeout(() => {
+          linkRefs.current.forEach(el => {
+            if (!el) return
+            el.style.transition = ''
+          })
+        }, 600 + lastDelay + 50)
+        animTimers.current.push(tClear)
       }, 600)
       animTimers.current.push(tStagger)
 

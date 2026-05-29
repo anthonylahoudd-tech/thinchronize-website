@@ -356,6 +356,7 @@ nav button, nav a {
   color:           rgba(255, 255, 255, 0.18);
   transition:      color 400ms cubic-bezier(0.23, 1, 0.32, 1);
   text-decoration: none;
+  pointer-events:  auto;
 }
 
 .menu-link:hover { color: #FFFFFF; }
