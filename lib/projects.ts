@@ -166,7 +166,7 @@ export const PROJECTS: Project[] = [
     title: 'Whatsub',
     subtitle: 'Brand Identity & Visual System',
     category: 'Brand Identity',
-    coverImage: '/images/work/whatsub/Whatsub-Image-19.jpg',
+    coverImage: '/images/work/whatsub/Whatsub-Sign.jpg',
     diagnosticAnswers: [0, 2, 3],
     keywords: ['brand identity', 'logo', 'packaging', 'menu design', 'environmental', 'food truck', 'fast casual', 'washington dc'],
     brief: "A new sub sandwich brand launching in Washington D.C. needed a full visual identity — from logo to packaging to food truck wrap — that could compete in a saturated fast casual market and own the street.",
