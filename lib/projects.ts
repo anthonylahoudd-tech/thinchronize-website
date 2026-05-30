@@ -26,20 +26,20 @@ export const DIAGNOSTIC_ANSWERS = [
 
 export const PROJECTS: Project[] = [
   {
-    id: 'don-bosco',
-    title: 'Don Bosco School',
-    subtitle: 'Rebranding',
+    id: 'whatsub',
+    title: 'Whatsub',
+    subtitle: 'Brand Identity & Visual System',
     category: 'Brand Identity',
-    coverImage: '/images/work/don-bosco.jpg',
-    diagnosticAnswers: [0, 2],
-    keywords: ['rebranding', 'identity', 'outdated', 'mismatch', 'logo', 'school', 'education', 'heritage', 'refresh', 'old'],
-    brief: "They came asking for a logo refresh.",
-    diagnosis: "The visual system wasn't the problem. The school had evolved — new facilities, expanded vision, a changed student body — but the brand was still communicating 1990. The real ask wasn't modernization. It was alignment.",
-    built: "Brand foundation first. Then a visual identity that carries the school's dual mandate: tradition and forward motion. The mark holds both. The system extends from signage to stationery without losing its center.",
-    result: "A brand that finally matched the institution it had become.",
-    services: ['Brand Foundation', 'Visual Identity System', 'Brand Standards'],
-    year: '2023',
-    market: 'Lebanon'
+    coverImage: '/images/work/whatsub/Whatsub-Sign.jpg',
+    diagnosticAnswers: [0, 2, 3],
+    keywords: ['brand identity', 'logo', 'packaging', 'menu design', 'environmental', 'food truck', 'fast casual', 'washington dc'],
+    brief: "A new sub sandwich brand launching in Washington D.C. needed a full visual identity — from logo to packaging to food truck wrap — that could compete in a saturated fast casual market and own the street.",
+    diagnosis: "The fast casual space in D.C. was dominated by clean, corporate visual systems. The gap was character. Whatsub needed to feel handcrafted, bold, and street-ready — a brand that could live on a truck wrap, a takeaway bag, and a menu with equal conviction.",
+    built: "A custom scripted logotype with an illustrated submarine sandwich mascot. A bold yellow-to-orange-to-red color system. Full rollout across logo suite, menu design, packaging (bags, boxes, cups, stickers), food truck wrap, restaurant mural, and outdoor advertising.",
+    result: "Whatsub launched in early 2025 with a complete brand system that was immediately recognizable at street level. The identity translated across every touchpoint — from the 20-foot truck wrap to the condiment packet — with no dilution.",
+    services: ['Brand Identity', 'Print Design', 'Environmental Design', 'Packaging'],
+    year: '2025',
+    market: 'Washington D.C., USA'
   },
   {
     id: 'latelier',
@@ -58,6 +58,42 @@ export const PROJECTS: Project[] = [
     built: "A brand built on the mission statement itself. Restraint for credibility. Warmth for humanity. Both in the same system, without splitting.",
     result: "A brand that opens doors with funders and builds trust with the people they serve.",
     services: ['Brand Foundation', 'Visual Identity System', 'Communication Direction'],
+    year: '2023',
+    market: 'Lebanon'
+  },
+  {
+    id: 'cafe-bdooz',
+    title: 'Cafe BDOOZ',
+    subtitle: 'Brand Identity',
+    category: 'Brand Identity',
+    coverImage: '/images/work/cafe-bdooz/Cover-Bdooz.png',
+    images: [
+      '/images/work/cafe-bdooz/Image-2-Bdooz.png',
+      '/images/work/cafe-bdooz/Image-5-Bdooz.png',
+    ],
+    diagnosticAnswers: [0, 3],
+    keywords: ['cafe', 'coffee', 'restaurant', 'brand identity', 'logo', 'lebanon', 'neighbourhood', 'warmth', 'character', 'hospitality'],
+    brief: "A Lebanese café with a strong neighbourhood personality needed an identity that would make people feel something before they ordered.",
+    diagnosis: "The space had warmth, the product was strong, and the name had character — but nothing was connecting them visually. The brand was invisible where it mattered most: before someone walked through the door.",
+    built: "An identity built around warmth and return. Typographic personality that feels handcrafted without being hand-drawn. A colour palette that communicates comfort and confidence. A system that works on a cup, a sign, and a social feed without losing its soul.",
+    result: "A brand that makes the café feel like a place people already know — before they've ever been.",
+    services: ['Brand Foundation', 'Visual Identity System', 'Brand Standards'],
+    year: '2025',
+    market: 'Lebanon'
+  },
+  {
+    id: 'don-bosco',
+    title: 'Don Bosco School',
+    subtitle: 'Rebranding',
+    category: 'Brand Identity',
+    coverImage: '/images/work/don-bosco.jpg',
+    diagnosticAnswers: [0, 2],
+    keywords: ['rebranding', 'identity', 'outdated', 'mismatch', 'logo', 'school', 'education', 'heritage', 'refresh', 'old'],
+    brief: "They came asking for a logo refresh.",
+    diagnosis: "The visual system wasn't the problem. The school had evolved — new facilities, expanded vision, a changed student body — but the brand was still communicating 1990. The real ask wasn't modernization. It was alignment.",
+    built: "Brand foundation first. Then a visual identity that carries the school's dual mandate: tradition and forward motion. The mark holds both. The system extends from signage to stationery without losing its center.",
+    result: "A brand that finally matched the institution it had become.",
+    services: ['Brand Foundation', 'Visual Identity System', 'Brand Standards'],
     year: '2023',
     market: 'Lebanon'
   },
@@ -141,42 +177,6 @@ export const PROJECTS: Project[] = [
     year: '2023',
     market: 'Lebanon'
   },
-  {
-    id: 'cafe-bdooz',
-    title: 'Cafe BDOOZ',
-    subtitle: 'Brand Identity',
-    category: 'Brand Identity',
-    coverImage: '/images/work/cafe-bdooz/Cover-Bdooz.png',
-    images: [
-      '/images/work/cafe-bdooz/Image-2-Bdooz.png',
-      '/images/work/cafe-bdooz/Image-5-Bdooz.png',
-    ],
-    diagnosticAnswers: [0, 3],
-    keywords: ['cafe', 'coffee', 'restaurant', 'brand identity', 'logo', 'lebanon', 'neighbourhood', 'warmth', 'character', 'hospitality'],
-    brief: "A Lebanese café with a strong neighbourhood personality needed an identity that would make people feel something before they ordered.",
-    diagnosis: "The space had warmth, the product was strong, and the name had character — but nothing was connecting them visually. The brand was invisible where it mattered most: before someone walked through the door.",
-    built: "An identity built around warmth and return. Typographic personality that feels handcrafted without being hand-drawn. A colour palette that communicates comfort and confidence. A system that works on a cup, a sign, and a social feed without losing its soul.",
-    result: "A brand that makes the café feel like a place people already know — before they've ever been.",
-    services: ['Brand Foundation', 'Visual Identity System', 'Brand Standards'],
-    year: '2025',
-    market: 'Lebanon'
-  },
-  {
-    id: 'whatsub',
-    title: 'Whatsub',
-    subtitle: 'Brand Identity & Visual System',
-    category: 'Brand Identity',
-    coverImage: '/images/work/whatsub/Whatsub-Sign.jpg',
-    diagnosticAnswers: [0, 2, 3],
-    keywords: ['brand identity', 'logo', 'packaging', 'menu design', 'environmental', 'food truck', 'fast casual', 'washington dc'],
-    brief: "A new sub sandwich brand launching in Washington D.C. needed a full visual identity — from logo to packaging to food truck wrap — that could compete in a saturated fast casual market and own the street.",
-    diagnosis: "The fast casual space in D.C. was dominated by clean, corporate visual systems. The gap was character. Whatsub needed to feel handcrafted, bold, and street-ready — a brand that could live on a truck wrap, a takeaway bag, and a menu with equal conviction.",
-    built: "A custom scripted logotype with an illustrated submarine sandwich mascot. A bold yellow-to-orange-to-red color system. Full rollout across logo suite, menu design, packaging (bags, boxes, cups, stickers), food truck wrap, restaurant mural, and outdoor advertising.",
-    result: "Whatsub launched in early 2025 with a complete brand system that was immediately recognizable at street level. The identity translated across every touchpoint — from the 20-foot truck wrap to the condiment packet — with no dilution.",
-    services: ['Brand Identity', 'Print Design', 'Environmental Design', 'Packaging'],
-    year: '2025',
-    market: 'Washington D.C., USA'
-  }
 ]
 
 export function getProjectsByAnswer(answerId: number): Project[] {
