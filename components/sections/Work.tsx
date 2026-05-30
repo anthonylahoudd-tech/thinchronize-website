@@ -168,7 +168,7 @@ function WhatsubCard() {
           {/* Real photo background */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img loading="lazy"
-            src="/images/work/whatsub/mural.jpg"
+            src="/images/work/whatsub/Whatsub-Image-19.jpg"
             alt="Whatsub"
             style={{
               position: 'absolute',
