@@ -182,7 +182,8 @@ export default function Header() {
             }}
             aria-label="Go to homepage"
           >
-            <Image
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               src="/images/logo-stacked.png"
               alt="Thinchronize"
               width={56} height={56}

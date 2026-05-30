@@ -261,7 +261,7 @@ export default function PortfolioPageClient() {
 
         {/* ── GRID VIEW ─────────────────────────────────────────────── */}
         {view === 'grid' && (
-          <div style={{
+          <div className="portfolio-grid" style={{
             display:             'grid',
             gridTemplateColumns: 'repeat(2, 1fr)',
             columnGap:           24,

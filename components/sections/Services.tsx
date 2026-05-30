@@ -4,7 +4,6 @@ import { useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
-import MagneticButton from '@/components/ui/MagneticButton'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -169,8 +168,8 @@ export default function Services() {
                 <div key={line}>{line}</div>
               ))}
             </div>
-            <MagneticButton
-              className="group inline-flex items-center gap-3 px-8 py-4 bg-dark text-white rounded-full text-sm font-display font-bold tracking-widest uppercase will-change-transform hover:bg-red"
+            <button
+              className="group inline-flex items-center gap-3 px-8 py-4 bg-dark text-white rounded-full text-sm font-display font-bold tracking-widest uppercase hover:bg-red"
               style={{ transition: 'all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94)' }}
               onClick={() => {
                 const el = document.getElementById('contact')
@@ -180,7 +179,7 @@ export default function Services() {
             >
               Start a Project
               <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
-            </MagneticButton>
+            </button>
           </div>
         </div>
       </div>

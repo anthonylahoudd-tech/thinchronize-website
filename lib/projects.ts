@@ -147,6 +147,10 @@ export const PROJECTS: Project[] = [
     subtitle: 'Brand Identity',
     category: 'Brand Identity',
     coverImage: '/images/work/cafe-bdooz/Cover-Bdooz.png',
+    images: [
+      '/images/work/cafe-bdooz/Image-2-Bdooz.png',
+      '/images/work/cafe-bdooz/Image-5-Bdooz.png',
+    ],
     diagnosticAnswers: [0, 3],
     keywords: ['cafe', 'coffee', 'restaurant', 'brand identity', 'logo', 'lebanon', 'neighbourhood', 'warmth', 'character', 'hospitality'],
     brief: "A Lebanese café with a strong neighbourhood personality needed an identity that would make people feel something before they ordered.",

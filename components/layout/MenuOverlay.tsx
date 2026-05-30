@@ -275,7 +275,7 @@ function MenuOverlay({ open, onClose }: Props) {
           onMouseEnter={e => (e.currentTarget.style.opacity = '0.7')}
           onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
         >
-          Start A Project →
+          LET&apos;S SYNC.
         </button>
       </div>
 

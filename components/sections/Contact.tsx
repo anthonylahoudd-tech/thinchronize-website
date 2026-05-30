@@ -5,7 +5,6 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { useForm } from 'react-hook-form'
-import MagneticButton from '@/components/ui/MagneticButton'
 import { CheckCircle } from 'lucide-react'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -262,7 +261,7 @@ export default function Contact() {
 
                 {/* Submit */}
                 <div className="pt-4">
-                  <MagneticButton
+                  <button
                     type="submit"
                     className="group inline-flex items-center gap-3 px-8 py-4 bg-red text-white rounded-full text-sm font-medium hover:bg-white hover:text-dark transition-all duration-300 disabled:opacity-50"
                   >
@@ -279,7 +278,7 @@ export default function Contact() {
                         </span>
                       </>
                     )}
-                  </MagneticButton>
+                  </button>
                   <p className="text-neutral text-xs mt-4">
                     We respond to every message within 48 hours.
                   </p>
