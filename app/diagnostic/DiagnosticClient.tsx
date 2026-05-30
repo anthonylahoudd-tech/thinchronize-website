@@ -285,10 +285,10 @@ function ProjectWindow({ project, onBack, onClose }: ProjectWindowProps) {
 
           {/* Sections */}
           {[
-            { label: 'The Brief',     body: project.brief,     large: false },
-            { label: 'The Diagnosis', body: project.diagnosis, large: false },
-            { label: 'What We Built', body: project.built,     large: false },
-            { label: 'The Result',    body: project.result,    large: true },
+            { label: 'The Brief',     body: project.brief.body,     large: false },
+            { label: 'The Diagnosis', body: project.diagnosis.body, large: false },
+            { label: 'What We Built', body: project.built.body,     large: false },
+            { label: 'The Result',    body: project.result.body,    large: true },
           ].map(({ label, body, large }) => (
             <div key={label} style={{ marginBottom: 44 }}>
               <p style={{ fontFamily: PP, fontWeight: 800, fontSize: 10, color: RED, letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: 10 }}>
