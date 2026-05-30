@@ -45,7 +45,7 @@ export const PROJECTS: Project[] = [
     title: "L'atelier NGO",
     subtitle: 'Brand Identity',
     category: 'Brand Identity',
-    coverImage: '/images/work/latelier.jpg',
+    coverImage: '/images/work/latelier/Latelier-Image-1.jpeg',
     diagnosticAnswers: [0, 3],
     keywords: ['ngo', 'nonprofit', 'new brand', 'identity', 'credibility', 'mission', 'scratch', 'build', 'first'],
     brief: "A mission-driven organization with clarity on what they stood for — and no visual language to prove it.",
