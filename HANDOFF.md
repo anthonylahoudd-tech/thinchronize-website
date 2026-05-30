@@ -5,109 +5,136 @@ _Last updated: 2026-05-30_
 
 ## Current State — Everything Working ✅
 
-- **Production URL**: https://thinchronize.com (www → apex redirect fixed)
-- **Vercel**: Auto-deploys on every push to `main` (anthonylahoudd-tech/thinchronize-website)
+- **Production URL**: https://thinchronize.com (auto-deploys on push to `main`)
 - **Stack**: Next.js 14 App Router · Sanity · GSAP · Lenis · PPNeueCorp font
+- **Last commit**: `b6cc41f` — full Motto-style portfolio rebuild
 
 ---
 
-## Session 2 — What Was Done
+## Session 3 — What Was Done
 
-### Bug Fixes
-- **Portfolio mobile grid** — added `className="portfolio-grid"` to the grid container so the `@media (max-width: 767px)` CSS override actually fires → single column on mobile
-- **`logo-stacked.png` console warning flood** — swapped `<Image>` → plain `<img>` in `Header.tsx` (footer + PageTransition already used plain `<img>`). Zero warnings now.
-- **Menu overlay CTA** — renamed "Start A Project →" → **"LET'S SYNC."** (`components/layout/MenuOverlay.tsx`)
-- **Cafe BDOOZ detail page** — added `images[]` array: `Image-2-Bdooz.png` (section 3) + `Image-5-Bdooz.png` (section 5)
+### Portfolio detail page — full Motto-style rebuild
 
-### Cursor — Complete Overhaul
-- **Removed** the dot + ring custom cursor (was laggy / bugged)
-- **Removed** `MagneticButton` from Contact + Services → replaced with plain `<button>`
-- **Removed** `cursor: none !important` from `globals.css` → **native cursor restored**
-- **Removed** 110px circular hover cursor from `ProjectCard.tsx`
-- **New**: single 8px white dot, `mix-blend-mode: difference`, zero latency (direct `transform` on every `mousemove`, no transitions), `pointer-events: none`, `z-index: 9999`
-- File: `components/ui/CustomCursor.tsx`
+All 9 project pages now share one template at `app/portfolio/[slug]/PortfolioProjectClient.tsx`.
 
-### Homepage Work Section — Full Rebuild (`components/sections/Work.tsx`)
-- **Before**: 2 hardcoded cards (Whatsub, CafeBdooz) + gradient placeholder cards from Sanity mock data (fake names: Lumière, Rawaa, Nour Studios, Jbal)
-- **After**: single reusable `WorkCard` component driven by `PROJECTS` array — all 9 real clients with real cover images, no mock data
-- "View all projects" link corrected: `/work` → `/portfolio`
-- `CaseStudyCard` + mock data dependency removed entirely
+**Hero**
+- Full-viewport cover image (opacity 0.75, gradient overlay)
+- Watermark title: large (clamp 48–100px), opacity 0.08, bottom-left behind info bar
+- Info bar: project title bottom-left, category + year bottom-right
+- (Scroll) label above title
 
-### Project Order (`lib/projects.ts`)
-Reordered to: **Whatsub → L'Atelier NGO → Cafe BDOOZ** → Don Bosco → Tryo → NFT Motivated → Equisoft → Societe Jabra → Conundrum
-This order applies everywhere: homepage scroll, portfolio grid, diagnostic tool.
+**View toggle pill** (fixed bottom-right, 60×110px)
+- Eye icon → visual view
+- Lines icon → reading view
+- Active state: black circle + white icon
+- `mix-blend-mode: difference` so it contrasts on any background
+- Pill rendered as **sibling** of the scroll-resistance wrapper (not inside it) — prevents `position:fixed` from being captured by the transform
 
-### Whatsub Cover Image
-- User added new sign photo (`Whatsub-Image-19.png` → compressed to `Whatsub-Sign.jpg`, 1.7MB → 489KB)
-- `Whatsub-Sign.jpg` = cover only (portfolio card + homepage card)
-- Old `Whatsub-Image-19.jpg` (the sandwich render) restored from git → stays inside the detail page puzzle grid
-- `projects.ts` coverImage: `Whatsub-Sign.jpg`
-- `Work.tsx` homepage card: `Whatsub-Sign.jpg`
-- Detail page hero (`app/portfolio/whatsub/page.tsx` line ~203): hardcoded to `Whatsub-Image-1.jpg` — sign never appears inside the page
+**Visual view**
+- Full-bleed stacked images (negative margins −40px break out of 40px content padding)
+- Landscape: `paddingTop: 71.05%` · Portrait: `paddingTop: 140%` (set per image via `portrait: boolean`)
 
----
+**Reading view** (2-col grid)
+- Left: all project images at 71.05% ratio, 50vw sized
+- Right: 4 sections — Brief + project details metadata grid, Diagnosis, What We Built, Result
 
-## Workflow: Adding a New Client
+**Next project section**
+- Full-viewport, dim cover (opacity 0.4)
+- Counter (01/09), centred title + "View Project →" link
+- ← → arrows bottom-right for prev/next nav
 
-1. Create folder: `public/images/work/[project-id]/`
-2. Drop images in (JPG preferred; PNGs get converted)
-3. Tell Claude → it updates `lib/projects.ts` and pushes
-4. Optionally: create `app/portfolio/[project-id]/page.tsx` for a custom detail page layout (like whatsub)
+**Scroll resistance**
+- `scale(0.98) translateY(-8px)` on main content wrapper when within 200px of bottom
+- Smooth 600ms transition
 
-**Compression command** (run in the project images folder):
-```bash
-# Resize + compress JPGs
-for f in *.jpg; do sips -s format jpeg -s formatOptions 82 -Z 1920 "$f" --out "$f"; done
-# Convert PNGs to JPEG
-for f in *.png; do sips -s format jpeg -s formatOptions 83 "$f" --out "${f%.png}.jpg" && rm "$f"; done
+### Data model — `lib/projects.ts`
+All fields restructured. All 9 projects have full content.
+
+```typescript
+brief:     { headline: string, body: string }
+diagnosis: { headline: string, body: string }
+built:     { headline: string, body: string }
+result:    { headline: string, body: string }
+details:   { type, category, year, scope }
+images:    { src: string, portrait?: boolean }[]
 ```
+
+### Routing
+- Deleted `app/portfolio/whatsub/page.tsx` (was blocking the template)
+- Deleted `app/portfolio/cafe-bdooz/page.tsx` (same)
+- `[slug]/page.tsx` now serves all 9 projects — no `hasDedicatedPage` check needed
+- Passes `project`, `nextProject`, `prevProject`, `currentIndex` to client
+
+### DiagnosticClient.tsx fix
+Updated 4 lines: `project.brief` → `project.brief.body` etc.
+
+### Whatsub images
+24 images in `public/images/work/whatsub/` — all in `projects.ts` images array.
+
+### Cafe BDOOZ images
+14 images in `public/images/work/cafe-bdooz/` — all in `projects.ts` images array.
+
+### ConditionalFooter
+`components/layout/ConditionalFooter.tsx` — hides footer on `/portfolio/[slug]` routes (regex: `/^\/portfolio\/.+/`). Footer still shows on `/portfolio` listing and all other routes.
 
 ---
 
 ## Still To Do
 
+- [ ] Mark portrait images in `projects.ts` — currently all images default to landscape (71.05%). Any portrait shots should have `portrait: true`
 - [ ] `app/journal/[slug]/page.tsx` — `pt-32` may need reducing (nav is transparent)
-- [ ] Mobile portfolio filter bar — `ALL PROJECTS (9)` dropdown + Grid/Explore tabs are tight at 375px, may need responsive padding
-- [ ] Add more client projects to `lib/projects.ts` as images come in
-- [ ] Projects with logo-only covers (Don Bosco, Tryo, Equisoft, Societe Jabra, Conundrum) would benefit from richer photography when available
+- [ ] Mobile portfolio filter bar — tight at 375px, may need responsive padding
+- [ ] Projects without rich images (don-bosco, tryo, nft-motivated, equisoft, societe-jabra, conundrum) — still showing only logo/cover in visual view. Add real images when photography arrives
+- [ ] Add more client projects to `lib/projects.ts` as new work comes in
 
 ---
 
 ## Key File Map
+
 ```
 app/
-  page.tsx                          ← Homepage (About first, no Hero)
-  globals.css                       ← Tokens, section-padding, viewFadeIn, no cursor:none
+  globals.css                       ← viewFade + viewEnter keyframes
+  layout.tsx                        ← ConditionalFooter (not Footer)
   portfolio/
-    page.tsx                        ← Server wrapper
-    PortfolioPageClient.tsx         ← Motto-style grid/explore, portfolio-grid class for mobile
-    whatsub/page.tsx                ← Custom 29-image puzzle grid
-    cafe-bdooz/page.tsx             ← Custom detail page
+    page.tsx                        ← Portfolio listing (server wrapper)
+    PortfolioPageClient.tsx         ← Grid/Explore filter UI
     [slug]/
-      page.tsx                      ← Dynamic project route
-      PortfolioProjectClient.tsx    ← Detail layout (images[0], images[1])
+      page.tsx                      ← Computes next/prev/currentIndex, no dedicated-page check
+      PortfolioProjectClient.tsx    ← Full Motto-style case study layout
 
 components/
   layout/
-    Header.tsx                      ← mix-blend-mode nav, logo-stacked uses plain <img>
-    MenuOverlay.tsx                 ← Fullscreen menu, CTA = "LET'S SYNC."
+    ConditionalFooter.tsx           ← Hides footer on /portfolio/[slug] routes
+    Header.tsx                      ← mix-blend-mode nav, logo uses plain <img>
+    MenuOverlay.tsx                 ← CTA = "LET'S SYNC."
   sections/
-    Work.tsx                        ← Horizontal scroll, WorkCard driven by PROJECTS[]
-    Contact.tsx                     ← Plain <button> (no MagneticButton)
-    Services.tsx                    ← Plain <button> (no MagneticButton)
-  ProjectCard.tsx                   ← Portfolio grid card, scale hover only (no cursor circle)
-  ui/
-    CustomCursor.tsx                ← 8px dot, mix-blend-mode difference, zero lag
+    Work.tsx                        ← Homepage horizontal scroll, uses PROJECTS[]
+  ProjectCard.tsx                   ← Portfolio grid card
 
 lib/
-  projects.ts                       ← All project data, ordered: whatsub, latelier, cafe-bdooz first
+  projects.ts                       ← Source of truth for all project data
+                                       brief/diagnosis/built/result as {headline,body}
+                                       images as {src,portrait?}[]
+                                       details as {type,category,year,scope}
 
 public/images/work/
-  whatsub/
-    Whatsub-Sign.jpg    ← cover only (card + homepage)
-    Whatsub-Image-1.jpg ← detail page hero
-    Whatsub-Image-19.jpg← sandwich render — inside detail page puzzle grid
-  latelier/             ← Image-1,2,3.jpeg
-  cafe-bdooz/           ← Cover-Bdooz.png + Image-2,5-Bdooz.png
-  [others]/             ← Single cover files (logo shots)
+  whatsub/        ← 24 images + Whatsub-Sign.jpg (cover)
+  latelier/       ← 3 images (Image-1,2,3.jpeg)
+  cafe-bdooz/     ← 14 images + Cover-Bdooz.png
+  [others]/       ← Single cover files only
+```
+
+---
+
+## Workflow: Adding a New Client
+
+1. Create `public/images/work/[id]/` and drop images in
+2. Add project to `lib/projects.ts` with full data shape (see existing entries)
+3. Mark any portrait-orientation images with `portrait: true`
+4. Push — Vercel auto-deploys
+
+**Compression command** (run in the project images folder):
+```bash
+for f in *.jpg; do sips -s format jpeg -s formatOptions 82 -Z 1920 "$f" --out "$f"; done
+for f in *.png; do sips -s format jpeg -s formatOptions 83 "$f" --out "${f%.png}.jpg" && rm "$f"; done
 ```
