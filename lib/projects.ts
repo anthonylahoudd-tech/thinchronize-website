@@ -20,6 +20,7 @@ export interface ProjectImage {
 export interface Project {
   id: string
   title: string
+  tagline: string
   subtitle: string           // used by Work.tsx homepage cards
   category: string
   coverImage: string
@@ -53,6 +54,7 @@ export const PROJECTS: Project[] = [
   {
     id: 'whatsub',
     title: 'Whatsub',
+    tagline: 'A sub sandwich brand built to own the street.',
     subtitle: 'Brand Identity & Visual System',
     category: 'Brand Identity',
     coverImage: '/images/work/whatsub/Whatsub-Sign.jpg',
@@ -113,6 +115,7 @@ export const PROJECTS: Project[] = [
   {
     id: 'latelier',
     title: "L'atelier NGO",
+    tagline: 'An NGO brand that works for funders and communities at once.',
     subtitle: 'Brand Identity',
     category: 'Brand Identity',
     coverImage: '/images/work/latelier/Latelier-Image-3.jpeg',
@@ -152,6 +155,7 @@ export const PROJECTS: Project[] = [
   {
     id: 'cafe-bdooz',
     title: 'Cafe BDOOZ',
+    tagline: 'A neighbourhood café people recognise before they walk in.',
     subtitle: 'Brand Identity',
     category: 'Brand Identity',
     coverImage: '/images/work/cafe-bdooz/Cover-Bdooz.png',
@@ -202,6 +206,7 @@ export const PROJECTS: Project[] = [
   {
     id: 'don-bosco',
     title: 'Don Bosco School',
+    tagline: 'A school\'s identity realigned with what it had actually become.',
     subtitle: 'Rebranding',
     category: 'Brand Identity',
     coverImage: '/images/work/don-bosco.jpg',
@@ -236,6 +241,7 @@ export const PROJECTS: Project[] = [
   {
     id: 'tryo',
     title: 'Tryo',
+    tagline: 'A startup brand that explains itself in three seconds.',
     subtitle: 'Brand Identity',
     category: 'Brand Identity',
     coverImage: '/images/work/tryo.png',
@@ -270,6 +276,7 @@ export const PROJECTS: Project[] = [
   {
     id: 'nft-motivated',
     title: 'NFT Motivated',
+    tagline: 'Motion content that communicates the brand, not just the colours.',
     subtitle: 'Motion Graphics',
     category: 'Motion',
     coverImage: '/images/work/nft-motivated.jpg',
@@ -304,6 +311,7 @@ export const PROJECTS: Project[] = [
   {
     id: 'equisoft',
     title: 'Equisoft',
+    tagline: 'A motion system that makes the product look as intelligent as it is.',
     subtitle: 'Motion Graphics',
     category: 'Motion',
     coverImage: '/images/work/equisoft.jpg',
@@ -338,6 +346,7 @@ export const PROJECTS: Project[] = [
   {
     id: 'societe-jabra',
     title: 'Societe Jabra',
+    tagline: 'Print collateral that reinforces the brand instead of undermining it.',
     subtitle: 'Print Collateral',
     category: 'Packaging',
     coverImage: '/images/work/societe-jabra.jpg',
@@ -372,6 +381,7 @@ export const PROJECTS: Project[] = [
   {
     id: 'conundrum',
     title: 'Conundrum',
+    tagline: 'An editorial system built for content that needs to be read.',
     subtitle: 'Booklet + Brochure',
     category: 'Brand Strategy',
     coverImage: '/images/work/conundrum.jpg',
