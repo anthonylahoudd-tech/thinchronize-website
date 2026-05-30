@@ -243,7 +243,7 @@ export default function PortfolioProjectClient({ project, moreWork }: Props) {
         <div ref={rImage1.ref} style={{ ...rImage1.style, overflow: 'hidden' }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img loading="lazy"
-            src={project.coverImage}
+            src={project.images?.[0] ?? project.coverImage}
             alt={`${project.title} — detail`}
             style={{
               width:     '100%',
@@ -301,7 +301,7 @@ export default function PortfolioProjectClient({ project, moreWork }: Props) {
         <div ref={rImage2.ref} style={{ ...rImage2.style, marginLeft: 'auto', width: '65%', minWidth: 280 }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img loading="lazy"
-            src={project.coverImage}
+            src={project.images?.[1] ?? project.coverImage}
             alt={`${project.title} — work`}
             style={{
               width:     '100%',

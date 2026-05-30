@@ -4,6 +4,7 @@ export interface Project {
   subtitle: string
   category: string
   coverImage: string
+  images?: string[]        // optional gallery: [0]=section3, [1]=section5
   diagnosticAnswers: number[]
   keywords: string[]
   brief: string
@@ -46,6 +47,10 @@ export const PROJECTS: Project[] = [
     subtitle: 'Brand Identity',
     category: 'Brand Identity',
     coverImage: '/images/work/latelier/Latelier-Image-1.jpeg',
+    images: [
+      '/images/work/latelier/Latelier-Image-2.jpeg',
+      '/images/work/latelier/Latelier-Image-3.jpeg',
+    ],
     diagnosticAnswers: [0, 3],
     keywords: ['ngo', 'nonprofit', 'new brand', 'identity', 'credibility', 'mission', 'scratch', 'build', 'first'],
     brief: "A mission-driven organization with clarity on what they stood for — and no visual language to prove it.",
