@@ -2,7 +2,6 @@
 
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { PROJECTS } from '@/lib/projects'
 import ProjectCard from '@/components/ProjectCard'
 
@@ -301,13 +300,19 @@ export default function PortfolioPageClient() {
                 height:   '100vh',
                 overflow: 'hidden',
               }}>
-                <Image
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                   src={project.coverImage}
                   alt={project.title}
-                  fill
-                  sizes="100vw"
-                  style={{ objectFit: 'cover' }}
-                  priority={i === 0}
+                  loading={i === 0 ? 'eager' : 'lazy'}
+                  style={{
+                    position:   'absolute',
+                    inset:      0,
+                    width:      '100%',
+                    height:     '100%',
+                    objectFit:  'cover',
+                    display:    'block',
+                  }}
                 />
 
                 {/* Bottom gradient overlay */}

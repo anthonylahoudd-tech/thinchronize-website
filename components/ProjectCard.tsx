@@ -2,13 +2,12 @@
 
 import { useState, useRef } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import type { Project } from '@/lib/projects'
 
 const PP = "'PPNeueCorp', system-ui, sans-serif"
 
 export default function ProjectCard({ project }: { project: Project }) {
-  const [hovered, setHovered]   = useState(false)
+  const [hovered, setHovered]     = useState(false)
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 })
   const cardRef = useRef<HTMLAnchorElement>(null)
 
@@ -27,47 +26,50 @@ export default function ProjectCard({ project }: { project: Project }) {
       onMouseMove={handleMouseMove}
       style={{ display: 'block', textDecoration: 'none' }}
     >
-      {/* 1:1 image with zoom + circular cursor */}
+      {/* 1:1 image — simple aspectRatio approach, no fill tricks */}
       <div style={{
         position:   'relative',
         width:      '100%',
-        paddingTop: '100%',
+        aspectRatio: '1 / 1',
         overflow:   'hidden',
         background: '#1a1a1a',
       }}>
-        <Image
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
           src={project.coverImage}
           alt={project.title}
-          fill
-          sizes="(max-width: 768px) 100vw, 50vw"
+          loading="lazy"
           style={{
+            width:      '100%',
+            height:     '100%',
             objectFit:  'cover',
+            display:    'block',
             transform:  hovered ? 'scale(1.04)' : 'scale(1)',
             transition: 'transform 700ms cubic-bezier(0.19,1,0.22,1)',
           }}
         />
 
-        {/* Custom circular "View" cursor — follows mouse inside card */}
+        {/* Custom circular cursor — follows mouse inside card */}
         <div style={{
-          position:        'absolute',
-          top:             cursorPos.y - 55,
-          left:            cursorPos.x - 55,
-          width:           110,
-          height:          110,
-          borderRadius:    '50%',
-          background:      'rgba(255,255,255,0.92)',
-          display:         'flex',
-          alignItems:      'center',
-          justifyContent:  'center',
-          opacity:         hovered ? 1 : 0,
-          transform:       hovered ? 'scale(1)' : 'scale(0.4)',
-          transition:      'opacity 350ms cubic-bezier(0.19,1,0.22,1), transform 350ms cubic-bezier(0.19,1,0.22,1)',
-          pointerEvents:   'none',
-          zIndex:          3,
-          fontFamily:      PP,
-          fontWeight:      400,
-          fontSize:        22,
-          color:           '#000',
+          position:       'absolute',
+          top:            cursorPos.y - 55,
+          left:           cursorPos.x - 55,
+          width:          110,
+          height:         110,
+          borderRadius:   '50%',
+          background:     'rgba(255,255,255,0.92)',
+          display:        'flex',
+          alignItems:     'center',
+          justifyContent: 'center',
+          opacity:        hovered ? 1 : 0,
+          transform:      hovered ? 'scale(1)' : 'scale(0.4)',
+          transition:     'opacity 350ms cubic-bezier(0.19,1,0.22,1), transform 350ms cubic-bezier(0.19,1,0.22,1)',
+          pointerEvents:  'none',
+          zIndex:         3,
+          fontFamily:     PP,
+          fontWeight:     400,
+          fontSize:       22,
+          color:          '#000',
         }}>
           →
         </div>
@@ -75,18 +77,18 @@ export default function ProjectCard({ project }: { project: Project }) {
 
       {/* Card info row */}
       <div style={{
-        display:         'flex',
-        justifyContent:  'space-between',
-        alignItems:      'flex-start',
-        paddingTop:      20,
+        display:        'flex',
+        justifyContent: 'space-between',
+        alignItems:     'flex-start',
+        paddingTop:     20,
       }}>
         <div>
           <span style={{
-            display:     'block',
-            fontFamily:  PP,
-            fontWeight:  400,
-            fontSize:    16,
-            color:       'white',
+            display:      'block',
+            fontFamily:   PP,
+            fontWeight:   400,
+            fontSize:     16,
+            color:        'white',
             marginBottom: 3,
           }}>
             {project.title}
