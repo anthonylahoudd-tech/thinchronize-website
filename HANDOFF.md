@@ -7,50 +7,84 @@ _Last updated: 2026-05-30_
 
 - **Production URL**: https://thinchronize.com (auto-deploys on push to `main`)
 - **Stack**: Next.js 14 App Router · Sanity · GSAP · Lenis · PPNeueCorp font
-- **Last commit**: `b6cc41f` — full Motto-style portfolio rebuild
+- **Last commit**: `9ecdd9f` — Whatsub page Motto-exact rebuild
 
 ---
 
-## Session 3 — What Was Done
+## Session 4 — What Was Done
 
-### Portfolio detail page — full Motto-style rebuild
+### Portfolio page — breathing-room hero
 
-All 9 project pages now share one template at `app/portfolio/[slug]/PortfolioProjectClient.tsx`.
+`app/portfolio/PortfolioPageClient.tsx` rebuilt.
 
-**Hero**
-- Full-viewport cover image (opacity 0.75, gradient overlay)
-- Watermark title: large (clamp 48–100px), opacity 0.08, bottom-left behind info bar
-- Info bar: project title bottom-left, category + year bottom-right
-- (Scroll) label above title
+- Removed the old label row header and sticky filter bar
+- Full-viewport (`100vh`) hero: pure black breathing room top half
+- Bottom row (`justifyContent: space-between`):
+  - **Left**: intro paragraph — PP Neue Corp 400, `clamp(24px, 3.5vw, 46px)`, white, `maxWidth 640px`
+  - **Right**: filter pill (white bg, height 62px) + Grid/Explore sliding tab (white pill, black sliding mask)
+- Grid and Explore views are unchanged — same render logic below the hero
+- Filter dropdown opens upward (`bottom: 70`) since it's at the bottom of the hero
 
-**View toggle pill** (fixed bottom-right, 60×110px)
-- Eye icon → visual view
-- Lines icon → reading view
-- Active state: black circle + white icon
-- `mix-blend-mode: difference` so it contrasts on any background
-- Pill rendered as **sibling** of the scroll-resistance wrapper (not inside it) — prevents `position:fixed` from being captured by the transform
+### Project page — full Motto-exact rebuild (Whatsub locked, roll out pending)
 
-**Visual view**
-- Full-bleed stacked images (negative margins −40px break out of 40px content padding)
-- Landscape: `paddingTop: 71.05%` · Portrait: `paddingTop: 140%` (set per image via `portrait: boolean`)
+`app/portfolio/[slug]/PortfolioProjectClient.tsx` fully rebuilt to match Motto's production layout.
 
-**Reading view** (2-col grid)
-- Left: all project images at 71.05% ratio, 50vw sized
-- Right: 4 sections — Brief + project details metadata grid, Diagnosis, What We Built, Result
+#### Hero (100vh)
 
-**Next project section**
-- Full-viewport, dim cover (opacity 0.4)
-- Counter (01/09), centred title + "View Project →" link
-- ← → arrows bottom-right for prev/next nav
+- Cover image: `opacity: 0.55`, gradient (dark top + dark bottom, transparent middle)
+- **Project title**: `clamp(64px, 20vw, 300px)`, fontWeight 900 (ExtendedUltrabold), uppercase, `whiteSpace: nowrap` — bleeds off-screen right edge like Motto
+- **Tagline**: below the title, left-aligned, `clamp(15px, 1.5vw, 20px)`, `rgba(255,255,255,0.7)`, `maxWidth 520px`
+- **Bottom bar** uses CSS grid `1fr auto 1fr` to guarantee perfect centring:
+  - Left: `(Scroll)` — 11px, letterSpacing 4px, uppercase, `rgba(255,255,255,0.4)`
+  - Centre: white pill switcher (Visual view / Reading view), sliding black mask, height 62px, px-40
+  - Right: `See all projects` — underlined, `rgba(255,255,255,0.4)`
 
-**Scroll resistance**
-- `scale(0.98) translateY(-8px)` on main content wrapper when within 200px of bottom
-- Smooth 600ms transition
+#### Visual view
+
+- Full-bleed image stack, `paddingTop: 70%` landscape / `130%` portrait
+- `marginBottom: 8px` between images, starts immediately after hero (no top padding)
+- `paddingBottom: 160px` at the end
+
+#### Reading view (new structure — matches Motto 3rd screenshot)
+
+- **Overview section**: warm off-white background `#f5f4f0`
+  - CSS grid `200px 1fr`, gap `80px`
+  - Left col: `"Project / Overview"` label — 11px, uppercase, `rgba(0,0,0,0.4)`
+  - Right col:
+    - `brief.headline` — `clamp(28px, 3.5vw, 52px)`, fontWeight 900, dark
+    - `brief.body` — 18px, `rgba(0,0,0,0.55)`, lineHeight 1.75, maxWidth 640px
+    - `(Details)` label
+    - Detail rows (Type / Category / Year / Scope) — flex `space-between`, separated by `1px solid rgba(0,0,0,0.1)` horizontal rules
+- **Image grid** below the overview section on black background (same as visual view)
+
+#### Fixed toggle pill
+
+- `position: fixed, bottom 30px, right 44px` — **sibling of the scroll-resistance wrapper**, so `position: fixed` is not captured by the transform
+- Eye icon → visual, Lines icon → reading
+- Active: black circle (46×46px), white icon. Inactive: transparent, `rgba(0,0,0,0.35)` icon
+
+#### Scroll resistance
+
+- Builds 0→1 as user enters last 400px of page
+- Applied: `scale(1 - r*0.025) translateY(-r*12px)` when resistance > 0.3
+- `400ms cubic-bezier(0.19,1,0.22,1)` transition
+
+#### Next project section
+
+- Full-viewport, cover at `opacity: 0.35`
+- Centre: "Next Project" label · next project title (uppercase, ExtendedUltrabold) · `nextProject.tagline` · "Continue →" link
+- Bottom-left: counter `01 / 09`
+- Bottom-right: ← → prev/next links
 
 ### Data model — `lib/projects.ts`
-All fields restructured. All 9 projects have full content.
+
+Added `tagline: string` field to the `Project` interface and populated all 9 projects.
 
 ```typescript
+// New field
+tagline: string   // short punchy line used in next-project section + hero
+
+// Existing fields unchanged
 brief:     { headline: string, body: string }
 diagnosis: { headline: string, body: string }
 built:     { headline: string, body: string }
@@ -59,32 +93,15 @@ details:   { type, category, year, scope }
 images:    { src: string, portrait?: boolean }[]
 ```
 
-### Routing
-- Deleted `app/portfolio/whatsub/page.tsx` (was blocking the template)
-- Deleted `app/portfolio/cafe-bdooz/page.tsx` (same)
-- `[slug]/page.tsx` now serves all 9 projects — no `hasDedicatedPage` check needed
-- Passes `project`, `nextProject`, `prevProject`, `currentIndex` to client
-
-### DiagnosticClient.tsx fix
-Updated 4 lines: `project.brief` → `project.brief.body` etc.
-
-### Whatsub images
-24 images in `public/images/work/whatsub/` — all in `projects.ts` images array.
-
-### Cafe BDOOZ images
-14 images in `public/images/work/cafe-bdooz/` — all in `projects.ts` images array.
-
-### ConditionalFooter
-`components/layout/ConditionalFooter.tsx` — hides footer on `/portfolio/[slug]` routes (regex: `/^\/portfolio\/.+/`). Footer still shows on `/portfolio` listing and all other routes.
-
 ---
 
 ## Still To Do
 
-- [ ] Mark portrait images in `projects.ts` — currently all images default to landscape (71.05%). Any portrait shots should have `portrait: true`
+- [ ] **USER APPROVAL NEEDED**: Check Whatsub page on production, approve, then roll template out to all 9 projects (it's the same template — no per-project work needed, it's already live for all 9)
+- [ ] Mark portrait images in `projects.ts` — all currently default to landscape (70%). Any portrait shots need `portrait: true`
+- [ ] Projects without rich images (don-bosco, tryo, nft-motivated, equisoft, societe-jabra, conundrum) — showing only cover in visual view. Add images when photography arrives
 - [ ] `app/journal/[slug]/page.tsx` — `pt-32` may need reducing (nav is transparent)
-- [ ] Mobile portfolio filter bar — tight at 375px, may need responsive padding
-- [ ] Projects without rich images (don-bosco, tryo, nft-motivated, equisoft, societe-jabra, conundrum) — still showing only logo/cover in visual view. Add real images when photography arrives
+- [ ] Mobile responsiveness pass — portfolio hero bottom row (filter + tabs) may be tight at 375px
 - [ ] Add more client projects to `lib/projects.ts` as new work comes in
 
 ---
@@ -97,43 +114,65 @@ app/
   layout.tsx                        ← ConditionalFooter (not Footer)
   portfolio/
     page.tsx                        ← Portfolio listing (server wrapper)
-    PortfolioPageClient.tsx         ← Grid/Explore filter UI
+    PortfolioPageClient.tsx         ← Breathing-room hero + Grid/Explore
     [slug]/
-      page.tsx                      ← Computes next/prev/currentIndex, no dedicated-page check
-      PortfolioProjectClient.tsx    ← Full Motto-style case study layout
+      page.tsx                      ← Computes next/prev/currentIndex
+      PortfolioProjectClient.tsx    ← Motto-exact project page template
 
 components/
   layout/
     ConditionalFooter.tsx           ← Hides footer on /portfolio/[slug] routes
-    Header.tsx                      ← mix-blend-mode nav, logo uses plain <img>
+    Header.tsx                      ← mix-blend-mode nav
     MenuOverlay.tsx                 ← CTA = "LET'S SYNC."
   sections/
     Work.tsx                        ← Homepage horizontal scroll, uses PROJECTS[]
   ProjectCard.tsx                   ← Portfolio grid card
 
 lib/
-  projects.ts                       ← Source of truth for all project data
+  projects.ts                       ← Source of truth for all 9 projects
+                                       tagline field added (session 4)
                                        brief/diagnosis/built/result as {headline,body}
                                        images as {src,portrait?}[]
                                        details as {type,category,year,scope}
 
 public/images/work/
   whatsub/        ← 24 images + Whatsub-Sign.jpg (cover)
-  latelier/       ← 3 images (Image-1,2,3.jpeg)
+  latelier/       ← 3 images
   cafe-bdooz/     ← 14 images + Cover-Bdooz.png
-  [others]/       ← Single cover files only
+  [others]/       ← Single cover file only
 ```
+
+---
+
+## Font Reference
+
+All three PP Neue Corp weights are self-hosted in `public/fonts/`:
+
+| CSS fontWeight | File                              | Use                         |
+|----------------|-----------------------------------|-----------------------------|
+| 900            | PPNeueCorp-ExtendedUltrabold      | Hero titles, section headers |
+| 800            | PPNeueCorp-NormalUltrabold        | (available, rarely used)    |
+| 400            | PPNeueCorp-NormalMedium           | Body, labels, UI elements   |
 
 ---
 
 ## Workflow: Adding a New Client
 
 1. Create `public/images/work/[id]/` and drop images in
-2. Add project to `lib/projects.ts` with full data shape (see existing entries)
+2. Add project to `lib/projects.ts` with full data shape:
+   ```typescript
+   {
+     id, title, tagline, subtitle, category,
+     coverImage, images: [{ src, portrait? }],
+     brief, diagnosis, built, result,   // each: { headline, body }
+     details: { type, category, year, scope },
+     diagnosticAnswers, keywords, services, year, market
+   }
+   ```
 3. Mark any portrait-orientation images with `portrait: true`
 4. Push — Vercel auto-deploys
 
-**Compression command** (run in the project images folder):
+**Image compression** (run inside the project folder):
 ```bash
 for f in *.jpg; do sips -s format jpeg -s formatOptions 82 -Z 1920 "$f" --out "$f"; done
 for f in *.png; do sips -s format jpeg -s formatOptions 83 "$f" --out "${f%.png}.jpg" && rm "$f"; done
