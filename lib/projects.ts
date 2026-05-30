@@ -48,6 +48,7 @@ export const PROJECTS: Project[] = [
     category: 'Brand Identity',
     coverImage: '/images/work/latelier/Latelier-Image-3.jpeg',
     images: [
+      '/images/work/latelier/Latelier-Image-3.jpeg',
       '/images/work/latelier/Latelier-Image-2.jpeg',
       '/images/work/latelier/Latelier-Image-1.jpeg',
     ],

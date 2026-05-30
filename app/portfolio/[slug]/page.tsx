@@ -2,15 +2,13 @@ import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import fs from 'fs'
 import path from 'path'
-import { PROJECTS, getProjectBySlug, type Project } from '@/lib/projects'
+import { PROJECTS, getProjectBySlug } from '@/lib/projects'
 import PortfolioProjectClient from './PortfolioProjectClient'
 
 interface Props {
   params: { slug: string }
 }
 
-// Auto-detect: if a dedicated app/portfolio/[id]/page.tsx exists, skip it here.
-// You never need to touch this file again — just create the folder and it works.
 function hasDedicatedPage(id: string): boolean {
   const p = path.join(process.cwd(), 'app', 'portfolio', id, 'page.tsx')
   return fs.existsSync(p)
@@ -33,8 +31,14 @@ export default function PortfolioProjectPage({ params }: Props) {
   const project = getProjectBySlug(params.slug)
   if (!project) redirect('/portfolio')
 
-  // Pick 2 other projects for "More Work"
-  const moreWork: Project[] = PROJECTS.filter(p => p.id !== project!.id).slice(0, 2)
+  const currentIndex = PROJECTS.findIndex(p => p.id === project!.id)
+  const nextProject = PROJECTS[(currentIndex + 1) % PROJECTS.length]
 
-  return <PortfolioProjectClient project={project!} moreWork={moreWork} />
+  return (
+    <PortfolioProjectClient
+      project={project!}
+      nextProject={nextProject}
+      currentIndex={currentIndex}
+    />
+  )
 }

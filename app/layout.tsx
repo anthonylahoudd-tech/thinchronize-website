@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import SmoothScroll from '@/components/layout/SmoothScroll'
 import Header from '@/components/layout/Header'
-import Footer from '@/components/layout/Footer'
+import ConditionalFooter from '@/components/layout/ConditionalFooter'
 import CustomCursor from '@/components/ui/CustomCursor'
 import PageTransition from '@/components/layout/PageTransition'
 
@@ -46,7 +46,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SmoothScroll>
           <Header />
           <main>{children}</main>
-          <Footer />
+          <ConditionalFooter />
         </SmoothScroll>
       </body>
     </html>
