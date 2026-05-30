@@ -46,10 +46,10 @@ export const PROJECTS: Project[] = [
     title: "L'atelier NGO",
     subtitle: 'Brand Identity',
     category: 'Brand Identity',
-    coverImage: '/images/work/latelier/Latelier-Image-1.jpeg',
+    coverImage: '/images/work/latelier/Latelier-Image-3.jpeg',
     images: [
       '/images/work/latelier/Latelier-Image-2.jpeg',
-      '/images/work/latelier/Latelier-Image-3.jpeg',
+      '/images/work/latelier/Latelier-Image-1.jpeg',
     ],
     diagnosticAnswers: [0, 3],
     keywords: ['ngo', 'nonprofit', 'new brand', 'identity', 'credibility', 'mission', 'scratch', 'build', 'first'],
