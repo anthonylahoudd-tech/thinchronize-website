@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import PageHero from '@/components/ui/PageHero'
 
@@ -46,6 +46,62 @@ function ParallaxImage({ src }: { src: string }) {
 
 const PP  = "'PPNeueCorp', system-ui, sans-serif"
 const RED = '#D0274B'
+const BANNER_TEXT = 'STRATEGY * IDENTITY * CRAFT * BEIRUT * BRAND * PURPOSE * '
+
+function DoubleBanner() {
+  const sectionRef = useRef<HTMLDivElement>(null)
+  const row1Ref    = useRef<HTMLDivElement>(null)
+  const row2Ref    = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handle = () => {
+      if (!sectionRef.current) return
+      const rect   = sectionRef.current.getBoundingClientRect()
+      const center = rect.top + rect.height / 2 - window.innerHeight / 2
+      const offset = center * 0.12
+      if (row1Ref.current) row1Ref.current.style.transform = `translateX(${offset}px)`
+      if (row2Ref.current) row2Ref.current.style.transform = `translateX(${-offset}px)`
+    }
+    window.addEventListener('scroll', handle, { passive: true })
+    handle()
+    return () => window.removeEventListener('scroll', handle)
+  }, [])
+
+  const spanStyle: React.CSSProperties = {
+    fontFamily:    PP,
+    fontWeight:    900,
+    fontSize:      'clamp(52px, 8vw, 120px)',
+    color:         '#111',
+    textTransform: 'uppercase',
+    letterSpacing: '-3px',
+    lineHeight:    0.9,
+    whiteSpace:    'nowrap',
+  }
+
+  return (
+    <div
+      ref={sectionRef}
+      style={{ background: '#f5f4f0', overflow: 'hidden', padding: 'clamp(16px, 2vw, 28px) 0', display: 'flex', flexDirection: 'column', gap: 10 }}
+    >
+      {/* Row 1 — scrolls left */}
+      <div style={{ overflow: 'hidden' }}>
+        <div ref={row1Ref} style={{ willChange: 'transform' }}>
+          <div className="page-marquee-track">
+            <span style={spanStyle}>{BANNER_TEXT}{BANNER_TEXT}</span>
+          </div>
+        </div>
+      </div>
+      {/* Row 2 — scrolls right */}
+      <div style={{ overflow: 'hidden' }}>
+        <div ref={row2Ref} style={{ willChange: 'transform' }}>
+          <div className="page-marquee-track-reverse">
+            <span style={spanStyle}>{BANNER_TEXT}{BANNER_TEXT}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 // ─── Scroll-reveal hook ───────────────────────────────────────────────────────
 
@@ -282,11 +338,12 @@ export default function AboutClient() {
           <div>
             <h2 style={{
               fontFamily:    PP,
-              fontWeight:    900,
+              fontWeight:    400,
               fontSize:      'clamp(28px, 3.2vw, 52px)',
               color:         '#111',
-              lineHeight:    1.15,
-              letterSpacing: '-0.02em',
+              lineHeight:    1.2,
+              letterSpacing: '-0.01em',
+              textTransform: 'none',
               margin:        '0 0 clamp(28px, 3.5vw, 48px)',
             }}>
               Thinchronize started because we kept seeing the same problem.
@@ -391,7 +448,7 @@ export default function AboutClient() {
               textTransform: 'none',
               margin:        '0 0 clamp(28px, 3.5vw, 48px)',
             }}>
-              Two strategists.<br />One obsession.<br />Built from Beirut.
+              Two strategists. One obsession.<br />Built from Beirut.
             </h3>
 
             <p style={{
@@ -477,23 +534,8 @@ export default function AboutClient() {
         </div>
       </section>
 
-      {/* ══ MOVING BANNER ═════════════════════════════════════════════ */}
-      <div style={{ background: '#f5f4f0', overflow: 'hidden', padding: 'clamp(40px, 5vw, 72px) 0' }}>
-        <div className="page-marquee-track">
-          <span style={{
-            fontFamily:    PP,
-            fontWeight:    900,
-            fontSize:      'clamp(56px, 9vw, 130px)',
-            color:         '#111',
-            textTransform: 'uppercase',
-            letterSpacing: '-3px',
-            lineHeight:    0.9,
-            whiteSpace:    'nowrap',
-          }}>
-            STRATEGY * IDENTITY * CRAFT * BEIRUT * BRAND * PURPOSE * STRATEGY * IDENTITY * CRAFT * BEIRUT * BRAND * PURPOSE *&nbsp;
-          </span>
-        </div>
-      </div>
+      {/* ══ DOUBLE PARALLAX BANNER ════════════════════════════════════ */}
+      <DoubleBanner />
 
       {/* ══ WHAT WE STAND FOR — Motto numbered grid ═══════════════════ */}
       <section style={{
@@ -612,6 +654,66 @@ export default function AboutClient() {
           ))}
         </div>
       </section>
+
+      {/* ══ NUMBERS — Motto stacked stats ════════════════════════════ */}
+      <section style={{
+        background: '#fff',
+        padding:    'clamp(80px, 10vw, 130px) 5vw',
+      }}>
+        <p style={{
+          fontFamily:    PP,
+          fontWeight:    400,
+          fontSize:      12,
+          letterSpacing: '0.18em',
+          textTransform: 'uppercase',
+          color:         'rgba(0,0,0,0.4)',
+          margin:        '0 0 clamp(40px, 5vw, 64px)',
+        }}>
+          By the numbers
+        </p>
+        {[
+          { stat: '10+',   label: 'Years in brand' },
+          { stat: '150+',  label: 'Brands built'   },
+          { stat: '20+',   label: 'Industries'      },
+          { stat: '100%',  label: 'Strategy-led'    },
+        ].map((item, i) => (
+          <div
+            key={item.stat}
+            style={{
+              display:       'flex',
+              alignItems:    'baseline',
+              gap:           '0.35em',
+              borderTop:     '1px solid rgba(0,0,0,0.08)',
+              paddingTop:    'clamp(20px, 2.5vw, 36px)',
+              paddingBottom: 'clamp(20px, 2.5vw, 36px)',
+              borderBottom:  i === 3 ? '1px solid rgba(0,0,0,0.08)' : 'none',
+            }}
+          >
+            <span style={{
+              fontFamily:    PP,
+              fontWeight:    900,
+              fontSize:      'clamp(56px, 9vw, 130px)',
+              color:         '#111',
+              letterSpacing: '-3px',
+              lineHeight:    0.9,
+            }}>
+              {item.stat}
+            </span>
+            <span style={{
+              fontFamily:  PP,
+              fontWeight:  400,
+              fontSize:    'clamp(18px, 2vw, 30px)',
+              color:       'rgba(0,0,0,0.45)',
+              letterSpacing: '-0.01em',
+            }}>
+              {item.label}
+            </span>
+          </div>
+        ))}
+      </section>
+
+      {/* ══ BOTTOM PARALLAX IMAGE ═════════════════════════════════════ */}
+      <ParallaxImage src="/images/about-signage.jpg" />
 
       {/* ══ SECTION 2 — The Studio ════════════════════════════════════ */}
       <section id="about-studio" style={{ background: '#FFFFFF', padding: 'clamp(80px, 10vw, 120px) clamp(24px, 6vw, 80px)' }}>
