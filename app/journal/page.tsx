@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getJournalPosts } from '@/lib/sanity/queries'
+import PageHero from '@/components/ui/PageHero'
 
 export const metadata: Metadata = {
   title: 'Journal',
@@ -14,38 +15,19 @@ export default async function JournalPage() {
 
   return (
     <div style={{ backgroundColor: '#292929', minHeight: '100vh' }}>
+
+      <PageHero
+        title="IDEAS"
+        subtitle="Thinking on brand strategy, identity, and the craft of building something true."
+      />
+
       <div
         className="container mx-auto"
         style={{
-          paddingTop:    'clamp(96px, 12vh, 130px)',
+          paddingTop:    'clamp(80px, 10vw, 120px)',
           paddingBottom: 'clamp(80px, 10vw, 140px)',
         }}
       >
-        {/* Header */}
-        <p style={{
-          fontFamily:    PP,
-          fontWeight:    800,
-          fontSize:      11,
-          letterSpacing: '0.22em',
-          textTransform: 'uppercase',
-          color:         '#D0274B',
-          marginBottom:  20,
-        }}>
-          Journal
-        </p>
-        <h1 style={{
-          fontFamily:    PP,
-          fontWeight:    900,
-          fontSize:      'clamp(48px, 8vw, 110px)',
-          lineHeight:    0.92,
-          letterSpacing: '-0.02em',
-          textTransform: 'uppercase',
-          color:         '#fff',
-          marginBottom:  'clamp(56px, 8vw, 100px)',
-        }}>
-          Thinking out loud.
-        </h1>
-
         {/* Posts */}
         {posts.length === 0 ? (
           <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 16, color: '#919191' }}>

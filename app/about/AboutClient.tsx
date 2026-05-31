@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
+import PageHero from '@/components/ui/PageHero'
 
 const PP  = "'PPNeueCorp', system-ui, sans-serif"
 const RED = '#D0274B'
@@ -194,98 +195,11 @@ export default function AboutClient() {
   return (
     <div style={{ backgroundColor: '#FFFFFF', minHeight: '100vh' }}>
 
-      {/* ══ SECTION 1 — Hero ══════════════════════════════════════════ */}
-      <section style={{
-        position:    'relative',
-        minHeight:   '100vh',
-        display:     'flex',
-        alignItems:  'center',
-        justifyContent: 'center',
-      }}>
-        {/* Background */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img loading="lazy"
-          src="/about-hero.jpg"
-          alt="Thinchronize studio"
-          style={{
-            position:   'absolute',
-            inset:       0,
-            width:       '100%',
-            height:      '100%',
-            objectFit:   'cover',
-            objectPosition: 'center',
-          }}
-          onError={(e) => {
-            (e.currentTarget as HTMLImageElement).style.display = 'none'
-          }}
-        />
-        {/* Overlay */}
-        <div style={{
-          position:  'absolute',
-          inset:      0,
-          background: 'linear-gradient(to bottom, rgba(20,20,20,0.55) 0%, rgba(20,20,20,0.82) 100%)',
-          backgroundColor: '#1C1C1C',
-        }} />
-
-        {/* Content */}
-        <div style={{
-          position:  'relative',
-          textAlign: 'center',
-          padding:   'clamp(40px, 6vw, 100px)',
-          maxWidth:  860,
-        }}>
-          <p style={{
-            fontFamily:    PP,
-            fontWeight:    400,
-            fontSize:      11,
-            letterSpacing: '0.2em',
-            textTransform: 'uppercase',
-            color:         'rgba(255,255,255,0.45)',
-            marginBottom:  28,
-          }}>
-            The Studio
-          </p>
-          <h1 style={{
-            fontFamily:    PP,
-            fontWeight:    900,
-            fontSize:      'clamp(48px, 7vw, 96px)',
-            color:         '#FFFFFF',
-            lineHeight:    1.0,
-            letterSpacing: '-0.02em',
-            textTransform: 'uppercase',
-            marginBottom:  40,
-          }}>
-            Thinchronize
-          </h1>
-
-          {/* Signage image */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img loading="lazy"
-            src="/images/about-signage.jpg"
-            alt="Thinchronize Studio"
-            style={{
-              width:    '100%',
-              maxWidth: '720px',
-              height:   'auto',
-              display:  'block',
-              margin:   '48px auto 0',
-            }}
-          />
-
-          <p style={{
-            fontFamily: PP,
-            fontWeight: 400,
-            fontSize:   18,
-            color:      '#919191',
-            lineHeight: 1.6,
-            maxWidth:   640,
-            margin:     '0 auto',
-            textTransform: 'uppercase',
-          }}>
-            A strategy-led creative studio based in Lebanon, building brands that know what they stand for.
-          </p>
-        </div>
-      </section>
+      {/* ══ HERO ══════════════════════════════════════════════════════ */}
+      <PageHero
+        title="ABOUT"
+        subtitle="A strategy-led creative studio based in Lebanon — building brands that know exactly what they stand for."
+      />
 
       {/* ══ SECTION 2 — The Studio ════════════════════════════════════ */}
       <section style={{ background: '#FFFFFF', padding: 'clamp(80px, 10vw, 120px) clamp(24px, 6vw, 80px)' }}>

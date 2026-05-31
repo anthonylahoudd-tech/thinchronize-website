@@ -52,6 +52,11 @@
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
 }
+.page-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 22s linear infinite;
+}
 @keyframes orbit {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }

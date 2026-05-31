@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { motion } from 'framer-motion'
 import { CheckCircle } from 'lucide-react'
+import PageHero from '@/components/ui/PageHero'
 
 // ─── Tokens ───────────────────────────────────────────────────────────────────
 
@@ -51,10 +52,16 @@ export default function ContactClient() {
 
   return (
     <div style={{ backgroundColor: DARK, minHeight: '100vh' }}>
+
+      <PageHero
+        title="CONTACT"
+        subtitle="Ready to build something that matters? Let's start with a conversation."
+      />
+
       <div
         className="container mx-auto"
         style={{
-          paddingTop:    'clamp(96px, 12vh, 130px)',
+          paddingTop:    'clamp(80px, 10vw, 120px)',
           paddingBottom: 'clamp(80px, 10vw, 140px)',
         }}
       >

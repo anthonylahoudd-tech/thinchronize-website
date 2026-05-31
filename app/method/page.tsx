@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
+import PageHero from '@/components/ui/PageHero'
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const PP   = "'PPNeueCorp', sans-serif"
@@ -379,88 +380,10 @@ export default function MethodPage() {
       </div>
 
       {/* ══ 1 — HERO ════════════════════════════════════════════════════════════ */}
-      <section style={{
-        height: '100vh', background: '#FFFFFF',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        position: 'relative',
-      }}>
-        <p style={{
-          position: 'absolute',
-          top: 'clamp(120px, 14vh, 160px)',
-          left: 'clamp(36px, 7.5vw, 120px)',
-          color: '#999999', fontSize: 12, letterSpacing: '0.2em',
-          textTransform: 'uppercase', fontWeight: 400, fontFamily: PP,
-          animation: mounted ? `methodFadeUp 0.6s ${EASE} 0.3s both` : 'none',
-        }}>
-          Our Process
-        </p>
-
-        <div style={{
-          textAlign: 'center',
-          padding: '0 clamp(36px, 7.5vw, 120px)',
-          maxWidth: 960, width: '100%',
-          transform: `translateY(${heroOffset * 0.3}px)`,
-          willChange: 'transform',
-        }}>
-          <div style={{
-            display: 'inline-block', background: '#D0274B', color: 'white',
-            fontSize: 11, fontWeight: 400, letterSpacing: '0.15em',
-            textTransform: 'uppercase', padding: '6px 14px', fontFamily: PP,
-            marginBottom: 56,
-            animation: mounted ? `methodFadeUp 0.6s ${EASE} 0.5s both` : 'none',
-          }}>
-            The 4D Method
-          </div>
-
-          <div style={{ overflow: 'hidden', marginBottom: 48 }}>
-            <h1
-              key={phraseIdx}
-              style={{
-                fontSize: 'clamp(44px, 6.5vw, 80px)', fontWeight: 900, color: '#292929',
-                lineHeight: 1.1, margin: 0, fontFamily: PP,
-                animation: !mounted
-                  ? 'none'
-                  : leaving
-                    ? `methodPhraseOut 0.9s ${EASE} forwards`
-                    : cycled
-                      ? `methodPhraseIn 0.9s ${EASE} forwards`
-                      : 'none',
-              }}
-            >
-              {PHRASES[phraseIdx]}
-            </h1>
-          </div>
-
-          <p style={{
-            fontSize: 13, color: '#D0274B', maxWidth: 580, margin: '0 auto 20px',
-            lineHeight: 1.6, fontWeight: 400, fontFamily: PP,
-            letterSpacing: '0.12em', textTransform: 'uppercase',
-            animation: mounted ? `methodFadeUp 0.6s ${EASE} 0.9s both` : 'none',
-          }}>
-            Detect. Define. Design. Deliver. In that order. Always.
-          </p>
-
-          <p style={{
-            fontSize: 22, color: '#666666', maxWidth: 580, margin: '0 auto',
-            lineHeight: 1.7, fontWeight: 400, fontFamily: PP,
-            animation: mounted ? `methodFadeUp 0.6s ${EASE} 1.1s both` : 'none',
-          }}>
-            A four-phase method built on one belief — we don&apos;t design until we understand.
-          </p>
-        </div>
-
-        <div style={{
-          position: 'absolute', bottom: 56, left: '50%', transform: 'translateX(-50%)',
-          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8,
-          color: '#999999', fontSize: 12, letterSpacing: '0.2em', textTransform: 'uppercase',
-          fontFamily: PP, userSelect: 'none',
-          opacity: showScroll ? 1 : 0,
-          transition: `opacity 0.4s ${EASE}`,
-        }}>
-          <span>Scroll</span>
-          <span style={{ animation: mounted ? 'methodBounce 2s ease-in-out infinite' : 'none', display: 'inline-block' }}>↓</span>
-        </div>
-      </section>
+      <PageHero
+        title="METHOD"
+        subtitle="Diagnosis before design — four phases, one conviction: we don't create until we understand."
+      />
 
       {/* ══ 2 — CIRCLE INTRO ════════════════════════════════════════════════════
           The circle first appears HERE, centered on screen. The circle itself
