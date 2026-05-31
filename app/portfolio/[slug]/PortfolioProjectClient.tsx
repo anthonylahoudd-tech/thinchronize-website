@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { gsap } from 'gsap'
 import { useGSAP } from '@gsap/react'
@@ -135,9 +136,8 @@ export default function PortfolioProjectClient({
       // 2. Next-project progress bar + auto-navigate
       if (nextSectionRef.current && !navTriggered.current) {
         const rect     = nextSectionRef.current.getBoundingClientRect()
-        // fills 0→1 as the user scrolls through 75% of the end section
-        const sectionH = nextSectionRef.current.offsetHeight
-        const progress = Math.max(0, Math.min(1, (vh - rect.top) / (sectionH * 0.75)))
+        // fills 0→1 over ~10 scroll steps (vh * 1.6 ≈ 1440px at 900px viewport)
+        const progress = Math.max(0, Math.min(1, (vh - rect.top) / (vh * 1.6)))
         setNextProgress(progress)
 
         if (progress >= 1) {
@@ -592,6 +592,74 @@ export default function PortfolioProjectClient({
       </div>
 
       {/* ════════════════════════════════════════════════════════════════
+          CONVERTING CTA — full-width, after reading content
+      ════════════════════════════════════════════════════════════════ */}
+      <section style={{
+        background: '#ECECEA',
+        borderTop:  '1px solid rgba(0,0,0,0.08)',
+        padding:    'clamp(100px, 12vh, 160px) 5vw',
+      }}>
+        <p style={{
+          fontFamily:    PP,
+          fontWeight:    400,
+          fontSize:      12,
+          letterSpacing: '3px',
+          textTransform: 'uppercase',
+          color:         'rgba(0,0,0,0.3)',
+          margin:        '0 0 44px',
+        }}>
+          (Start a project)
+        </p>
+
+        <h2 style={{
+          fontFamily:    PP,
+          fontWeight:    900,
+          fontSize:      'clamp(64px, 9vw, 128px)',
+          color:         '#0f0f0f',
+          letterSpacing: '-3px',
+          lineHeight:    0.93,
+          textTransform: 'uppercase',
+          margin:        '0 0 60px',
+        }}>
+          Let's build<br />yours.
+        </h2>
+
+        <p style={{
+          fontFamily: PP,
+          fontWeight: 400,
+          fontSize:   20,
+          color:      'rgba(0,0,0,0.5)',
+          lineHeight: 1.7,
+          maxWidth:   540,
+          margin:     '0 0 52px',
+        }}>
+          Every brand we've built started with one honest
+          conversation. Ready to have it?
+        </p>
+
+        <Link
+          href="/contact"
+          style={{
+            display:        'inline-flex',
+            alignItems:     'center',
+            gap:            14,
+            fontFamily:     PP,
+            fontWeight:     900,
+            fontSize:       13,
+            letterSpacing:  '4px',
+            textTransform:  'uppercase',
+            color:          '#0f0f0f',
+            textDecoration: 'none',
+            borderBottom:   '1px solid rgba(0,0,0,0.25)',
+            paddingBottom:  6,
+          }}
+        >
+          Let's Sync.
+          <span style={{ fontSize: 18, letterSpacing: 0 }}>→</span>
+        </Link>
+      </section>
+
+      {/* ════════════════════════════════════════════════════════════════
           END OF PROJECT — Motto-style: keep scrolling + marquee + cover
       ════════════════════════════════════════════════════════════════ */}
       <div ref={nextSectionRef}>
@@ -599,7 +667,7 @@ export default function PortfolioProjectClient({
         {/* 1 ── "Keep scrolling" zone */}
         <div style={{
           background:          '#ECECEA',
-          height:              '52vh',
+          height:              '100vh',
           display:             'grid',
           gridTemplateColumns: '1fr 1fr',
           alignItems:          'center',
