@@ -86,19 +86,19 @@ export const PROJECTS: Project[] = [
     ],
     brief: {
       headline: 'Build a fast-casual sandwich brand from the ground up.',
-      body: 'Whatsub needed more than a logo — they needed an identity that could compete in a crowded F&B market and give a new concept a reason to exist beyond the product. A new sub sandwich brand launching in Washington D.C. needed a full visual identity — from logo to packaging to food truck wrap — that could own the street.',
+      body: 'Whatsub needed more than a logo — they needed a complete brand identity that could compete in Lebanon\'s crowded F&B market and give a new concept a clear reason to exist beyond the product itself.',
     },
     diagnosis: {
-      headline: 'No story, no differentiation, no reason to choose.',
-      body: 'The fast casual space in D.C. was dominated by clean, corporate visual systems. The gap was character. Whatsub had a strong product but zero brand infrastructure. Without a clear position, price becomes the only conversation — and that\'s a race to the bottom.',
+      headline: 'No story. No differentiation. No reason to choose.',
+      body: 'The F&B landscape in Lebanon is saturated with imported concepts and generic aesthetics. Whatsub had a strong product but zero brand infrastructure. Without a clear position, price becomes the only conversation — and price is always a race to the bottom.',
     },
     built: {
-      headline: 'A full brand identity built around the submarine metaphor.',
-      body: 'A custom scripted logotype with an illustrated submarine sandwich mascot. A bold yellow-to-orange-to-red color system. Full rollout across logo suite, menu design, packaging (bags, boxes, cups, stickers), food truck wrap, restaurant mural, and outdoor advertising. Every touchpoint designed to feel deliberate and ownable.',
+      headline: 'A complete brand built around the submarine metaphor.',
+      body: 'We built the full brand system: naming rationale, visual identity, color palette, typography, menu design, packaging language, and in-store communication. Every touchpoint was designed to feel ownable, deliberate, and consistent.',
     },
     result: {
       headline: 'A brand ready to open, grow, and be remembered.',
-      body: 'Whatsub launched in early 2025 with a complete brand system that was immediately recognizable at street level. The identity translated across every touchpoint — from the 20-foot truck wrap to the condiment packet — with no dilution. A brand platform that gives the team a foundation for every decision that follows.',
+      body: 'Whatsub launched with a complete visual language and a brand platform that gives the team a foundation to build on — not just for opening day, but for every brand decision that follows.',
     },
     details: {
       type: 'Brand Identity',

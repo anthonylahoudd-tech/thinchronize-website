@@ -37,50 +37,6 @@ function LinesIcon({ color }: { color: string }) {
   )
 }
 
-function ReadingSection({
-  num, label, headline, body, children,
-}: {
-  num: string
-  label: string
-  headline: string
-  body: string
-  children?: React.ReactNode
-}) {
-  return (
-    <div style={{ marginBottom: '80px' }}>
-      <span style={{
-        fontFamily: PP, fontWeight: 400, fontSize: '10px',
-        letterSpacing: '3px', textTransform: 'uppercase',
-        color: 'rgba(0,0,0,0.35)', display: 'block', marginBottom: '10px',
-      }}>
-        {num}
-      </span>
-      <span style={{
-        fontFamily: PP, fontWeight: 400, fontSize: '10px',
-        letterSpacing: '3px', textTransform: 'uppercase',
-        color: 'rgba(0,0,0,0.35)', display: 'block', marginBottom: '24px',
-      }}>
-        {label}
-      </span>
-      <h3 style={{
-        fontFamily: PP, fontWeight: 900, fontSize: 'clamp(18px, 2.5vw, 26px)',
-        color: '#000', lineHeight: 1.15, letterSpacing: '-0.5px',
-        marginBottom: '20px', textTransform: 'uppercase',
-      }}>
-        {headline}
-      </h3>
-      <p style={{
-        fontFamily: PP, fontWeight: 400, fontSize: '15px',
-        color: 'rgba(0,0,0,0.55)', lineHeight: 1.75,
-        marginBottom: children ? '40px' : '0',
-      }}>
-        {body}
-      </p>
-      {children}
-    </div>
-  )
-}
-
 export default function PortfolioProjectClient({
   project, nextProject, prevProject, currentIndex,
 }: Props) {
@@ -117,7 +73,7 @@ export default function PortfolioProjectClient({
     setPillMaskW(eRect.width)
   }, [])
 
-  // Scroll resistance
+  // Scroll resistance — triggers within 400px of bottom of page content
   useEffect(() => {
     const handle = () => {
       const dist = document.body.scrollHeight - window.scrollY - window.innerHeight
@@ -135,12 +91,14 @@ export default function PortfolioProjectClient({
   ]
 
   return (
-    <div style={{ background: '#fff', minHeight: '100vh' }}>
+    <div style={{ background: '#000', minHeight: '100vh' }}>
 
-      {/* ── Scroll resistance wrapper ─────────────────────────────────────── */}
+      {/* ══════════════════════════════════════════════════════════════════
+          SCROLL RESISTANCE WRAPPER
+      ══════════════════════════════════════════════════════════════════ */}
       <div style={{
         transform:       scrollResistance > 0.3
-          ? `scale(${1 - scrollResistance * 0.025}) translateY(${-scrollResistance * 12}px)`
+          ? `scale(${1 - scrollResistance * 0.02}) translateY(${-scrollResistance * 12}px)`
           : 'none',
         transition:      'transform 400ms cubic-bezier(0.19,1,0.22,1)',
         transformOrigin: 'top center',
@@ -150,132 +108,190 @@ export default function PortfolioProjectClient({
             HERO — 100vh
         ════════════════════════════════════════════════════════════════ */}
         <section style={{
-          position:        'relative',
-          height:          '100vh',
-          overflow:        'hidden',
-          background:      '#000',
-          display:         'flex',
-          flexDirection:   'column',
-          justifyContent:  'space-between',
-          padding:         '104px 48px 44px',
+          position:      'relative',
+          height:        '100vh',
+          overflow:      'hidden',
+          background:    '#000',
+          display:       'flex',
+          flexDirection: 'column',
         }}>
 
+          {/* Cover image */}
           <Image
             src={project.coverImage}
             alt={project.title}
             fill priority sizes="100vw"
-            style={{ objectFit: 'cover', opacity: 0.55 }}
+            style={{ objectFit: 'cover', opacity: 0.6 }}
           />
 
+          {/* Bottom gradient */}
           <div style={{
             position:      'absolute',
             inset:         0,
-            background:    'linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, transparent 28%, transparent 58%, rgba(0,0,0,0.72) 100%)',
+            background:    'linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, transparent 30%, rgba(0,0,0,0.72) 100%)',
             zIndex:        1,
             pointerEvents: 'none',
           }} />
 
-          {/* TOP: project name + tagline */}
-          <div style={{ position: 'relative', zIndex: 2 }}>
-            <h1 style={{
-              fontFamily:    PP,
-              fontWeight:    900,
-              fontSize:      'clamp(64px, 20vw, 300px)',
-              color:         'white',
-              textTransform: 'uppercase',
-              letterSpacing: '-3px',
-              lineHeight:    0.88,
-              margin:        0,
-              whiteSpace:    'nowrap',
-            }}>
-              {project.title}
-            </h1>
-            <p style={{
-              fontFamily:  PP,
-              fontWeight:  400,
-              fontSize:    'clamp(15px, 1.5vw, 20px)',
-              color:       'rgba(255,255,255,0.7)',
-              lineHeight:  1.45,
-              margin:      '20px 0 0',
-              maxWidth:    '520px',
-            }}>
-              {project.tagline}
-            </p>
+          {/* Watermark — 4× project name rows */}
+          <div style={{
+            position:       'absolute',
+            inset:          0,
+            display:        'flex',
+            flexDirection:  'column',
+            justifyContent: 'center',
+            zIndex:         1,
+            pointerEvents:  'none',
+            overflow:       'hidden',
+            gap:            8,
+          }}>
+            {[0, 1, 2, 3].map(i => (
+              <div key={i} style={{
+                fontFamily:    PP,
+                fontWeight:    900,
+                fontSize:      'clamp(60px, 10vw, 120px)',
+                color:         'white',
+                opacity:       0.06,
+                textTransform: 'uppercase',
+                letterSpacing: '-2px',
+                lineHeight:    1,
+                whiteSpace:    'nowrap',
+                paddingLeft:   40,
+              }}>
+                {project.title}
+              </div>
+            ))}
           </div>
 
-          {/* BOTTOM: (Scroll) | pill | See all */}
+          {/* Bottom bar — 3-column: name | description+controls | category+link */}
           <div style={{
-            position:            'relative',
+            position:            'absolute',
+            bottom:              0,
+            left:                0,
+            right:               0,
             zIndex:              2,
+            padding:             '0 48px 44px',
             display:             'grid',
             gridTemplateColumns: '1fr auto 1fr',
-            alignItems:          'center',
+            alignItems:          'flex-end',
+            gap:                 40,
           }}>
+
+            {/* Left: project name small */}
             <span style={{
               fontFamily:    PP,
               fontWeight:    400,
-              fontSize:      '11px',
-              letterSpacing: '4px',
+              fontSize:      12,
+              letterSpacing: '3px',
               textTransform: 'uppercase',
-              color:         'rgba(255,255,255,0.4)',
+              color:         'white',
             }}>
-              (Scroll)
+              {project.title}
             </span>
 
+            {/* Center: tagline + (SCROLL) + pill */}
             <div style={{
-              position:     'relative',
-              background:   'white',
-              borderRadius: 9999,
-              padding:      7,
-              display:      'flex',
-              alignItems:   'center',
+              display:        'flex',
+              flexDirection:  'column',
+              alignItems:     'center',
+              gap:            16,
             }}>
+              <p style={{
+                fontFamily: PP,
+                fontWeight: 400,
+                fontSize:   'clamp(14px, 1.8vw, 18px)',
+                color:      'rgba(255,255,255,0.6)',
+                maxWidth:   600,
+                textAlign:  'center',
+                lineHeight: 1.55,
+                margin:     0,
+              }}>
+                {project.tagline}
+              </p>
+
+              <span style={{
+                fontFamily:    PP,
+                fontWeight:    400,
+                fontSize:      10,
+                letterSpacing: '5px',
+                textTransform: 'uppercase',
+                color:         'rgba(255,255,255,0.3)',
+              }}>
+                (Scroll)
+              </span>
+
+              {/* Visual / Reading pill */}
               <div style={{
-                position:      'absolute',
-                top:           7,
-                left:          pillMaskX + 7,
-                width:         pillMaskW,
-                height:        'calc(100% - 14px)',
-                background:    'black',
-                borderRadius:  9999,
-                transition:    `left 400ms ${EASE}, width 400ms ${EASE}`,
-                pointerEvents: 'none',
-                zIndex:        0,
-              }} />
-              {(['visual', 'reading'] as const).map((v, i) => (
-                <button
-                  key={v}
-                  ref={el => { pillTabRefs.current[i] = el }}
-                  onClick={() => setView(v)}
-                  style={{
-                    position:      'relative',
-                    zIndex:        1,
-                    height:        62,
-                    padding:       '0 40px',
-                    background:    'transparent',
-                    border:        'none',
-                    borderRadius:  9999,
-                    fontFamily:    PP,
-                    fontWeight:    400,
-                    fontSize:      19,
-                    color:         view === v ? 'white' : 'black',
-                    transition:    `color 400ms ${EASE}`,
-                    whiteSpace:    'nowrap',
-                    cursor:        'pointer',
-                  }}
-                >
-                  {v === 'visual' ? 'Visual view' : 'Reading view'}
-                </button>
-              ))}
+                position:     'relative',
+                background:   'white',
+                borderRadius: 9999,
+                padding:      7,
+                display:      'flex',
+                alignItems:   'center',
+              }}>
+                <div style={{
+                  position:      'absolute',
+                  top:           7,
+                  left:          pillMaskX + 7,
+                  width:         pillMaskW,
+                  height:        'calc(100% - 14px)',
+                  background:    'black',
+                  borderRadius:  9999,
+                  transition:    `left 400ms ${EASE}, width 400ms ${EASE}`,
+                  pointerEvents: 'none',
+                  zIndex:        0,
+                }} />
+                {(['visual', 'reading'] as const).map((v, i) => (
+                  <button
+                    key={v}
+                    ref={el => { pillTabRefs.current[i] = el }}
+                    onClick={() => setView(v)}
+                    style={{
+                      position:     'relative',
+                      zIndex:       1,
+                      height:       62,
+                      padding:      '0 40px',
+                      background:   'transparent',
+                      border:       'none',
+                      borderRadius: 9999,
+                      fontFamily:   PP,
+                      fontWeight:   400,
+                      fontSize:     19,
+                      color:        view === v ? 'white' : 'black',
+                      transition:   `color 400ms ${EASE}`,
+                      whiteSpace:   'nowrap',
+                      cursor:       'pointer',
+                    }}
+                  >
+                    {v === 'visual' ? 'Visual view' : 'Reading view'}
+                  </button>
+                ))}
+              </div>
             </div>
 
-            <div style={{ textAlign: 'right' }}>
+            {/* Right: category + see all projects */}
+            <div style={{
+              display:        'flex',
+              flexDirection:  'column',
+              alignItems:     'flex-end',
+              gap:            12,
+            }}>
+              <span style={{
+                fontFamily:    PP,
+                fontWeight:    400,
+                fontSize:      12,
+                letterSpacing: '3px',
+                textTransform: 'uppercase',
+                color:         'rgba(255,255,255,0.4)',
+              }}>
+                {project.category}
+              </span>
               <Link
                 href="/portfolio"
                 style={{
                   fontFamily:          PP,
                   fontWeight:          400,
-                  fontSize:            '12px',
+                  fontSize:            12,
                   letterSpacing:       '3px',
                   textTransform:       'uppercase',
                   color:               'rgba(255,255,255,0.4)',
@@ -286,151 +302,62 @@ export default function PortfolioProjectClient({
                 See all projects
               </Link>
             </div>
+
           </div>
         </section>
 
         {/* ════════════════════════════════════════════════════════════════
-            CONTENT
+            CONTENT — keyed so React remounts on switch
         ════════════════════════════════════════════════════════════════ */}
         <div key={view} style={{ animation: 'viewEnter 500ms cubic-bezier(0.19,1,0.22,1) forwards' }}>
 
-          {/* ── VISUAL VIEW ─────────────────────────────────────────────── */}
+          {/* ── VISUAL VIEW: full-bleed image stack, no text ─────────────── */}
           {view === 'visual' && (
-            <>
-              {/* Overview section — warm off-white, right after hero */}
-              <section style={{
-                background: '#f5f4f0',
-                padding:    '100px 48px 140px',
-              }}>
-                <div style={{
-                  display:             'grid',
-                  gridTemplateColumns: '200px 1fr',
-                  gap:                 '80px',
+            <div style={{
+              background:    '#000',
+              paddingTop:    120,
+              paddingBottom: 160,
+              paddingLeft:   40,
+              paddingRight:  40,
+            }}>
+              {images.map((img, i) => (
+                <div key={i} style={{
+                  position:     'relative',
+                  paddingTop:   img.portrait ? '130%' : '70%',
+                  marginBottom: 16,
+                  marginLeft:   -40,
+                  marginRight:  -40,
+                  overflow:     'hidden',
                 }}>
-                  <div style={{ paddingTop: '6px' }}>
-                    <span style={{
-                      fontFamily:    PP,
-                      fontWeight:    400,
-                      fontSize:      '11px',
-                      letterSpacing: '3px',
-                      textTransform: 'uppercase',
-                      color:         'rgba(0,0,0,0.4)',
-                      lineHeight:    1.8,
-                    }}>
-                      Project<br />Overview
-                    </span>
-                  </div>
-
-                  <div>
-                    <h2 style={{
-                      fontFamily:    PP,
-                      fontWeight:    900,
-                      fontSize:      'clamp(28px, 3.5vw, 52px)',
-                      color:         '#000',
-                      lineHeight:    1.1,
-                      letterSpacing: '-0.5px',
-                      margin:        '0 0 36px',
-                    }}>
-                      {project.brief.headline}
-                    </h2>
-
-                    <p style={{
-                      fontFamily:  PP,
-                      fontWeight:  400,
-                      fontSize:    '18px',
-                      color:       'rgba(0,0,0,0.55)',
-                      lineHeight:  1.75,
-                      maxWidth:    '640px',
-                      margin:      '0 0 80px',
-                    }}>
-                      {project.brief.body}
-                    </p>
-
-                    <p style={{
-                      fontFamily:    PP,
-                      fontWeight:    400,
-                      fontSize:      '11px',
-                      letterSpacing: '3px',
-                      textTransform: 'uppercase',
-                      color:         'rgba(0,0,0,0.35)',
-                      margin:        '0 0 24px',
-                    }}>
-                      (Details)
-                    </p>
-
-                    {detailRows.map(row => (
-                      <div key={row.label} style={{
-                        display:        'flex',
-                        justifyContent: 'space-between',
-                        alignItems:     'center',
-                        padding:        '20px 0',
-                        borderTop:      '1px solid rgba(0,0,0,0.1)',
-                      }}>
-                        <span style={{
-                          fontFamily:    PP,
-                          fontWeight:    400,
-                          fontSize:      '12px',
-                          letterSpacing: '2px',
-                          textTransform: 'uppercase',
-                          color:         'rgba(0,0,0,0.4)',
-                        }}>
-                          {row.label}
-                        </span>
-                        <span style={{
-                          fontFamily: PP,
-                          fontWeight: 400,
-                          fontSize:   '15px',
-                          color:      'rgba(0,0,0,0.7)',
-                        }}>
-                          {row.value}
-                        </span>
-                      </div>
-                    ))}
-                    <div style={{ borderTop: '1px solid rgba(0,0,0,0.1)' }} />
-                  </div>
+                  <Image
+                    src={img.src}
+                    alt={`${project.title} ${i + 1}`}
+                    fill sizes="100vw"
+                    style={{ objectFit: 'cover' }}
+                    loading={i < 2 ? 'eager' : 'lazy'}
+                  />
                 </div>
-              </section>
-
-              {/* Full-bleed image stack */}
-              <div style={{ background: '#fff', paddingBottom: '160px' }}>
-                {images.map((img, i) => (
-                  <div key={i} style={{
-                    position:     'relative',
-                    paddingTop:   img.portrait ? '130%' : '70%',
-                    marginBottom: '8px',
-                    overflow:     'hidden',
-                  }}>
-                    <Image
-                      src={img.src}
-                      alt={`${project.title} ${i + 1}`}
-                      fill sizes="100vw"
-                      style={{ objectFit: 'cover' }}
-                      loading={i < 2 ? 'eager' : 'lazy'}
-                    />
-                  </div>
-                ))}
-              </div>
-            </>
+              ))}
+            </div>
           )}
 
-          {/* ── READING VIEW: 2-column (images left, text right) ────────── */}
+          {/* ── READING VIEW: 2-col, dark bg, white text ─────────────────── */}
           {view === 'reading' && (
-            <section style={{ background: '#fff', padding: '0 40px' }}>
+            <section style={{ background: '#000', padding: '0 40px' }}>
               <div style={{
                 display:             'grid',
                 gridTemplateColumns: '1fr 1fr',
-                gap:                 '0',
-                minHeight:           '100vh',
-                paddingTop:          '120px',
-                paddingBottom:       '120px',
+                gap:                 0,
+                alignItems:          'start',
               }}>
+
                 {/* LEFT — image stack */}
-                <div style={{ paddingRight: '24px' }}>
+                <div style={{ paddingRight: 24, paddingTop: 120 }}>
                   {images.map((img, i) => (
                     <div key={i} style={{
                       position:     'relative',
-                      paddingTop:   '71.05%',
-                      marginBottom: '24px',
+                      paddingTop:   img.portrait ? '130%' : '70%',
+                      marginBottom: 16,
                       overflow:     'hidden',
                     }}>
                       <Image
@@ -444,70 +371,94 @@ export default function PortfolioProjectClient({
                   ))}
                 </div>
 
-                {/* RIGHT — 4 text sections */}
-                <div style={{ paddingLeft: '60px' }}>
-                  <ReadingSection
-                    num="(01)" label="The Brief"
-                    headline={project.brief.headline}
-                    body={project.brief.body}
-                  >
-                    <div style={{
-                      borderTop:           '1px solid rgba(0,0,0,0.08)',
-                      paddingTop:          '24px',
-                      display:             'grid',
-                      gridTemplateColumns: '1fr 1fr',
-                      gap:                 '16px',
+                {/* RIGHT — 4 narrative sections */}
+                <div style={{ paddingLeft: 80 }}>
+                  {([
+                    { num: '(01)', label: 'The Brief',     section: project.brief,     showDetails: true  },
+                    { num: '(02)', label: 'The Diagnosis', section: project.diagnosis, showDetails: false },
+                    { num: '(03)', label: 'What We Built', section: project.built,     showDetails: false },
+                    { num: '(04)', label: 'The Result',    section: project.result,    showDetails: false },
+                  ] as const).map(({ num, label, section, showDetails }, i) => (
+                    <div key={num} style={{
+                      paddingTop:    236,
+                      paddingBottom: 260,
+                      borderTop:     i === 0 ? 'none' : '1px solid rgba(255,255,255,0.06)',
                     }}>
-                      {([
-                        { label: 'Type',     value: project.details.type },
-                        { label: 'Category', value: project.details.category },
-                        { label: 'Year',     value: project.details.year },
-                        { label: 'Scope',    value: project.details.scope },
-                      ] as { label: string; value: string }[]).map(item => (
-                        <div key={item.label}>
-                          <span style={{
-                            fontFamily:    PP,
-                            fontWeight:    400,
-                            fontSize:      '10px',
-                            letterSpacing: '3px',
-                            textTransform: 'uppercase',
-                            color:         'rgba(0,0,0,0.3)',
-                            display:       'block',
-                            marginBottom:  '4px',
-                          }}>
-                            {item.label}
-                          </span>
-                          <span style={{
-                            fontFamily: PP,
-                            fontWeight: 400,
-                            fontSize:   '13px',
-                            color:      'rgba(0,0,0,0.7)',
-                          }}>
-                            {item.value}
-                          </span>
+                      <p style={{
+                        fontFamily:    PP,
+                        fontWeight:    400,
+                        fontSize:      13,
+                        letterSpacing: '2px',
+                        textTransform: 'uppercase',
+                        color:         'rgba(255,255,255,0.3)',
+                        margin:        '0 0 40px',
+                      }}>
+                        {num} — {label}
+                      </p>
+
+                      <h3 style={{
+                        fontFamily:    PP,
+                        fontWeight:    900,
+                        fontSize:      'clamp(22px, 2.8vw, 36px)',
+                        color:         'white',
+                        lineHeight:    1.1,
+                        letterSpacing: '-0.5px',
+                        margin:        '0 0 32px',
+                        textTransform: 'uppercase',
+                      }}>
+                        {section.headline}
+                      </h3>
+
+                      <p style={{
+                        fontFamily: PP,
+                        fontWeight: 400,
+                        fontSize:   16,
+                        color:      'rgba(255,255,255,0.5)',
+                        lineHeight: 1.75,
+                        margin:     0,
+                      }}>
+                        {section.body}
+                      </p>
+
+                      {showDetails && (
+                        <div style={{
+                          borderTop:           '1px solid rgba(255,255,255,0.06)',
+                          marginTop:           48,
+                          paddingTop:          32,
+                          display:             'grid',
+                          gridTemplateColumns: '1fr 1fr',
+                          gap:                 '24px 16px',
+                        }}>
+                          {detailRows.map(row => (
+                            <div key={row.label}>
+                              <span style={{
+                                fontFamily:    PP,
+                                fontWeight:    400,
+                                fontSize:      10,
+                                letterSpacing: '3px',
+                                textTransform: 'uppercase',
+                                color:         'rgba(255,255,255,0.25)',
+                                display:       'block',
+                                marginBottom:  6,
+                              }}>
+                                {row.label}
+                              </span>
+                              <span style={{
+                                fontFamily: PP,
+                                fontWeight: 400,
+                                fontSize:   13,
+                                color:      'rgba(255,255,255,0.6)',
+                              }}>
+                                {row.value}
+                              </span>
+                            </div>
+                          ))}
                         </div>
-                      ))}
+                      )}
                     </div>
-                  </ReadingSection>
-
-                  <ReadingSection
-                    num="(02)" label="The Diagnosis"
-                    headline={project.diagnosis.headline}
-                    body={project.diagnosis.body}
-                  />
-
-                  <ReadingSection
-                    num="(03)" label="What We Built"
-                    headline={project.built.headline}
-                    body={project.built.body}
-                  />
-
-                  <ReadingSection
-                    num="(04)" label="The Result"
-                    headline={project.result.headline}
-                    body={project.result.body}
-                  />
+                  ))}
                 </div>
+
               </div>
             </section>
           )}
@@ -515,7 +466,7 @@ export default function PortfolioProjectClient({
         </div>
 
         {/* ════════════════════════════════════════════════════════════════
-            NEXT PROJECT
+            NEXT PROJECT — 100vh
         ════════════════════════════════════════════════════════════════ */}
         <div
           style={{
@@ -538,11 +489,12 @@ export default function PortfolioProjectClient({
             loading="lazy"
           />
 
+          {/* Center content */}
           <div style={{ position: 'relative', zIndex: 1, textAlign: 'center' }}>
             <p style={{
               fontFamily:    PP,
               fontWeight:    400,
-              fontSize:      '11px',
+              fontSize:      11,
               letterSpacing: '5px',
               textTransform: 'uppercase',
               color:         'rgba(255,255,255,0.35)',
@@ -565,7 +517,7 @@ export default function PortfolioProjectClient({
             <p style={{
               fontFamily: PP,
               fontWeight: 400,
-              fontSize:   '14px',
+              fontSize:   14,
               color:      'rgba(255,255,255,0.4)',
               margin:     '0 0 32px',
             }}>
@@ -577,7 +529,7 @@ export default function PortfolioProjectClient({
               style={{
                 fontFamily:          PP,
                 fontWeight:          400,
-                fontSize:            '11px',
+                fontSize:            11,
                 letterSpacing:       '4px',
                 textTransform:       'uppercase',
                 color:               'white',
@@ -589,6 +541,7 @@ export default function PortfolioProjectClient({
             </Link>
           </div>
 
+          {/* Bottom left: counter */}
           <div style={{
             position:      'absolute',
             bottom:        40,
@@ -596,7 +549,7 @@ export default function PortfolioProjectClient({
             zIndex:        1,
             fontFamily:    PP,
             fontWeight:    400,
-            fontSize:      '11px',
+            fontSize:      11,
             letterSpacing: '3px',
             color:         'rgba(255,255,255,0.25)',
           }}>
@@ -605,6 +558,7 @@ export default function PortfolioProjectClient({
             {String(PROJECTS.length).padStart(2, '0')}
           </div>
 
+          {/* Bottom right: prev / next arrows */}
           <div style={{
             position: 'absolute',
             bottom:   40,
@@ -629,29 +583,31 @@ export default function PortfolioProjectClient({
       </div>
       {/* end scroll-resistance wrapper */}
 
-      {/* ── Fixed toggle pill ────────────────────────────────────────────── */}
+      {/* ════════════════════════════════════════════════════════════════
+          FIXED TOGGLE PILL — always visible, right side
+      ════════════════════════════════════════════════════════════════ */}
       <div style={{
         position:       'fixed',
-        bottom:         '30px',
-        right:          '44px',
+        bottom:         30,
+        right:          44,
         zIndex:         40,
         background:     'white',
-        borderRadius:   '9999px',
-        width:          '60px',
-        height:         '110px',
+        borderRadius:   9999,
+        width:          60,
+        height:         110,
         display:        'flex',
         flexDirection:  'column',
         alignItems:     'center',
         justifyContent: 'space-between',
-        padding:        '7px',
+        padding:        7,
         boxShadow:      '0 4px 24px rgba(0,0,0,0.15)',
       }}>
         <button
           onClick={() => setView('visual')}
           aria-label="Visual view"
           style={{
-            width:          '46px',
-            height:         '46px',
+            width:          46,
+            height:         46,
             borderRadius:   '50%',
             background:     view === 'visual' ? 'black' : 'transparent',
             border:         'none',
@@ -669,8 +625,8 @@ export default function PortfolioProjectClient({
           onClick={() => setView('reading')}
           aria-label="Reading view"
           style={{
-            width:          '46px',
-            height:         '46px',
+            width:          46,
+            height:         46,
             borderRadius:   '50%',
             background:     view === 'reading' ? 'black' : 'transparent',
             border:         'none',
