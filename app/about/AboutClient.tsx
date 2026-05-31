@@ -426,27 +426,63 @@ export default function AboutClient() {
         </div>
       </section>
 
-      {/* ══ VISION & MISSION — black box ══════════════════════════════ */}
+      {/* ══ NUMBERS + VISION/MISSION — single black section ══════════ */}
       <section style={{
         background: '#000',
         padding:    'clamp(72px, 9vw, 120px) 5vw',
+        overflow:   'hidden',
       }}>
+
+        {/* Label */}
+        <p style={{
+          fontFamily:    PP,
+          fontWeight:    400,
+          fontSize:      11,
+          letterSpacing: '0.2em',
+          textTransform: 'uppercase',
+          color:         'rgba(255,255,255,0.35)',
+          margin:        '0 0 clamp(48px, 6vw, 80px)',
+        }}>
+          By the numbers
+        </p>
+
+        {/* Stacked stats — number grey, label white */}
+        {[
+          { num: '10+',   label: 'YEARS IN BRAND', align: 'left'  as const },
+          { num: '150+',  label: 'BRANDS BUILT',   align: 'right' as const },
+          { num: '20+',   label: 'INDUSTRIES',     align: 'left'  as const },
+          { num: '100%',  label: 'STRATEGY-LED',   align: 'right' as const },
+        ].map(item => (
+          <p
+            key={item.num}
+            style={{
+              fontFamily:    PP,
+              fontWeight:    400,
+              fontSize:      'clamp(52px, 8.5vw, 125px)',
+              textTransform: 'uppercase',
+              letterSpacing: '-3px',
+              lineHeight:    1.0,
+              margin:        0,
+              textAlign:     item.align,
+            }}
+          >
+            <span style={{ color: 'rgba(255,255,255,0.28)' }}>{item.num} </span>
+            <span style={{ color: '#fff' }}>{item.label}</span>
+          </p>
+        ))}
+
+        {/* Vision & Mission */}
         <div style={{
           display:             'grid',
           gridTemplateColumns: '1fr 1fr',
           gap:                 'clamp(40px, 6vw, 100px)',
-          maxWidth:            1400,
-          margin:              '0 auto',
+          marginTop:           'clamp(72px, 9vw, 120px)',
+          paddingTop:          'clamp(48px, 6vw, 80px)',
+          borderTop:           '1px solid rgba(255,255,255,0.1)',
         }}>
           {[
-            {
-              label: 'Vision',
-              text:  'A Lebanon where every serious brand has the tools, strategy, and craft to compete — not just locally, but on any stage that matters.',
-            },
-            {
-              label: 'Mission',
-              text:  'To build brands that know exactly what they stand for, and give them everything they need to prove it — in the market, over time, and under pressure.',
-            },
+            { label: 'Vision',  text: 'A Lebanon where every serious brand has the tools, strategy, and craft to compete — not just locally, but on any stage that matters.' },
+            { label: 'Mission', text: 'To build brands that know exactly what they stand for, and give them everything they need to prove it — in the market, over time, and under pressure.' },
           ].map(item => (
             <div key={item.label}>
               <p style={{
@@ -461,49 +497,18 @@ export default function AboutClient() {
                 {item.label}
               </p>
               <p style={{
-                fontFamily:  PP,
-                fontWeight:  400,
-                fontSize:    'clamp(18px, 1.8vw, 26px)',
-                color:       'rgba(255,255,255,0.85)',
-                lineHeight:  1.6,
-                margin:      0,
+                fontFamily: PP,
+                fontWeight: 400,
+                fontSize:   'clamp(18px, 1.8vw, 26px)',
+                color:      'rgba(255,255,255,0.85)',
+                lineHeight: 1.6,
+                margin:     0,
               }}>
                 {item.text}
               </p>
             </div>
           ))}
         </div>
-      </section>
-
-      {/* ══ NUMBERS — Motto stacked stats ════════════════════════════ */}
-      <section style={{
-        background: '#fff',
-        padding:    'clamp(72px, 9vw, 120px) 5vw',
-        overflow:   'hidden',
-      }}>
-        {[
-          { text: '10+ YEARS IN BRAND', align: 'left'  as const },
-          { text: '150+ BRANDS BUILT',  align: 'right' as const },
-          { text: '20+ INDUSTRIES',     align: 'left'  as const },
-          { text: '100% STRATEGY-LED',  align: 'right' as const },
-        ].map(item => (
-          <p
-            key={item.text}
-            style={{
-              fontFamily:    PP,
-              fontWeight:    400,
-              fontSize:      'clamp(52px, 8.5vw, 125px)',
-              color:         '#111',
-              textTransform: 'uppercase',
-              letterSpacing: '-3px',
-              lineHeight:    1.0,
-              margin:        0,
-              textAlign:     item.align,
-            }}
-          >
-            {item.text}
-          </p>
-        ))}
       </section>
 
       {/* ══ BOTTOM PARALLAX IMAGE ═════════════════════════════════════ */}
