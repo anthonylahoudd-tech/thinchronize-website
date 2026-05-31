@@ -60,10 +60,10 @@ export default function PortfolioProjectClient({
 
   // ── Hero entrance animation (clip reveal, same as TextReveal) ────────────
   useGSAP(() => {
-    // Title — treat as single unit, clip from below
+    // Title — single clip reveal, font-weight/family explicit on span
     if (titleRef.current) {
       const el = titleRef.current
-      el.innerHTML = `<span class="clip-text" style="display:block"><span class="reveal-unit" style="display:block">${project.title}</span></span>`
+      el.innerHTML = `<span class="clip-text" style="display:block"><span class="reveal-unit" style="display:block;font-family:'PPNeueCorp',system-ui,sans-serif;font-weight:900">${project.title}</span></span>`
       gsap.fromTo(
         el.querySelector('.reveal-unit'),
         { yPercent: 110 },
@@ -167,7 +167,7 @@ export default function PortfolioProjectClient({
       <div style={{
         position:      'absolute',
         top:           8,
-        left:          pillMaskX + 8,
+        left:          pillMaskX,
         width:         pillMaskW,
         height:        'calc(100% - 16px)',
         background:    'black',
