@@ -50,15 +50,13 @@ export default function PortfolioProjectClient({
   const [nextProgress, setNextProgress] = useState(0)
   const [navigating,   setNavigating]   = useState(false)
 
-  const pillTabRefs      = useRef<(HTMLButtonElement | null)[]>([])
-  const nextSectionRef   = useRef<HTMLDivElement>(null)
-  const titleRef         = useRef<HTMLDivElement>(null)
-  const bigTextRef       = useRef<HTMLDivElement>(null)
-  const servicesRef      = useRef<HTMLDivElement>(null)
-  const readingSectionRef = useRef<HTMLElement>(null)
-  const rightPanelRef    = useRef<HTMLDivElement>(null)
-  const router           = useRouter()
-  const navTriggered     = useRef(false)
+  const pillTabRefs    = useRef<(HTMLButtonElement | null)[]>([])
+  const nextSectionRef = useRef<HTMLDivElement>(null)
+  const titleRef       = useRef<HTMLDivElement>(null)
+  const bigTextRef     = useRef<HTMLDivElement>(null)
+  const servicesRef    = useRef<HTMLDivElement>(null)
+  const router         = useRouter()
+  const navTriggered   = useRef(false)
 
   // ── Hero entrance animation (clip reveal, same as TextReveal) ────────────
   useGSAP(() => {
@@ -149,23 +147,6 @@ export default function PortfolioProjectClient({
     return () => window.removeEventListener('scroll', handle)
   }, [nextProject.id, router])
 
-  // ── Reading view: sync right panel scroll with page scroll ────────────────
-  // Right panel is position:sticky / overflow:hidden. On page scroll we move
-  // its inner content via translateY so it scrolls through all 4 sections,
-  // then locks on the last one while the left images continue.
-  useEffect(() => {
-    if (view !== 'reading') return
-    const sync = () => {
-      if (!readingSectionRef.current || !rightPanelRef.current) return
-      const sectionTop = readingSectionRef.current.offsetTop
-      const scrolledIn = window.scrollY - sectionTop
-      if (scrolledIn < 0) { rightPanelRef.current.scrollTop = 0; return }
-      const panel = rightPanelRef.current
-      panel.scrollTop = Math.min(scrolledIn, panel.scrollHeight - panel.clientHeight)
-    }
-    window.addEventListener('scroll', sync, { passive: true })
-    return () => window.removeEventListener('scroll', sync)
-  }, [view])
 
   const detailRows = [
     { label: 'Type',     value: project.details.type },
@@ -400,16 +381,16 @@ export default function PortfolioProjectClient({
 
         {/* ── READING VIEW — Motto-style: off-white bg, dark text, editorial ── */}
         {view === 'reading' && (
-          <section ref={readingSectionRef} style={{ background: '#ECECEA', padding: '0 0 0' }}>
+          <section style={{ background: '#ECECEA' }}>
             <div style={{
               display:             'grid',
               gridTemplateColumns: '1fr 1fr',
               gap:                 0,
-              alignItems:          'start',
+              alignItems:          'stretch',   // right column stretches to match image height
             }}>
 
-              {/* LEFT — images, full natural height, scroll with page */}
-              <div style={{ paddingTop: 100, paddingBottom: 160 }}>
+              {/* LEFT — images, full natural height */}
+              <div style={{ paddingTop: 100, paddingBottom: 200 }}>
                 {images.map((img, i) => (
                   <div key={i} style={{
                     position:     'relative',
@@ -428,21 +409,8 @@ export default function PortfolioProjectClient({
                 ))}
               </div>
 
-              {/* RIGHT — sticky panel: locks on last section while left images continue */}
-              <div
-                ref={rightPanelRef}
-                className="reading-right-panel"
-                style={{
-                  position:        'sticky',
-                  top:             0,
-                  height:          '100vh',
-                  overflowY:       'scroll',
-                  scrollbarWidth:  'none',        // Firefox
-                  msOverflowStyle: 'none' as const, // IE
-                  paddingLeft:     '6vw',
-                  paddingRight:    '5vw',
-                }}
-              >
+              {/* RIGHT — sections scroll naturally; last section goes sticky */}
+              <div style={{ paddingLeft: '6vw', paddingRight: '5vw' }}>
                 {([
                   { num: '(01)', label: 'The Brief',     section: project.brief,     showDetails: true  },
                   { num: '(02)', label: 'The Diagnosis', section: project.diagnosis, showDetails: false },
@@ -453,6 +421,13 @@ export default function PortfolioProjectClient({
                     paddingTop:    200,
                     paddingBottom: 220,
                     borderTop:     i === 0 ? 'none' : '1px solid rgba(0,0,0,0.1)',
+                    // Last section: sticks at top once reached so right doesn't go blank
+                    ...(i === 3 ? {
+                      position:   'sticky' as const,
+                      top:        96,
+                      background: '#ECECEA',
+                      zIndex:     2,
+                    } : {}),
                   }}>
 
                     {/* Number alone */}
