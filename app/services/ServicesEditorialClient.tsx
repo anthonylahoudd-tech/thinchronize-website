@@ -250,8 +250,7 @@ function ServiceAccordionItem({
             fontWeight: 400,
             fontSize:   14,
             color:      '#919191',
-            flexShrink: 0,
-            maxWidth:   360,
+            flex:       1,
             textAlign:  'right',
           }}
         >
