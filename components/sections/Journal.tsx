@@ -5,7 +5,6 @@ import Link from 'next/link'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
-import { motion } from 'framer-motion'
 import { Clock } from 'lucide-react'
 import type { JournalPost } from '@/lib/sanity/queries'
 import { urlForImage } from '@/lib/sanity/image'
@@ -82,10 +81,11 @@ export default function Journal({ posts }: Props) {
           {/* Featured post — full width */}
           {featured && (
             <Link href={`/journal/${featured.slug.current}`} className="journal-card group block mb-8 opacity-0">
-              <motion.div
+              <div
                 className="rounded-2xl border border-white/10 hover:border-red/30 overflow-hidden"
-                style={{ transition: 'border-color 0.5s ease' }}
-                whileHover={{ backgroundColor: 'rgba(255,255,255,0.02)' }}
+                style={{ transition: 'border-color 0.5s ease, background-color 0.5s ease' }}
+                onMouseEnter={e=>(e.currentTarget as HTMLDivElement).style.backgroundColor='rgba(255,255,255,0.02)'}
+                onMouseLeave={e=>(e.currentTarget as HTMLDivElement).style.backgroundColor=''}
               >
                 {/* Cover image */}
                 <div style={{
@@ -159,7 +159,7 @@ export default function Journal({ posts }: Props) {
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             </Link>
           )}
 
@@ -167,10 +167,11 @@ export default function Journal({ posts }: Props) {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {rest.map((post) => (
               <Link key={post._id} href={`/journal/${post.slug.current}`} className="journal-card group block opacity-0">
-                <motion.div
+                <div
                   className="h-full rounded-2xl border border-white/10 hover:border-red/30 overflow-hidden flex flex-col"
-                  style={{ transition: 'border-color 0.5s ease' }}
-                  whileHover={{ backgroundColor: 'rgba(255,255,255,0.02)' }}
+                  style={{ transition: 'border-color 0.5s ease, background-color 0.5s ease' }}
+                  onMouseEnter={e=>(e.currentTarget as HTMLDivElement).style.backgroundColor='rgba(255,255,255,0.02)'}
+                  onMouseLeave={e=>(e.currentTarget as HTMLDivElement).style.backgroundColor=''}
                 >
                   {/* Cover image */}
                   <div style={{
@@ -236,7 +237,7 @@ export default function Journal({ posts }: Props) {
                       {post.publishedAt && <span>{formatDate(post.publishedAt)}</span>}
                     </div>
                   </div>
-                </motion.div>
+                </div>
               </Link>
             ))}
           </div>

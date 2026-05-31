@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { motion } from 'framer-motion'
+
 import { CheckCircle } from 'lucide-react'
 import PageHero from '@/components/ui/PageHero'
 
@@ -12,11 +12,6 @@ const PP   = "'PPNeueCorp', system-ui, sans-serif"
 const RED  = '#D0274B'
 const DARK = '#292929'
 
-const fadeUp = (delay = 0) => ({
-  initial:     { opacity: 0, y: 24 },
-  animate:     { opacity: 1, y: 0 },
-  transition:  { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] as const, delay },
-})
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -73,8 +68,7 @@ export default function ContactClient() {
       >
         {/* ── Heading ── */}
         <div style={{ maxWidth: 900, marginBottom: 'clamp(56px, 7vw, 96px)' }}>
-          <motion.h1
-            {...fadeUp(0)}
+          <h1
             style={{
               fontFamily:    PP,
               fontWeight:    900,
@@ -87,9 +81,8 @@ export default function ContactClient() {
             }}
           >
             Message Bin
-          </motion.h1>
-          <motion.p
-            {...fadeUp(0.1)}
+          </h1>
+          <p
             style={{
               fontFamily: PP,
               fontWeight: 400,
@@ -100,12 +93,11 @@ export default function ContactClient() {
             }}
           >
             Tell us about your brand. We&apos;ll start with a diagnosis.
-          </motion.p>
+          </p>
         </div>
 
         {/* ── Form / Success ── */}
-        <motion.div
-          {...fadeUp(0.15)}
+        <div
           style={{ maxWidth: 680 }}
         >
           {submitted ? (
@@ -265,11 +257,10 @@ export default function ContactClient() {
 
             </form>
           )}
-        </motion.div>
+        </div>
 
         {/* ── Direct contact ── */}
-        <motion.p
-          {...fadeUp(0.25)}
+        <p
           style={{
             fontFamily:  PP,
             fontWeight:  400,
@@ -291,7 +282,7 @@ export default function ContactClient() {
           >
             hello@thinchronize.com
           </a>
-        </motion.p>
+        </p>
 
       </div>
 
