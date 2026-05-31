@@ -101,6 +101,9 @@ export default function PortfolioProjectClient({
     ? project.images
     : [{ src: project.coverImage }]
 
+  // Reading view shows a curated subset — prevents endless dead scroll after text ends
+  const readingViewImages = (project.readingImages ?? images).slice(0, 10)
+
   // ── Pill slider mask: update on view change ───────────────────────────────
   useEffect(() => {
     const idx = view === 'visual' ? 0 : 1
@@ -402,9 +405,9 @@ export default function PortfolioProjectClient({
               alignItems:          'stretch',   // right column stretches to match image height
             }}>
 
-              {/* LEFT — images, full natural height */}
+              {/* LEFT — images, curated subset so scroll ends when text ends */}
               <div ref={leftColRef} style={{ paddingTop: 100, paddingBottom: 200 }}>
-                {images.map((img, i) => (
+                {readingViewImages.map((img, i) => (
                   <div key={i} style={{
                     position:     'relative',
                     paddingTop:   img.portrait ? '130%' : '70%',

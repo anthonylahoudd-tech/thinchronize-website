@@ -26,6 +26,7 @@ export interface Project {
   category: string
   coverImage: string
   images?: ProjectImage[]
+  readingImages?: ProjectImage[]  // curated subset for reading view (falls back to images.slice(0,10))
   brief: ProjectSection
   diagnosis: ProjectSection
   built: ProjectSection
