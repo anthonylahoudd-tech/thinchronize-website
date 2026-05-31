@@ -47,8 +47,11 @@ export default function PortfolioProjectClient({
   const [pillMaskX,    setPillMaskX]    = useState(0)
   const [pillMaskW,    setPillMaskW]    = useState(0)
   const [pillScrolled, setPillScrolled] = useState(false)
-  const [nextProgress, setNextProgress] = useState(0)
-  const [navigating,   setNavigating]   = useState(false)
+  const [nextProgress,    setNextProgress]    = useState(0)
+  const [navigating,      setNavigating]      = useState(false)
+  const [projectProgress, setProjectProgress] = useState(0)
+  const [heroParallax,    setHeroParallax]    = useState(0)
+  const [showScrollHint,  setShowScrollHint]  = useState(true)
 
   const pillTabRefs    = useRef<(HTMLButtonElement | null)[]>([])
   const nextSectionRef = useRef<HTMLDivElement>(null)
@@ -58,7 +61,8 @@ export default function PortfolioProjectClient({
   const leftColRef     = useRef<HTMLDivElement>(null)
   const rightColRef    = useRef<HTMLDivElement>(null)
   const router         = useRouter()
-  const navTriggered   = useRef(false)
+  const navTriggered    = useRef(false)
+  const nextProgressRef = useRef(0)     // mirrors nextProgress state (stale-closure safe)
 
   // ── Hero entrance animation (clip reveal, same as TextReveal) ────────────
   useGSAP(() => {
@@ -125,29 +129,43 @@ export default function PortfolioProjectClient({
     setPillMaskW(eRect.width)
   }, [])
 
-  // ── Combined scroll handler ───────────────────────────────────────────────
+  // ── "Scroll to explore" hint — fades after 2 s or first scroll ──────────
   useEffect(() => {
+    const t = setTimeout(() => setShowScrollHint(false), 2000)
+    return () => clearTimeout(t)
+  }, [])
+
+  // ── Scroll handler — pill + sticky gate ──────────────────────────────────
+  useEffect(() => {
+    const GATE_PX = 1500
+
     const handle = () => {
+      const sy = window.scrollY
       const vh = window.innerHeight
+      setPillScrolled(sy > vh * 0.85)
 
-      // 1. Show vertical pill once user has scrolled past the hero
-      setPillScrolled(window.scrollY > vh * 0.85)
+      if (sy > 20) setShowScrollHint(false)
 
-      // 2. Next-project progress bar + auto-navigate
-      if (nextSectionRef.current && !navTriggered.current) {
-        const rect     = nextSectionRef.current.getBoundingClientRect()
-        // fills 0→1 over ~10 scroll steps (vh * 1.6 ≈ 1440px at 900px viewport)
-        const progress = Math.max(0, Math.min(1, (vh - rect.top) / (vh * 1.6)))
-        setNextProgress(progress)
+      setHeroParallax(Math.min(sy * 0.15, vh * 0.15))
 
-        if (progress >= 1) {
-          navTriggered.current = true
-          setNavigating(true)
-          setTimeout(() => router.push(`/portfolio/${nextProject.id}`), 650)
-        }
+      const GATE_HEIGHT   = vh + 1500
+      const contentHeight = Math.max(1, document.body.scrollHeight - vh - GATE_HEIGHT)
+      setProjectProgress(Math.max(0, Math.min(1, sy / contentHeight)))
+
+      if (!nextSectionRef.current || navTriggered.current) return
+
+      const rect     = nextSectionRef.current.getBoundingClientRect()
+      const scrolledIn = Math.max(0, -rect.top)
+      const progress   = Math.min(1, scrolledIn / GATE_PX)
+      setNextProgress(progress)
+      nextProgressRef.current = progress
+
+      if (progress >= 1) {
+        navTriggered.current = true
+        setNavigating(true)
+        setTimeout(() => router.push(`/portfolio/${nextProject.id}`), 650)
       }
     }
-
     window.addEventListener('scroll', handle, { passive: true })
     return () => window.removeEventListener('scroll', handle)
   }, [nextProject.id, router])
@@ -248,13 +266,21 @@ export default function PortfolioProjectClient({
         flexDirection: 'column',
       }}>
 
-        {/* Cover image — more visible, no heavy overlay */}
-        <Image
-          src={project.coverImage}
-          alt={project.title}
-          fill priority sizes="100vw"
-          style={{ objectFit: 'cover', opacity: 0.82 }}
-        />
+        {/* Cover image — parallax wrapper gives 30% extra height so
+            translateY has room without revealing background edges */}
+        <div style={{
+          position:   'absolute',
+          top:        '-15%', left: 0, right: 0, bottom: '-15%',
+          transform:  `translateY(${heroParallax}px)`,
+          willChange: 'transform',
+        }}>
+          <Image
+            src={project.coverImage}
+            alt={project.title}
+            fill priority sizes="100vw"
+            style={{ objectFit: 'cover', opacity: 0.82 }}
+          />
+        </div>
 
         {/* Subtle bottom-only gradient — just enough for bottom bar legibility */}
         <div style={{
@@ -434,10 +460,12 @@ export default function PortfolioProjectClient({
                   { num: '(04)', label: 'The Result',    section: project.result,    showDetails: false },
                 ] as const).map(({ num, label, section, showDetails }, i) => (
                   <div key={num} style={{
-                    paddingTop:    200,
-                    paddingBottom: 220,
+                    paddingTop:    i === 3 ? 80  : 200,
+                    paddingBottom: i === 3 ? 100 : 220,
                     borderTop:     i === 0 ? 'none' : '1px solid rgba(0,0,0,0.1)',
-                    // Last section: sticks at top once reached so right doesn't go blank
+                    // Last section: sticks so right col doesn't go blank while
+                    // images continue on the left. Reduced padding keeps it
+                    // within viewport height so it visually locks in place.
                     ...(i === 3 ? {
                       position:   'sticky' as const,
                       top:        96,
@@ -660,105 +688,106 @@ export default function PortfolioProjectClient({
       </section>
 
       {/* ════════════════════════════════════════════════════════════════
-          END OF PROJECT — Motto-style: keep scrolling + marquee + cover
+          END OF PROJECT GATE — light bg (#ECECEA), snap on arrival.
+          On snap: name slides up 15vh + cover peeks 15% from bottom.
+          Scrolling then raises cover from 85%→0% translateY.
       ════════════════════════════════════════════════════════════════ */}
-      <div ref={nextSectionRef}>
-
-        {/* 1 ── "Keep scrolling" zone */}
+      <div ref={nextSectionRef} style={{ height: 'calc(100vh + 1500px)', position: 'relative' }}>
         <div style={{
-          background:          '#ECECEA',
-          height:              '100vh',
-          display:             'grid',
-          gridTemplateColumns: '1fr 1fr',
-          alignItems:          'center',
-          paddingLeft:         '5vw',
-          paddingRight:        '5vw',
-          borderTop:           '1px solid rgba(0,0,0,0.08)',
-        }}>
-          <p style={{
-            fontFamily: PP,
-            fontWeight: 400,
-            fontSize:   18,
-            color:      'rgba(0,0,0,0.4)',
-            lineHeight: 1.65,
-            margin:     0,
-          }}>
-            Keep scrolling for the<br />next case study.
-          </p>
-
-          {/* Horizontal progress line */}
-          <div style={{ position: 'relative', height: 1 }}>
-            <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.12)' }} />
-            <div style={{
-              position:   'absolute',
-              left:        0,
-              top:         0,
-              height:      1,
-              width:       `${nextProgress * 100}%`,
-              background:  '#0f0f0f',
-              transition:  'width 80ms linear',
-            }} />
-          </div>
-        </div>
-
-        {/* 2 ── Marquee ticker */}
-        <div style={{
-          background:  '#ECECEA',
+          position:   'sticky',
+          top:         0,
+          height:      '100vh',
           overflow:    'hidden',
-          borderTop:   '1px solid rgba(0,0,0,0.08)',
-          borderBottom:'1px solid rgba(0,0,0,0.08)',
+          background:  '#ECECEA',
         }}>
-          <div className="marquee-track" style={{ animation: 'marquee 18s linear infinite' }}>
-            {[0, 1].map(rep => (
-              <span key={rep} aria-hidden={rep === 1}>
-                {[0, 1, 2, 3, 4, 5].map(i => (
-                  <span key={i} style={{
-                    fontFamily:    PP,
-                    fontWeight:    900,
-                    fontSize:      'clamp(58px, 7vw, 100px)',
-                    letterSpacing: '-2px',
-                    textTransform: 'uppercase',
-                    color:         '#0f0f0f',
-                    whiteSpace:    'nowrap',
-                    paddingTop:    24,
-                    paddingBottom: 24,
-                    paddingRight:  '5vw',
-                    lineHeight:    1.05,
-                    display:       'inline-block',
-                  }}>
-                    {nextProject.title}&nbsp;
-                    <span style={{ opacity: 0.22, fontWeight: 400, letterSpacing: 0 }}>*</span>
-                    &nbsp;
-                  </span>
-                ))}
-              </span>
-            ))}
-          </div>
-        </div>
 
-        {/* 3 ── Next project cover — parallax opacity reveal */}
-        <div style={{ position: 'relative', height: '58vh', overflow: 'hidden' }}>
-          <Image
-            src={nextProject.coverImage}
-            alt={nextProject.title}
-            fill sizes="100vw"
-            style={{
-              objectFit:  'cover',
-              opacity:    Math.min(1, Math.max(0.08, nextProgress * 1.6)),
-              transform:  `scale(${1 + nextProgress * 0.04})`,
-              transition: 'transform 100ms linear, opacity 100ms linear',
-            }}
-            loading="lazy"
-          />
-          {/* Warm wash that lifts as progress fills */}
+          {/* ── "Keep scrolling" left + progress bar right — same row ── */}
           <div style={{
-            position:      'absolute',
-            inset:          0,
-            background:    `rgba(236,236,234,${Math.max(0, 1 - nextProgress * 2)})`,
-            pointerEvents: 'none',
-          }} />
-        </div>
+            position:   'absolute',
+            top:        '28%',
+            left:       '5vw',
+            right:      '5vw',
+            zIndex:     2,
+            display:    'flex',
+            alignItems: 'center',
+            gap:        32,
+          }}>
+            <p style={{
+              fontFamily:    PP,
+              fontWeight:    400,
+              fontSize:      12,
+              letterSpacing: '0.05em',
+              color:         'rgba(0,0,0,0.45)',
+              margin:        0,
+              whiteSpace:    'nowrap',
+            }}>
+              Keep scrolling for the next case study.
+            </p>
+            <div style={{ position: 'relative', height: 1, flex: 1 }}>
+              <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.12)' }} />
+              <div style={{
+                position:   'absolute',
+                left:        0,
+                top:         0,
+                height:      1,
+                width:       `${nextProgress * 100}%`,
+                background:  '#0f0f0f',
+                transition:  'width 60ms linear',
+              }} />
+            </div>
+          </div>
 
+          {/* ── Marquee — next project name, always running ── */}
+          <div style={{
+            position: 'absolute',
+            top:      '50%',
+            left:     0,
+            right:    0,
+            zIndex:   2,
+            transform:'translateY(-50%)',
+            overflow: 'hidden',
+          }}>
+            <div className="marquee-track" style={{ display: 'flex', gap: '0.5em', whiteSpace: 'nowrap' }}>
+              {[...Array(2)].map((_, copy) => (
+                <span key={copy} style={{ display: 'flex', gap: '0.5em', flexShrink: 0 }}>
+                  {[...Array(6)].map((_, i) => (
+                    <span key={i} style={{
+                      fontFamily:    PP,
+                      fontWeight:    900,
+                      fontSize:      'clamp(80px, 12vw, 160px)',
+                      color:         '#0f0f0f',
+                      letterSpacing: '-0.03em',
+                      lineHeight:    1,
+                      textTransform: 'uppercase',
+                      paddingRight:  '0.4em',
+                    }}>
+                      {nextProject.title} *
+                    </span>
+                  ))}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* ── Next cover — peeks from bottom immediately, rises with scroll ── */}
+          <div style={{
+            position:  'absolute',
+            inset:      0,
+            transform: `translateY(${Math.max(0, 72 - nextProgress * 72)}%)`,
+            willChange:'transform',
+            zIndex:    3,
+          }}>
+            <Image
+              src={nextProject.coverImage}
+              alt={nextProject.title}
+              fill
+              sizes="100vw"
+              style={{ objectFit: 'cover' }}
+              loading="lazy"
+            />
+          </div>
+
+        </div>
       </div>
 
       {/* ════════════════════════════════════════════════════════════════
@@ -822,6 +851,59 @@ export default function PortfolioProjectClient({
         >
           <LinesIcon color={view === 'reading' ? 'white' : 'rgba(0,0,0,0.35)'} />
         </button>
+      </div>
+
+      {/* ════════════════════════════════════════════════════════════════
+          IN-PROJECT PROGRESS BAR — fixed left edge, #D0274B, 1px wide.
+          Tracks scroll from page top to gate start, resets on navigate.
+      ════════════════════════════════════════════════════════════════ */}
+      <div style={{
+        position:      'fixed',
+        left:           0,
+        top:            0,
+        width:          1,
+        height:         '100vh',
+        background:    'rgba(255,255,255,0.06)',
+        zIndex:         50,
+        pointerEvents: 'none',
+      }}>
+        <div style={{
+          position:   'absolute',
+          top:         0,
+          left:        0,
+          width:       '100%',
+          height:      `${projectProgress * 100}%`,
+          background:  '#D0274B',
+          transition:  'height 80ms linear',
+        }} />
+      </div>
+
+      {/* ════════════════════════════════════════════════════════════════
+          "SCROLL TO EXPLORE" HINT — bottom-right, fades after 2 s or
+          first scroll. Only visible at the very top of the page.
+      ════════════════════════════════════════════════════════════════ */}
+      <div style={{
+        position:      'fixed',
+        bottom:         44,
+        right:          44,
+        zIndex:         50,
+        opacity:        showScrollHint ? 1 : 0,
+        transition:    'opacity 600ms ease',
+        pointerEvents: 'none',
+        textAlign:     'center',
+      }}>
+        <p style={{
+          fontFamily:    PP,
+          fontWeight:    400,
+          fontSize:      11,
+          letterSpacing: '2px',
+          textTransform: 'uppercase',
+          color:         '#919191',
+          margin:        '0 0 8px 0',
+        }}>
+          Scroll to explore
+        </p>
+        <span className="explore-bounce-arrow" style={{ color: '#919191', fontSize: 18 }}>↓</span>
       </div>
 
     </div>

@@ -27,6 +27,8 @@ export default function PortfolioPageClient() {
 
   const tabRefs     = useRef<(HTMLButtonElement | null)[]>([])
   const dropdownRef = useRef<HTMLDivElement>(null)
+  const sepRefs     = useRef<(HTMLDivElement | null)[]>([])
+  const [sepProgress, setSepProgress] = useState<number[]>([])
 
   // Sliding pill — update on view change
   useEffect(() => {
@@ -55,6 +57,22 @@ export default function PortfolioPageClient() {
     return () => clearTimeout(t)
   }, [])
 
+  // Separator progress — position-based, updates on scroll in explore view
+  useEffect(() => {
+    if (view !== 'explore') return
+    const handle = () => {
+      const vh = window.innerHeight
+      setSepProgress(sepRefs.current.map(ref => {
+        if (!ref) return 0
+        const rect = ref.getBoundingClientRect()
+        return Math.max(0, Math.min(1, (vh - rect.top) / ref.offsetHeight))
+      }))
+    }
+    handle()
+    window.addEventListener('scroll', handle, { passive: true })
+    return () => window.removeEventListener('scroll', handle)
+  }, [view, activeFilter])
+
   // Close dropdown on outside click
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -76,22 +94,17 @@ export default function PortfolioPageClient() {
     <div style={{ background: '#000', minHeight: '100vh', color: 'white' }}>
 
       {/* ══════════════════════════════════════════════════════════════════
-          HERO — Motto-exact layout
-          1. Marquee (WORK * WORK *) flush to nav bottom
-          2. Intro text upper-left below marquee
-          3. Flex spacer
-          4. Controls bar pinned to bottom
+          HERO
       ══════════════════════════════════════════════════════════════════ */}
       <div style={{
         height:        '100vh',
         background:    '#000',
         display:       'flex',
         flexDirection: 'column',
-        paddingTop:    'calc(96px + 3vh)',   /* nav height + top offset */
+        paddingTop:    'calc(96px + 3vh)',
         overflow:      'hidden',
       }}>
 
-        {/* ── 1. SCROLLING MARQUEE ──────────────────────────────────────── */}
         <div style={{ overflow: 'hidden', flexShrink: 0 }}>
           <div className="work-marquee-track">
             {[0, 1].map(i => (
@@ -111,7 +124,6 @@ export default function PortfolioPageClient() {
           </div>
         </div>
 
-        {/* ── 2. INTRO TEXT ─────────────────────────────────────────────── */}
         <div style={{ padding: '44px 5vw 0', flexShrink: 0 }}>
           {[
             'We build brands with precision,',
@@ -138,10 +150,8 @@ export default function PortfolioPageClient() {
           ))}
         </div>
 
-        {/* ── 3. SPACER ─────────────────────────────────────────────────── */}
         <div style={{ flex: 1 }} />
 
-        {/* ── 4. BOTTOM CONTROLS ────────────────────────────────────────── */}
         <div style={{
           display:        'flex',
           justifyContent: 'space-between',
@@ -150,7 +160,7 @@ export default function PortfolioPageClient() {
           flexShrink:     0,
         }}>
 
-          {/* Filter dropdown — left */}
+          {/* Filter dropdown */}
           <div ref={dropdownRef} style={{ position: 'relative' }}>
             <button
               onClick={() => setFilterOpen(!filterOpen)}
@@ -225,7 +235,7 @@ export default function PortfolioPageClient() {
             )}
           </div>
 
-          {/* Grid / Explore sliding pill — right */}
+          {/* Grid / Explore sliding pill */}
           <nav style={{
             position:     'relative',
             padding:      7,
@@ -280,7 +290,7 @@ export default function PortfolioPageClient() {
       </div>
 
       {/* ══════════════════════════════════════════════════════════════════
-          GRID or EXPLORE — key forces remount on switch
+          GRID or EXPLORE
       ══════════════════════════════════════════════════════════════════ */}
       <div
         key={view}
@@ -320,82 +330,168 @@ export default function PortfolioPageClient() {
 
         {/* ── EXPLORE VIEW ──────────────────────────────────────────── */}
         {view === 'explore' && (
-          <div style={{ background: '#000', paddingBottom: 160 }}>
-            {filteredProjects.map((project, i) => (
-              <div key={project.id} style={{
-                position: 'relative',
-                height:   '100vh',
-                overflow: 'hidden',
-              }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={project.coverImage}
-                  alt={project.title}
-                  loading={i === 0 ? 'eager' : 'lazy'}
-                  style={{
-                    position:  'absolute',
-                    inset:     0,
-                    width:     '100%',
-                    height:    '100%',
-                    objectFit: 'cover',
-                    display:   'block',
-                  }}
-                />
+          <div style={{ background: '#000' }}>
+            {filteredProjects.map((project, i) => {
+              const next = filteredProjects[i + 1]
+              const prog = sepProgress[i] ?? 0
 
-                <div style={{
-                  position:   'absolute',
-                  inset:      0,
-                  background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%)',
-                }} />
+              return (
+                <div key={project.id}>
 
-                <div style={{
-                  position: 'absolute',
-                  bottom:   80,
-                  left:     40,
-                }}>
-                  <p style={{
-                    fontFamily:    PP,
-                    fontWeight:    400,
-                    fontSize:      11,
-                    letterSpacing: '3px',
-                    textTransform: 'uppercase',
-                    color:         'rgba(255,255,255,0.45)',
-                    margin:        '0 0 16px 0',
-                  }}>
-                    {String(i + 1).padStart(2, '0')} / {String(filteredProjects.length).padStart(2, '0')} — {project.category}
-                  </p>
+                  {/* ── Project card ── */}
+                  <div style={{ position: 'relative', height: '100vh', overflow: 'hidden' }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={project.coverImage}
+                      alt={project.title}
+                      loading={i === 0 ? 'eager' : 'lazy'}
+                      style={{
+                        position:  'absolute',
+                        inset:     0,
+                        width:     '100%',
+                        height:    '100%',
+                        objectFit: 'cover',
+                        display:   'block',
+                      }}
+                    />
+                    <div style={{
+                      position:   'absolute',
+                      inset:      0,
+                      background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%)',
+                    }} />
+                    <div style={{ position: 'absolute', bottom: 80, left: 40 }}>
+                      <p style={{
+                        fontFamily:    PP,
+                        fontWeight:    400,
+                        fontSize:      11,
+                        letterSpacing: '3px',
+                        textTransform: 'uppercase',
+                        color:         'rgba(255,255,255,0.45)',
+                        margin:        '0 0 16px 0',
+                      }}>
+                        {String(i + 1).padStart(2, '0')} / {String(filteredProjects.length).padStart(2, '0')} — {project.category}
+                      </p>
+                      <h2 style={{
+                        fontFamily:    PP,
+                        fontWeight:    900,
+                        fontSize:      'clamp(40px, 6vw, 88px)',
+                        color:         'white',
+                        margin:        '0 0 28px 0',
+                        lineHeight:    0.95,
+                        textTransform: 'uppercase',
+                        letterSpacing: '-0.01em',
+                      }}>
+                        {project.title}
+                      </h2>
+                      <Link
+                        href={`/portfolio/${project.id}`}
+                        style={{
+                          fontFamily:          PP,
+                          fontWeight:          400,
+                          fontSize:            11,
+                          letterSpacing:       '3px',
+                          textTransform:       'uppercase',
+                          color:               'white',
+                          textDecoration:      'underline',
+                          textUnderlineOffset: '5px',
+                        }}
+                      >
+                        View Project →
+                      </Link>
+                    </div>
+                  </div>
 
-                  <h2 style={{
-                    fontFamily:    PP,
-                    fontWeight:    900,
-                    fontSize:      'clamp(40px, 6vw, 88px)',
-                    color:         'white',
-                    margin:        '0 0 28px 0',
-                    lineHeight:    0.95,
-                    textTransform: 'uppercase',
-                    letterSpacing: '-0.01em',
-                  }}>
-                    {project.title}
-                  </h2>
+                  {/* ── Between-project separator (not after last) ── */}
+                  {next && (
+                    <div
+                      ref={el => { sepRefs.current[i] = el }}
+                      style={{
+                        position:            'relative',
+                        height:              '100vh',
+                        background:          '#0a0a0a',
+                        display:             'grid',
+                        gridTemplateColumns: '1fr 1fr',
+                        alignItems:          'center',
+                        padding:             '0 5vw',
+                        borderTop:           '1px solid rgba(255,255,255,0.06)',
+                        overflow:            'hidden',
+                      }}
+                    >
+                      <div>
+                        <p style={{
+                          fontFamily:    PP,
+                          fontWeight:    400,
+                          fontSize:      11,
+                          letterSpacing: '3px',
+                          textTransform: 'uppercase',
+                          color:         'rgba(255,255,255,0.3)',
+                          margin:        '0 0 20px 0',
+                        }}>
+                          Keep scrolling for the next case study.
+                        </p>
+                        <p style={{
+                          fontFamily:    PP,
+                          fontWeight:    900,
+                          fontSize:      'clamp(40px, 5.5vw, 80px)',
+                          color:         'white',
+                          margin:        0,
+                          lineHeight:    0.95,
+                          textTransform: 'uppercase',
+                          letterSpacing: '-0.02em',
+                        }}>
+                          {next.title}
+                        </p>
+                      </div>
 
-                  <Link
-                    href={`/portfolio/${project.id}`}
-                    style={{
-                      fontFamily:          PP,
-                      fontWeight:          400,
-                      fontSize:            11,
-                      letterSpacing:       '3px',
-                      textTransform:       'uppercase',
-                      color:               'white',
-                      textDecoration:      'underline',
-                      textUnderlineOffset: '5px',
-                    }}
-                  >
-                    View Project →
-                  </Link>
+                      <div style={{ position: 'relative', height: 1 }}>
+                        <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.12)' }} />
+                        <div style={{
+                          position:   'absolute',
+                          left:        0,
+                          top:         0,
+                          height:      1,
+                          width:       `${prog * 100}%`,
+                          background:  'white',
+                          transition:  'width 80ms linear',
+                        }} />
+                      </div>
+
+                      <div style={{
+                        position:  'absolute',
+                        bottom:    0,
+                        left:      0,
+                        right:     0,
+                        height:    '42vh',
+                        overflow:  'hidden',
+                      }}>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={next.coverImage}
+                          alt={next.title}
+                          loading="lazy"
+                          style={{
+                            width:      '100%',
+                            height:     '100%',
+                            objectFit:  'cover',
+                            display:    'block',
+                            opacity:    Math.min(1, Math.max(0, prog * 2 - 0.4)),
+                            transform:  `scale(${1 + (1 - prog) * 0.04})`,
+                            transition: 'opacity 80ms linear, transform 80ms linear',
+                          }}
+                        />
+                        <div style={{
+                          position:      'absolute',
+                          inset:          0,
+                          background:    'linear-gradient(to bottom, #0a0a0a 0%, transparent 40%)',
+                          pointerEvents: 'none',
+                        }} />
+                      </div>
+                    </div>
+                  )}
+
                 </div>
-              </div>
-            ))}
+              )
+            })}
 
             {filteredProjects.length === 0 && (
               <div style={{
@@ -420,6 +516,10 @@ export default function PortfolioPageClient() {
           display: flex;
           width: max-content;
           animation: marquee 22s linear infinite;
+        }
+        @keyframes viewFadeIn {
+          from { opacity: 0; transform: translateY(8px); }
+          to   { opacity: 1; transform: translateY(0); }
         }
         @media (max-width: 767px) {
           .portfolio-grid > * {

@@ -305,6 +305,16 @@ html.lenis body {
 
 .marquee-track:hover { animation-play-state: paused; }
 
+/* ─── Scroll hint bounce arrow ───────────────────────────────────────────────── */
+@keyframes bounceArrow {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(8px); }
+}
+.explore-bounce-arrow {
+  display: inline-block;
+  animation: bounceArrow 1.2s ease-in-out infinite;
+}
+
 /* ─── Reading view right panel — hide scrollbar (JS-driven) ─────────────────── */
 .reading-right-panel::-webkit-scrollbar { display: none; }
 
