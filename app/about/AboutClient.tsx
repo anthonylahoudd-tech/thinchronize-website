@@ -249,6 +249,93 @@ export default function AboutClient() {
       {/* ══ PARALLAX IMAGE ════════════════════════════════════════════ */}
       <ParallaxImage src="/images/about-signage.jpg" />
 
+      {/* ══ OUR STORY — Motto-exact layout ════════════════════════════
+          Left col  (~40%): "About Thinchronize" label
+          Right col (~60%): headline · body · CTA
+      ════════════════════════════════════════════════════════════════ */}
+      <section style={{
+        background: '#f5f4f0',
+        padding:    'clamp(80px, 10vw, 130px) 5vw',
+      }}>
+        <div style={{
+          display:             'grid',
+          gridTemplateColumns: '40% 60%',
+          gap:                 0,
+          maxWidth:            1400,
+          margin:              '0 auto',
+        }}>
+
+          {/* Left — label */}
+          <div style={{ paddingTop: 8 }}>
+            <span style={{
+              fontFamily:    PP,
+              fontWeight:    400,
+              fontSize:      12,
+              letterSpacing: '0.18em',
+              textTransform: 'uppercase',
+              color:         'rgba(0,0,0,0.4)',
+            }}>
+              About Thinchronize
+            </span>
+          </div>
+
+          {/* Right — story */}
+          <div>
+            <h2 style={{
+              fontFamily:    PP,
+              fontWeight:    900,
+              fontSize:      'clamp(36px, 4.5vw, 68px)',
+              color:         '#111',
+              lineHeight:    1.1,
+              letterSpacing: '-0.02em',
+              margin:        '0 0 clamp(32px, 4vw, 56px)',
+            }}>
+              Thinchronize started because we kept seeing the same problem.
+            </h2>
+
+            <p style={{
+              fontFamily:  PP,
+              fontWeight:  400,
+              fontSize:    'clamp(16px, 1.3vw, 20px)',
+              color:       'rgba(0,0,0,0.55)',
+              lineHeight:  1.8,
+              margin:      '0 0 clamp(24px, 3vw, 40px)',
+              maxWidth:    640,
+            }}>
+              Anthony and Wassim built this studio after years of watching Lebanese brands underperform their potential — not because of lack of talent or vision, but because of a missing layer: strategy. Together they combine brand thinking with craft, producing work that holds up in the market, compounds over time, and gives every brand something true to stand on.
+            </p>
+
+            <p style={{
+              fontFamily:  PP,
+              fontWeight:  400,
+              fontSize:    'clamp(16px, 1.3vw, 20px)',
+              color:       'rgba(0,0,0,0.55)',
+              lineHeight:  1.8,
+              margin:      '0 0 clamp(48px, 6vw, 80px)',
+              maxWidth:    640,
+            }}>
+              The name says it all: Thinchronize — strategic thinking, synchronised. Every project begins with a diagnosis, because a brand you understand is a brand you can build.
+            </p>
+
+            <Link
+              href="/contact"
+              style={{
+                fontFamily:          PP,
+                fontWeight:          400,
+                fontSize:            16,
+                color:               '#111',
+                textDecoration:      'underline',
+                textUnderlineOffset: '6px',
+                textDecorationColor: 'rgba(0,0,0,0.35)',
+              }}
+            >
+              Work with us →
+            </Link>
+          </div>
+
+        </div>
+      </section>
+
       {/* ══ SECTION 2 — The Studio ════════════════════════════════════ */}
       <section id="about-studio" style={{ background: '#FFFFFF', padding: 'clamp(80px, 10vw, 120px) clamp(24px, 6vw, 80px)' }}>
         <div style={{ display: 'flex', gap: 'clamp(40px, 8vw, 100px)', flexWrap: 'wrap', maxWidth: 1200, margin: '0 auto' }}>
