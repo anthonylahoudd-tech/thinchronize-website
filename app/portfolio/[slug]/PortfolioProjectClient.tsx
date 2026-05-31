@@ -2,11 +2,10 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { gsap } from 'gsap'
 import { useGSAP } from '@gsap/react'
-import { PROJECTS, type Project, type ProjectImage } from '@/lib/projects'
+import { type Project, type ProjectImage } from '@/lib/projects'
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const PP   = "'PPNeueCorp', system-ui, sans-serif"
@@ -41,7 +40,7 @@ function LinesIcon({ color }: { color: string }) {
 }
 
 export default function PortfolioProjectClient({
-  project, nextProject, prevProject, currentIndex,
+  project, nextProject,
 }: Props) {
   const [view,         setView]         = useState<'visual' | 'reading'>('visual')
   const [pillMaskX,    setPillMaskX]    = useState(0)
@@ -101,8 +100,8 @@ export default function PortfolioProjectClient({
     ? project.images
     : [{ src: project.coverImage }]
 
-  // Reading view shows a curated subset — prevents endless dead scroll after text ends
-  const readingViewImages = (project.readingImages ?? images).slice(0, 10)
+  // Reading view: use readingImages if provided, otherwise all images
+  const readingViewImages = project.readingImages ?? images
 
   // ── Pill slider mask: update on view change ───────────────────────────────
   useEffect(() => {
@@ -136,8 +135,9 @@ export default function PortfolioProjectClient({
       // 2. Next-project progress bar + auto-navigate
       if (nextSectionRef.current && !navTriggered.current) {
         const rect     = nextSectionRef.current.getBoundingClientRect()
-        // fills 0→1 as the section scrolls from off-screen bottom to 55% in viewport
-        const progress = Math.max(0, Math.min(1, (vh - rect.top) / (vh * 0.55)))
+        // fills 0→1 as the user scrolls through 75% of the end section
+        const sectionH = nextSectionRef.current.offsetHeight
+        const progress = Math.max(0, Math.min(1, (vh - rect.top) / (sectionH * 0.75)))
         setNextProgress(progress)
 
         if (progress >= 1) {
@@ -592,132 +592,103 @@ export default function PortfolioProjectClient({
       </div>
 
       {/* ════════════════════════════════════════════════════════════════
-          NEXT PROJECT — scroll-driven progress bar navigates automatically
+          END OF PROJECT — Motto-style: keep scrolling + marquee + cover
       ════════════════════════════════════════════════════════════════ */}
-      <div
-        ref={nextSectionRef}
-        style={{
-          height:         '100vh',
-          background:     '#000',
-          position:       'relative',
-          overflow:       'hidden',
-          display:        'flex',
-          alignItems:     'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Image
-          src={nextProject.coverImage}
-          alt={nextProject.title}
-          fill sizes="100vw"
-          style={{
-            objectFit: 'cover',
-            opacity:   0.2 + nextProgress * 0.25,
-            transform: `scale(${1 + nextProgress * 0.04})`,
-            transition: 'transform 100ms linear',
-          }}
-          loading="lazy"
-        />
+      <div ref={nextSectionRef}>
 
-        {/* Dark overlay that lifts as progress fills */}
+        {/* 1 ── "Keep scrolling" zone */}
         <div style={{
-          position:      'absolute',
-          inset:         0,
-          background:    `rgba(0,0,0,${0.55 - nextProgress * 0.3})`,
-          zIndex:        1,
-          pointerEvents: 'none',
-          transition:    'background 100ms linear',
-        }} />
-
-        {/* Center content */}
-        <div style={{
-          position:  'relative',
-          zIndex:    2,
-          textAlign: 'center',
-          opacity:   0.4 + nextProgress * 0.6,
-          transform: `translateY(${(1 - nextProgress) * 16}px)`,
-          transition: 'opacity 100ms linear, transform 100ms linear',
+          background:          '#ECECEA',
+          height:              '52vh',
+          display:             'grid',
+          gridTemplateColumns: '1fr 1fr',
+          alignItems:          'center',
+          paddingLeft:         '5vw',
+          paddingRight:        '5vw',
+          borderTop:           '1px solid rgba(0,0,0,0.08)',
         }}>
-          <p style={{
-            fontFamily:    PP,
-            fontWeight:    400,
-            fontSize:      11,
-            letterSpacing: '5px',
-            textTransform: 'uppercase',
-            color:         'rgba(255,255,255,0.35)',
-            margin:        '0 0 20px',
-          }}>
-            Next Project
-          </p>
-          <h2 style={{
-            fontFamily:    PP,
-            fontWeight:    900,
-            fontSize:      'clamp(40px, 6vw, 80px)',
-            color:         'white',
-            letterSpacing: '-2px',
-            lineHeight:    1,
-            margin:        '0 0 12px',
-            textTransform: 'uppercase',
-          }}>
-            {nextProject.title}
-          </h2>
           <p style={{
             fontFamily: PP,
             fontWeight: 400,
-            fontSize:   14,
-            color:      'rgba(255,255,255,0.4)',
+            fontSize:   18,
+            color:      'rgba(0,0,0,0.4)',
+            lineHeight: 1.65,
             margin:     0,
           }}>
-            {nextProject.tagline}
+            Keep scrolling for the<br />next case study.
           </p>
+
+          {/* Horizontal progress line */}
+          <div style={{ position: 'relative', height: 1 }}>
+            <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.12)' }} />
+            <div style={{
+              position:   'absolute',
+              left:        0,
+              top:         0,
+              height:      1,
+              width:       `${nextProgress * 100}%`,
+              background:  '#0f0f0f',
+              transition:  'width 80ms linear',
+            }} />
+          </div>
         </div>
 
-        {/* ── Progress bar — fills as you scroll into this section ── */}
+        {/* 2 ── Marquee ticker */}
         <div style={{
-          position:  'absolute',
-          bottom:    0,
-          left:      0,
-          height:    2,
-          width:     `${nextProgress * 100}%`,
-          background: 'white',
-          zIndex:    10,
-          transition: 'width 80ms linear',
-        }} />
-
-        {/* Bottom left: counter */}
-        <div style={{
-          position:      'absolute',
-          bottom:        40,
-          left:          40,
-          zIndex:        3,
-          fontFamily:    PP,
-          fontWeight:    400,
-          fontSize:      11,
-          letterSpacing: '3px',
-          color:         'rgba(255,255,255,0.25)',
+          background:  '#ECECEA',
+          overflow:    'hidden',
+          borderTop:   '1px solid rgba(0,0,0,0.08)',
+          borderBottom:'1px solid rgba(0,0,0,0.08)',
         }}>
-          <span style={{ opacity: 0.5 }}>{String(currentIndex + 1).padStart(2, '0')}</span>
-          {' / '}
-          {String(PROJECTS.length).padStart(2, '0')}
+          <div className="marquee-track" style={{ animation: 'marquee 18s linear infinite' }}>
+            {[0, 1].map(rep => (
+              <span key={rep} aria-hidden={rep === 1}>
+                {[0, 1, 2, 3, 4, 5].map(i => (
+                  <span key={i} style={{
+                    fontFamily:    PP,
+                    fontWeight:    900,
+                    fontSize:      'clamp(58px, 7vw, 100px)',
+                    letterSpacing: '-2px',
+                    textTransform: 'uppercase',
+                    color:         '#0f0f0f',
+                    whiteSpace:    'nowrap',
+                    paddingTop:    24,
+                    paddingBottom: 24,
+                    paddingRight:  '5vw',
+                    lineHeight:    1.05,
+                    display:       'inline-block',
+                  }}>
+                    {nextProject.title}&nbsp;
+                    <span style={{ opacity: 0.22, fontWeight: 400, letterSpacing: 0 }}>*</span>
+                    &nbsp;
+                  </span>
+                ))}
+              </span>
+            ))}
+          </div>
         </div>
 
-        {/* Bottom right: prev / next arrows */}
-        <div style={{
-          position: 'absolute',
-          bottom:   40,
-          right:    40,
-          display:  'flex',
-          gap:      20,
-          zIndex:   3,
-        }}>
-          <Link
-            href={`/portfolio/${prevProject.id}`}
-            style={{ color: 'rgba(255,255,255,0.3)', fontSize: 22, textDecoration: 'none' }}
-          >←</Link>
-          <Link
-            href={`/portfolio/${nextProject.id}`}
-            style={{ color: 'white', fontSize: 22, textDecoration: 'none' }}
-          >→</Link>
+        {/* 3 ── Next project cover — parallax opacity reveal */}
+        <div style={{ position: 'relative', height: '58vh', overflow: 'hidden' }}>
+          <Image
+            src={nextProject.coverImage}
+            alt={nextProject.title}
+            fill sizes="100vw"
+            style={{
+              objectFit:  'cover',
+              opacity:    Math.min(1, Math.max(0.08, nextProgress * 1.6)),
+              transform:  `scale(${1 + nextProgress * 0.04})`,
+              transition: 'transform 100ms linear, opacity 100ms linear',
+            }}
+            loading="lazy"
+          />
+          {/* Warm wash that lifts as progress fills */}
+          <div style={{
+            position:      'absolute',
+            inset:          0,
+            background:    `rgba(236,236,234,${Math.max(0, 1 - nextProgress * 2)})`,
+            pointerEvents: 'none',
+          }} />
         </div>
 
       </div>
