@@ -80,7 +80,7 @@ export default function PortfolioPageClient() {
         background:    '#000',
         display:       'flex',
         flexDirection: 'column',
-        paddingTop:    '96px',   /* nav height */
+        paddingTop:    'calc(96px + 3vh)',   /* nav height + top offset */
         overflow:      'hidden',
       }}>
 
@@ -105,7 +105,7 @@ export default function PortfolioPageClient() {
         </div>
 
         {/* ── 2. INTRO TEXT ─────────────────────────────────────────────── */}
-        <div style={{ padding: '44px 10vw 0', flexShrink: 0 }}>
+        <div style={{ padding: '44px 5vw 0', flexShrink: 0 }}>
           <p style={{
             fontFamily:    PP,
             fontWeight:    400,
@@ -130,7 +130,7 @@ export default function PortfolioPageClient() {
           display:        'flex',
           justifyContent: 'space-between',
           alignItems:     'center',
-          padding:        '0 10vw 56px',
+          padding:        '0 5vw 56px',
           flexShrink:     0,
         }}>
 

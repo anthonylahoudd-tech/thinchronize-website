@@ -65,7 +65,7 @@ export default function Header() {
         className="flex md:hidden"
         style={{
           position:       'fixed',
-          top:            0,
+          top:            '3vh',
           left:           0,
           right:          0,
           zIndex:         150,
@@ -133,7 +133,7 @@ export default function Header() {
         className="hidden md:block"
         style={{
           position:     'fixed',
-          top:          0,
+          top:          '3vh',
           left:         0,
           right:        0,
           zIndex:       50,
@@ -147,7 +147,7 @@ export default function Header() {
         <div style={{
           position:  'absolute',
           top:       '50%',
-          left:      '10vw',
+          left:      '5vw',
           transform: 'translateY(-50%)',
         }}>
           {/* Wordmark — fades out on scroll */}
@@ -260,7 +260,7 @@ export default function Header() {
         <div style={{
           position:   'absolute',
           top:        '50%',
-          right:      '10vw',
+          right:      '5vw',
           transform:  'translateY(-50%)',
           display:    'flex',
           alignItems: 'center',

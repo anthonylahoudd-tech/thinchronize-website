@@ -16,7 +16,7 @@ export default function PageHero({ title, subtitle }: PageHeroProps) {
       background:    '#000',
       display:       'flex',
       flexDirection: 'column',
-      paddingTop:    '96px',
+      paddingTop:    'calc(96px + 3vh)',
       overflow:      'hidden',
     }}>
 
@@ -39,7 +39,7 @@ export default function PageHero({ title, subtitle }: PageHeroProps) {
       </div>
 
       {/* Subtitle */}
-      <div style={{ padding: '44px 10vw 0', flexShrink: 0 }}>
+      <div style={{ padding: '44px 5vw 0', flexShrink: 0 }}>
         <p style={{
           fontFamily:    PP,
           fontWeight:    400,
