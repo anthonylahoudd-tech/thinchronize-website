@@ -232,7 +232,7 @@ function ServiceAccordionItem({
           className="svc-name"
           style={{
             fontFamily:  PP,
-            fontWeight:  900,
+            fontWeight:  400,
             fontSize:    'clamp(24px, 3vw, 40px)',
             textTransform: 'uppercase',
             color:       nameHovered || isOpen ? RED : '#292929',
@@ -252,7 +252,7 @@ function ServiceAccordionItem({
             color:      '#919191',
             flexShrink: 0,
             maxWidth:   360,
-            textAlign:  'justify',
+            textAlign:  'right',
           }}
         >
           {service.tagline}
