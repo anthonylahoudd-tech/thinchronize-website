@@ -658,58 +658,31 @@ export default function AboutClient() {
       {/* ══ NUMBERS — Motto stacked stats ════════════════════════════ */}
       <section style={{
         background: '#fff',
-        padding:    'clamp(80px, 10vw, 130px) 5vw',
+        padding:    'clamp(72px, 9vw, 120px) 5vw',
+        overflow:   'hidden',
       }}>
-        <p style={{
-          fontFamily:    PP,
-          fontWeight:    400,
-          fontSize:      12,
-          letterSpacing: '0.18em',
-          textTransform: 'uppercase',
-          color:         'rgba(0,0,0,0.4)',
-          margin:        '0 0 clamp(40px, 5vw, 64px)',
-        }}>
-          By the numbers
-        </p>
         {[
-          { stat: '10+',   label: 'Years in brand' },
-          { stat: '150+',  label: 'Brands built'   },
-          { stat: '20+',   label: 'Industries'      },
-          { stat: '100%',  label: 'Strategy-led'    },
-        ].map((item, i) => (
-          <div
-            key={item.stat}
+          { text: '10+ YEARS IN BRAND', align: 'left'  as const },
+          { text: '150+ BRANDS BUILT',  align: 'right' as const },
+          { text: '20+ INDUSTRIES',     align: 'left'  as const },
+          { text: '100% STRATEGY-LED',  align: 'right' as const },
+        ].map(item => (
+          <p
+            key={item.text}
             style={{
-              display:       'flex',
-              alignItems:    'baseline',
-              gap:           '0.3em',
-              borderTop:     '1px solid rgba(0,0,0,0.08)',
-              paddingTop:    'clamp(16px, 2vw, 28px)',
-              paddingBottom: 'clamp(16px, 2vw, 28px)',
-              borderBottom:  i === 3 ? '1px solid rgba(0,0,0,0.08)' : 'none',
+              fontFamily:    PP,
+              fontWeight:    400,
+              fontSize:      'clamp(52px, 8.5vw, 125px)',
+              color:         '#111',
+              textTransform: 'uppercase',
+              letterSpacing: '-3px',
+              lineHeight:    1.0,
+              margin:        0,
+              textAlign:     item.align,
             }}
           >
-            <span style={{
-              fontFamily:    PP,
-              fontWeight:    400,
-              fontSize:      'clamp(56px, 9vw, 130px)',
-              color:         '#111',
-              letterSpacing: '-3px',
-              lineHeight:    0.9,
-            }}>
-              {item.stat}
-            </span>
-            <span style={{
-              fontFamily:    PP,
-              fontWeight:    400,
-              fontSize:      'clamp(40px, 6.2vw, 90px)',
-              color:         '#111',
-              letterSpacing: '-2px',
-              lineHeight:    0.9,
-            }}>
-              {item.label}
-            </span>
-          </div>
+            {item.text}
+          </p>
         ))}
       </section>
 
