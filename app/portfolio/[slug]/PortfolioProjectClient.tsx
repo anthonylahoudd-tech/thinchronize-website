@@ -445,15 +445,15 @@ export default function PortfolioProjectClient({
                       {label}
                     </p>
 
-                    {/* Headline — bigger, mixed case, editorial */}
+                    {/* Headline — medium weight (400=NormalMedium), mixed case, no caps */}
                     <h3 style={{
                       fontFamily:    PP,
-                      fontWeight:    700,
-                      fontSize:      'clamp(32px, 4vw, 60px)',
+                      fontWeight:    400,
+                      fontSize:      'clamp(40px, 5.5vw, 76px)',
                       color:         '#0f0f0f',
-                      lineHeight:    1.06,
-                      letterSpacing: '-0.8px',
-                      margin:        '0 0 36px',
+                      lineHeight:    1.05,
+                      letterSpacing: '-1px',
+                      margin:        '0 0 40px',
                     }}>
                       {section.headline}
                     </h3>
@@ -462,9 +462,9 @@ export default function PortfolioProjectClient({
                     <p style={{
                       fontFamily: PP,
                       fontWeight: 400,
-                      fontSize:   17,
+                      fontSize:   20,
                       color:      'rgba(0,0,0,0.55)',
-                      lineHeight: 1.78,
+                      lineHeight: 1.75,
                       margin:     0,
                     }}>
                       {section.body}
@@ -507,7 +507,7 @@ export default function PortfolioProjectClient({
                               <span style={{
                                 fontFamily: PP,
                                 fontWeight: 400,
-                                fontSize:   16,
+                                fontSize:   18,
                                 color:      'rgba(0,0,0,0.65)',
                                 lineHeight: 1.5,
                               }}>
