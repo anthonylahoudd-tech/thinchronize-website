@@ -81,7 +81,7 @@ function DoubleBanner() {
   return (
     <div
       ref={sectionRef}
-      style={{ background: '#f5f4f0', overflow: 'hidden', padding: 'clamp(16px, 2vw, 28px) 0', display: 'flex', flexDirection: 'column', gap: 10 }}
+      style={{ background: '#f5f4f0', overflow: 'hidden', padding: 'clamp(8px, 1vw, 14px) 0', display: 'flex', flexDirection: 'column', gap: 2 }}
     >
       {/* Row 1 — scrolls left */}
       <div style={{ overflow: 'hidden' }}>
@@ -410,7 +410,7 @@ export default function AboutClient() {
           lineHeight:    0.88,
           margin:        '0 0 clamp(56px, 7vw, 110px)',
         }}>
-          Meet the<br /><span style={{ color: RED, fontWeight: 900 }}>Founders</span>
+          Meet the<br /><span style={{ color: '#111', fontWeight: 900 }}>Founders</span>
         </h2>
 
         {/* 40 / 60 grid — label left, story right */}
@@ -682,16 +682,16 @@ export default function AboutClient() {
             style={{
               display:       'flex',
               alignItems:    'baseline',
-              gap:           '0.35em',
+              gap:           '0.3em',
               borderTop:     '1px solid rgba(0,0,0,0.08)',
-              paddingTop:    'clamp(20px, 2.5vw, 36px)',
-              paddingBottom: 'clamp(20px, 2.5vw, 36px)',
+              paddingTop:    'clamp(16px, 2vw, 28px)',
+              paddingBottom: 'clamp(16px, 2vw, 28px)',
               borderBottom:  i === 3 ? '1px solid rgba(0,0,0,0.08)' : 'none',
             }}
           >
             <span style={{
               fontFamily:    PP,
-              fontWeight:    900,
+              fontWeight:    400,
               fontSize:      'clamp(56px, 9vw, 130px)',
               color:         '#111',
               letterSpacing: '-3px',
@@ -700,11 +700,12 @@ export default function AboutClient() {
               {item.stat}
             </span>
             <span style={{
-              fontFamily:  PP,
-              fontWeight:  400,
-              fontSize:    'clamp(18px, 2vw, 30px)',
-              color:       'rgba(0,0,0,0.45)',
-              letterSpacing: '-0.01em',
+              fontFamily:    PP,
+              fontWeight:    400,
+              fontSize:      'clamp(40px, 6.2vw, 90px)',
+              color:         '#111',
+              letterSpacing: '-2px',
+              lineHeight:    0.9,
             }}>
               {item.label}
             </span>
