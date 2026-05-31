@@ -150,7 +150,7 @@ export default function Header() {
           left:      '10vw',
           transform: 'translateY(-50%)',
         }}>
-          {/* Wordmark — always the horizontal logo, never swaps */}
+          {/* Wordmark — fades out on scroll */}
           <button
             onClick={() => transitionTo('/')}
             style={{ background: 'none', border: 'none', padding: 0, display: 'block' }}
@@ -161,11 +161,40 @@ export default function Header() {
               alt="Thinchronize"
               width={130} height={22}
               style={{
-                height:  30,
-                width:   'auto',
-                display: 'block',
+                height:     30,
+                width:      'auto',
+                display:    'block',
+                opacity:    logoSwapped ? 0 : 1,
+                transition: logoSwapped
+                  ? `opacity 350ms ${EASE} 0ms`
+                  : `opacity 350ms ${EASE} 350ms`,
               }}
               priority
+            />
+          </button>
+
+          {/* Packed square logo — fades in after wordmark gone */}
+          <button
+            onClick={() => transitionTo('/')}
+            style={{
+              position: 'absolute', top: -13, left: -12,
+              background: 'none', border: 'none', padding: 0,
+            }}
+            aria-label="Go to homepage"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/logo-stacked.png"
+              alt="Thinchronize"
+              width={56} height={56}
+              style={{
+                display:    'block',
+                opacity:    logoSwapped ? 1 : 0,
+                transition: logoSwapped
+                  ? `opacity 350ms ${EASE} 350ms`
+                  : `opacity 350ms ${EASE} 0ms`,
+                filter:     'brightness(0) invert(1)',
+              }}
             />
           </button>
         </div>
