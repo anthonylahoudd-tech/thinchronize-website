@@ -305,6 +305,9 @@ html.lenis body {
 
 .marquee-track:hover { animation-play-state: paused; }
 
+/* ─── Reading view right panel — hide scrollbar (JS-driven) ─────────────────── */
+.reading-right-panel::-webkit-scrollbar { display: none; }
+
 /* ─── Work card red overlay ─────────────────────────────────────────────────── */
 
 .work-card-overlay {

@@ -50,13 +50,15 @@ export default function PortfolioProjectClient({
   const [nextProgress, setNextProgress] = useState(0)
   const [navigating,   setNavigating]   = useState(false)
 
-  const pillTabRefs    = useRef<(HTMLButtonElement | null)[]>([])
-  const nextSectionRef = useRef<HTMLDivElement>(null)
-  const titleRef       = useRef<HTMLDivElement>(null)
-  const bigTextRef     = useRef<HTMLDivElement>(null)
-  const servicesRef    = useRef<HTMLDivElement>(null)
-  const router         = useRouter()
-  const navTriggered   = useRef(false)
+  const pillTabRefs      = useRef<(HTMLButtonElement | null)[]>([])
+  const nextSectionRef   = useRef<HTMLDivElement>(null)
+  const titleRef         = useRef<HTMLDivElement>(null)
+  const bigTextRef       = useRef<HTMLDivElement>(null)
+  const servicesRef      = useRef<HTMLDivElement>(null)
+  const readingSectionRef = useRef<HTMLElement>(null)
+  const rightPanelRef    = useRef<HTMLDivElement>(null)
+  const router           = useRouter()
+  const navTriggered     = useRef(false)
 
   // ── Hero entrance animation (clip reveal, same as TextReveal) ────────────
   useGSAP(() => {
@@ -146,6 +148,24 @@ export default function PortfolioProjectClient({
     window.addEventListener('scroll', handle, { passive: true })
     return () => window.removeEventListener('scroll', handle)
   }, [nextProject.id, router])
+
+  // ── Reading view: sync right panel scroll with page scroll ────────────────
+  // Right panel is position:sticky / overflow:hidden. On page scroll we move
+  // its inner content via translateY so it scrolls through all 4 sections,
+  // then locks on the last one while the left images continue.
+  useEffect(() => {
+    if (view !== 'reading') return
+    const sync = () => {
+      if (!readingSectionRef.current || !rightPanelRef.current) return
+      const sectionTop = readingSectionRef.current.offsetTop
+      const scrolledIn = window.scrollY - sectionTop
+      if (scrolledIn < 0) { rightPanelRef.current.scrollTop = 0; return }
+      const panel = rightPanelRef.current
+      panel.scrollTop = Math.min(scrolledIn, panel.scrollHeight - panel.clientHeight)
+    }
+    window.addEventListener('scroll', sync, { passive: true })
+    return () => window.removeEventListener('scroll', sync)
+  }, [view])
 
   const detailRows = [
     { label: 'Type',     value: project.details.type },
@@ -380,7 +400,7 @@ export default function PortfolioProjectClient({
 
         {/* ── READING VIEW — Motto-style: off-white bg, dark text, editorial ── */}
         {view === 'reading' && (
-          <section style={{ background: '#ECECEA', padding: '0 0 160px' }}>
+          <section ref={readingSectionRef} style={{ background: '#ECECEA', padding: '0 0 0' }}>
             <div style={{
               display:             'grid',
               gridTemplateColumns: '1fr 1fr',
@@ -388,8 +408,8 @@ export default function PortfolioProjectClient({
               alignItems:          'start',
             }}>
 
-              {/* LEFT — image stack, flush to left edge */}
-              <div style={{ paddingTop: 100 }}>
+              {/* LEFT — images, full natural height, scroll with page */}
+              <div style={{ paddingTop: 100, paddingBottom: 160 }}>
                 {images.map((img, i) => (
                   <div key={i} style={{
                     position:     'relative',
@@ -408,8 +428,21 @@ export default function PortfolioProjectClient({
                 ))}
               </div>
 
-              {/* RIGHT — 4 narrative sections, Motto layout */}
-              <div style={{ paddingLeft: '6vw', paddingRight: '5vw' }}>
+              {/* RIGHT — sticky panel: locks on last section while left images continue */}
+              <div
+                ref={rightPanelRef}
+                className="reading-right-panel"
+                style={{
+                  position:        'sticky',
+                  top:             0,
+                  height:          '100vh',
+                  overflowY:       'scroll',
+                  scrollbarWidth:  'none',        // Firefox
+                  msOverflowStyle: 'none' as const, // IE
+                  paddingLeft:     '6vw',
+                  paddingRight:    '5vw',
+                }}
+              >
                 {([
                   { num: '(01)', label: 'The Brief',     section: project.brief,     showDetails: true  },
                   { num: '(02)', label: 'The Diagnosis', section: project.diagnosis, showDetails: false },
@@ -445,7 +478,7 @@ export default function PortfolioProjectClient({
                       {label}
                     </p>
 
-                    {/* Headline — medium weight (400=NormalMedium), mixed case, no caps */}
+                    {/* Headline — override global h3{uppercase 800} explicitly */}
                     <h3 style={{
                       fontFamily:    PP,
                       fontWeight:    400,
@@ -454,6 +487,7 @@ export default function PortfolioProjectClient({
                       lineHeight:    1.05,
                       letterSpacing: '-1px',
                       margin:        '0 0 40px',
+                      textTransform: 'none',
                     }}>
                       {section.headline}
                     </h3>
