@@ -55,6 +55,8 @@ export default function PortfolioProjectClient({
   const titleRef       = useRef<HTMLDivElement>(null)
   const bigTextRef     = useRef<HTMLDivElement>(null)
   const servicesRef    = useRef<HTMLDivElement>(null)
+  const leftColRef     = useRef<HTMLDivElement>(null)
+  const rightColRef    = useRef<HTMLDivElement>(null)
   const router         = useRouter()
   const navTriggered   = useRef(false)
 
@@ -147,6 +149,17 @@ export default function PortfolioProjectClient({
     return () => window.removeEventListener('scroll', handle)
   }, [nextProject.id, router])
 
+  // ── Right column min-height = left column height so sticky last section works ─
+  useEffect(() => {
+    if (view !== 'reading') return
+    const sync = () => {
+      if (!leftColRef.current || !rightColRef.current) return
+      rightColRef.current.style.minHeight = `${leftColRef.current.offsetHeight}px`
+    }
+    sync()
+    window.addEventListener('resize', sync)
+    return () => window.removeEventListener('resize', sync)
+  }, [view])
 
   const detailRows = [
     { label: 'Type',     value: project.details.type },
@@ -390,7 +403,7 @@ export default function PortfolioProjectClient({
             }}>
 
               {/* LEFT — images, full natural height */}
-              <div style={{ paddingTop: 100, paddingBottom: 200 }}>
+              <div ref={leftColRef} style={{ paddingTop: 100, paddingBottom: 200 }}>
                 {images.map((img, i) => (
                   <div key={i} style={{
                     position:     'relative',
@@ -410,7 +423,7 @@ export default function PortfolioProjectClient({
               </div>
 
               {/* RIGHT — sections scroll naturally; last section goes sticky */}
-              <div style={{ paddingLeft: '6vw', paddingRight: '5vw' }}>
+              <div ref={rightColRef} style={{ paddingLeft: '6vw', paddingRight: '5vw', position: 'relative' }}>
                 {([
                   { num: '(01)', label: 'The Brief',     section: project.brief,     showDetails: true  },
                   { num: '(02)', label: 'The Diagnosis', section: project.diagnosis, showDetails: false },
