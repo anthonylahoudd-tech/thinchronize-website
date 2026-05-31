@@ -112,7 +112,7 @@ export const PROJECTS: Project[] = [
     services: ['Brand Identity', 'Print Design', 'Environmental Design', 'Packaging'],
     year: '2025',
     market: 'Washington D.C., USA',
-    heroLines: ['Build a fast-casual sandwich', 'brand from the ground up.'],
+    heroLines: ['Build a fast-casual sandwich', 'brand from the ground up.', 'Built to own the street.'],
   },
   {
     id: 'latelier',

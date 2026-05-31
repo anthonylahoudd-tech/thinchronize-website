@@ -154,8 +154,9 @@ export default function PortfolioProjectClient({
     { label: 'Scope',    value: project.details.scope },
   ]
 
-  // ── Shared pill JSX (reused in hero bottom-bar and fixed sidebar) ─────────
-  const PillToggle = ({ tabRefs }: { tabRefs?: React.MutableRefObject<(HTMLButtonElement | null)[]> }) => (
+  // ── Inline pill JSX — NOT a sub-component (sub-components remount on every
+  //    render, destroying the DOM node and killing the CSS transition)
+  const pillJSX = (
     <div style={{
       position:     'relative',
       background:   'white',
@@ -179,7 +180,7 @@ export default function PortfolioProjectClient({
       {(['visual', 'reading'] as const).map((v, i) => (
         <button
           key={v}
-          ref={tabRefs ? el => { tabRefs.current[i] = el } : undefined}
+          ref={el => { pillTabRefs.current[i] = el }}
           onClick={() => setView(v)}
           style={{
             position:     'relative',
@@ -263,7 +264,7 @@ export default function PortfolioProjectClient({
             style={{
               fontFamily:    PP,
               fontWeight:    900,
-              fontSize:      'clamp(40px, 5vw, 70px)',
+              fontSize:      'clamp(46px, 5.75vw, 80px)',
               color:         'white',
               textTransform: 'uppercase',
               letterSpacing: '-1.5px',
@@ -280,11 +281,11 @@ export default function PortfolioProjectClient({
             aria-label={project.brief.headline}
             style={{
               fontFamily:    PP,
-              fontWeight:    500,
-              fontSize:      38,
+              fontWeight:    400,
+              fontSize:      'clamp(22px, 3vw, 42px)',
               color:         'white',
-              lineHeight:    1.18,
-              letterSpacing: '-0.3px',
+              lineHeight:    1.25,
+              letterSpacing: '-0.5px',
               margin:        '0 0 28px',
             }}
           >
@@ -337,7 +338,7 @@ export default function PortfolioProjectClient({
           </span>
 
           {/* Right: pill — 10% bigger, right-aligned to 5vw */}
-          <PillToggle tabRefs={pillTabRefs} />
+          {pillJSX}
 
         </div>
       </section>
