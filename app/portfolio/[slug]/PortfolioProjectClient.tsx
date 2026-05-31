@@ -219,30 +219,29 @@ export default function PortfolioProjectClient({
         flexDirection: 'column',
       }}>
 
-        {/* Cover image */}
+        {/* Cover image — more visible, no heavy overlay */}
         <Image
           src={project.coverImage}
           alt={project.title}
           fill priority sizes="100vw"
-          style={{ objectFit: 'cover', opacity: 0.6 }}
+          style={{ objectFit: 'cover', opacity: 0.82 }}
         />
 
-        {/* Bottom gradient */}
+        {/* Subtle bottom-only gradient — just enough for bottom bar legibility */}
         <div style={{
           position:      'absolute',
           inset:         0,
-          background:    'linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, transparent 40%, rgba(0,0,0,0.80) 100%)',
+          background:    'linear-gradient(to bottom, rgba(0,0,0,0.10) 0%, transparent 50%, rgba(0,0,0,0.72) 100%)',
           zIndex:        1,
           pointerEvents: 'none',
         }} />
 
-        {/* ── Big title + marquee ── */}
+        {/* ── Title (smaller) + marquee — pinned to top ── */}
         <div style={{
           position:      'absolute',
-          top:           '50%',
+          top:           48,
           left:          0,
           right:         0,
-          transform:     'translateY(-54%)',
           zIndex:        2,
           pointerEvents: 'none',
           overflow:      'hidden',
@@ -250,14 +249,14 @@ export default function PortfolioProjectClient({
           <div style={{
             fontFamily:    PP,
             fontWeight:    900,
-            fontSize:      'clamp(80px, 14vw, 190px)',
+            fontSize:      'clamp(40px, 5.5vw, 80px)',
             color:         'white',
             textTransform: 'uppercase',
-            letterSpacing: '-4px',
-            lineHeight:    0.9,
+            letterSpacing: '-2px',
+            lineHeight:    1,
             whiteSpace:    'nowrap',
             paddingLeft:   48,
-            marginBottom:  24,
+            marginBottom:  20,
           }}>
             {project.title}
           </div>
@@ -267,7 +266,48 @@ export default function PortfolioProjectClient({
           />
         </div>
 
-        {/* ── Bottom bar: left (scroll + tagline) | right (pill) ── */}
+        {/* ── Big statement text + services — center-left ── */}
+        <div style={{
+          position:  'absolute',
+          top:       '50%',
+          left:      48,
+          right:     '40%',
+          transform: 'translateY(-50%)',
+          zIndex:    2,
+        }}>
+          <p style={{
+            fontFamily:    PP,
+            fontWeight:    700,
+            fontSize:      'clamp(24px, 3vw, 44px)',
+            color:         'white',
+            lineHeight:    1.15,
+            letterSpacing: '-0.5px',
+            margin:        '0 0 32px',
+          }}>
+            {project.brief.headline}
+          </p>
+
+          {/* Services row */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px 0' }}>
+            {project.services.map((s, i) => (
+              <span key={s} style={{
+                fontFamily:    PP,
+                fontWeight:    400,
+                fontSize:      11,
+                letterSpacing: '3px',
+                textTransform: 'uppercase',
+                color:         'rgba(255,255,255,0.5)',
+                whiteSpace:    'nowrap',
+              }}>
+                {s}{i < project.services.length - 1 && (
+                  <span style={{ margin: '0 12px', opacity: 0.3 }}>·</span>
+                )}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* ── Bottom bar: left (scroll) | right (pill) ── */}
         <div style={{
           position:       'absolute',
           bottom:         0,
@@ -280,32 +320,19 @@ export default function PortfolioProjectClient({
           alignItems:     'flex-end',
         }}>
 
-          {/* Left: (SCROLL) + tagline */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            <span style={{
-              fontFamily:    PP,
-              fontWeight:    400,
-              fontSize:      10,
-              letterSpacing: '5px',
-              textTransform: 'uppercase',
-              color:         'rgba(255,255,255,0.3)',
-            }}>
-              (Scroll)
-            </span>
-            <p style={{
-              fontFamily: PP,
-              fontWeight: 400,
-              fontSize:   'clamp(13px, 1.3vw, 16px)',
-              color:      'rgba(255,255,255,0.55)',
-              maxWidth:   340,
-              lineHeight: 1.55,
-              margin:     0,
-            }}>
-              {project.tagline}
-            </p>
-          </div>
+          {/* Left: (SCROLL) */}
+          <span style={{
+            fontFamily:    PP,
+            fontWeight:    400,
+            fontSize:      10,
+            letterSpacing: '5px',
+            textTransform: 'uppercase',
+            color:         'rgba(255,255,255,0.3)',
+          }}>
+            (Scroll)
+          </span>
 
-          {/* Right: pill (moved from center) */}
+          {/* Right: pill */}
           <PillToggle tabRefs={pillTabRefs} />
 
         </div>
