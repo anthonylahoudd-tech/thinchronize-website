@@ -284,11 +284,11 @@ export default function AboutClient() {
             <h2 style={{
               fontFamily:    PP,
               fontWeight:    900,
-              fontSize:      'clamp(36px, 4.5vw, 68px)',
+              fontSize:      'clamp(28px, 3.2vw, 52px)',
               color:         '#111',
-              lineHeight:    1.1,
+              lineHeight:    1.15,
               letterSpacing: '-0.02em',
-              margin:        '0 0 clamp(32px, 4vw, 56px)',
+              margin:        '0 0 clamp(28px, 3.5vw, 48px)',
             }}>
               Thinchronize started because we kept seeing the same problem.
             </h2>
@@ -343,16 +343,16 @@ export default function AboutClient() {
         overflow:    'hidden',
       }}>
 
-        {/* Big headline — full bleed */}
+        {/* Big headline — full bleed, original size −10% */}
         <h2 style={{
           fontFamily:    PP,
           fontWeight:    900,
-          fontSize:      'clamp(32px, 4vw, 60px)',
+          fontSize:      'clamp(65px, 11.7vw, 180px)',
           color:         '#111',
           textTransform: 'uppercase',
-          letterSpacing: '-2px',
-          lineHeight:    0.92,
-          margin:        '0 0 clamp(48px, 6vw, 96px)',
+          letterSpacing: '-3px',
+          lineHeight:    0.88,
+          margin:        '0 0 clamp(56px, 7vw, 110px)',
         }}>
           Meet the<br />Founders
         </h2>
@@ -391,7 +391,7 @@ export default function AboutClient() {
               letterSpacing: '-0.02em',
               margin:        '0 0 clamp(28px, 3.5vw, 48px)',
             }}>
-              Two strategists. One obsession. Built from Beirut.
+              Two strategists.<br />One obsession.<br />Built from Beirut.
             </h3>
 
             <p style={{
@@ -400,38 +400,11 @@ export default function AboutClient() {
               fontSize:   'clamp(16px, 1.3vw, 20px)',
               color:      'rgba(0,0,0,0.55)',
               lineHeight: 1.8,
-              margin:     '0 0 clamp(20px, 2.5vw, 32px)',
+              margin:     0,
               maxWidth:   640,
             }}>
-              <strong style={{ color: '#111', fontWeight: 800 }}>Anthony Lahoud</strong> leads strategy, positioning, and client relationships. He built Thinchronize on the belief that Lebanese brands deserve sharper thinking — and that the gap between a local brand and a global-ready one is almost always a strategy problem, not a design problem.
+              <strong style={{ color: '#111', fontWeight: 800 }}>Anthony Lahoud</strong> leads strategy, positioning, and client relationships. He built Thinchronize on the belief that Lebanese brands deserve sharper thinking — and that the gap between a local brand and a global-ready one is almost always a strategy problem, not a design problem. <strong style={{ color: '#111', fontWeight: 800 }}>Wassim Halabi</strong> leads creative direction, production, and quality control. Every asset that leaves Thinchronize passes through his eye — his obsession with craft is what makes the difference between work that looks good in a deck and work that holds up in the real world.
             </p>
-
-            <p style={{
-              fontFamily: PP,
-              fontWeight: 400,
-              fontSize:   'clamp(16px, 1.3vw, 20px)',
-              color:      'rgba(0,0,0,0.55)',
-              lineHeight: 1.8,
-              margin:     '0 0 clamp(48px, 6vw, 80px)',
-              maxWidth:   640,
-            }}>
-              <strong style={{ color: '#111', fontWeight: 800 }}>Wassim Halabi</strong> leads creative direction, production, and quality control. Every asset that leaves Thinchronize passes through his eye. His obsession with craft is what makes the difference between work that looks good in a deck and work that holds up in the real world.
-            </p>
-
-            <Link
-              href="/contact"
-              style={{
-                fontFamily:          PP,
-                fontWeight:          400,
-                fontSize:            16,
-                color:               '#111',
-                textDecoration:      'underline',
-                textUnderlineOffset: '6px',
-                textDecorationColor: 'rgba(0,0,0,0.35)',
-              }}
-            >
-              Work with us →
-            </Link>
           </div>
 
         </div>
@@ -448,8 +421,8 @@ export default function AboutClient() {
           gap:                 10,
         }}>
           {[
-            { name: 'Anthony Lahoud',  role: 'Co-founder & Strategy',  img: '/images/anthony.jpg'  },
-            { name: 'Wassim Halabi',   role: 'Co-founder & Creative',  img: '/images/wassim.jpg'   },
+            { name: 'Anthony Lahoud',  role: 'Co-founder & Strategy',  img: '/images/work/whatsub/Whatsub-Sign.jpg'    },
+            { name: 'Wassim Halabi',   role: 'Co-founder & Creative',  img: '/images/work/cafe-bdooz/Cover-Bdooz.png'  },
           ].map(f => (
             <div key={f.name}>
               {/* Photo */}
