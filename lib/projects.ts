@@ -36,6 +36,7 @@ export interface Project {
   services: string[]
   year: string
   market: string
+  heroLines?: string[]   // optional manual line-breaks for cover headline
 }
 
 // ─── Diagnostic answer labels ─────────────────────────────────────────────────
@@ -111,6 +112,7 @@ export const PROJECTS: Project[] = [
     services: ['Brand Identity', 'Print Design', 'Environmental Design', 'Packaging'],
     year: '2025',
     market: 'Washington D.C., USA',
+    heroLines: ['Build a fast-casual sandwich', 'brand from the ground up.'],
   },
   {
     id: 'latelier',

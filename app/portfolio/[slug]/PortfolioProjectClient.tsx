@@ -8,37 +8,6 @@ import { gsap } from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { PROJECTS, type Project, type ProjectImage } from '@/lib/projects'
 
-// ─── Marquee banner ───────────────────────────────────────────────────────────
-function MarqueeBanner({ text, fontFamily }: { text: string; fontFamily: string }) {
-  const items = Array.from({ length: 24 }, (_, i) => i)
-  return (
-    <div style={{ overflow: 'hidden', width: '100%', display: 'flex' }}>
-      <div style={{
-        display:    'flex',
-        animation:  'marquee 22s linear infinite',
-        willChange: 'transform',
-        flexShrink: 0,
-      }}>
-        {items.map(i => (
-          <span key={i} style={{
-            fontFamily,
-            fontWeight:    900,
-            fontSize:      'clamp(12px, 1.2vw, 16px)',
-            letterSpacing: '4px',
-            textTransform: 'uppercase',
-            color:         'rgba(255,255,255,0.22)',
-            whiteSpace:    'nowrap',
-            paddingRight:  56,
-          }}>
-            {text}
-            <span style={{ margin: '0 24px', opacity: 0.35 }}>✦</span>
-          </span>
-        ))}
-      </div>
-    </div>
-  )
-}
-
 // ─── Constants ────────────────────────────────────────────────────────────────
 const PP   = "'PPNeueCorp', system-ui, sans-serif"
 const EASE = 'cubic-bezier(0.76, 0, 0.24, 1)'
@@ -84,7 +53,7 @@ export default function PortfolioProjectClient({
   const pillTabRefs    = useRef<(HTMLButtonElement | null)[]>([])
   const nextSectionRef = useRef<HTMLDivElement>(null)
   const titleRef       = useRef<HTMLDivElement>(null)
-  const bigTextRef     = useRef<HTMLParagraphElement>(null)
+  const bigTextRef     = useRef<HTMLDivElement>(null)
   const servicesRef    = useRef<HTMLDivElement>(null)
   const router         = useRouter()
   const navTriggered   = useRef(false)
@@ -102,17 +71,17 @@ export default function PortfolioProjectClient({
       )
     }
 
-    // Big text — split by words, stagger
+    // Big text — each heroLine (or full headline) reveals as a clipped line
     if (bigTextRef.current) {
       const el    = bigTextRef.current
-      const words = project.brief.headline.split(' ')
-      el.innerHTML = words
-        .map(w => `<span class="clip-text" style="display:inline-block;vertical-align:bottom"><span class="reveal-unit" style="display:inline-block">${w}&nbsp;</span></span>`)
+      const lines = project.heroLines ?? [project.brief.headline]
+      el.innerHTML = lines
+        .map(line => `<div class="clip-text"><div class="reveal-unit" style="display:block">${line}</div></div>`)
         .join('')
       gsap.fromTo(
         el.querySelectorAll('.reveal-unit'),
         { yPercent: 110 },
-        { yPercent: 0, duration: 1.0, ease: 'power4.out', stagger: 0.04, delay: 0.45 }
+        { yPercent: 0, duration: 1.0, ease: 'power4.out', stagger: 0.08, delay: 0.45 }
       )
     }
 
@@ -191,16 +160,16 @@ export default function PortfolioProjectClient({
       position:     'relative',
       background:   'white',
       borderRadius: 9999,
-      padding:      6,
+      padding:      8,
       display:      'flex',
       alignItems:   'center',
     }}>
       <div style={{
         position:      'absolute',
-        top:           6,
-        left:          pillMaskX + 6,
+        top:           8,
+        left:          pillMaskX + 8,
         width:         pillMaskW,
-        height:        'calc(100% - 12px)',
+        height:        'calc(100% - 16px)',
         background:    'black',
         borderRadius:  9999,
         transition:    `left 400ms ${EASE}, width 400ms ${EASE}`,
@@ -215,14 +184,14 @@ export default function PortfolioProjectClient({
           style={{
             position:     'relative',
             zIndex:       1,
-            height:       50,
-            padding:      '0 32px',
+            height:       55,
+            padding:      '0 35px',
             background:   'transparent',
             border:       'none',
             borderRadius: 9999,
             fontFamily:   PP,
             fontWeight:   400,
-            fontSize:     15,
+            fontSize:     17,
             color:        view === v ? 'white' : 'black',
             transition:   `color 400ms ${EASE}`,
             whiteSpace:   'nowrap',
@@ -278,51 +247,35 @@ export default function PortfolioProjectClient({
           pointerEvents: 'none',
         }} />
 
-        {/* ── Marquee — stays pinned to top ── */}
-        <div style={{
-          position:      'absolute',
-          top:           48,
-          left:          0,
-          right:         0,
-          zIndex:        2,
-          pointerEvents: 'none',
-          overflow:      'hidden',
-        }}>
-          <MarqueeBanner
-            text={`${project.title} — ${project.category} — ${project.details.year}`}
-            fontFamily={PP}
-          />
-        </div>
-
-        {/* ── Content block: title + big text + services, moved down 20% ── */}
+        {/* ── Content block: all left-aligned with logo (5vw), shifted down 20% ── */}
         <div style={{
           position:  'absolute',
           top:       '65%',
-          left:      48,
-          right:     '38%',
+          left:      '5vw',
+          right:     '35%',
           transform: 'translateY(-50%)',
           zIndex:    2,
         }}>
-          {/* WHATSUB title — small, sits right above the big text */}
+          {/* WHATSUB title — ultrabold 900, 10% bigger, right above big text */}
           <div
             ref={titleRef}
             aria-label={project.title}
             style={{
               fontFamily:    PP,
               fontWeight:    900,
-              fontSize:      'clamp(36px, 4.5vw, 64px)',
+              fontSize:      'clamp(40px, 5vw, 70px)',
               color:         'white',
               textTransform: 'uppercase',
               letterSpacing: '-1.5px',
               lineHeight:    1,
-              marginBottom:  18,
+              marginBottom:  16,
             }}
           >
             {project.title}
           </div>
 
-          {/* Big statement text — medium weight, fixed size, no clamp */}
-          <p
+          {/* Big statement — medium 500, 38px, line breaks via heroLines */}
+          <div
             ref={bigTextRef}
             aria-label={project.brief.headline}
             style={{
@@ -336,7 +289,7 @@ export default function PortfolioProjectClient({
             }}
           >
             {project.brief.headline}
-          </p>
+          </div>
 
           {/* Services row */}
           <div ref={servicesRef} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px 0' }}>
@@ -358,7 +311,7 @@ export default function PortfolioProjectClient({
           </div>
         </div>
 
-        {/* ── Bottom bar: left (scroll) | right (pill — aligned to 5vw like LET'S SYNC.) ── */}
+        {/* ── Bottom bar: left-aligned to 5vw (matches logo + content block) ── */}
         <div style={{
           position:       'absolute',
           bottom:         0,
@@ -371,19 +324,19 @@ export default function PortfolioProjectClient({
           alignItems:     'flex-end',
         }}>
 
-          {/* Left: (SCROLL) */}
+          {/* Left: (SCROLL) — 15% bigger, white */}
           <span style={{
             fontFamily:    PP,
             fontWeight:    400,
-            fontSize:      10,
+            fontSize:      12,
             letterSpacing: '5px',
             textTransform: 'uppercase',
-            color:         'rgba(255,255,255,0.3)',
+            color:         'white',
           }}>
             (Scroll)
           </span>
 
-          {/* Right: pill — 20% smaller */}
+          {/* Right: pill — 10% bigger, right-aligned to 5vw */}
           <PillToggle tabRefs={pillTabRefs} />
 
         </div>
