@@ -130,6 +130,7 @@ export default function Header() {
       ══════════════════════════════════════════════════════════════════════ */}
       <header
         ref={desktopHeaderRef}
+        data-site-header=""
         className="hidden md:block"
         style={{
           position:     'fixed',
@@ -138,6 +139,7 @@ export default function Header() {
           right:        0,
           zIndex:       50,
           height:       96,
+          transition:   'opacity 0.6s ease',
           background:   'transparent',
           mixBlendMode: 'difference',
         }}

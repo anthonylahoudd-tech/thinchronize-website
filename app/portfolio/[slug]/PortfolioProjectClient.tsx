@@ -62,7 +62,8 @@ export default function PortfolioProjectClient({
   const rightColRef    = useRef<HTMLDivElement>(null)
   const router         = useRouter()
   const navTriggered    = useRef(false)
-  const nextProgressRef = useRef(0)     // mirrors nextProgress state (stale-closure safe)
+  const nextProgressRef = useRef(0)
+  const gateLive        = useRef(false) // gate activates after mount delay (prevents double-nav from Lenis scroll persistence)
 
   // ── Hero entrance animation (clip reveal, same as TextReveal) ────────────
   useGSAP(() => {
@@ -135,7 +136,21 @@ export default function PortfolioProjectClient({
     return () => clearTimeout(t)
   }, [])
 
-  // ── Scroll handler — pill + sticky gate ──────────────────────────────────
+  // ── Gate mount delay — prevents Lenis scroll persistence from double-firing navigation ──
+  useEffect(() => {
+    const t = setTimeout(() => { gateLive.current = true }, 1000)
+    return () => clearTimeout(t)
+  }, [])
+
+  // ── Restore header opacity on unmount ─────────────────────────────────────
+  useEffect(() => {
+    return () => {
+      const h = document.querySelector('[data-site-header]') as HTMLElement | null
+      if (h) h.style.opacity = '1'
+    }
+  }, [])
+
+  // ── Scroll handler — pill + sticky gate + header fade ─────────────────────
   useEffect(() => {
     const GATE_PX = 1500
 
@@ -152,7 +167,16 @@ export default function PortfolioProjectClient({
       const contentHeight = Math.max(1, document.body.scrollHeight - vh - GATE_HEIGHT)
       setProjectProgress(Math.max(0, Math.min(1, sy / contentHeight)))
 
-      if (!nextSectionRef.current || navTriggered.current) return
+      // Header fade — starts 1.5vh before the gate, fully gone by gate entry
+      if (nextSectionRef.current) {
+        const rect = nextSectionRef.current.getBoundingClientRect()
+        const fadeStart = vh * 1.5
+        const headerOpacity = Math.max(0, Math.min(1, rect.top / fadeStart))
+        const h = document.querySelector('[data-site-header]') as HTMLElement | null
+        if (h) h.style.opacity = String(headerOpacity)
+      }
+
+      if (!nextSectionRef.current || navTriggered.current || !gateLive.current) return
 
       const rect     = nextSectionRef.current.getBoundingClientRect()
       const scrolledIn = Math.max(0, -rect.top)
@@ -701,51 +725,16 @@ export default function PortfolioProjectClient({
           background:  '#ECECEA',
         }}>
 
-          {/* ── "Keep scrolling" left + progress bar right — same row ── */}
+          {/* ── Marquee — next project name, always running, above cover ── */}
           <div style={{
-            position:   'absolute',
-            top:        '28%',
-            left:       '5vw',
-            right:      '5vw',
-            zIndex:     2,
-            display:    'flex',
-            alignItems: 'center',
-            gap:        32,
-          }}>
-            <p style={{
-              fontFamily:    PP,
-              fontWeight:    400,
-              fontSize:      12,
-              letterSpacing: '0.05em',
-              color:         'rgba(0,0,0,0.45)',
-              margin:        0,
-              whiteSpace:    'nowrap',
-            }}>
-              Keep scrolling for the next case study.
-            </p>
-            <div style={{ position: 'relative', height: 1, flex: 1 }}>
-              <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.12)' }} />
-              <div style={{
-                position:   'absolute',
-                left:        0,
-                top:         0,
-                height:      1,
-                width:       `${nextProgress * 100}%`,
-                background:  '#0f0f0f',
-                transition:  'width 60ms linear',
-              }} />
-            </div>
-          </div>
-
-          {/* ── Marquee — next project name, always running ── */}
-          <div style={{
-            position: 'absolute',
-            top:      '50%',
-            left:     0,
-            right:    0,
-            zIndex:   2,
-            transform:'translateY(-50%)',
-            overflow: 'hidden',
+            position:      'absolute',
+            top:           '50%',
+            left:          0,
+            right:         0,
+            zIndex:        4,
+            transform:     'translateY(-50%)',
+            overflow:      'hidden',
+            mixBlendMode:  'difference',
           }}>
             <div className="marquee-track" style={{ display: 'flex', gap: '0.5em', whiteSpace: 'nowrap' }}>
               {[...Array(2)].map((_, copy) => (
@@ -755,7 +744,7 @@ export default function PortfolioProjectClient({
                       fontFamily:    PP,
                       fontWeight:    900,
                       fontSize:      'clamp(80px, 12vw, 160px)',
-                      color:         '#0f0f0f',
+                      color:         'white',
                       letterSpacing: '-0.03em',
                       lineHeight:    1,
                       textTransform: 'uppercase',
@@ -766,6 +755,44 @@ export default function PortfolioProjectClient({
                   ))}
                 </span>
               ))}
+            </div>
+          </div>
+
+          {/* ── "Keep scrolling" left + progress bar right — centered, above cover ── */}
+          <div style={{
+            position:      'absolute',
+            top:           '30%',
+            left:          '5vw',
+            right:         '5vw',
+            zIndex:        4,
+            display:       'flex',
+            alignItems:    'center',
+            gap:           32,
+            transform:     'translateY(-50%)',
+            mixBlendMode:  'difference',
+          }}>
+            <p style={{
+              fontFamily:    PP,
+              fontWeight:    400,
+              fontSize:      12,
+              letterSpacing: '0.05em',
+              color:         'white',
+              margin:        0,
+              whiteSpace:    'nowrap',
+            }}>
+              Keep scrolling for the next case study.
+            </p>
+            <div style={{ position: 'relative', height: 1, flex: 1 }}>
+              <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.35)' }} />
+              <div style={{
+                position:   'absolute',
+                left:        0,
+                top:         0,
+                height:      1,
+                width:       `${nextProgress * 100}%`,
+                background:  'white',
+                transition:  'width 60ms linear',
+              }} />
             </div>
           </div>
 
