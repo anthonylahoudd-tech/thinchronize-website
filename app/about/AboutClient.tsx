@@ -336,6 +336,107 @@ export default function AboutClient() {
         </div>
       </section>
 
+      {/* ══ MEET THE FOUNDERS ══════════════════════════════════════════ */}
+      <section style={{
+        background:  '#f5f4f0',
+        padding:     '0 5vw clamp(80px, 10vw, 130px)',
+        overflow:    'hidden',
+      }}>
+
+        {/* Big headline — full bleed */}
+        <h2 style={{
+          fontFamily:    PP,
+          fontWeight:    900,
+          fontSize:      'clamp(72px, 13vw, 200px)',
+          color:         '#111',
+          textTransform: 'uppercase',
+          letterSpacing: '-3px',
+          lineHeight:    0.88,
+          margin:        '0 0 clamp(60px, 8vw, 120px)',
+        }}>
+          Meet the<br />Founders
+        </h2>
+
+        {/* 40 / 60 grid — label left, story right */}
+        <div style={{
+          display:             'grid',
+          gridTemplateColumns: '40% 60%',
+          gap:                 0,
+          maxWidth:            1400,
+          margin:              '0 auto',
+        }}>
+
+          {/* Left — label */}
+          <div style={{ paddingTop: 6 }}>
+            <span style={{
+              fontFamily:    PP,
+              fontWeight:    400,
+              fontSize:      12,
+              letterSpacing: '0.18em',
+              textTransform: 'uppercase',
+              color:         'rgba(0,0,0,0.4)',
+            }}>
+              Forged in Lebanon
+            </span>
+          </div>
+
+          {/* Right — subheadline + bios */}
+          <div>
+            <h3 style={{
+              fontFamily:    PP,
+              fontWeight:    900,
+              fontSize:      'clamp(28px, 3.2vw, 52px)',
+              color:         '#111',
+              lineHeight:    1.15,
+              letterSpacing: '-0.02em',
+              margin:        '0 0 clamp(28px, 3.5vw, 48px)',
+            }}>
+              Two strategists. One obsession. Built from Beirut.
+            </h3>
+
+            <p style={{
+              fontFamily: PP,
+              fontWeight: 400,
+              fontSize:   'clamp(16px, 1.3vw, 20px)',
+              color:      'rgba(0,0,0,0.55)',
+              lineHeight: 1.8,
+              margin:     '0 0 clamp(20px, 2.5vw, 32px)',
+              maxWidth:   640,
+            }}>
+              <strong style={{ color: '#111', fontWeight: 800 }}>Anthony Lahoud</strong> leads strategy, positioning, and client relationships. He built Thinchronize on the belief that Lebanese brands deserve sharper thinking — and that the gap between a local brand and a global-ready one is almost always a strategy problem, not a design problem.
+            </p>
+
+            <p style={{
+              fontFamily: PP,
+              fontWeight: 400,
+              fontSize:   'clamp(16px, 1.3vw, 20px)',
+              color:      'rgba(0,0,0,0.55)',
+              lineHeight: 1.8,
+              margin:     '0 0 clamp(48px, 6vw, 80px)',
+              maxWidth:   640,
+            }}>
+              <strong style={{ color: '#111', fontWeight: 800 }}>Wassim Halabi</strong> leads creative direction, production, and quality control. Every asset that leaves Thinchronize passes through his eye. His obsession with craft is what makes the difference between work that looks good in a deck and work that holds up in the real world.
+            </p>
+
+            <Link
+              href="/contact"
+              style={{
+                fontFamily:          PP,
+                fontWeight:          400,
+                fontSize:            16,
+                color:               '#111',
+                textDecoration:      'underline',
+                textUnderlineOffset: '6px',
+                textDecorationColor: 'rgba(0,0,0,0.35)',
+              }}
+            >
+              Work with us →
+            </Link>
+          </div>
+
+        </div>
+      </section>
+
       {/* ══ SECTION 2 — The Studio ════════════════════════════════════ */}
       <section id="about-studio" style={{ background: '#FFFFFF', padding: 'clamp(80px, 10vw, 120px) clamp(24px, 6vw, 80px)' }}>
         <div style={{ display: 'flex', gap: 'clamp(40px, 8vw, 100px)', flexWrap: 'wrap', maxWidth: 1200, margin: '0 auto' }}>
