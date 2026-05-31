@@ -29,7 +29,12 @@ const footerLinks: Record<string, FooterLink[]> = {
 
 export default function Footer() {
   return (
-    <footer style={{ backgroundColor: '#D0274B' }}>
+    <footer style={{
+      backgroundColor: '#D0274B',
+      position:        'sticky',
+      bottom:          0,
+      zIndex:          0,
+    }}>
       <div className="container mx-auto py-20">
 
         {/* Top row */}

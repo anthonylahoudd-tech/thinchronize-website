@@ -1005,6 +1005,95 @@ export default function AboutClient() {
         </div>
       </section>
 
+      {/* ══ JOIN THINCHRONIZE — last section before footer ════════════
+          Left: headline + 2 paragraphs + CTA
+          Right: full-height image (placeholder until photo arrives)
+      ════════════════════════════════════════════════════════════════ */}
+      <section style={{
+        background:          '#f5f4f0',
+        display:             'grid',
+        gridTemplateColumns: '1fr 1fr',
+        minHeight:           '80vh',
+      }}>
+        {/* Left — text */}
+        <div style={{
+          padding:       'clamp(72px, 9vw, 120px) 5vw clamp(72px, 9vw, 120px) 5vw',
+          display:       'flex',
+          flexDirection: 'column',
+          justifyContent:'flex-start',
+        }}>
+          <h2 style={{
+            fontFamily:  PP,
+            fontWeight:  400,
+            fontSize:    'clamp(32px, 4vw, 58px)',
+            color:       '#111',
+            lineHeight:  1.15,
+            letterSpacing: '-0.02em',
+            margin:      '0 0 clamp(28px, 3.5vw, 48px)',
+          }}>
+            Join Thinchronize and build brands that matter.
+          </h2>
+
+          <p style={{
+            fontFamily: PP,
+            fontWeight: 400,
+            fontSize:   'clamp(15px, 1.2vw, 18px)',
+            color:      'rgba(0,0,0,0.55)',
+            lineHeight: 1.8,
+            margin:     '0 0 clamp(16px, 2vw, 28px)',
+            maxWidth:   460,
+          }}>
+            We are a strategy-led creative studio that takes its work seriously — and its people even more so. We look for thinkers and makers who believe a brand has to mean something before it can look like anything.
+          </p>
+
+          <p style={{
+            fontFamily: PP,
+            fontWeight: 400,
+            fontSize:   'clamp(15px, 1.2vw, 18px)',
+            color:      'rgba(0,0,0,0.55)',
+            lineHeight: 1.8,
+            margin:     '0 0 clamp(40px, 5vw, 64px)',
+            maxWidth:   460,
+          }}>
+            If you want to do the best work of your career on brands that challenge you, we would love to hear from you.
+          </p>
+
+          <Link
+            href="/contact"
+            style={{
+              fontFamily:          PP,
+              fontWeight:          400,
+              fontSize:            16,
+              color:               '#111',
+              textDecoration:      'underline',
+              textUnderlineOffset: '6px',
+              textDecorationColor: 'rgba(0,0,0,0.35)',
+              alignSelf:           'flex-start',
+            }}
+          >
+            Get in touch →
+          </Link>
+        </div>
+
+        {/* Right — image */}
+        <div style={{ position: 'relative', overflow: 'hidden' }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/work/whatsub/Whatsub-Sign.jpg"
+            alt="Join Thinchronize"
+            style={{
+              position:   'absolute',
+              inset:      0,
+              width:      '100%',
+              height:     '100%',
+              objectFit:  'cover',
+              filter:     'grayscale(100%)',
+              display:    'block',
+            }}
+          />
+        </div>
+      </section>
+
       {/* ══ SECTION 8 — CTA ══════════════════════════════════════════ */}
       <section style={{ background: '#000000', padding: 'clamp(80px, 10vw, 120px) clamp(24px, 6vw, 80px)' }}>
         <div

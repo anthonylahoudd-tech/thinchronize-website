@@ -45,7 +45,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <CustomCursor />
         <SmoothScroll>
           <Header />
-          <main>{children}</main>
+          {/* z-index: 1 keeps page content on top of the sticky footer,
+              which sits at bottom: 0 and is revealed as content scrolls away */}
+          <main style={{ position: 'relative', zIndex: 1 }}>{children}</main>
           <ConditionalFooter />
         </SmoothScroll>
       </body>
