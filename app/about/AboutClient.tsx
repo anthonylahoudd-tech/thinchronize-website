@@ -437,6 +437,73 @@ export default function AboutClient() {
         </div>
       </section>
 
+      {/* ══ FOUNDERS PORTRAITS ════════════════════════════════════════ */}
+      <section style={{
+        background: '#f5f4f0',
+        padding:    '0 5vw clamp(80px, 10vw, 120px)',
+      }}>
+        <div style={{
+          display:             'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap:                 10,
+        }}>
+          {[
+            { name: 'Anthony Lahoud',  role: 'Co-founder & Strategy',  img: '/images/anthony.jpg'  },
+            { name: 'Wassim Halabi',   role: 'Co-founder & Creative',  img: '/images/wassim.jpg'   },
+          ].map(f => (
+            <div key={f.name}>
+              {/* Photo */}
+              <div style={{
+                position:   'relative',
+                paddingTop: '125%',
+                overflow:   'hidden',
+                marginBottom: 20,
+              }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={f.img}
+                  alt={f.name}
+                  style={{
+                    position:   'absolute',
+                    inset:      0,
+                    width:      '100%',
+                    height:     '100%',
+                    objectFit:  'cover',
+                    filter:     'grayscale(100%)',
+                    display:    'block',
+                  }}
+                  onError={e => {
+                    (e.currentTarget as HTMLImageElement).style.background = '#d0ceca'
+                    ;(e.currentTarget as HTMLImageElement).style.visibility = 'hidden'
+                  }}
+                />
+              </div>
+              {/* Name + role */}
+              <p style={{
+                fontFamily: PP,
+                fontWeight: 400,
+                fontSize:   16,
+                color:      '#111',
+                lineHeight: 1.5,
+                margin:     0,
+              }}>
+                {f.name}
+              </p>
+              <p style={{
+                fontFamily: PP,
+                fontWeight: 400,
+                fontSize:   16,
+                color:      'rgba(0,0,0,0.45)',
+                lineHeight: 1.5,
+                margin:     0,
+              }}>
+                {f.role}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* ══ SECTION 2 — The Studio ════════════════════════════════════ */}
       <section id="about-studio" style={{ background: '#FFFFFF', padding: 'clamp(80px, 10vw, 120px) clamp(24px, 6vw, 80px)' }}>
         <div style={{ display: 'flex', gap: 'clamp(40px, 8vw, 100px)', flexWrap: 'wrap', maxWidth: 1200, margin: '0 auto' }}>
