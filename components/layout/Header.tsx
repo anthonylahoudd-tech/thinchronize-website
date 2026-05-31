@@ -147,10 +147,10 @@ export default function Header() {
         <div style={{
           position:  'absolute',
           top:       '50%',
-          left:      40,
+          left:      '10vw',
           transform: 'translateY(-50%)',
         }}>
-          {/* Wordmark — always present, fades out FIRST on scroll */}
+          {/* Wordmark — always the horizontal logo, never swaps */}
           <button
             onClick={() => transitionTo('/')}
             style={{ background: 'none', border: 'none', padding: 0, display: 'block' }}
@@ -161,40 +161,11 @@ export default function Header() {
               alt="Thinchronize"
               width={130} height={22}
               style={{
-                height:     30,
-                width:      'auto',
-                display:    'block',
-                opacity:    logoSwapped ? 0 : 1,
-                transition: logoSwapped
-                  ? `opacity 350ms ${EASE} 0ms`
-                  : `opacity 350ms ${EASE} 350ms`,
+                height:  30,
+                width:   'auto',
+                display: 'block',
               }}
               priority
-            />
-          </button>
-
-          {/* Packed logo — fades in AFTER wordmark gone (350ms delay) */}
-          <button
-            onClick={() => transitionTo('/')}
-            style={{
-              position: 'absolute', top: -13, left: -12,
-              background: 'none', border: 'none', padding: 0,
-            }}
-            aria-label="Go to homepage"
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/images/logo-stacked.png"
-              alt="Thinchronize"
-              width={56} height={56}
-              style={{
-                display:    'block',
-                opacity:    logoSwapped ? 1 : 0,
-                transition: logoSwapped
-                  ? `opacity 350ms ${EASE} 350ms`
-                  : `opacity 350ms ${EASE} 0ms`,
-                filter:     'brightness(0) invert(1)',
-              }}
             />
           </button>
         </div>
@@ -260,7 +231,7 @@ export default function Header() {
         <div style={{
           position:   'absolute',
           top:        '50%',
-          right:      40,
+          right:      '10vw',
           transform:  'translateY(-50%)',
           display:    'flex',
           alignItems: 'center',

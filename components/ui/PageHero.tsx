@@ -39,7 +39,7 @@ export default function PageHero({ title, subtitle }: PageHeroProps) {
       </div>
 
       {/* Subtitle */}
-      <div style={{ padding: '44px 56px 0', flexShrink: 0 }}>
+      <div style={{ padding: '44px 10vw 0', flexShrink: 0 }}>
         <p style={{
           fontFamily:    PP,
           fontWeight:    400,
