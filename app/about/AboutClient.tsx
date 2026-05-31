@@ -347,7 +347,7 @@ export default function AboutClient() {
         <h2 style={{
           fontFamily:    PP,
           fontWeight:    900,
-          fontSize:      'clamp(48px, 7vw, 110px)',
+          fontSize:      'clamp(32px, 4vw, 60px)',
           color:         '#111',
           textTransform: 'uppercase',
           letterSpacing: '-2px',
