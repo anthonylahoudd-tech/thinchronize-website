@@ -145,12 +145,11 @@ function ValueItem({ num, title, desc, delay }: { num: string; title: string; de
       <div>
         <h4 style={{
           fontFamily:    PP,
-          fontWeight:    900,
+          fontWeight:    400,
           fontSize:      20,
           color:         '#FFFFFF',
           marginBottom:  10,
           letterSpacing: '-0.01em',
-          textTransform: 'uppercase',
         }}>
           {title}
         </h4>
@@ -354,7 +353,7 @@ export default function AboutClient() {
           lineHeight:    0.88,
           margin:        '0 0 clamp(56px, 7vw, 110px)',
         }}>
-          Meet the<br />Founders
+          Meet the<br /><span style={{ color: RED }}>Founders</span>
         </h2>
 
         {/* 40 / 60 grid — label left, story right */}
@@ -428,7 +427,7 @@ export default function AboutClient() {
               {/* Photo */}
               <div style={{
                 position:   'relative',
-                paddingTop: '125%',
+                paddingTop: '100%',
                 overflow:   'hidden',
                 marginBottom: 20,
               }}>
@@ -471,6 +470,61 @@ export default function AboutClient() {
                 margin:     0,
               }}>
                 {f.role}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ══ WHAT WE STAND FOR — Motto numbered grid ═══════════════════ */}
+      <section style={{
+        background: '#f5f4f0',
+        padding:    'clamp(80px, 10vw, 130px) 5vw',
+      }}>
+        <div style={{
+          display:             'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gap:                 'clamp(48px, 6vw, 80px) clamp(32px, 4vw, 60px)',
+        }}>
+          {[
+            { num: '01.', title: 'Strategy before aesthetics',  desc: 'Looks without logic is just noise. We start with why, then decide what it should look like.' },
+            { num: '02.', title: 'Honesty over comfort',        desc: 'We\'ll tell you when a brief is wrong or a direction won\'t hold. Comfortable clients don\'t get great brands.' },
+            { num: '03.', title: 'Craft that earns its keep',   desc: 'Every visual, every word, every detail has to pull its weight. Decoration that doesn\'t communicate gets cut.' },
+            { num: '04.', title: 'Local pride, global standard',desc: 'Made in Lebanon means something to us. We hold our work to the same bar as the studios we admire anywhere in the world.' },
+            { num: '05.', title: 'Brands built to last',        desc: 'Trends age. We build identity systems flexible enough to grow and consistent enough to compound over time.' },
+            { num: '06.', title: 'Diagnosis before design',     desc: 'We never pick up a pen before we understand the problem. A brand you understand is a brand you can build.' },
+          ].map(item => (
+            <div key={item.num}>
+              <p style={{
+                fontFamily:    PP,
+                fontWeight:    900,
+                fontSize:      'clamp(56px, 7vw, 100px)',
+                color:         '#111',
+                lineHeight:    1,
+                letterSpacing: '-2px',
+                margin:        '0 0 clamp(20px, 2.5vw, 32px)',
+              }}>
+                {item.num}
+              </p>
+              <p style={{
+                fontFamily:  PP,
+                fontWeight:  400,
+                fontSize:    'clamp(17px, 1.4vw, 22px)',
+                color:       '#111',
+                lineHeight:  1.3,
+                margin:      '0 0 16px',
+              }}>
+                {item.title}
+              </p>
+              <p style={{
+                fontFamily: PP,
+                fontWeight: 400,
+                fontSize:   'clamp(14px, 1.1vw, 17px)',
+                color:      'rgba(0,0,0,0.5)',
+                lineHeight: 1.7,
+                margin:     0,
+              }}>
+                {item.desc}
               </p>
             </div>
           ))}
