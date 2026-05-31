@@ -69,180 +69,197 @@ export default function PortfolioPageClient() {
     <div style={{ background: '#000', minHeight: '100vh', color: 'white' }}>
 
       {/* ══════════════════════════════════════════════════════════════════
-          HERO — full viewport, breathing room + controls at the bottom
+          HERO — Motto-exact layout
+          1. Marquee (WORK * WORK *) flush to nav bottom
+          2. Intro text upper-left below marquee
+          3. Flex spacer
+          4. Controls bar pinned to bottom
       ══════════════════════════════════════════════════════════════════ */}
       <div style={{
-        height:          '100vh',
-        background:      '#000',
-        display:         'flex',
-        flexDirection:   'column',
-        justifyContent:  'flex-end',
-        paddingBottom:   '80px',
-        paddingLeft:     '40px',
-        paddingRight:    '40px',
+        height:        '100vh',
+        background:    '#000',
+        display:       'flex',
+        flexDirection: 'column',
+        paddingTop:    '96px',   /* nav height */
+        overflow:      'hidden',
       }}>
-        <div style={{
-          display:        'flex',
-          justifyContent: 'space-between',
-          alignItems:     'flex-end',
-          gap:            '40px',
-        }}>
 
-          {/* ── LEFT — intro paragraph ────────────────────────────────── */}
+        {/* ── 1. SCROLLING MARQUEE ──────────────────────────────────────── */}
+        <div style={{ overflow: 'hidden', flexShrink: 0 }}>
+          <div className="work-marquee-track">
+            {[0, 1].map(i => (
+              <span key={i} style={{
+                fontFamily:    PP,
+                fontWeight:    900,
+                fontSize:      'clamp(88px, 13vw, 185px)',
+                color:         'white',
+                textTransform: 'uppercase',
+                letterSpacing: '-4px',
+                lineHeight:    0.9,
+                whiteSpace:    'nowrap',
+              }}>
+                WORK&nbsp;*&nbsp;WORK&nbsp;*&nbsp;WORK&nbsp;*&nbsp;WORK&nbsp;*&nbsp;WORK&nbsp;*&nbsp;
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* ── 2. INTRO TEXT ─────────────────────────────────────────────── */}
+        <div style={{ padding: '44px 56px 0', flexShrink: 0 }}>
           <p style={{
             fontFamily:    PP,
             fontWeight:    400,
-            fontSize:      'clamp(24px, 3.5vw, 46px)',
+            fontSize:      'clamp(22px, 3vw, 42px)',
             color:         'white',
-            maxWidth:      '640px',
             lineHeight:    1.2,
             letterSpacing: '-0.5px',
             margin:        0,
-            flexShrink:    0,
+            maxWidth:      '780px',
           }}>
-            We build brands through precision,<br />
-            intention, and mindful design.<br />
-            Every project starts with a diagnosis —<br />
-            and ends with a brand that has<br />
-            something true to say.
+            We build brands with precision,<br />
+            intention, and something true to say —<br />
+            every project starts with a diagnosis.
           </p>
+        </div>
 
-          {/* ── RIGHT — filter + view switcher ────────────────────────── */}
-          <div style={{
-            display:    'flex',
-            alignItems: 'center',
-            gap:        '12px',
-            flexShrink: 0,
+        {/* ── 3. SPACER ─────────────────────────────────────────────────── */}
+        <div style={{ flex: 1 }} />
+
+        {/* ── 4. BOTTOM CONTROLS ────────────────────────────────────────── */}
+        <div style={{
+          display:        'flex',
+          justifyContent: 'space-between',
+          alignItems:     'center',
+          padding:        '0 56px 56px',
+          flexShrink:     0,
+        }}>
+
+          {/* Filter dropdown — left */}
+          <div ref={dropdownRef} style={{ position: 'relative' }}>
+            <button
+              onClick={() => setFilterOpen(!filterOpen)}
+              style={{
+                height:        62,
+                borderRadius:  40,
+                background:    'white',
+                border:        'none',
+                display:       'flex',
+                alignItems:    'center',
+                gap:           12,
+                padding:       '0 32px',
+                fontFamily:    PP,
+                fontWeight:    400,
+                fontSize:      11,
+                letterSpacing: '3px',
+                textTransform: 'uppercase',
+                color:         'black',
+                cursor:        'pointer',
+                whiteSpace:    'nowrap',
+              }}
+            >
+              <span>{activeFilter} ({filteredCount})</span>
+              <span style={{
+                display:    'inline-block',
+                transform:  filterOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                transition: `transform 300ms ${EASE}`,
+                fontSize:   10,
+              }}>↓</span>
+            </button>
+
+            {filterOpen && (
+              <div style={{
+                position:     'absolute',
+                bottom:       70,
+                left:         0,
+                minWidth:     220,
+                background:   '#111',
+                border:       '1px solid rgba(255,255,255,0.1)',
+                borderRadius: 16,
+                overflow:     'hidden',
+                zIndex:       50,
+              }}>
+                {CATEGORIES.map(cat => (
+                  <button
+                    key={cat}
+                    onClick={() => { setActiveFilter(cat); setFilterOpen(false) }}
+                    style={{
+                      width:         '100%',
+                      height:        48,
+                      display:       'flex',
+                      alignItems:    'center',
+                      padding:       '0 24px',
+                      background:    activeFilter === cat ? 'rgba(255,255,255,0.06)' : 'transparent',
+                      border:        'none',
+                      borderTop:     '1px solid rgba(255,255,255,0.06)',
+                      fontFamily:    PP,
+                      fontWeight:    400,
+                      fontSize:      11,
+                      letterSpacing: '2px',
+                      textTransform: 'uppercase',
+                      color:         activeFilter === cat ? 'white' : 'rgba(255,255,255,0.5)',
+                      textAlign:     'left',
+                      cursor:        'pointer',
+                      transition:    'all 200ms ease',
+                    }}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Grid / Explore sliding pill — right */}
+          <nav style={{
+            position:     'relative',
+            padding:      7,
+            background:   'white',
+            borderRadius: 40,
+            display:      'flex',
+            alignItems:   'center',
+            height:       62,
           }}>
+            <div style={{
+              position:      'absolute',
+              top:           7,
+              left:          maskX + 7,
+              width:         maskWidth,
+              height:        'calc(100% - 14px)',
+              background:    'black',
+              borderRadius:  32,
+              transition:    'left 400ms cubic-bezier(0.76,0,0.24,1), width 400ms cubic-bezier(0.76,0,0.24,1)',
+              pointerEvents: 'none',
+              zIndex:        0,
+            }} />
 
-            {/* Filter dropdown */}
-            <div ref={dropdownRef} style={{ position: 'relative' }}>
+            {(['grid', 'explore'] as const).map((v, i) => (
               <button
-                onClick={() => setFilterOpen(!filterOpen)}
+                key={v}
+                ref={el => { tabRefs.current[i] = el }}
+                onClick={() => setView(v)}
                 style={{
-                  height:        62,
-                  borderRadius:  40,
-                  background:    'white',
-                  border:        'none',
-                  display:       'flex',
-                  alignItems:    'center',
-                  gap:           12,
+                  position:      'relative',
+                  zIndex:        1,
+                  height:        48,
                   padding:       '0 32px',
+                  background:    'transparent',
+                  border:        'none',
                   fontFamily:    PP,
                   fontWeight:    400,
                   fontSize:      11,
                   letterSpacing: '3px',
                   textTransform: 'uppercase',
-                  color:         'black',
-                  cursor:        'pointer',
+                  color:         view === v ? 'white' : 'black',
+                  transition:    'color 400ms cubic-bezier(0.76,0,0.24,1)',
                   whiteSpace:    'nowrap',
+                  cursor:        'pointer',
                 }}
               >
-                <span>{activeFilter} ({filteredCount})</span>
-                <span style={{
-                  display:    'inline-block',
-                  transform:  filterOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                  transition: `transform 300ms ${EASE}`,
-                  fontSize:   10,
-                }}>↓</span>
+                {v === 'grid' ? 'Grid' : 'Explore'}
               </button>
+            ))}
+          </nav>
 
-              {filterOpen && (
-                <div style={{
-                  position:     'absolute',
-                  bottom:       70,
-                  left:         0,
-                  minWidth:     220,
-                  background:   '#111',
-                  border:       '1px solid rgba(255,255,255,0.1)',
-                  borderRadius: 16,
-                  overflow:     'hidden',
-                  zIndex:       50,
-                }}>
-                  {CATEGORIES.map(cat => (
-                    <button
-                      key={cat}
-                      onClick={() => { setActiveFilter(cat); setFilterOpen(false) }}
-                      style={{
-                        width:         '100%',
-                        height:        48,
-                        display:       'flex',
-                        alignItems:    'center',
-                        padding:       '0 24px',
-                        background:    activeFilter === cat ? 'rgba(255,255,255,0.06)' : 'transparent',
-                        border:        'none',
-                        borderTop:     '1px solid rgba(255,255,255,0.06)',
-                        fontFamily:    PP,
-                        fontWeight:    400,
-                        fontSize:      11,
-                        letterSpacing: '2px',
-                        textTransform: 'uppercase',
-                        color:         activeFilter === cat ? 'white' : 'rgba(255,255,255,0.5)',
-                        textAlign:     'left',
-                        cursor:        'pointer',
-                        transition:    'all 200ms ease',
-                      }}
-                    >
-                      {cat}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Grid / Explore sliding pill tabs */}
-            <nav style={{
-              position:     'relative',
-              padding:      7,
-              background:   'white',
-              borderRadius: 40,
-              display:      'flex',
-              alignItems:   'center',
-              height:       62,
-            }}>
-              {/* Sliding black active indicator */}
-              <div style={{
-                position:      'absolute',
-                top:           7,
-                left:          maskX + 7,
-                width:         maskWidth,
-                height:        'calc(100% - 14px)',
-                background:    'black',
-                borderRadius:  32,
-                transition:    'left 400ms cubic-bezier(0.76,0,0.24,1), width 400ms cubic-bezier(0.76,0,0.24,1)',
-                pointerEvents: 'none',
-                zIndex:        0,
-              }} />
-
-              {(['grid', 'explore'] as const).map((v, i) => (
-                <button
-                  key={v}
-                  ref={el => { tabRefs.current[i] = el }}
-                  onClick={() => setView(v)}
-                  style={{
-                    position:      'relative',
-                    zIndex:        1,
-                    height:        48,
-                    padding:       '0 32px',
-                    background:    'transparent',
-                    border:        'none',
-                    fontFamily:    PP,
-                    fontWeight:    400,
-                    fontSize:      11,
-                    letterSpacing: '3px',
-                    textTransform: 'uppercase',
-                    color:         view === v ? 'white' : 'black',
-                    transition:    'color 400ms cubic-bezier(0.76,0,0.24,1)',
-                    whiteSpace:    'nowrap',
-                    cursor:        'pointer',
-                  }}
-                >
-                  {v === 'grid' ? 'Grid' : 'Explore'}
-                </button>
-              ))}
-            </nav>
-
-          </div>
         </div>
       </div>
 
@@ -383,6 +400,11 @@ export default function PortfolioPageClient() {
       </div>
 
       <style dangerouslySetInnerHTML={{ __html: `
+        .work-marquee-track {
+          display: flex;
+          width: max-content;
+          animation: marquee 22s linear infinite;
+        }
         @media (max-width: 767px) {
           .portfolio-grid > * {
             grid-column: 1 / -1 !important;

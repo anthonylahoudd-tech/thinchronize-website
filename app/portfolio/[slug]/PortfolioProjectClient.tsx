@@ -37,6 +37,50 @@ function LinesIcon({ color }: { color: string }) {
   )
 }
 
+function ReadingSection({
+  num, label, headline, body, children,
+}: {
+  num: string
+  label: string
+  headline: string
+  body: string
+  children?: React.ReactNode
+}) {
+  return (
+    <div style={{ marginBottom: '80px' }}>
+      <span style={{
+        fontFamily: PP, fontWeight: 400, fontSize: '10px',
+        letterSpacing: '3px', textTransform: 'uppercase',
+        color: 'rgba(0,0,0,0.35)', display: 'block', marginBottom: '10px',
+      }}>
+        {num}
+      </span>
+      <span style={{
+        fontFamily: PP, fontWeight: 400, fontSize: '10px',
+        letterSpacing: '3px', textTransform: 'uppercase',
+        color: 'rgba(0,0,0,0.35)', display: 'block', marginBottom: '24px',
+      }}>
+        {label}
+      </span>
+      <h3 style={{
+        fontFamily: PP, fontWeight: 900, fontSize: 'clamp(18px, 2.5vw, 26px)',
+        color: '#000', lineHeight: 1.15, letterSpacing: '-0.5px',
+        marginBottom: '20px', textTransform: 'uppercase',
+      }}>
+        {headline}
+      </h3>
+      <p style={{
+        fontFamily: PP, fontWeight: 400, fontSize: '15px',
+        color: 'rgba(0,0,0,0.55)', lineHeight: 1.75,
+        marginBottom: children ? '40px' : '0',
+      }}>
+        {body}
+      </p>
+      {children}
+    </div>
+  )
+}
+
 export default function PortfolioProjectClient({
   project, nextProject, prevProject, currentIndex,
 }: Props) {
@@ -91,7 +135,7 @@ export default function PortfolioProjectClient({
   ]
 
   return (
-    <div style={{ background: '#000', minHeight: '100vh' }}>
+    <div style={{ background: '#fff', minHeight: '100vh' }}>
 
       {/* ── Scroll resistance wrapper ─────────────────────────────────────── */}
       <div style={{
@@ -104,8 +148,6 @@ export default function PortfolioProjectClient({
 
         {/* ════════════════════════════════════════════════════════════════
             HERO — 100vh
-            Top:    project name (huge) + tagline
-            Bottom: (Scroll) | pill | See all projects
         ════════════════════════════════════════════════════════════════ */}
         <section style={{
           position:        'relative',
@@ -118,7 +160,6 @@ export default function PortfolioProjectClient({
           padding:         '104px 48px 44px',
         }}>
 
-          {/* Cover image */}
           <Image
             src={project.coverImage}
             alt={project.title}
@@ -126,7 +167,6 @@ export default function PortfolioProjectClient({
             style={{ objectFit: 'cover', opacity: 0.55 }}
           />
 
-          {/* Gradient: dark top (nav) + dark bottom (controls) */}
           <div style={{
             position:      'absolute',
             inset:         0,
@@ -135,7 +175,7 @@ export default function PortfolioProjectClient({
             pointerEvents: 'none',
           }} />
 
-          {/* ── TOP: project name + tagline ─────────────────────────────── */}
+          {/* TOP: project name + tagline */}
           <div style={{ position: 'relative', zIndex: 2 }}>
             <h1 style={{
               fontFamily:    PP,
@@ -163,7 +203,7 @@ export default function PortfolioProjectClient({
             </p>
           </div>
 
-          {/* ── BOTTOM: (Scroll) | pill | See all ───────────────────────── */}
+          {/* BOTTOM: (Scroll) | pill | See all */}
           <div style={{
             position:            'relative',
             zIndex:              2,
@@ -171,8 +211,6 @@ export default function PortfolioProjectClient({
             gridTemplateColumns: '1fr auto 1fr',
             alignItems:          'center',
           }}>
-
-            {/* Left */}
             <span style={{
               fontFamily:    PP,
               fontWeight:    400,
@@ -184,7 +222,6 @@ export default function PortfolioProjectClient({
               (Scroll)
             </span>
 
-            {/* Center: sliding pill */}
             <div style={{
               position:     'relative',
               background:   'white',
@@ -232,7 +269,6 @@ export default function PortfolioProjectClient({
               ))}
             </div>
 
-            {/* Right */}
             <div style={{ textAlign: 'right' }}>
               <Link
                 href="/portfolio"
@@ -250,41 +286,18 @@ export default function PortfolioProjectClient({
                 See all projects
               </Link>
             </div>
-
           </div>
         </section>
 
         {/* ════════════════════════════════════════════════════════════════
-            CONTENT — keyed so React unmounts on switch
+            CONTENT
         ════════════════════════════════════════════════════════════════ */}
         <div key={view} style={{ animation: 'viewEnter 500ms cubic-bezier(0.19,1,0.22,1) forwards' }}>
 
-          {/* ── VISUAL VIEW: full-bleed images ─────────────────────────── */}
+          {/* ── VISUAL VIEW ─────────────────────────────────────────────── */}
           {view === 'visual' && (
-            <div style={{ background: '#000', paddingBottom: '160px' }}>
-              {images.map((img, i) => (
-                <div key={i} style={{
-                  position:     'relative',
-                  paddingTop:   img.portrait ? '130%' : '70%',
-                  marginBottom: '8px',
-                  overflow:     'hidden',
-                }}>
-                  <Image
-                    src={img.src}
-                    alt={`${project.title} ${i + 1}`}
-                    fill sizes="100vw"
-                    style={{ objectFit: 'cover' }}
-                    loading={i < 2 ? 'eager' : 'lazy'}
-                  />
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* ── READING VIEW: overview section + image grid ────────────── */}
-          {view === 'reading' && (
             <>
-              {/* Overview — light background */}
+              {/* Overview section — warm off-white, right after hero */}
               <section style={{
                 background: '#f5f4f0',
                 padding:    '100px 48px 140px',
@@ -294,8 +307,6 @@ export default function PortfolioProjectClient({
                   gridTemplateColumns: '200px 1fr',
                   gap:                 '80px',
                 }}>
-
-                  {/* Left: label */}
                   <div style={{ paddingTop: '6px' }}>
                     <span style={{
                       fontFamily:    PP,
@@ -310,7 +321,6 @@ export default function PortfolioProjectClient({
                     </span>
                   </div>
 
-                  {/* Right: headline + body + details */}
                   <div>
                     <h2 style={{
                       fontFamily:    PP,
@@ -336,7 +346,6 @@ export default function PortfolioProjectClient({
                       {project.brief.body}
                     </p>
 
-                    {/* Details label */}
                     <p style={{
                       fontFamily:    PP,
                       fontWeight:    400,
@@ -349,7 +358,6 @@ export default function PortfolioProjectClient({
                       (Details)
                     </p>
 
-                    {/* Detail rows */}
                     {detailRows.map(row => (
                       <div key={row.label} style={{
                         display:        'flex',
@@ -380,12 +388,11 @@ export default function PortfolioProjectClient({
                     ))}
                     <div style={{ borderTop: '1px solid rgba(0,0,0,0.1)' }} />
                   </div>
-
                 </div>
               </section>
 
-              {/* Image grid — dark, full bleed */}
-              <div style={{ background: '#000', paddingBottom: '160px' }}>
+              {/* Full-bleed image stack */}
+              <div style={{ background: '#fff', paddingBottom: '160px' }}>
                 {images.map((img, i) => (
                   <div key={i} style={{
                     position:     'relative',
@@ -395,15 +402,114 @@ export default function PortfolioProjectClient({
                   }}>
                     <Image
                       src={img.src}
-                      alt=""
+                      alt={`${project.title} ${i + 1}`}
                       fill sizes="100vw"
                       style={{ objectFit: 'cover' }}
-                      loading="lazy"
+                      loading={i < 2 ? 'eager' : 'lazy'}
                     />
                   </div>
                 ))}
               </div>
             </>
+          )}
+
+          {/* ── READING VIEW: 2-column (images left, text right) ────────── */}
+          {view === 'reading' && (
+            <section style={{ background: '#fff', padding: '0 40px' }}>
+              <div style={{
+                display:             'grid',
+                gridTemplateColumns: '1fr 1fr',
+                gap:                 '0',
+                minHeight:           '100vh',
+                paddingTop:          '120px',
+                paddingBottom:       '120px',
+              }}>
+                {/* LEFT — image stack */}
+                <div style={{ paddingRight: '24px' }}>
+                  {images.map((img, i) => (
+                    <div key={i} style={{
+                      position:     'relative',
+                      paddingTop:   '71.05%',
+                      marginBottom: '24px',
+                      overflow:     'hidden',
+                    }}>
+                      <Image
+                        src={img.src}
+                        alt=""
+                        fill sizes="50vw"
+                        style={{ objectFit: 'cover' }}
+                        loading="lazy"
+                      />
+                    </div>
+                  ))}
+                </div>
+
+                {/* RIGHT — 4 text sections */}
+                <div style={{ paddingLeft: '60px' }}>
+                  <ReadingSection
+                    num="(01)" label="The Brief"
+                    headline={project.brief.headline}
+                    body={project.brief.body}
+                  >
+                    <div style={{
+                      borderTop:           '1px solid rgba(0,0,0,0.08)',
+                      paddingTop:          '24px',
+                      display:             'grid',
+                      gridTemplateColumns: '1fr 1fr',
+                      gap:                 '16px',
+                    }}>
+                      {([
+                        { label: 'Type',     value: project.details.type },
+                        { label: 'Category', value: project.details.category },
+                        { label: 'Year',     value: project.details.year },
+                        { label: 'Scope',    value: project.details.scope },
+                      ] as { label: string; value: string }[]).map(item => (
+                        <div key={item.label}>
+                          <span style={{
+                            fontFamily:    PP,
+                            fontWeight:    400,
+                            fontSize:      '10px',
+                            letterSpacing: '3px',
+                            textTransform: 'uppercase',
+                            color:         'rgba(0,0,0,0.3)',
+                            display:       'block',
+                            marginBottom:  '4px',
+                          }}>
+                            {item.label}
+                          </span>
+                          <span style={{
+                            fontFamily: PP,
+                            fontWeight: 400,
+                            fontSize:   '13px',
+                            color:      'rgba(0,0,0,0.7)',
+                          }}>
+                            {item.value}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </ReadingSection>
+
+                  <ReadingSection
+                    num="(02)" label="The Diagnosis"
+                    headline={project.diagnosis.headline}
+                    body={project.diagnosis.body}
+                  />
+
+                  <ReadingSection
+                    num="(03)" label="What We Built"
+                    headline={project.built.headline}
+                    body={project.built.body}
+                  />
+
+                  <ReadingSection
+                    num="(04)" label="The Result"
+                    headline={project.result.headline}
+                    body={project.result.body}
+                  />
+                </div>
+              </div>
+            </section>
           )}
 
         </div>
@@ -483,7 +589,6 @@ export default function PortfolioProjectClient({
             </Link>
           </div>
 
-          {/* Counter bottom-left */}
           <div style={{
             position:      'absolute',
             bottom:        40,
@@ -500,7 +605,6 @@ export default function PortfolioProjectClient({
             {String(PROJECTS.length).padStart(2, '0')}
           </div>
 
-          {/* Prev / Next arrows bottom-right */}
           <div style={{
             position: 'absolute',
             bottom:   40,
@@ -525,7 +629,7 @@ export default function PortfolioProjectClient({
       </div>
       {/* end scroll-resistance wrapper */}
 
-      {/* ── Fixed toggle pill (outside transform so position:fixed works) ── */}
+      {/* ── Fixed toggle pill ────────────────────────────────────────────── */}
       <div style={{
         position:       'fixed',
         bottom:         '30px',

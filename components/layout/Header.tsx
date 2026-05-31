@@ -147,7 +147,7 @@ export default function Header() {
         <div style={{
           position:  'absolute',
           top:       '50%',
-          left:      56,
+          left:      40,
           transform: 'translateY(-50%)',
         }}>
           {/* Wordmark — always present, fades out FIRST on scroll */}
@@ -260,7 +260,7 @@ export default function Header() {
         <div style={{
           position:   'absolute',
           top:        '50%',
-          right:      56,
+          right:      40,
           transform:  'translateY(-50%)',
           display:    'flex',
           alignItems: 'center',
