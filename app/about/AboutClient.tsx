@@ -466,8 +466,8 @@ export default function AboutClient() {
               textAlign:     item.align,
             }}
           >
-            <span style={{ color: 'rgba(255,255,255,0.28)' }}>{item.num} </span>
-            <span style={{ color: '#fff' }}>{item.label}</span>
+            <span style={{ color: '#fff' }}>{item.num} </span>
+            <span style={{ color: 'rgba(255,255,255,0.3)' }}>{item.label}</span>
           </p>
         ))}
 
