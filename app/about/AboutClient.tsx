@@ -347,12 +347,12 @@ export default function AboutClient() {
         <h2 style={{
           fontFamily:    PP,
           fontWeight:    900,
-          fontSize:      'clamp(72px, 13vw, 200px)',
+          fontSize:      'clamp(48px, 7vw, 110px)',
           color:         '#111',
           textTransform: 'uppercase',
-          letterSpacing: '-3px',
-          lineHeight:    0.88,
-          margin:        '0 0 clamp(60px, 8vw, 120px)',
+          letterSpacing: '-2px',
+          lineHeight:    0.92,
+          margin:        '0 0 clamp(48px, 6vw, 96px)',
         }}>
           Meet the<br />Founders
         </h2>
