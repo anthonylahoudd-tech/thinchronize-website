@@ -382,7 +382,13 @@ export default function MethodPage() {
       {/* ══ 1 — HERO ════════════════════════════════════════════════════════════ */}
       <PageHero
         title="METHOD"
-        subtitle="Diagnosis before design — four phases, one conviction: we don't create until we understand."
+        lines={[
+          'Diagnosis before design —',
+          "four phases, one conviction:",
+          "we don't create until we understand.",
+        ]}
+        bottomLabel="Explore our method"
+        bottomHref="#method-content"
       />
 
       {/* ══ 2 — CIRCLE INTRO ════════════════════════════════════════════════════
@@ -391,6 +397,7 @@ export default function MethodPage() {
           The tagline sits at the bottom of the section below the circle.
       ══════════════════════════════════════════════════════════════════════════ */}
       <section
+        id="method-content"
         ref={circleIntroRef}
         style={{
           height: '100vh', background: '#FFFFFF',

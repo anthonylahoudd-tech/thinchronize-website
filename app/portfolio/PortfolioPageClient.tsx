@@ -23,6 +23,7 @@ export default function PortfolioPageClient() {
   const [view,         setView]         = useState<'grid' | 'explore'>('grid')
   const [maskX,        setMaskX]        = useState(0)
   const [maskWidth,    setMaskWidth]    = useState(0)
+  const [heroReady,    setHeroReady]    = useState(false)
 
   const tabRefs     = useRef<(HTMLButtonElement | null)[]>([])
   const dropdownRef = useRef<HTMLDivElement>(null)
@@ -46,6 +47,12 @@ export default function PortfolioPageClient() {
     const eRect = el.getBoundingClientRect()
     setMaskX(eRect.left - pRect.left)
     setMaskWidth(eRect.width)
+  }, [])
+
+  // Hero text entrance — fires after page transition curtain lifts (~420ms)
+  useEffect(() => {
+    const t = setTimeout(() => setHeroReady(true), 420)
+    return () => clearTimeout(t)
   }, [])
 
   // Close dropdown on outside click
@@ -106,20 +113,29 @@ export default function PortfolioPageClient() {
 
         {/* ── 2. INTRO TEXT ─────────────────────────────────────────────── */}
         <div style={{ padding: '44px 5vw 0', flexShrink: 0 }}>
-          <p style={{
-            fontFamily:    PP,
-            fontWeight:    400,
-            fontSize:      'clamp(22px, 3vw, 42px)',
-            color:         'white',
-            lineHeight:    1.2,
-            letterSpacing: '-0.5px',
-            margin:        0,
-            maxWidth:      '780px',
-          }}>
-            We build brands with precision,<br />
-            intention, and something true to say —<br />
-            every project starts with a diagnosis.
-          </p>
+          {[
+            'We build brands with precision,',
+            'intention, and something true to say —',
+            'every project starts with a diagnosis.',
+          ].map((line, i) => (
+            <div key={i} style={{ overflow: 'hidden' }}>
+              <p style={{
+                fontFamily:      PP,
+                fontWeight:      400,
+                fontSize:        'clamp(22px, 3vw, 42px)',
+                color:           'white',
+                lineHeight:      1.25,
+                letterSpacing:   '-0.5px',
+                margin:          0,
+                opacity:         heroReady ? 1 : 0,
+                transform:       heroReady ? 'translateY(0)' : 'translateY(32px)',
+                transition:      `opacity 750ms ${EASE}, transform 750ms ${EASE}`,
+                transitionDelay: `${i * 110}ms`,
+              }}>
+                {line}
+              </p>
+            </div>
+          ))}
         </div>
 
         {/* ── 3. SPACER ─────────────────────────────────────────────────── */}
@@ -130,7 +146,7 @@ export default function PortfolioPageClient() {
           display:        'flex',
           justifyContent: 'space-between',
           alignItems:     'center',
-          padding:        '0 5vw 56px',
+          padding:        '0 5vw 48px',
           flexShrink:     0,
         }}>
 

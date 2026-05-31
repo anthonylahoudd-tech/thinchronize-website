@@ -55,10 +55,16 @@ export default function ContactClient() {
 
       <PageHero
         title="CONTACT"
-        subtitle="Ready to build something that matters? Let's start with a conversation."
+        lines={[
+          "Ready to build something that matters?",
+          "Let's start with a conversation.",
+        ]}
+        bottomLabel="Start a conversation"
+        bottomHref="#contact-form"
       />
 
       <div
+        id="contact-form"
         className="container mx-auto"
         style={{
           paddingTop:    'clamp(80px, 10vw, 120px)',

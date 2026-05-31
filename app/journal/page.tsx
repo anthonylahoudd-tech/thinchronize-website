@@ -18,10 +18,16 @@ export default async function JournalPage() {
 
       <PageHero
         title="IDEAS"
-        subtitle="Thinking on brand strategy, identity, and the craft of building something true."
+        lines={[
+          'Thinking on brand strategy, identity,',
+          'and the craft of building something true.',
+        ]}
+        bottomLabel="Read our thinking"
+        bottomHref="#journal-posts"
       />
 
       <div
+        id="journal-posts"
         className="container mx-auto"
         style={{
           paddingTop:    'clamp(80px, 10vw, 120px)',

@@ -516,7 +516,12 @@ export default function ServicesEditorialClient() {
       ════════════════════════════════════════════════════════════ */}
       <PageHero
         title="SERVICES"
-        subtitle="Every service traces back to one question — does this make the brand stronger?"
+        lines={[
+          'Every service traces back to one question —',
+          'does this make the brand stronger?',
+        ]}
+        bottomLabel="View all services"
+        bottomHref="#services-accordion"
       />
 
             {/* ════════════════════════════════════════════════════════════

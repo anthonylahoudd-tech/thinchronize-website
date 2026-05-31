@@ -4,6 +4,46 @@ import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import PageHero from '@/components/ui/PageHero'
 
+function ParallaxImage({ src }: { src: string }) {
+  const sectionRef = useRef<HTMLDivElement>(null)
+  const imgRef     = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handle = () => {
+      if (!sectionRef.current || !imgRef.current) return
+      const rect     = sectionRef.current.getBoundingClientRect()
+      const progress = -rect.top / (rect.height + window.innerHeight)
+      imgRef.current.style.transform = `translateY(${progress * 18}%)`
+    }
+    window.addEventListener('scroll', handle, { passive: true })
+    handle()
+    return () => window.removeEventListener('scroll', handle)
+  }, [])
+
+  return (
+    <div
+      ref={sectionRef}
+      style={{ position: 'relative', height: '70vh', overflow: 'hidden' }}
+    >
+      <div
+        ref={imgRef}
+        style={{
+          position:   'absolute',
+          inset:      '-15% 0',
+          willChange: 'transform',
+        }}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={src}
+          alt="Thinchronize studio"
+          style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+        />
+      </div>
+    </div>
+  )
+}
+
 const PP  = "'PPNeueCorp', system-ui, sans-serif"
 const RED = '#D0274B'
 
@@ -198,11 +238,19 @@ export default function AboutClient() {
       {/* ══ HERO ══════════════════════════════════════════════════════ */}
       <PageHero
         title="ABOUT"
-        subtitle="A strategy-led creative studio based in Lebanon — building brands that know exactly what they stand for."
+        lines={[
+          'A strategy-led creative studio based in Lebanon —',
+          'building brands that know exactly what they stand for.',
+        ]}
+        bottomLabel="Learn more about us"
+        bottomHref="#about-studio"
       />
 
+      {/* ══ PARALLAX IMAGE ════════════════════════════════════════════ */}
+      <ParallaxImage src="/images/about-signage.jpg" />
+
       {/* ══ SECTION 2 — The Studio ════════════════════════════════════ */}
-      <section style={{ background: '#FFFFFF', padding: 'clamp(80px, 10vw, 120px) clamp(24px, 6vw, 80px)' }}>
+      <section id="about-studio" style={{ background: '#FFFFFF', padding: 'clamp(80px, 10vw, 120px) clamp(24px, 6vw, 80px)' }}>
         <div style={{ display: 'flex', gap: 'clamp(40px, 8vw, 100px)', flexWrap: 'wrap', maxWidth: 1200, margin: '0 auto' }}>
 
           {/* Left */}
