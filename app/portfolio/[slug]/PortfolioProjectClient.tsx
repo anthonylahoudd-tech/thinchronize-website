@@ -424,37 +424,35 @@ export default function PortfolioProjectClient({
 
                     {/* Number alone */}
                     <p style={{
-                      fontFamily: PP,
-                      fontWeight: 400,
-                      fontSize:   13,
-                      color:      'rgba(0,0,0,0.35)',
-                      margin:     '0 0 10px',
+                      fontFamily:    PP,
+                      fontWeight:    400,
+                      fontSize:      13,
+                      color:         'rgba(0,0,0,0.35)',
+                      margin:        '0 0 10px',
                       letterSpacing: '0.5px',
                     }}>
                       {num}
                     </p>
 
-                    {/* Section label on its own line */}
+                    {/* Section label — medium weight, mixed case, no caps */}
                     <p style={{
-                      fontFamily:    PP,
-                      fontWeight:    400,
-                      fontSize:      13,
-                      letterSpacing: '2px',
-                      textTransform: 'uppercase',
-                      color:         'rgba(0,0,0,0.45)',
-                      margin:        '0 0 52px',
+                      fontFamily: PP,
+                      fontWeight: 500,
+                      fontSize:   15,
+                      color:      'rgba(0,0,0,0.5)',
+                      margin:     '0 0 52px',
                     }}>
                       {label}
                     </p>
 
-                    {/* Headline — mixed case, not uppercase, editorial weight */}
+                    {/* Headline — bigger, mixed case, editorial */}
                     <h3 style={{
                       fontFamily:    PP,
                       fontWeight:    700,
-                      fontSize:      'clamp(28px, 3.5vw, 52px)',
+                      fontSize:      'clamp(32px, 4vw, 60px)',
                       color:         '#0f0f0f',
-                      lineHeight:    1.08,
-                      letterSpacing: '-0.5px',
+                      lineHeight:    1.06,
+                      letterSpacing: '-0.8px',
                       margin:        '0 0 36px',
                     }}>
                       {section.headline}
@@ -471,6 +469,55 @@ export default function PortfolioProjectClient({
                     }}>
                       {section.body}
                     </p>
+
+                    {/* What we did — bullet list */}
+                    {section.deliverables && section.deliverables.length > 0 && (
+                      <div style={{ marginTop: 48 }}>
+                        <p style={{
+                          fontFamily:    PP,
+                          fontWeight:    500,
+                          fontSize:      12,
+                          letterSpacing: '2.5px',
+                          textTransform: 'uppercase',
+                          color:         'rgba(0,0,0,0.35)',
+                          margin:        '0 0 20px',
+                        }}>
+                          (What we did)
+                        </p>
+                        <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                          {section.deliverables.map((item, di) => (
+                            <li key={di} style={{
+                              display:       'flex',
+                              alignItems:    'baseline',
+                              gap:           14,
+                              paddingBottom: 12,
+                              borderBottom:  di < section.deliverables!.length - 1
+                                ? '1px solid rgba(0,0,0,0.07)'
+                                : 'none',
+                              marginBottom:  di < section.deliverables!.length - 1 ? 12 : 0,
+                            }}>
+                              <span style={{
+                                width:           5,
+                                height:          5,
+                                borderRadius:    '50%',
+                                background:      '#0f0f0f',
+                                flexShrink:      0,
+                                marginTop:       8,
+                              }} />
+                              <span style={{
+                                fontFamily: PP,
+                                fontWeight: 400,
+                                fontSize:   16,
+                                color:      'rgba(0,0,0,0.65)',
+                                lineHeight: 1.5,
+                              }}>
+                                {item}
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
 
                     {/* Details grid — brief only */}
                     {showDetails && (

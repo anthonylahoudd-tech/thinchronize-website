@@ -1,8 +1,9 @@
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export interface ProjectSection {
-  headline: string
-  body: string
+  headline:     string
+  body:         string
+  deliverables?: string[]   // "What we did" bullet list per phase
 }
 
 export interface ProjectDetails {
@@ -88,18 +89,43 @@ export const PROJECTS: Project[] = [
     brief: {
       headline: 'Build a fast-casual sandwich brand from the ground up.',
       body: 'Whatsub needed more than a logo — they needed a complete brand identity that could compete in Lebanon\'s crowded F&B market and give a new concept a clear reason to exist beyond the product itself.',
+      deliverables: [
+        'Full brand identity system from scratch',
+        'F&B market positioning',
+        'Competitive landscape review',
+        'Brand naming rationale',
+      ],
     },
     diagnosis: {
       headline: 'No story. No differentiation. No reason to choose.',
       body: 'The F&B landscape in Lebanon is saturated with imported concepts and generic aesthetics. Whatsub had a strong product but zero brand infrastructure. Without a clear position, price becomes the only conversation — and price is always a race to the bottom.',
+      deliverables: [
+        'Market & competitor audit',
+        'Visual gap analysis',
+        'Brand positioning strategy',
+        'Core differentiation definition',
+      ],
     },
     built: {
       headline: 'A complete brand built around the submarine metaphor.',
       body: 'We built the full brand system: naming rationale, visual identity, color palette, typography, menu design, packaging language, and in-store communication. Every touchpoint was designed to feel ownable, deliberate, and consistent.',
+      deliverables: [
+        'Logo & visual identity system',
+        'Color palette & typography',
+        'Menu design',
+        'Packaging system',
+        'In-store environmental design',
+        'Brand standards guide',
+      ],
     },
     result: {
       headline: 'A brand ready to open, grow, and be remembered.',
       body: 'Whatsub launched with a complete visual language and a brand platform that gives the team a foundation to build on — not just for opening day, but for every brand decision that follows.',
+      deliverables: [
+        'Launch-ready brand system',
+        'Consistent across every touchpoint',
+        'Team equipped to make brand decisions',
+      ],
     },
     details: {
       type: 'Brand Identity',
