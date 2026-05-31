@@ -378,9 +378,9 @@ export default function PortfolioProjectClient({
           </div>
         )}
 
-        {/* ── READING VIEW ── */}
+        {/* ── READING VIEW — Motto-style: off-white bg, dark text, editorial ── */}
         {view === 'reading' && (
-          <section style={{ background: '#000', padding: '0 40px' }}>
+          <section style={{ background: '#ECECEA', padding: '0 0 160px' }}>
             <div style={{
               display:             'grid',
               gridTemplateColumns: '1fr 1fr',
@@ -388,13 +388,13 @@ export default function PortfolioProjectClient({
               alignItems:          'start',
             }}>
 
-              {/* LEFT — image stack */}
-              <div style={{ paddingRight: 24, paddingTop: 120 }}>
+              {/* LEFT — image stack, flush to left edge */}
+              <div style={{ paddingTop: 100 }}>
                 {images.map((img, i) => (
                   <div key={i} style={{
                     position:     'relative',
                     paddingTop:   img.portrait ? '130%' : '70%',
-                    marginBottom: 16,
+                    marginBottom: 8,
                     overflow:     'hidden',
                   }}>
                     <Image
@@ -408,8 +408,8 @@ export default function PortfolioProjectClient({
                 ))}
               </div>
 
-              {/* RIGHT — 4 narrative sections */}
-              <div style={{ paddingLeft: 80 }}>
+              {/* RIGHT — 4 narrative sections, Motto layout */}
+              <div style={{ paddingLeft: '6vw', paddingRight: '5vw' }}>
                 {([
                   { num: '(01)', label: 'The Brief',     section: project.brief,     showDetails: true  },
                   { num: '(02)', label: 'The Diagnosis', section: project.diagnosis, showDetails: false },
@@ -417,51 +417,70 @@ export default function PortfolioProjectClient({
                   { num: '(04)', label: 'The Result',    section: project.result,    showDetails: false },
                 ] as const).map(({ num, label, section, showDetails }, i) => (
                   <div key={num} style={{
-                    paddingTop:    236,
-                    paddingBottom: 260,
-                    borderTop:     i === 0 ? 'none' : '1px solid rgba(255,255,255,0.06)',
+                    paddingTop:    200,
+                    paddingBottom: 220,
+                    borderTop:     i === 0 ? 'none' : '1px solid rgba(0,0,0,0.1)',
                   }}>
+
+                    {/* Number alone */}
+                    <p style={{
+                      fontFamily: PP,
+                      fontWeight: 400,
+                      fontSize:   13,
+                      color:      'rgba(0,0,0,0.35)',
+                      margin:     '0 0 10px',
+                      letterSpacing: '0.5px',
+                    }}>
+                      {num}
+                    </p>
+
+                    {/* Section label on its own line */}
                     <p style={{
                       fontFamily:    PP,
                       fontWeight:    400,
                       fontSize:      13,
                       letterSpacing: '2px',
                       textTransform: 'uppercase',
-                      color:         'rgba(255,255,255,0.3)',
-                      margin:        '0 0 40px',
+                      color:         'rgba(0,0,0,0.45)',
+                      margin:        '0 0 52px',
                     }}>
-                      {num} — {label}
+                      {label}
                     </p>
+
+                    {/* Headline — mixed case, not uppercase, editorial weight */}
                     <h3 style={{
                       fontFamily:    PP,
-                      fontWeight:    900,
-                      fontSize:      'clamp(22px, 2.8vw, 36px)',
-                      color:         'white',
-                      lineHeight:    1.1,
+                      fontWeight:    700,
+                      fontSize:      'clamp(28px, 3.5vw, 52px)',
+                      color:         '#0f0f0f',
+                      lineHeight:    1.08,
                       letterSpacing: '-0.5px',
-                      margin:        '0 0 32px',
-                      textTransform: 'uppercase',
+                      margin:        '0 0 36px',
                     }}>
                       {section.headline}
                     </h3>
+
+                    {/* Body */}
                     <p style={{
                       fontFamily: PP,
                       fontWeight: 400,
-                      fontSize:   16,
-                      color:      'rgba(255,255,255,0.5)',
-                      lineHeight: 1.75,
+                      fontSize:   17,
+                      color:      'rgba(0,0,0,0.55)',
+                      lineHeight: 1.78,
                       margin:     0,
                     }}>
                       {section.body}
                     </p>
+
+                    {/* Details grid — brief only */}
                     {showDetails && (
                       <div style={{
-                        borderTop:           '1px solid rgba(255,255,255,0.06)',
-                        marginTop:           48,
-                        paddingTop:          32,
+                        borderTop:           '1px solid rgba(0,0,0,0.09)',
+                        marginTop:           52,
+                        paddingTop:          36,
                         display:             'grid',
                         gridTemplateColumns: '1fr 1fr',
-                        gap:                 '24px 16px',
+                        gap:                 '28px 16px',
                       }}>
                         {detailRows.map(row => (
                           <div key={row.label}>
@@ -471,17 +490,17 @@ export default function PortfolioProjectClient({
                               fontSize:      10,
                               letterSpacing: '3px',
                               textTransform: 'uppercase',
-                              color:         'rgba(255,255,255,0.25)',
+                              color:         'rgba(0,0,0,0.3)',
                               display:       'block',
-                              marginBottom:  6,
+                              marginBottom:  8,
                             }}>
                               {row.label}
                             </span>
                             <span style={{
                               fontFamily: PP,
                               fontWeight: 400,
-                              fontSize:   13,
-                              color:      'rgba(255,255,255,0.6)',
+                              fontSize:   14,
+                              color:      'rgba(0,0,0,0.7)',
                             }}>
                               {row.value}
                             </span>
@@ -489,6 +508,7 @@ export default function PortfolioProjectClient({
                         ))}
                       </div>
                     )}
+
                   </div>
                 ))}
               </div>
