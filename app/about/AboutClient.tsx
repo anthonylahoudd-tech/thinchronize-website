@@ -353,7 +353,7 @@ export default function AboutClient() {
           lineHeight:    0.88,
           margin:        '0 0 clamp(56px, 7vw, 110px)',
         }}>
-          Meet the<br /><span style={{ color: RED }}>Founders</span>
+          Meet the<br /><span style={{ color: RED, fontWeight: 900 }}>Founders</span>
         </h2>
 
         {/* 40 / 60 grid — label left, story right */}
@@ -383,11 +383,12 @@ export default function AboutClient() {
           <div>
             <h3 style={{
               fontFamily:    PP,
-              fontWeight:    900,
+              fontWeight:    400,
               fontSize:      'clamp(28px, 3.2vw, 52px)',
               color:         '#111',
-              lineHeight:    1.15,
-              letterSpacing: '-0.02em',
+              lineHeight:    1.2,
+              letterSpacing: '-0.01em',
+              textTransform: 'none',
               margin:        '0 0 clamp(28px, 3.5vw, 48px)',
             }}>
               Two strategists.<br />One obsession.<br />Built from Beirut.
@@ -476,11 +477,43 @@ export default function AboutClient() {
         </div>
       </section>
 
+      {/* ══ MOVING BANNER ═════════════════════════════════════════════ */}
+      <div style={{ background: '#f5f4f0', overflow: 'hidden', padding: 'clamp(40px, 5vw, 72px) 0' }}>
+        <div className="page-marquee-track">
+          <span style={{
+            fontFamily:    PP,
+            fontWeight:    900,
+            fontSize:      'clamp(56px, 9vw, 130px)',
+            color:         '#111',
+            textTransform: 'uppercase',
+            letterSpacing: '-3px',
+            lineHeight:    0.9,
+            whiteSpace:    'nowrap',
+          }}>
+            STRATEGY * IDENTITY * CRAFT * BEIRUT * BRAND * PURPOSE * STRATEGY * IDENTITY * CRAFT * BEIRUT * BRAND * PURPOSE *&nbsp;
+          </span>
+        </div>
+      </div>
+
       {/* ══ WHAT WE STAND FOR — Motto numbered grid ═══════════════════ */}
       <section style={{
         background: '#f5f4f0',
         padding:    'clamp(80px, 10vw, 130px) 5vw',
       }}>
+
+        {/* Small section label */}
+        <p style={{
+          fontFamily:    PP,
+          fontWeight:    400,
+          fontSize:      12,
+          letterSpacing: '0.18em',
+          textTransform: 'uppercase',
+          color:         'rgba(0,0,0,0.4)',
+          margin:        '0 0 clamp(48px, 6vw, 80px)',
+        }}>
+          What we stand for
+        </p>
+
         <div style={{
           display:             'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
@@ -525,6 +558,55 @@ export default function AboutClient() {
                 margin:     0,
               }}>
                 {item.desc}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ══ VISION & MISSION — black box ══════════════════════════════ */}
+      <section style={{
+        background: '#000',
+        padding:    'clamp(72px, 9vw, 120px) 5vw',
+      }}>
+        <div style={{
+          display:             'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap:                 'clamp(40px, 6vw, 100px)',
+          maxWidth:            1400,
+          margin:              '0 auto',
+        }}>
+          {[
+            {
+              label: 'Vision',
+              text:  'A Lebanon where every serious brand has the tools, strategy, and craft to compete — not just locally, but on any stage that matters.',
+            },
+            {
+              label: 'Mission',
+              text:  'To build brands that know exactly what they stand for, and give them everything they need to prove it — in the market, over time, and under pressure.',
+            },
+          ].map(item => (
+            <div key={item.label}>
+              <p style={{
+                fontFamily:    PP,
+                fontWeight:    400,
+                fontSize:      11,
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+                color:         'rgba(255,255,255,0.35)',
+                margin:        '0 0 20px',
+              }}>
+                {item.label}
+              </p>
+              <p style={{
+                fontFamily:  PP,
+                fontWeight:  400,
+                fontSize:    'clamp(18px, 1.8vw, 26px)',
+                color:       'rgba(255,255,255,0.85)',
+                lineHeight:  1.6,
+                margin:      0,
+              }}>
+                {item.text}
               </p>
             </div>
           ))}
