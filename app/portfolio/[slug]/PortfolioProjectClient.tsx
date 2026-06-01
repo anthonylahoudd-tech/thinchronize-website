@@ -63,7 +63,6 @@ export default function PortfolioProjectClient({
   const router         = useRouter()
   const navTriggered    = useRef(false)
   const nextProgressRef = useRef(0)
-  const gateLive        = useRef(false) // gate activates after mount delay (prevents double-nav from Lenis scroll persistence)
 
   // ── Hero entrance animation (clip reveal, same as TextReveal) ────────────
   useGSAP(() => {
@@ -136,13 +135,7 @@ export default function PortfolioProjectClient({
     return () => clearTimeout(t)
   }, [])
 
-  // ── Gate mount delay — prevents Lenis scroll persistence from double-firing navigation ──
-  useEffect(() => {
-    const t = setTimeout(() => { gateLive.current = true }, 1000)
-    return () => clearTimeout(t)
-  }, [])
-
-  // ── Restore header opacity on unmount ─────────────────────────────────────
+  // ── Restore header on unmount ─────────────────────────────────────────────
   useEffect(() => {
     return () => {
       const h = document.querySelector('[data-site-header]') as HTMLElement | null
@@ -150,48 +143,61 @@ export default function PortfolioProjectClient({
     }
   }, [])
 
-  // ── Scroll handler — pill + sticky gate + header fade ─────────────────────
+  // ── Scroll handler — pill, progress bar, header fade ──────────────────────
   useEffect(() => {
-    const GATE_PX = 1500
-
     const handle = () => {
       const sy = window.scrollY
       const vh = window.innerHeight
       setPillScrolled(sy > vh * 0.85)
-
       if (sy > 20) setShowScrollHint(false)
-
       setHeroParallax(Math.min(sy * 0.15, vh * 0.15))
 
-      const GATE_HEIGHT   = vh + 1500
-      const contentHeight = Math.max(1, document.body.scrollHeight - vh - GATE_HEIGHT)
+      // In-project progress bar — full range up to gate entry
+      const contentHeight = Math.max(1, document.body.scrollHeight - 2 * vh)
       setProjectProgress(Math.max(0, Math.min(1, sy / contentHeight)))
 
-      // Header fade — starts 1.5vh before the gate, fully gone by gate entry
+      // Header fade — starts 1.5vh before gate, fully gone at gate entry
       if (nextSectionRef.current) {
-        const rect = nextSectionRef.current.getBoundingClientRect()
-        const fadeStart = vh * 1.5
-        const headerOpacity = Math.max(0, Math.min(1, rect.top / fadeStart))
+        const rect       = nextSectionRef.current.getBoundingClientRect()
+        const fadeStart  = vh * 1.5
+        const opacity    = Math.max(0, Math.min(1, rect.top / fadeStart))
         const h = document.querySelector('[data-site-header]') as HTMLElement | null
-        if (h) h.style.opacity = String(headerOpacity)
+        if (h) h.style.opacity = String(opacity)
+
+        // When gate scrolls away (user went back), reset progress
+        if (rect.top > 50 && nextProgressRef.current > 0) {
+          nextProgressRef.current = 0
+          setNextProgress(0)
+        }
       }
+    }
+    window.addEventListener('scroll', handle, { passive: true })
+    return () => window.removeEventListener('scroll', handle)
+  }, [])
 
-      if (!nextSectionRef.current || navTriggered.current || !gateLive.current) return
+  // ── Wheel handler — drives gate when page is at max scroll ────────────────
+  useEffect(() => {
+    const WHEEL_TOTAL = 1500
 
-      const rect     = nextSectionRef.current.getBoundingClientRect()
-      const scrolledIn = Math.max(0, -rect.top)
-      const progress   = Math.min(1, scrolledIn / GATE_PX)
-      setNextProgress(progress)
-      nextProgressRef.current = progress
+    const handle = (e: WheelEvent) => {
+      if (navTriggered.current || !nextSectionRef.current) return
 
-      if (progress >= 1) {
+      const rect = nextSectionRef.current.getBoundingClientRect()
+      // Only fire when gate is at (or very near) viewport top
+      if (rect.top > 10 || rect.top < -30) return
+
+      const newProg = Math.min(1, Math.max(0, nextProgressRef.current + e.deltaY / WHEEL_TOTAL))
+      nextProgressRef.current = newProg
+      setNextProgress(newProg)
+
+      if (newProg >= 1) {
         navTriggered.current = true
         setNavigating(true)
         setTimeout(() => router.push(`/portfolio/${nextProject.id}`), 650)
       }
     }
-    window.addEventListener('scroll', handle, { passive: true })
-    return () => window.removeEventListener('scroll', handle)
+    window.addEventListener('wheel', handle, { passive: true })
+    return () => window.removeEventListener('wheel', handle)
   }, [nextProject.id, router])
 
   // ── Right column min-height = left column height so sticky last section works ─
@@ -716,14 +722,13 @@ export default function PortfolioProjectClient({
           On snap: name slides up 15vh + cover peeks 15% from bottom.
           Scrolling then raises cover from 85%→0% translateY.
       ════════════════════════════════════════════════════════════════ */}
-      <div ref={nextSectionRef} style={{ height: 'calc(100vh + 1500px)', position: 'relative' }}>
-        <div style={{
-          position:   'sticky',
-          top:         0,
-          height:      '100vh',
-          overflow:    'hidden',
-          background:  '#ECECEA',
-        }}>
+      <div ref={nextSectionRef} style={{
+        height:   '100vh',
+        position: 'relative',
+        overflow: 'hidden',
+        background: '#ECECEA',
+      }}>
+        <div style={{ position: 'relative', height: '100%' }}>
 
           {/* ── Marquee — next project name, always running, above cover ── */}
           <div style={{
