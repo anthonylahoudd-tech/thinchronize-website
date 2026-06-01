@@ -1,9 +1,10 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { PROJECTS } from '@/lib/projects'
+import { gsap } from 'gsap'
 
 const PP   = "'PPNeueCorp', system-ui, sans-serif"
 const RED  = '#D0274B'
@@ -39,33 +40,35 @@ function ParallaxImage({ src, height = '65vh' }: { src: string; height?: string 
 
 // ─── Hero text entrance ───────────────────────────────────────────────────────
 
-const BASE_DELAY = 420
+const HERO_LINES = [
+  { text: 'Mindful',      align: 'left'  as const, color: 'white' },
+  { text: 'by design.',   align: 'right' as const, color: 'white' },
+  { text: 'Strategic',    align: 'left'  as const, color: 'white' },
+  { text: 'by nature.',   align: 'right' as const, color: RED     },
+]
 
 export default function HomePage() {
-  const [ready, setReady] = useState(false)
+  const heroLinesRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const t = setTimeout(() => setReady(true), BASE_DELAY)
-    return () => clearTimeout(t)
+    const el = heroLinesRef.current
+    if (!el) return
+    const spans = el.querySelectorAll('.hero-line-inner')
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        spans,
+        { yPercent: 110 },
+        {
+          yPercent:  0,
+          duration:  1,
+          ease:      'power4.out',
+          stagger:   0.08,
+          delay:     0.3,
+        }
+      )
+    }, el)
+    return () => ctx.revert()
   }, [])
-
-  const lineStyle = (i: number): React.CSSProperties => ({
-    fontFamily:      PP,
-    fontWeight:      400,
-    fontSize:        'clamp(52px, 11vw, 160px)',
-    color:           'white',
-    textTransform:   'uppercase',
-    letterSpacing:   '-3px',
-    lineHeight:      1.0,
-    margin:          0,
-    display:         'block',
-    width:           '100%',
-    textAlign:       i % 2 === 0 ? 'left' : 'right',
-    opacity:         ready ? 1 : 0,
-    transform:       ready ? 'translateY(0)' : 'translateY(36px)',
-    transition:      `opacity 800ms ${EASE}, transform 800ms ${EASE}`,
-    transitionDelay: `${i * 100}ms`,
-  })
 
   return (
     <div style={{ background: '#000' }}>
@@ -91,27 +94,35 @@ export default function HomePage() {
           letterSpacing:   '0.2em',
           textTransform:   'uppercase',
           color:           'rgba(255,255,255,0.35)',
-          opacity:         ready ? 1 : 0,
-          transition:      `opacity 600ms ${EASE}`,
-          transitionDelay: '200ms',
+          opacity:         1,
         }}>
           Strategy-led creative studio · Beirut, Lebanon
         </p>
 
         {/* Main statement */}
-        <div>
-          <div style={{ overflow: 'hidden' }}>
-            <span style={lineStyle(0)}>We build</span>
-          </div>
-          <div style={{ overflow: 'hidden' }}>
-            <span style={lineStyle(1)}>brands that</span>
-          </div>
-          <div style={{ overflow: 'hidden' }}>
-            <span style={lineStyle(2)}>know what</span>
-          </div>
-          <div style={{ overflow: 'hidden' }}>
-            <span style={{ ...lineStyle(3), color: RED }}>they stand for.</span>
-          </div>
+        <div ref={heroLinesRef}>
+          {HERO_LINES.map((line, i) => (
+            <div key={i} style={{ overflow: 'hidden' }}>
+              <span
+                className="hero-line-inner"
+                style={{
+                  fontFamily:    PP,
+                  fontWeight:    400,
+                  fontSize:      'clamp(52px, 11vw, 160px)',
+                  color:         line.color,
+                  textTransform: 'uppercase',
+                  letterSpacing: '-3px',
+                  lineHeight:    1.0,
+                  margin:        0,
+                  display:       'block',
+                  width:         '100%',
+                  textAlign:     line.align,
+                }}
+              >
+                {line.text}
+              </span>
+            </div>
+          ))}
         </div>
 
         {/* Bottom bar */}
@@ -119,10 +130,7 @@ export default function HomePage() {
           display:        'flex',
           justifyContent: 'space-between',
           alignItems:     'flex-end',
-          opacity:        ready ? 1 : 0,
-          transform:      ready ? 'translateY(0)' : 'translateY(16px)',
-          transition:     `opacity 700ms ${EASE}, transform 700ms ${EASE}`,
-          transitionDelay:'500ms',
+          opacity:        1,
         }}>
           <p style={{
             fontFamily:  PP,
