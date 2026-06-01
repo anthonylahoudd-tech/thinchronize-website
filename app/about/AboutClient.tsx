@@ -3,6 +3,10 @@
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import PageHero from '@/components/ui/PageHero'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 function ParallaxImage({ src }: { src: string }) {
   const sectionRef = useRef<HTMLDivElement>(null)
@@ -427,11 +431,33 @@ export default function AboutClient() {
       </section>
 
       {/* ══ NUMBERS + VISION/MISSION — single black section ══════════ */}
-      <section style={{
-        background: '#000',
-        padding:    'clamp(72px, 9vw, 120px) 5vw',
-        overflow:   'hidden',
-      }}>
+      <section
+        className="numbers-section"
+        style={{
+          background: '#000',
+          padding:    'clamp(72px, 9vw, 120px) 5vw',
+          overflow:   'hidden',
+        }}
+        ref={(el) => {
+          if (!el) return
+          const lines = el.querySelectorAll('.stat-line')
+          gsap.fromTo(
+            lines,
+            { yPercent: 110 },
+            {
+              yPercent: 0,
+              duration: 1,
+              ease: 'power4.out',
+              stagger: 0.08,
+              scrollTrigger: {
+                trigger: el,
+                start: 'top 80%',
+                once: true,
+              },
+            }
+          )
+        }}
+      >
 
         {/* Label */}
         <p style={{
@@ -446,29 +472,34 @@ export default function AboutClient() {
           By the numbers
         </p>
 
-        {/* Stacked stats — number grey, label white */}
+        {/* Stacked stats — clip-reveal on scroll */}
         {[
           { num: '10+',   label: 'YEARS IN BRAND', align: 'left'  as const },
           { num: '150+',  label: 'BRANDS BUILT',   align: 'right' as const },
           { num: '20+',   label: 'INDUSTRIES',     align: 'left'  as const },
           { num: '100%',  label: 'STRATEGY-LED',   align: 'right' as const },
         ].map(item => (
-          <p
+          <div
             key={item.num}
-            style={{
-              fontFamily:    PP,
-              fontWeight:    400,
-              fontSize:      'clamp(52px, 8.5vw, 125px)',
-              textTransform: 'uppercase',
-              letterSpacing: '-3px',
-              lineHeight:    1.0,
-              margin:        0,
-              textAlign:     item.align,
-            }}
+            style={{ overflow: 'hidden', lineHeight: 1.05 }}
           >
-            <span style={{ color: '#fff' }}>{item.num} </span>
-            <span style={{ color: 'rgba(255,255,255,0.3)' }}>{item.label}</span>
-          </p>
+            <p
+              className="stat-line"
+              style={{
+                fontFamily:    PP,
+                fontWeight:    400,
+                fontSize:      'clamp(52px, 8.5vw, 125px)',
+                textTransform: 'uppercase',
+                letterSpacing: '-3px',
+                lineHeight:    1.0,
+                margin:        0,
+                textAlign:     item.align,
+              }}
+            >
+              <span style={{ color: '#fff' }}>{item.num} </span>
+              <span style={{ color: 'rgba(255,255,255,0.3)' }}>{item.label}</span>
+            </p>
+          </div>
         ))}
 
         {/* Vision & Mission */}
