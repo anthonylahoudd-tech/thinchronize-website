@@ -120,10 +120,10 @@ export default function Contact() {
               <div>
                 <p className="text-neutral text-xs tracking-widest uppercase mb-1">Email</p>
                 <a
-                  href="mailto:hello@thinchronize.com"
+                  href="mailto:think@thinchronize.com"
                   className="text-white text-sm hover:text-red transition-colors link-underline"
                 >
-                  hello@thinchronize.com
+                  think@thinchronize.com
                 </a>
               </div>
               <div>
@@ -133,13 +133,19 @@ export default function Contact() {
               <div>
                 <p className="text-neutral text-xs tracking-widest uppercase mb-3">Follow</p>
                 <div className="flex gap-4">
-                  {['Instagram', 'LinkedIn', 'Behance'].map((platform) => (
+                  {[
+                    { label: 'Instagram', href: 'https://www.instagram.com/thinchronize/' },
+                    { label: 'Facebook',  href: 'https://www.facebook.com/thinchronize/' },
+                    { label: 'YouTube',   href: 'https://www.youtube.com/@thinchronize' },
+                  ].map(({ label, href }) => (
                     <a
-                      key={platform}
-                      href="#"
+                      key={label}
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="text-neutral text-sm hover:text-white transition-colors link-underline"
                     >
-                      {platform}
+                      {label}
                     </a>
                   ))}
                 </div>

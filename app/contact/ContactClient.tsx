@@ -272,7 +272,7 @@ export default function ContactClient() {
         >
           Or reach us directly at{' '}
           <a
-            href="mailto:hello@thinchronize.com"
+            href="mailto:think@thinchronize.com"
             style={{
               color:      '#fff',
               transition: 'color 0.2s',
@@ -280,7 +280,7 @@ export default function ContactClient() {
             onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = RED)}
             onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = '#fff')}
           >
-            hello@thinchronize.com
+            think@thinchronize.com
           </a>
         </p>
 

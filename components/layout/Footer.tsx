@@ -21,9 +21,9 @@ const footerLinks: Record<string, FooterLink[]> = {
   ],
   Connect: [
     { label: 'Contact',   href: '/contact' },
-    { label: 'Instagram', href: 'https://instagram.com', external: true },
-    { label: 'LinkedIn',  href: 'https://linkedin.com',  external: true },
-    { label: 'Behance',   href: 'https://behance.net',   external: true },
+    { label: 'Instagram', href: 'https://www.instagram.com/thinchronize/', external: true },
+    { label: 'Facebook',  href: 'https://www.facebook.com/thinchronize/',  external: true },
+    { label: 'YouTube',   href: 'https://www.youtube.com/@thinchronize',   external: true },
   ],
 }
 
