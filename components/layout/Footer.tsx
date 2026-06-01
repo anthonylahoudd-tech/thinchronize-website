@@ -25,6 +25,7 @@ const footerLinks: Record<string, FooterLink[]> = {
     { label: 'Facebook',  href: 'https://www.facebook.com/thinchronize/',  external: true },
     { label: 'YouTube',   href: 'https://www.youtube.com/@thinchronize',   external: true },
     { label: 'LinkedIn',  href: 'https://lb.linkedin.com/company/thinchronize', external: true },
+    { label: 'Behance',   href: 'https://www.behance.net/thinchronize',         external: true },
   ],
 }
 

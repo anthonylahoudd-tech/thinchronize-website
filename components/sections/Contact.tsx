@@ -138,6 +138,7 @@ export default function Contact() {
                     { label: 'Facebook',  href: 'https://www.facebook.com/thinchronize/' },
                     { label: 'YouTube',   href: 'https://www.youtube.com/@thinchronize' },
                     { label: 'LinkedIn',  href: 'https://lb.linkedin.com/company/thinchronize' },
+                    { label: 'Behance',   href: 'https://www.behance.net/thinchronize' },
                   ].map(({ label, href }) => (
                     <a
                       key={label}
