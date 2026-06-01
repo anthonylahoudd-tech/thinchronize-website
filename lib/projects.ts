@@ -141,7 +141,7 @@ export const PROJECTS: Project[] = [
     services: ['Brand Identity', 'Print Design', 'Environmental Design', 'Packaging'],
     year: '2025',
     market: 'Washington D.C., USA',
-    heroLines: ['Build a fast-casual sandwich', 'brand from the ground up.', 'Built to own the street.'],
+    heroLines: ['Whatsub. Build a fast-casual', 'sandwich brand from the ground up.', 'Built to own the street.'],
   },
   {
     id: 'hof',
@@ -151,7 +151,7 @@ export const PROJECTS: Project[] = [
     category: 'Brand Identity',
     location: 'Washington, D.C.',
     coverImage: '/images/work/hof/HOF-Cover.png',
-    heroLines: ["Introducing the flatbread", "to Washington D.C.", "on American terms."],
+    heroLines: ["HOF. Introducing the flatbread", "to Washington D.C.", "on American terms."],
     images: [
       { src: '/images/work/hof/HOF-Image-1.jpg' },
       { src: '/images/work/hof/HOF-Image-1.png' },
@@ -224,7 +224,7 @@ export const PROJECTS: Project[] = [
     category: 'Brand Identity',
     location: 'Lebanon',
     coverImage: '/images/work/karma-ngo/Karma-Coverr.png',
-    heroLines: ["A rebrand that finally", "matched the organisation's courage."],
+    heroLines: ["Karma NGO. A rebrand that finally", "matched the organisation's courage."],
     images: [
       { src: '/images/work/karma-ngo/Karma-Image-1.png' },
       { src: '/images/work/karma-ngo/Karma-Image-3.png' },
@@ -300,7 +300,7 @@ export const PROJECTS: Project[] = [
     category: 'Brand Identity',
     location: 'Lebanon',
     coverImage: '/images/work/latelier/Latelier-Image-3.jpeg',
-    heroLines: ["A mission-driven organisation", "with clarity on purpose —", "and no visual language to prove it."],
+    heroLines: ["L'Atelier. A mission-driven", "organisation with clarity on purpose —", "and no visual language to prove it."],
     images: [
       { src: '/images/work/latelier/Latelier-Image-3.jpeg' },
       { src: '/images/work/latelier/Latelier-Image-2.jpeg' },
@@ -342,7 +342,7 @@ export const PROJECTS: Project[] = [
     category: 'Brand Identity',
     location: 'Lebanon',
     coverImage: '/images/work/cafe-bdooz/Cover-Bdooz.jpg',
-    heroLines: ["A neighbourhood café people", "recognise before they walk in."],
+    heroLines: ["Cafe BDOOZ. A neighbourhood café", "people recognise before they walk in."],
     images: [
       { src: '/images/work/cafe-bdooz/Image-1-Bdooz.jpg' },
       { src: '/images/work/cafe-bdooz/Image-2-Bdooz.jpg' },
@@ -395,7 +395,7 @@ export const PROJECTS: Project[] = [
     category: 'Brand Identity',
     location: 'Lebanon',
     coverImage: '/images/work/don-bosco.jpg',
-    heroLines: ["A school's identity realigned", "with what it had actually become."],
+    heroLines: ["Don Bosco. A school's identity", "realigned with what it had actually become."],
     images: [{ src: '/images/work/don-bosco.jpg' }],
     brief: {
       headline: 'They came asking for a logo refresh. That wasn\'t the problem.',
@@ -433,7 +433,7 @@ export const PROJECTS: Project[] = [
     category: 'Brand Identity',
     location: 'Lebanon',
     coverImage: '/images/work/tryo.jpg',
-    heroLines: ["A startup brand that explains", "itself in three seconds."],
+    heroLines: ["Tryo. A startup brand that", "explains itself in three seconds."],
     images: [{ src: '/images/work/tryo.jpg' }],
     brief: {
       headline: 'A startup at launch with a product and no brand.',
@@ -471,7 +471,7 @@ export const PROJECTS: Project[] = [
     category: 'Motion',
     location: 'Washington, D.C.',
     coverImage: '/images/work/nft-motivated.jpg',
-    heroLines: ["Motion content that communicates", "the brand, not just the colours."],
+    heroLines: ["NFT Motivated. Motion content that", "communicates the brand, not just the colours."],
     images: [{ src: '/images/work/nft-motivated.jpg' }],
     brief: {
       headline: 'A US-based NFT platform needing motion content that matched their brand energy.',
@@ -509,7 +509,7 @@ export const PROJECTS: Project[] = [
     category: 'Motion',
     location: 'Canada',
     coverImage: '/images/work/equisoft.jpg',
-    heroLines: ["A motion system that makes", "the product look as intelligent as it is."],
+    heroLines: ["Equisoft. A motion system that makes", "the product look as intelligent as it is."],
     images: [{ src: '/images/work/equisoft.jpg' }],
     brief: {
       headline: 'A financial software company in Canada needing brand motion across their communications.',
@@ -547,7 +547,7 @@ export const PROJECTS: Project[] = [
     category: 'Packaging',
     location: 'Lebanon',
     coverImage: '/images/work/societe-jabra.jpg',
-    heroLines: ["Print collateral that reinforces", "the brand instead of undermining it."],
+    heroLines: ["Societe Jabra. Print collateral that", "reinforces the brand instead of undermining it."],
     images: [{ src: '/images/work/societe-jabra.jpg' }],
     brief: {
       headline: 'A company needing client-facing print materials that actually represented them.',
@@ -585,7 +585,7 @@ export const PROJECTS: Project[] = [
     category: 'Brand Strategy',
     location: 'Lebanon',
     coverImage: '/images/work/conundrum.jpg',
-    heroLines: ["An editorial system built", "for content that needs to be read."],
+    heroLines: ["Conundrum. An editorial system", "built for content that needs to be read."],
     images: [{ src: '/images/work/conundrum.jpg' }],
     brief: {
       headline: 'Complex content that needed to be organised into a physical format people would actually read.',
