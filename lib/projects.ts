@@ -62,7 +62,7 @@ export const PROJECTS: Project[] = [
     subtitle: 'Brand Identity & Visual System',
     category: 'Brand Identity',
     location: 'Washington, U.S.A.',
-    coverImage: '/images/work/whatsub/Whatsub-Sign.jpg',
+    coverImage: '/images/work/whatsub/Whatsub-Image-19.jpg',
     images: [
       { src: '/images/work/whatsub/Whatsub-Image-1.jpg' },
       { src: '/images/work/whatsub/Whatsub-image-2.jpg' },
@@ -82,7 +82,7 @@ export const PROJECTS: Project[] = [
       { src: '/images/work/whatsub/Whatsub-Image-16.jpg' },
       { src: '/images/work/whatsub/Whatsub-Image-17.jpg' },
       { src: '/images/work/whatsub/Whatsub-Image-18.jpg' },
-      { src: '/images/work/whatsub/Whatsub-Image-19.jpg' },
+      { src: '/images/work/whatsub/Whatsub-Sign.jpg' },
       { src: '/images/work/whatsub/mural.jpg' },
       { src: '/images/work/whatsub/packaging.jpg' },
       { src: '/images/work/whatsub/poster-1.jpg' },
