@@ -80,45 +80,45 @@ export default function HomePage() {
         overflow:      'hidden',
       }}>
 
-        {/* Main statement — lines interleaved with sub-phrases */}
+        {/* Main statement */}
         <div ref={heroLinesRef}>
 
-          {/* Line 1 — Mindful by */}
+          {/* Row 1 — full width: MINDFUL BY */}
           <div style={{ overflow: 'hidden' }}>
-            <span className="hero-line-inner" style={{ fontFamily: PP, fontWeight: 400, fontSize: 'clamp(52px, 11vw, 160px)', color: 'white', textTransform: 'uppercase', letterSpacing: '-3px', lineHeight: 1.0, margin: 0, display: 'block', width: '100%', textAlign: 'left' }}>
+            <span className="hero-line-inner" style={{ fontFamily: PP, fontWeight: 400, fontSize: 'clamp(52px, 11vw, 160px)', color: 'white', textTransform: 'uppercase', letterSpacing: '-3px', lineHeight: 1.0, display: 'block', width: '100%', textAlign: 'left' }}>
               Mindful by
             </span>
           </div>
 
-          {/* Line 2 — design */}
-          <div style={{ overflow: 'hidden' }}>
-            <span className="hero-line-inner" style={{ fontFamily: PP, fontWeight: 400, fontSize: 'clamp(52px, 11vw, 160px)', color: RED, textTransform: 'uppercase', letterSpacing: '-3px', lineHeight: 1.0, margin: 0, display: 'block', width: '100%', textAlign: 'right' }}>
-              design
-            </span>
+          {/* Row 2 — left: strategy-led label · right: DESIGN */}
+          <div className="hero-line-inner" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '2vw' }}>
+            <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', margin: 0, flexShrink: 0 }}>
+              Strategy-led creative studio · Beirut, Lebanon
+            </p>
+            <div style={{ overflow: 'hidden' }}>
+              <span className="hero-line-inner" style={{ fontFamily: PP, fontWeight: 400, fontSize: 'clamp(52px, 11vw, 160px)', color: RED, textTransform: 'uppercase', letterSpacing: '-3px', lineHeight: 1.0, display: 'block', whiteSpace: 'nowrap' }}>
+                design
+              </span>
+            </div>
           </div>
 
-          {/* Sub-phrase 1 — Strategy-led */}
-          <p className="hero-line-inner" style={{ fontFamily: PP, fontWeight: 400, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', margin: 'clamp(6px, 0.8vw, 12px) 0', textAlign: 'left' }}>
-            Strategy-led creative studio · Beirut, Lebanon
-          </p>
-
-          {/* Line 3 — Strategic */}
+          {/* Row 3 — full width: STRATEGIC */}
           <div style={{ overflow: 'hidden' }}>
-            <span className="hero-line-inner" style={{ fontFamily: PP, fontWeight: 400, fontSize: 'clamp(52px, 11vw, 160px)', color: RED, textTransform: 'uppercase', letterSpacing: '-3px', lineHeight: 1.0, margin: 0, display: 'block', width: '100%', textAlign: 'left' }}>
+            <span className="hero-line-inner" style={{ fontFamily: PP, fontWeight: 400, fontSize: 'clamp(52px, 11vw, 160px)', color: RED, textTransform: 'uppercase', letterSpacing: '-3px', lineHeight: 1.0, display: 'block', width: '100%', textAlign: 'left' }}>
               Strategic
             </span>
           </div>
 
-          {/* Sub-phrase 2 — Every project */}
-          <p className="hero-line-inner" style={{ fontFamily: PP, fontWeight: 400, fontSize: 'clamp(14px, 1.4vw, 18px)', color: 'rgba(255,255,255,0.5)', margin: 'clamp(6px, 0.8vw, 12px) 0', lineHeight: 1.6, textAlign: 'left', maxWidth: 480 }}>
-            Every project starts with a diagnosis,<br />not a brief.
-          </p>
-
-          {/* Line 4 — by nature */}
-          <div style={{ overflow: 'hidden' }}>
-            <span className="hero-line-inner" style={{ fontFamily: PP, fontWeight: 400, fontSize: 'clamp(52px, 11vw, 160px)', color: 'white', textTransform: 'uppercase', letterSpacing: '-3px', lineHeight: 1.0, margin: 0, display: 'block', width: '100%', textAlign: 'left' }}>
-              by nature
-            </span>
+          {/* Row 4 — left: every project phrase · right: BY NATURE */}
+          <div className="hero-line-inner" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '2vw' }}>
+            <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 'clamp(13px, 1.2vw, 16px)', color: 'rgba(255,255,255,0.5)', margin: 0, lineHeight: 1.6, flexShrink: 0, maxWidth: '30%' }}>
+              Every project starts with a diagnosis,<br />not a brief.
+            </p>
+            <div style={{ overflow: 'hidden' }}>
+              <span className="hero-line-inner" style={{ fontFamily: PP, fontWeight: 400, fontSize: 'clamp(52px, 11vw, 160px)', color: 'white', textTransform: 'uppercase', letterSpacing: '-3px', lineHeight: 1.0, display: 'block', whiteSpace: 'nowrap' }}>
+                by nature
+              </span>
+            </div>
           </div>
 
         </div>
