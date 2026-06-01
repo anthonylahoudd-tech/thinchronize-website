@@ -494,7 +494,7 @@ export default function AboutClient() {
               className="stat-line"
               style={{
                 fontFamily:    PP,
-                fontWeight:    900,
+                fontWeight:    400,
                 fontSize:      'clamp(64px, 11vw, 160px)',
                 textTransform: 'uppercase',
                 letterSpacing: '-2px',
