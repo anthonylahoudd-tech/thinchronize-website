@@ -42,9 +42,9 @@ function ParallaxImage({ src, height = '65vh' }: { src: string; height?: string 
 
 const HERO_LINES = [
   { text: 'Mindful by',  align: 'left'  as const, color: 'white' },
-  { text: 'design',      align: 'right' as const, color: 'white' },
-  { text: 'Strategic',   align: 'left'  as const, color: 'white' },
-  { text: 'by nature',   align: 'right' as const, color: RED     },
+  { text: 'design',      align: 'right' as const, color: RED     },
+  { text: 'Strategic',   align: 'left'  as const, color: RED     },
+  { text: 'by nature',   align: 'right' as const, color: 'white' },
 ]
 
 export default function HomePage() {
