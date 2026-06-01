@@ -150,6 +150,7 @@ export const PROJECTS: Project[] = [
     subtitle: 'Brand Identity',
     category: 'Brand Identity',
     coverImage: '/images/work/latelier/Latelier-Image-3.jpeg',
+    heroLines: ["A mission-driven organisation", "with clarity on purpose —", "and no visual language to prove it."],
     images: [
       { src: '/images/work/latelier/Latelier-Image-3.jpeg' },
       { src: '/images/work/latelier/Latelier-Image-2.jpeg' },
@@ -190,6 +191,7 @@ export const PROJECTS: Project[] = [
     subtitle: 'Brand Identity',
     category: 'Brand Identity',
     coverImage: '/images/work/cafe-bdooz/Cover-Bdooz.jpg',
+    heroLines: ["A neighbourhood café people", "recognise before they walk in."],
     images: [
       { src: '/images/work/cafe-bdooz/Image-1-Bdooz.jpg' },
       { src: '/images/work/cafe-bdooz/Image-2-Bdooz.jpg' },
@@ -241,6 +243,8 @@ export const PROJECTS: Project[] = [
     subtitle: 'Rebranding',
     category: 'Brand Identity',
     coverImage: '/images/work/don-bosco.jpg',
+    heroLines: ["A school's identity realigned", "with what it had actually become."],
+    images: [{ src: '/images/work/don-bosco.jpg' }],
     brief: {
       headline: 'They came asking for a logo refresh. That wasn\'t the problem.',
       body: 'Don Bosco School had evolved — new facilities, an expanded vision, a changed student body — but the brand was still communicating 1990. The real ask wasn\'t modernisation. It was alignment between what the school had become and how it was presenting itself to the world.',
@@ -276,6 +280,8 @@ export const PROJECTS: Project[] = [
     subtitle: 'Brand Identity',
     category: 'Brand Identity',
     coverImage: '/images/work/tryo.jpg',
+    heroLines: ["A startup brand that explains", "itself in three seconds."],
+    images: [{ src: '/images/work/tryo.jpg' }],
     brief: {
       headline: 'A startup at launch with a product and no brand.',
       body: 'The founders could describe the product in detail but couldn\'t articulate what made it matter to someone who didn\'t already know them. They weren\'t missing a logo — they were missing a point of view.',
@@ -311,6 +317,8 @@ export const PROJECTS: Project[] = [
     subtitle: 'Motion Graphics',
     category: 'Motion',
     coverImage: '/images/work/nft-motivated.jpg',
+    heroLines: ["Motion content that communicates", "the brand, not just the colours."],
+    images: [{ src: '/images/work/nft-motivated.jpg' }],
     brief: {
       headline: 'A US-based NFT platform needing motion content that matched their brand energy.',
       body: 'Motion was being treated as decoration — content to fill feeds — not as strategic communication. The animations were moving. They weren\'t saying anything. The platform needed a motion direction that reflected the brand\'s character, not just its colour palette.',
@@ -346,6 +354,8 @@ export const PROJECTS: Project[] = [
     subtitle: 'Motion Graphics',
     category: 'Motion',
     coverImage: '/images/work/equisoft.jpg',
+    heroLines: ["A motion system that makes", "the product look as intelligent as it is."],
+    images: [{ src: '/images/work/equisoft.jpg' }],
     brief: {
       headline: 'A financial software company in Canada needing brand motion across their communications.',
       body: 'Equisoft\'s motion was working against their product. The visuals weren\'t communicating the sophistication the software actually had. They needed a motion system — not animations — that would make the product look as intelligent as it is.',
@@ -381,6 +391,8 @@ export const PROJECTS: Project[] = [
     subtitle: 'Print Collateral',
     category: 'Packaging',
     coverImage: '/images/work/societe-jabra.jpg',
+    heroLines: ["Print collateral that reinforces", "the brand instead of undermining it."],
+    images: [{ src: '/images/work/societe-jabra.jpg' }],
     brief: {
       headline: 'A company needing client-facing print materials that actually represented them.',
       body: 'Functional but disconnected. The collateral looked like it came from a different brand than the one the client thought they were building. Print was being treated as an afterthought — not a brand touchpoint.',
@@ -416,6 +428,8 @@ export const PROJECTS: Project[] = [
     subtitle: 'Booklet + Brochure',
     category: 'Brand Strategy',
     coverImage: '/images/work/conundrum.jpg',
+    heroLines: ["An editorial system built", "for content that needs to be read."],
+    images: [{ src: '/images/work/conundrum.jpg' }],
     brief: {
       headline: 'Complex content that needed to be organised into a physical format people would actually read.',
       body: 'The challenge wasn\'t design — it was hierarchy. Too much information with no clear order of importance. Readers were getting lost before they reached what mattered. The document needed to be restructured before it could be designed.',
