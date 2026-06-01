@@ -343,7 +343,7 @@ export default function PortfolioProjectClient({
           {/* Hero animated banner (project with location) */}
           {project.location && (
             <div style={{ overflow: 'hidden', flexShrink: 0 }}>
-              <div className="page-marquee-track">
+              <div className="page-marquee-track" style={{ animationDuration: '35s' }}>
                 <span style={{
                   fontFamily:    PP,
                   fontWeight:    900,
@@ -355,8 +355,8 @@ export default function PortfolioProjectClient({
                   whiteSpace:    'nowrap',
                   opacity:       0.95,
                 }}>
-                  {`${project.title} * ${project.location} * ${project.title} * ${project.location} * ${project.title} * ${project.location} * `}
-                  {`${project.title} * ${project.location} * ${project.title} * ${project.location} * ${project.title} * ${project.location} * `}
+                  {`${project.title} * ${project.location} * ${project.title} * ${project.location} * `}
+                  {`${project.title} * ${project.location} * ${project.title} * ${project.location} * `}
                 </span>
               </div>
             </div>
