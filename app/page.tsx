@@ -41,8 +41,8 @@ function ParallaxImage({ src, height = '65vh' }: { src: string; height?: string 
 // ─── Hero text entrance ───────────────────────────────────────────────────────
 
 const HERO_LINES = [
-  { text: 'Mindful',      align: 'left'  as const, color: 'white' },
-  { text: 'by design.',   align: 'right' as const, color: 'white' },
+  { text: 'Mindful by',   align: 'left'  as const, color: 'white' },
+  { text: 'design.',      align: 'right' as const, color: 'white' },
   { text: 'Strategic',    align: 'left'  as const, color: 'white' },
   { text: 'by nature.',   align: 'right' as const, color: RED     },
 ]
