@@ -123,42 +123,6 @@ export default function HomePage() {
 
         </div>
 
-        {/* Bottom bar */}
-        <div style={{
-          display:        'flex',
-          justifyContent: 'flex-end',
-          alignItems:     'flex-end',
-          opacity:        1,
-        }}>
-          <p style={{ display: 'none' }}></p>
-          <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
-            <Link href="/portfolio" style={{
-              fontFamily:          PP,
-              fontWeight:          400,
-              fontSize:            13,
-              letterSpacing:       '2px',
-              textTransform:       'uppercase',
-              color:               'rgba(255,255,255,0.5)',
-              textDecoration:      'underline',
-              textUnderlineOffset: '5px',
-            }}>
-              View our work ↓
-            </Link>
-            <Link href="/contact" style={{
-              fontFamily:    PP,
-              fontWeight:    400,
-              fontSize:      13,
-              letterSpacing: '2px',
-              textTransform: 'uppercase',
-              color:         'white',
-              background:    RED,
-              padding:       '12px 28px',
-              textDecoration:'none',
-            }}>
-              Let&apos;s Sync.
-            </Link>
-          </div>
-        </div>
 
       </section>
 
