@@ -51,12 +51,12 @@ export default function HomePage() {
 
   const lineStyle = (i: number): React.CSSProperties => ({
     fontFamily:      PP,
-    fontWeight:      900,
-    fontSize:        'clamp(56px, 10vw, 150px)',
+    fontWeight:      400,
+    fontSize:        'clamp(52px, 8.5vw, 125px)',
     color:           'white',
     textTransform:   'uppercase',
     letterSpacing:   '-3px',
-    lineHeight:      0.9,
+    lineHeight:      1.0,
     margin:          0,
     display:         'block',
     opacity:         ready ? 1 : 0,
