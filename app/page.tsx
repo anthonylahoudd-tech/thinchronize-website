@@ -98,7 +98,7 @@ export default function HomePage() {
           </div>
 
           {/* Sub-phrase 1 — Strategy-led */}
-          <p className="hero-line-inner" style={{ fontFamily: PP, fontWeight: 400, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', margin: 'clamp(10px, 1.5vw, 20px) 0', textAlign: 'left' }}>
+          <p className="hero-line-inner" style={{ fontFamily: PP, fontWeight: 400, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', margin: 'clamp(6px, 0.8vw, 12px) 0', textAlign: 'left' }}>
             Strategy-led creative studio · Beirut, Lebanon
           </p>
 
@@ -110,13 +110,13 @@ export default function HomePage() {
           </div>
 
           {/* Sub-phrase 2 — Every project */}
-          <p className="hero-line-inner" style={{ fontFamily: PP, fontWeight: 400, fontSize: 'clamp(14px, 1.4vw, 18px)', color: 'rgba(255,255,255,0.5)', margin: 'clamp(10px, 1.5vw, 20px) 0', lineHeight: 1.6, textAlign: 'left', maxWidth: 480 }}>
+          <p className="hero-line-inner" style={{ fontFamily: PP, fontWeight: 400, fontSize: 'clamp(14px, 1.4vw, 18px)', color: 'rgba(255,255,255,0.5)', margin: 'clamp(6px, 0.8vw, 12px) 0', lineHeight: 1.6, textAlign: 'left', maxWidth: 480 }}>
             Every project starts with a diagnosis,<br />not a brief.
           </p>
 
           {/* Line 4 — by nature */}
           <div style={{ overflow: 'hidden' }}>
-            <span className="hero-line-inner" style={{ fontFamily: PP, fontWeight: 400, fontSize: 'clamp(52px, 11vw, 160px)', color: 'white', textTransform: 'uppercase', letterSpacing: '-3px', lineHeight: 1.0, margin: 0, display: 'block', width: '100%', textAlign: 'right' }}>
+            <span className="hero-line-inner" style={{ fontFamily: PP, fontWeight: 400, fontSize: 'clamp(52px, 11vw, 160px)', color: 'white', textTransform: 'uppercase', letterSpacing: '-3px', lineHeight: 1.0, margin: 0, display: 'block', width: '100%', textAlign: 'left' }}>
               by nature
             </span>
           </div>
