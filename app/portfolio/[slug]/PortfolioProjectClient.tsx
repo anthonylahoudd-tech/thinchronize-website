@@ -63,6 +63,7 @@ export default function PortfolioProjectClient({
   const router         = useRouter()
   const navTriggered    = useRef(false)
   const nextProgressRef = useRef(0)
+  const gateActive      = useRef(false) // true once gate fills viewport — Lenis stopped
 
   // ── Hero entrance animation (clip reveal, same as TextReveal) ────────────
   useGSAP(() => {
@@ -143,8 +144,10 @@ export default function PortfolioProjectClient({
     }
   }, [])
 
-  // ── Scroll handler — pill, progress bar, header fade ──────────────────────
+  // ── Scroll handler — pill, progress bar, header fade, Lenis gate lock ───────
   useEffect(() => {
+    type LenisWin = { lenis?: { stop: () => void; start: () => void } }
+
     const handle = () => {
       const sy = window.scrollY
       const vh = window.innerHeight
@@ -152,41 +155,48 @@ export default function PortfolioProjectClient({
       if (sy > 20) setShowScrollHint(false)
       setHeroParallax(Math.min(sy * 0.15, vh * 0.15))
 
-      // In-project progress bar — full range up to gate entry
       const contentHeight = Math.max(1, document.body.scrollHeight - 2 * vh)
       setProjectProgress(Math.max(0, Math.min(1, sy / contentHeight)))
 
-      // Header fade — starts 1.5vh before gate, fully gone at gate entry
-      if (nextSectionRef.current) {
-        const rect       = nextSectionRef.current.getBoundingClientRect()
-        const fadeStart  = vh * 1.5
-        const opacity    = Math.max(0, Math.min(1, rect.top / fadeStart))
-        const h = document.querySelector('[data-site-header]') as HTMLElement | null
-        if (h) h.style.opacity = String(opacity)
+      if (!nextSectionRef.current) return
+      const rect      = nextSectionRef.current.getBoundingClientRect()
+      const fadeStart = vh * 1.5
+      const opacity   = Math.max(0, Math.min(1, rect.top / fadeStart))
+      const h = document.querySelector('[data-site-header]') as HTMLElement | null
+      if (h) h.style.opacity = String(opacity)
 
-        // When gate scrolls away (user went back), reset progress
-        if (rect.top > 50 && nextProgressRef.current > 0) {
-          nextProgressRef.current = 0
-          setNextProgress(0)
-        }
+      // Gate arrived — freeze Lenis so page cannot scroll further
+      if (!gateActive.current && rect.top <= 5) {
+        gateActive.current = true
+        ;(window as unknown as LenisWin).lenis?.stop()
+      }
+
+      // Gate left (user scrolled back) — resume Lenis, reset progress
+      if (gateActive.current && rect.top > 50) {
+        gateActive.current = false
+        ;(window as unknown as LenisWin).lenis?.start()
+        nextProgressRef.current = 0
+        setNextProgress(0)
       }
     }
     window.addEventListener('scroll', handle, { passive: true })
-    return () => window.removeEventListener('scroll', handle)
+    return () => {
+      window.removeEventListener('scroll', handle)
+      // Always restore Lenis on unmount (e.g. navigation)
+      ;(window as unknown as LenisWin).lenis?.start()
+    }
   }, [])
 
-  // ── Wheel handler — drives gate when page is at max scroll ────────────────
+  // ── Wheel handler — drives gate cover while Lenis is frozen ───────────────
   useEffect(() => {
     const WHEEL_TOTAL = 1500
 
     const handle = (e: WheelEvent) => {
-      if (navTriggered.current || !nextSectionRef.current) return
+      if (!gateActive.current || navTriggered.current) return
+      // Ignore scroll-up (let Lenis handle going back once it's re-enabled)
+      if (e.deltaY <= 0) return
 
-      const rect = nextSectionRef.current.getBoundingClientRect()
-      // Only fire when gate is at (or very near) viewport top
-      if (rect.top > 10 || rect.top < -30) return
-
-      const newProg = Math.min(1, Math.max(0, nextProgressRef.current + e.deltaY / WHEEL_TOTAL))
+      const newProg = Math.min(1, nextProgressRef.current + e.deltaY / WHEEL_TOTAL)
       nextProgressRef.current = newProg
       setNextProgress(newProg)
 
@@ -730,16 +740,52 @@ export default function PortfolioProjectClient({
       }}>
         <div style={{ position: 'relative', height: '100%' }}>
 
-          {/* ── Marquee — next project name, always running, above cover ── */}
+          {/* ── "Keep scrolling" + progress bar — fixed on top of everything ── */}
           <div style={{
-            position:      'absolute',
-            top:           '50%',
-            left:          0,
-            right:         0,
-            zIndex:        4,
-            transform:     'translateY(-50%)',
-            overflow:      'hidden',
-            mixBlendMode:  'difference',
+            position:   'absolute',
+            top:        '28%',
+            left:       '5vw',
+            right:      '5vw',
+            zIndex:     5,
+            display:    'flex',
+            alignItems: 'center',
+            gap:        32,
+            transform:  'translateY(-50%)',
+          }}>
+            <p style={{
+              fontFamily:    PP,
+              fontWeight:    400,
+              fontSize:      12,
+              letterSpacing: '0.05em',
+              color:         'rgba(0,0,0,0.5)',
+              margin:        0,
+              whiteSpace:    'nowrap',
+            }}>
+              Keep scrolling for the next case study.
+            </p>
+            <div style={{ position: 'relative', height: 1, flex: 1 }}>
+              <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.12)' }} />
+              <div style={{
+                position:  'absolute',
+                left:       0,
+                top:        0,
+                height:     1,
+                width:      `${nextProgress * 100}%`,
+                background: '#0f0f0f',
+                transition: 'width 60ms linear',
+              }} />
+            </div>
+          </div>
+
+          {/* ── Marquee — under the cover, gets hidden as cover rises ── */}
+          <div style={{
+            position: 'absolute',
+            top:      '50%',
+            left:     0,
+            right:    0,
+            zIndex:   2,
+            transform:'translateY(-50%)',
+            overflow: 'hidden',
           }}>
             <div className="marquee-track" style={{ display: 'flex', gap: '0.5em', whiteSpace: 'nowrap' }}>
               {[...Array(2)].map((_, copy) => (
@@ -749,7 +795,7 @@ export default function PortfolioProjectClient({
                       fontFamily:    PP,
                       fontWeight:    900,
                       fontSize:      'clamp(80px, 12vw, 160px)',
-                      color:         'white',
+                      color:         '#0f0f0f',
                       letterSpacing: '-0.03em',
                       lineHeight:    1,
                       textTransform: 'uppercase',
@@ -763,45 +809,7 @@ export default function PortfolioProjectClient({
             </div>
           </div>
 
-          {/* ── "Keep scrolling" left + progress bar right — centered, above cover ── */}
-          <div style={{
-            position:      'absolute',
-            top:           '30%',
-            left:          '5vw',
-            right:         '5vw',
-            zIndex:        4,
-            display:       'flex',
-            alignItems:    'center',
-            gap:           32,
-            transform:     'translateY(-50%)',
-            mixBlendMode:  'difference',
-          }}>
-            <p style={{
-              fontFamily:    PP,
-              fontWeight:    400,
-              fontSize:      12,
-              letterSpacing: '0.05em',
-              color:         'white',
-              margin:        0,
-              whiteSpace:    'nowrap',
-            }}>
-              Keep scrolling for the next case study.
-            </p>
-            <div style={{ position: 'relative', height: 1, flex: 1 }}>
-              <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.35)' }} />
-              <div style={{
-                position:   'absolute',
-                left:        0,
-                top:         0,
-                height:      1,
-                width:       `${nextProgress * 100}%`,
-                background:  'white',
-                transition:  'width 60ms linear',
-              }} />
-            </div>
-          </div>
-
-          {/* ── Next cover — peeks from bottom immediately, rises with scroll ── */}
+          {/* ── Cover — rises from bottom, covers marquee, stays under bar ── */}
           <div style={{
             position:  'absolute',
             inset:      0,
