@@ -341,7 +341,6 @@ export default function PortfolioProjectClient({
           display:       'flex',
           flexDirection: 'column',
           paddingTop:    'calc(96px + 3vh)',
-          overflow:      'hidden',
         }}>
 
           {/* Hero animated banner (project with location) */}
@@ -426,26 +425,14 @@ export default function PortfolioProjectClient({
             </div>
           </div>
 
-        </div>{/* end content block */}
-
-        {/* ── Sticky — pill + (Scroll) locked to viewport bottom throughout hero ── */}
-        <div style={{
-          position:      'sticky',
-          top:            0,
-          height:        '100vh',
-          zIndex:         3,
-          pointerEvents: 'none',
-        }}>
+          {/* ── Pill + (Scroll) — inside content div, scrolls naturally with hero ── */}
           <div style={{
-            position:       'absolute',
-            bottom:          0,
-            left:            0,
-            right:           0,
+            marginTop:      'auto',
+            flexShrink:      0,
             padding:        '0 5vw 44px',
             display:        'flex',
             justifyContent: 'space-between',
             alignItems:     'flex-end',
-            pointerEvents:  'auto',
           }}>
             <span style={{
               fontFamily:    PP,
@@ -459,7 +446,8 @@ export default function PortfolioProjectClient({
             </span>
             {pillJSX}
           </div>
-        </div>
+
+        </div>{/* end content block */}
 
       </section>
 
