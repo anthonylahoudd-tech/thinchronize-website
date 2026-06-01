@@ -301,21 +301,24 @@ export default function PortfolioProjectClient({
           Content (banner + text): absolute 100vh, scrolls naturally off.
           Sticky: ONLY pill + (Scroll) bar — stays locked at viewport bottom.
       ════════════════════════════════════════════════════════════════ */}
-      <section style={{ height: '140vh', position: 'relative', overflow: 'hidden', background: '#000' }}>
+      <section style={{ height: '140vh', position: 'relative', background: '#000' }}>
 
-        {/* ── Image — covers full 140vh, scrolls with section ── */}
-        <div style={{
-          position:   'absolute',
-          top: '-15%', left: 0, right: 0, bottom: '-15%',
-          transform:  `translateY(${heroParallax}px)`,
-          willChange: 'transform',
-        }}>
-          <Image
-            src={project.coverImage}
-            alt={project.title}
-            fill priority sizes="100vw"
-            style={{ objectFit: 'cover', opacity: 0.82 }}
-          />
+        {/* ── Image — clipped in its own wrapper so section has no overflow:hidden
+            (overflow:hidden on section would trap sticky and break its viewport anchoring) ── */}
+        <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
+          <div style={{
+            position:   'absolute',
+            top: '-15%', left: 0, right: 0, bottom: '-15%',
+            transform:  `translateY(${heroParallax}px)`,
+            willChange: 'transform',
+          }}>
+            <Image
+              src={project.coverImage}
+              alt={project.title}
+              fill priority sizes="100vw"
+              style={{ objectFit: 'cover', opacity: 0.82 }}
+            />
+          </div>
         </div>
 
         {/* ── Gradient — covers full 140vh ── */}
