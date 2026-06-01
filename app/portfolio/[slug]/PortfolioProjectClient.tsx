@@ -51,7 +51,6 @@ export default function PortfolioProjectClient({
   const [navigating,      setNavigating]      = useState(false)
   const [projectProgress, setProjectProgress] = useState(0)
   const [heroParallax,    setHeroParallax]    = useState(0)
-  const [showScrollHint,  setShowScrollHint]  = useState(true)
 
   const pillTabRefs    = useRef<(HTMLButtonElement | null)[]>([])
   const nextSectionRef = useRef<HTMLDivElement>(null)
@@ -131,11 +130,6 @@ export default function PortfolioProjectClient({
     setPillMaskW(eRect.width)
   }, [])
 
-  // ── "Scroll to explore" hint — fades after 2 s or first scroll ──────────
-  useEffect(() => {
-    const t = setTimeout(() => setShowScrollHint(false), 2000)
-    return () => clearTimeout(t)
-  }, [])
 
   // ── Restore header on unmount ─────────────────────────────────────────────
   useEffect(() => {
@@ -153,7 +147,7 @@ export default function PortfolioProjectClient({
       const sy = window.scrollY
       const vh = window.innerHeight
       setPillScrolled(sy > vh * 1.1)
-      if (sy > 20) setShowScrollHint(false)
+
       setHeroParallax(Math.min(sy * 0.15, vh * 0.15))
 
       const contentHeight = Math.max(1, document.body.scrollHeight - 2 * vh)
@@ -943,33 +937,6 @@ export default function PortfolioProjectClient({
         }} />
       </div>
 
-      {/* ════════════════════════════════════════════════════════════════
-          "SCROLL TO EXPLORE" HINT — bottom-right, fades after 2 s or
-          first scroll. Only visible at the very top of the page.
-      ════════════════════════════════════════════════════════════════ */}
-      <div style={{
-        position:      'fixed',
-        bottom:         44,
-        right:          44,
-        zIndex:         50,
-        opacity:        showScrollHint ? 1 : 0,
-        transition:    'opacity 600ms ease',
-        pointerEvents: 'none',
-        textAlign:     'center',
-      }}>
-        <p style={{
-          fontFamily:    PP,
-          fontWeight:    400,
-          fontSize:      11,
-          letterSpacing: '2px',
-          textTransform: 'uppercase',
-          color:         '#919191',
-          margin:        '0 0 8px 0',
-        }}>
-          Scroll to explore
-        </p>
-        <span className="explore-bounce-arrow" style={{ color: '#919191', fontSize: 18 }}>↓</span>
-      </div>
 
     </div>
   )
