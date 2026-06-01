@@ -372,7 +372,7 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════════════════════════════
           5. PARALLAX IMAGE
       ══════════════════════════════════════════════════════════════════ */}
-      <ParallaxImage src="/images/work/whatsub/Whatsub-Sign.jpg" height="60vh" />
+      <ParallaxImage src="/images/Thinchronize-Mindful-Design-Website.jpg" height="60vh" />
 
       {/* ══════════════════════════════════════════════════════════════════
           6. SERVICES — simple list, white
