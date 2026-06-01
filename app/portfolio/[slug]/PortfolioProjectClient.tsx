@@ -120,9 +120,10 @@ export default function PortfolioProjectClient({
     setPillMaskW(eRect.width)
   }, [view])
 
-  // ── Pill slider mask: init on mount ──────────────────────────────────────
+  // ── Pill slider mask: init on mount — use actual default view index ─────────
   useEffect(() => {
-    const el = pillTabRefs.current[0]
+    const idx = view === 'visual' ? 0 : 1
+    const el  = pillTabRefs.current[idx]
     if (!el || !el.parentElement) return
     const pRect = el.parentElement.getBoundingClientRect()
     const eRect = el.getBoundingClientRect()
