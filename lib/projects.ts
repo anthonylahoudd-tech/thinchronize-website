@@ -206,12 +206,12 @@ export const PROJECTS: Project[] = [
     market: 'Washington D.C., USA',
   },
   {
-    id: 'thalassemia-liban',
-    title: 'Thalassemia Liban',
+    id: 'karma-ngo',
+    title: 'Karma NGO',
     tagline: 'A rebrand that finally matched the organisation\'s courage.',
     subtitle: 'Rebranding',
     category: 'Brand Identity',
-    coverImage: '/images/work/thalassemia-liban/TL-Cover.jpg',
+    coverImage: '/images/work/karma-ngo/Karma-Cover.jpg',
     heroLines: ["A rebrand that finally", "matched the organisation's courage."],
     images: [],
     brief: {
