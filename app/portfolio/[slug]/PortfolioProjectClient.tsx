@@ -422,14 +422,26 @@ export default function PortfolioProjectClient({
             </div>
           </div>
 
-          {/* ── Pill + (Scroll) — bottom of content div, scrolls naturally with cover ── */}
+        </div>{/* end content block */}
+
+        {/* ── Sticky — pill + (Scroll) locked to viewport bottom throughout hero ── */}
+        <div style={{
+          position:      'sticky',
+          top:            0,
+          height:        '100vh',
+          zIndex:         3,
+          pointerEvents: 'none',
+        }}>
           <div style={{
-            marginTop:      'auto',
+            position:       'absolute',
+            bottom:          0,
+            left:            0,
+            right:           0,
             padding:        '0 5vw 44px',
             display:        'flex',
             justifyContent: 'space-between',
             alignItems:     'flex-end',
-            flexShrink:      0,
+            pointerEvents:  'auto',
           }}>
             <span style={{
               fontFamily:    PP,
@@ -443,8 +455,7 @@ export default function PortfolioProjectClient({
             </span>
             {pillJSX}
           </div>
-
-        </div>{/* end content block */}
+        </div>
 
       </section>
 
