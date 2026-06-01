@@ -189,7 +189,7 @@ export default function PortfolioProjectClient({
 
   // ── Wheel handler — drives gate cover while Lenis is frozen ───────────────
   useEffect(() => {
-    const WHEEL_TOTAL = 1500
+    const WHEEL_TOTAL = 3000
 
     const handle = (e: WheelEvent) => {
       if (!gateActive.current || navTriggered.current) return
@@ -295,89 +295,78 @@ export default function PortfolioProjectClient({
       }} />
 
       {/* ════════════════════════════════════════════════════════════════
-          HERO — 140vh outer so cover stays visible while scrolling.
-          Inner cover is sticky top:0 / 100vh — drops off at 40vh scroll.
-          Pill + (Scroll) ride with the cover bottom, then exit.
+          HERO — 140vh outer.
+          Image + gradient: absolute, cover full 140vh (no black gap).
+          Content (banner + text): absolute 100vh, scrolls naturally off.
+          Sticky: ONLY pill + (Scroll) bar — stays locked at viewport bottom.
       ════════════════════════════════════════════════════════════════ */}
-      <section style={{ height: '140vh', position: 'relative' }}>
+      <section style={{ height: '140vh', position: 'relative', overflow: 'hidden', background: '#000' }}>
 
-        {/* ── Sticky cover — sticks at top for first 40vh of scroll ── */}
+        {/* ── Image — covers full 140vh, scrolls with section ── */}
         <div style={{
-          position:      'sticky',
+          position:   'absolute',
+          top: '-15%', left: 0, right: 0, bottom: '-15%',
+          transform:  `translateY(${heroParallax}px)`,
+          willChange: 'transform',
+        }}>
+          <Image
+            src={project.coverImage}
+            alt={project.title}
+            fill priority sizes="100vw"
+            style={{ objectFit: 'cover', opacity: 0.82 }}
+          />
+        </div>
+
+        {/* ── Gradient — covers full 140vh ── */}
+        <div style={{
+          position:      'absolute',
+          inset:          0,
+          background:    'linear-gradient(to bottom, rgba(0,0,0,0.10) 0%, transparent 40%, rgba(0,0,0,0.72) 100%)',
+          zIndex:         1,
+          pointerEvents: 'none',
+        }} />
+
+        {/* ── Content: banner + text — flex column, same layout as PageHero ── */}
+        <div style={{
+          position:      'absolute',
           top:            0,
+          left:           0,
+          right:          0,
           height:        '100vh',
+          zIndex:         2,
+          display:       'flex',
+          flexDirection: 'column',
+          paddingTop:    'calc(96px + 3vh)',
           overflow:      'hidden',
-          background:    '#000',
         }}>
 
-          {/* Cover image — parallax */}
-          <div style={{
-            position:   'absolute',
-            top: '-15%', left: 0, right: 0, bottom: '-15%',
-            transform:  `translateY(${heroParallax}px)`,
-            willChange: 'transform',
-          }}>
-            <Image
-              src={project.coverImage}
-              alt={project.title}
-              fill priority sizes="100vw"
-              style={{ objectFit: 'cover', opacity: 0.82 }}
-            />
-          </div>
-
-          {/* Gradient */}
-          <div style={{
-            position:      'absolute',
-            inset:          0,
-            background:    'linear-gradient(to bottom, rgba(0,0,0,0.10) 0%, transparent 40%, rgba(0,0,0,0.72) 100%)',
-            zIndex:         1,
-            pointerEvents: 'none',
-          }} />
-
-          {/* ── Hero animated banner (project with location) ── */}
+          {/* Hero animated banner (project with location) */}
           {project.location && (
-            <div style={{
-              position:   'absolute',
-              bottom:     '38%',
-              left:        0,
-              right:       0,
-              overflow:   'hidden',
-              zIndex:      2,
-            }}>
-              <div className="page-marquee-track" style={{ display: 'flex', whiteSpace: 'nowrap', gap: '0.6em' }}>
-                {[...Array(2)].map((_, copy) => (
-                  <span key={copy} style={{ display: 'flex', gap: '0.6em', flexShrink: 0 }}>
-                    {[...Array(4)].map((_, i) => (
-                      <span key={i} style={{
-                        fontFamily:    PP,
-                        fontWeight:    900,
-                        fontSize:      'clamp(56px, 8vw, 110px)',
-                        color:         'white',
-                        textTransform: 'uppercase',
-                        letterSpacing: '-0.03em',
-                        lineHeight:    1,
-                        paddingRight:  '0.5em',
-                        opacity:       0.95,
-                      }}>
-                        {i % 2 === 0 ? project.title : project.location} ·
-                      </span>
-                    ))}
-                  </span>
-                ))}
+            <div style={{ overflow: 'hidden', flexShrink: 0 }}>
+              <div className="page-marquee-track">
+                <span style={{
+                  fontFamily:    PP,
+                  fontWeight:    900,
+                  fontSize:      'clamp(88px, 13vw, 185px)',
+                  color:         'white',
+                  textTransform: 'uppercase',
+                  letterSpacing: '-4px',
+                  lineHeight:    0.9,
+                  whiteSpace:    'nowrap',
+                  opacity:       0.95,
+                }}>
+                  {`${project.title} * ${project.location} * ${project.title} * ${project.location} * ${project.title} * ${project.location} * `}
+                  {`${project.title} * ${project.location} * ${project.title} * ${project.location} * ${project.title} * ${project.location} * `}
+                </span>
               </div>
             </div>
           )}
 
-          {/* ── Content block (title if no location, big text, services) ── */}
+          {/* Content block: title if no location, big text, services */}
           <div style={{
-            position:  'absolute',
-            top:       '62%',
-            left:      '5vw',
-            right:     '38%',
-            transform: 'translateY(-50%)',
-            zIndex:    3,
+            padding:  '44px 5vw 0',
+            flexShrink: 0,
           }}>
-            {/* Title — only shown when no location/banner */}
             {!project.location && (
               <div
                 ref={titleRef}
@@ -394,12 +383,10 @@ export default function PortfolioProjectClient({
                 }}
               />
             )}
-            {/* When there IS a location, titleRef still needs to exist for GSAP */}
             {project.location && (
               <div ref={titleRef} style={{ display: 'none' }} aria-hidden />
             )}
 
-            {/* Big headline */}
             <div
               ref={bigTextRef}
               aria-label={project.brief.headline}
@@ -416,7 +403,6 @@ export default function PortfolioProjectClient({
               {project.brief.headline}
             </div>
 
-            {/* Services */}
             <div ref={servicesRef} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px 0' }}>
               {project.services.map((s, i) => (
                 <span key={s} style={{
@@ -436,17 +422,26 @@ export default function PortfolioProjectClient({
             </div>
           </div>
 
-          {/* ── Bottom bar: (Scroll) + pill — rides cover bottom ── */}
+        </div>{/* end content block */}
+
+        {/* ── Sticky: ONLY pill + (Scroll) — stays at viewport bottom throughout hero ── */}
+        <div style={{
+          position:      'sticky',
+          top:            0,
+          height:        '100vh',
+          zIndex:         3,
+          pointerEvents: 'none',
+        }}>
           <div style={{
             position:       'absolute',
             bottom:          0,
             left:            0,
             right:           0,
-            zIndex:          4,
             padding:        '0 5vw 44px',
             display:        'flex',
             justifyContent: 'space-between',
             alignItems:     'flex-end',
+            pointerEvents:  'auto',
           }}>
             <span style={{
               fontFamily:    PP,
@@ -460,8 +455,8 @@ export default function PortfolioProjectClient({
             </span>
             {pillJSX}
           </div>
+        </div>{/* end sticky */}
 
-        </div>{/* end sticky cover */}
       </section>
 
       {/* ════════════════════════════════════════════════════════════════
