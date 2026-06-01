@@ -101,13 +101,16 @@ export default function HomePage() {
         {/* Main statement */}
         <div>
           <div style={{ overflow: 'hidden' }}>
-            <span style={lineStyle(0)}>We build brands</span>
+            <span style={lineStyle(0)}>We build</span>
           </div>
           <div style={{ overflow: 'hidden' }}>
-            <span style={lineStyle(1)}>that know what</span>
+            <span style={lineStyle(1)}>brands that</span>
           </div>
           <div style={{ overflow: 'hidden' }}>
-            <span style={{ ...lineStyle(2), color: RED }}>they stand for.</span>
+            <span style={lineStyle(2)}>know what</span>
+          </div>
+          <div style={{ overflow: 'hidden' }}>
+            <span style={{ ...lineStyle(3), color: RED }}>they stand for.</span>
           </div>
         </div>
 
