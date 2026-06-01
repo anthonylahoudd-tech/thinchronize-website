@@ -469,7 +469,7 @@ export const PROJECTS: Project[] = [
     tagline: 'Motion content that communicates the brand, not just the colours.',
     subtitle: 'Motion Graphics',
     category: 'Motion',
-    location: 'United States',
+    location: 'Washington, D.C.',
     coverImage: '/images/work/nft-motivated.jpg',
     heroLines: ["Motion content that communicates", "the brand, not just the colours."],
     images: [{ src: '/images/work/nft-motivated.jpg' }],
