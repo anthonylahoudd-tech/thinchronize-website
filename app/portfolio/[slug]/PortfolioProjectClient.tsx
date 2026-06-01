@@ -57,6 +57,7 @@ export default function PortfolioProjectClient({
   const titleRef       = useRef<HTMLDivElement>(null)
   const bigTextRef     = useRef<HTMLDivElement>(null)
   const servicesRef    = useRef<HTMLDivElement>(null)
+  const bannerRef      = useRef<HTMLDivElement>(null)
   const leftColRef     = useRef<HTMLDivElement>(null)
   const rightColRef    = useRef<HTMLDivElement>(null)
   const router         = useRouter()
@@ -97,6 +98,14 @@ export default function PortfolioProjectClient({
         servicesRef.current,
         { y: 14, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out', delay: 1.0 }
+      )
+    }
+    // Banner — slides down from above after text has appeared
+    if (bannerRef.current) {
+      gsap.fromTo(
+        bannerRef.current,
+        { y: -40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out', delay: 1.3 }
       )
     }
   }, { dependencies: [project.title, project.brief.headline] })
@@ -339,7 +348,7 @@ export default function PortfolioProjectClient({
 
           {/* Hero animated banner (project with location) */}
           {project.location && (
-            <div style={{ overflow: 'hidden', flexShrink: 0 }}>
+            <div ref={bannerRef} style={{ overflow: 'hidden', flexShrink: 0, opacity: 0 }}>
               <div className="page-marquee-track" style={{ animationDuration: '35s' }}>
                 <span style={{
                   fontFamily:    PP,
