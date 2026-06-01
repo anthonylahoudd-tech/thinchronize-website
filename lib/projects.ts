@@ -39,6 +39,7 @@ export interface Project {
   year: string
   market: string
   heroLines?: string[]   // optional manual line-breaks for cover headline
+  location?: string      // shown in hero marquee banner (e.g. "Washington, U.S.A.")
 }
 
 // ─── Diagnostic answer labels ─────────────────────────────────────────────────
@@ -60,6 +61,7 @@ export const PROJECTS: Project[] = [
     tagline: 'A sub sandwich brand built to own the street.',
     subtitle: 'Brand Identity & Visual System',
     category: 'Brand Identity',
+    location: 'Washington, U.S.A.',
     coverImage: '/images/work/whatsub/Whatsub-Sign.jpg',
     images: [
       { src: '/images/work/whatsub/Whatsub-Image-1.jpg' },

@@ -43,7 +43,7 @@ function LinesIcon({ color }: { color: string }) {
 export default function PortfolioProjectClient({
   project, nextProject,
 }: Props) {
-  const [view,         setView]         = useState<'visual' | 'reading'>('visual')
+  const [view,         setView]         = useState<'visual' | 'reading'>('reading')
   const [pillMaskX,    setPillMaskX]    = useState(0)
   const [pillMaskW,    setPillMaskW]    = useState(0)
   const [pillScrolled, setPillScrolled] = useState(false)
@@ -151,7 +151,7 @@ export default function PortfolioProjectClient({
     const handle = () => {
       const sy = window.scrollY
       const vh = window.innerHeight
-      setPillScrolled(sy > vh * 0.85)
+      setPillScrolled(sy > vh * 1.1)
       if (sy > 20) setShowScrollHint(false)
       setHeroParallax(Math.min(sy * 0.15, vh * 0.15))
 
@@ -295,135 +295,173 @@ export default function PortfolioProjectClient({
       }} />
 
       {/* ════════════════════════════════════════════════════════════════
-          HERO — 100vh
+          HERO — 140vh outer so cover stays visible while scrolling.
+          Inner cover is sticky top:0 / 100vh — drops off at 40vh scroll.
+          Pill + (Scroll) ride with the cover bottom, then exit.
       ════════════════════════════════════════════════════════════════ */}
-      <section style={{
-        position:      'relative',
-        height:        '100vh',
-        overflow:      'hidden',
-        background:    '#000',
-        display:       'flex',
-        flexDirection: 'column',
-      }}>
+      <section style={{ height: '140vh', position: 'relative' }}>
 
-        {/* Cover image — parallax wrapper gives 30% extra height so
-            translateY has room without revealing background edges */}
+        {/* ── Sticky cover — sticks at top for first 40vh of scroll ── */}
         <div style={{
-          position:   'absolute',
-          top:        '-15%', left: 0, right: 0, bottom: '-15%',
-          transform:  `translateY(${heroParallax}px)`,
-          willChange: 'transform',
+          position:      'sticky',
+          top:            0,
+          height:        '100vh',
+          overflow:      'hidden',
+          background:    '#000',
         }}>
-          <Image
-            src={project.coverImage}
-            alt={project.title}
-            fill priority sizes="100vw"
-            style={{ objectFit: 'cover', opacity: 0.82 }}
-          />
-        </div>
 
-        {/* Subtle bottom-only gradient — just enough for bottom bar legibility */}
-        <div style={{
-          position:      'absolute',
-          inset:         0,
-          background:    'linear-gradient(to bottom, rgba(0,0,0,0.10) 0%, transparent 50%, rgba(0,0,0,0.72) 100%)',
-          zIndex:        1,
-          pointerEvents: 'none',
-        }} />
-
-        {/* ── Content block: all left-aligned with logo (5vw), shifted down 20% ── */}
-        <div style={{
-          position:  'absolute',
-          top:       '65%',
-          left:      '5vw',
-          right:     '35%',
-          transform: 'translateY(-50%)',
-          zIndex:    2,
-        }}>
-          {/* WHATSUB title — ultrabold 900, 10% bigger, right above big text */}
-          <div
-            ref={titleRef}
-            aria-label={project.title}
-            style={{
-              fontFamily:    PP,
-              fontWeight:    900,
-              fontSize:      'clamp(46px, 5.75vw, 80px)',
-              color:         'white',
-              textTransform: 'uppercase',
-              letterSpacing: '-1.5px',
-              lineHeight:    1,
-              marginBottom:  16,
-            }}
-          >
-            {project.title}
+          {/* Cover image — parallax */}
+          <div style={{
+            position:   'absolute',
+            top: '-15%', left: 0, right: 0, bottom: '-15%',
+            transform:  `translateY(${heroParallax}px)`,
+            willChange: 'transform',
+          }}>
+            <Image
+              src={project.coverImage}
+              alt={project.title}
+              fill priority sizes="100vw"
+              style={{ objectFit: 'cover', opacity: 0.82 }}
+            />
           </div>
 
-          {/* Big statement — medium 500, 38px, line breaks via heroLines */}
-          <div
-            ref={bigTextRef}
-            aria-label={project.brief.headline}
-            style={{
-              fontFamily:    PP,
-              fontWeight:    400,
-              fontSize:      'clamp(22px, 3vw, 42px)',
-              color:         'white',
-              lineHeight:    1.25,
-              letterSpacing: '-0.5px',
-              margin:        '0 0 28px',
-            }}
-          >
-            {project.brief.headline}
-          </div>
+          {/* Gradient */}
+          <div style={{
+            position:      'absolute',
+            inset:          0,
+            background:    'linear-gradient(to bottom, rgba(0,0,0,0.10) 0%, transparent 40%, rgba(0,0,0,0.72) 100%)',
+            zIndex:         1,
+            pointerEvents: 'none',
+          }} />
 
-          {/* Services row */}
-          <div ref={servicesRef} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px 0' }}>
-            {project.services.map((s, i) => (
-              <span key={s} style={{
+          {/* ── Hero animated banner (project with location) ── */}
+          {project.location && (
+            <div style={{
+              position:   'absolute',
+              bottom:     '38%',
+              left:        0,
+              right:       0,
+              overflow:   'hidden',
+              zIndex:      2,
+            }}>
+              <div className="page-marquee-track" style={{ display: 'flex', whiteSpace: 'nowrap', gap: '0.6em' }}>
+                {[...Array(2)].map((_, copy) => (
+                  <span key={copy} style={{ display: 'flex', gap: '0.6em', flexShrink: 0 }}>
+                    {[...Array(4)].map((_, i) => (
+                      <span key={i} style={{
+                        fontFamily:    PP,
+                        fontWeight:    900,
+                        fontSize:      'clamp(56px, 8vw, 110px)',
+                        color:         'white',
+                        textTransform: 'uppercase',
+                        letterSpacing: '-0.03em',
+                        lineHeight:    1,
+                        paddingRight:  '0.5em',
+                        opacity:       0.95,
+                      }}>
+                        {i % 2 === 0 ? project.title : project.location} ·
+                      </span>
+                    ))}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* ── Content block (title if no location, big text, services) ── */}
+          <div style={{
+            position:  'absolute',
+            top:       '62%',
+            left:      '5vw',
+            right:     '38%',
+            transform: 'translateY(-50%)',
+            zIndex:    3,
+          }}>
+            {/* Title — only shown when no location/banner */}
+            {!project.location && (
+              <div
+                ref={titleRef}
+                aria-label={project.title}
+                style={{
+                  fontFamily:    PP,
+                  fontWeight:    900,
+                  fontSize:      'clamp(46px, 5.75vw, 80px)',
+                  color:         'white',
+                  textTransform: 'uppercase',
+                  letterSpacing: '-1.5px',
+                  lineHeight:    1,
+                  marginBottom:  16,
+                }}
+              />
+            )}
+            {/* When there IS a location, titleRef still needs to exist for GSAP */}
+            {project.location && (
+              <div ref={titleRef} style={{ display: 'none' }} aria-hidden />
+            )}
+
+            {/* Big headline */}
+            <div
+              ref={bigTextRef}
+              aria-label={project.brief.headline}
+              style={{
                 fontFamily:    PP,
                 fontWeight:    400,
-                fontSize:      11,
-                letterSpacing: '3px',
-                textTransform: 'uppercase',
-                color:         'rgba(255,255,255,0.5)',
-                whiteSpace:    'nowrap',
-              }}>
-                {s}{i < project.services.length - 1 && (
-                  <span style={{ margin: '0 12px', opacity: 0.3 }}>·</span>
-                )}
-              </span>
-            ))}
+                fontSize:      'clamp(22px, 3vw, 42px)',
+                color:         'white',
+                lineHeight:    1.25,
+                letterSpacing: '-0.5px',
+                margin:        '0 0 28px',
+              }}
+            >
+              {project.brief.headline}
+            </div>
+
+            {/* Services */}
+            <div ref={servicesRef} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px 0' }}>
+              {project.services.map((s, i) => (
+                <span key={s} style={{
+                  fontFamily:    PP,
+                  fontWeight:    400,
+                  fontSize:      11,
+                  letterSpacing: '3px',
+                  textTransform: 'uppercase',
+                  color:         'rgba(255,255,255,0.5)',
+                  whiteSpace:    'nowrap',
+                }}>
+                  {s}{i < project.services.length - 1 && (
+                    <span style={{ margin: '0 12px', opacity: 0.3 }}>·</span>
+                  )}
+                </span>
+              ))}
+            </div>
           </div>
-        </div>
 
-        {/* ── Bottom bar: left-aligned to 5vw (matches logo + content block) ── */}
-        <div style={{
-          position:       'absolute',
-          bottom:         0,
-          left:           0,
-          right:          0,
-          zIndex:         2,
-          padding:        '0 5vw 44px',
-          display:        'flex',
-          justifyContent: 'space-between',
-          alignItems:     'flex-end',
-        }}>
-
-          {/* Left: (SCROLL) — 15% bigger, white */}
-          <span style={{
-            fontFamily:    PP,
-            fontWeight:    400,
-            fontSize:      12,
-            letterSpacing: '5px',
-            textTransform: 'uppercase',
-            color:         'white',
+          {/* ── Bottom bar: (Scroll) + pill — rides cover bottom ── */}
+          <div style={{
+            position:       'absolute',
+            bottom:          0,
+            left:            0,
+            right:           0,
+            zIndex:          4,
+            padding:        '0 5vw 44px',
+            display:        'flex',
+            justifyContent: 'space-between',
+            alignItems:     'flex-end',
           }}>
-            (Scroll)
-          </span>
+            <span style={{
+              fontFamily:    PP,
+              fontWeight:    400,
+              fontSize:      12,
+              letterSpacing: '5px',
+              textTransform: 'uppercase',
+              color:         'white',
+            }}>
+              (Scroll)
+            </span>
+            {pillJSX}
+          </div>
 
-          {/* Right: pill — 10% bigger, right-aligned to 5vw */}
-          {pillJSX}
-
-        </div>
+        </div>{/* end sticky cover */}
       </section>
 
       {/* ════════════════════════════════════════════════════════════════
@@ -849,8 +887,8 @@ export default function PortfolioProjectClient({
         padding:        7,
         boxShadow:      '0 4px 24px rgba(0,0,0,0.15)',
         opacity:        pillScrolled ? 1 : 0,
-        transform:      pillScrolled ? 'translateY(0) scale(1)' : 'translateY(10px) scale(0.95)',
-        transition:     'opacity 400ms cubic-bezier(0.76,0,0.24,1), transform 400ms cubic-bezier(0.76,0,0.24,1)',
+        transform:      pillScrolled ? 'translateY(0) scale(1)' : 'translateY(16px) scale(0.7)',
+        transition:     'opacity 500ms cubic-bezier(0.34,1.56,0.64,1), transform 500ms cubic-bezier(0.34,1.56,0.64,1)',
         pointerEvents:  pillScrolled ? 'auto' : 'none',
       }}>
         <button
