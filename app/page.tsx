@@ -219,18 +219,6 @@ export default function HomePage() {
           }}>
             Selected work
           </p>
-          <Link href="/portfolio" style={{
-            fontFamily:          PP,
-            fontWeight:          400,
-            fontSize:            12,
-            letterSpacing:       '2px',
-            textTransform:       'uppercase',
-            color:               'rgba(255,255,255,0.4)',
-            textDecoration:      'underline',
-            textUnderlineOffset: '4px',
-          }}>
-            See all projects →
-          </Link>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -483,57 +471,6 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* ══════════════════════════════════════════════════════════════════
-          8. CTA — let's sync
-      ══════════════════════════════════════════════════════════════════ */}
-      <section style={{
-        background:          '#000',
-        padding:             'clamp(80px, 10vw, 130px) 5vw',
-        display:             'grid',
-        gridTemplateColumns: '40% 60%',
-        gap:                 0,
-        maxWidth:            '100%',
-      }}>
-        <div style={{ paddingTop: 6 }}>
-          <span style={{
-            fontFamily:    PP,
-            fontWeight:    400,
-            fontSize:      12,
-            letterSpacing: '0.18em',
-            textTransform: 'uppercase',
-            color:         'rgba(255,255,255,0.35)',
-          }}>
-            Start a project
-          </span>
-        </div>
-        <div>
-          <h2 style={{
-            fontFamily:    PP,
-            fontWeight:    400,
-            fontSize:      'clamp(32px, 4.5vw, 68px)',
-            color:         'white',
-            lineHeight:    1.15,
-            letterSpacing: '-0.02em',
-            margin:        '0 0 clamp(32px, 4vw, 52px)',
-          }}>
-            Ready to build a brand that knows what it stands for?
-          </h2>
-          <Link href="/contact" style={{
-            fontFamily:    PP,
-            fontWeight:    400,
-            fontSize:      14,
-            letterSpacing: '2px',
-            textTransform: 'uppercase',
-            color:         'white',
-            background:    RED,
-            padding:       '16px 36px',
-            textDecoration:'none',
-            display:       'inline-block',
-          }}>
-            Let&apos;s Sync. →
-          </Link>
-        </div>
-      </section>
 
       <style dangerouslySetInnerHTML={{ __html: `
         .work-cover:hover { transform: scale(1.03) !important; }
