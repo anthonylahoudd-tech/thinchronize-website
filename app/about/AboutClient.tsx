@@ -111,6 +111,32 @@ function DoubleBanner() {
 
 export default function AboutClient() {
 
+  const numbersRef = useRef<HTMLElement>(null)
+
+  useEffect(() => {
+    const el = numbersRef.current
+    if (!el) return
+    const lines = el.querySelectorAll('.stat-line')
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        lines,
+        { yPercent: 110 },
+        {
+          yPercent: 0,
+          duration: 1,
+          ease: 'power4.out',
+          stagger: 0.08,
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 80%',
+            once: true,
+          },
+        }
+      )
+    }, el)
+    return () => ctx.revert()
+  }, [])
+
   return (
     <div style={{ backgroundColor: '#FFFFFF', minHeight: '100vh' }}>
 
@@ -432,30 +458,11 @@ export default function AboutClient() {
 
       {/* ══ NUMBERS + VISION/MISSION — single black section ══════════ */}
       <section
-        className="numbers-section"
+        ref={numbersRef}
         style={{
           background: '#000',
           padding:    'clamp(72px, 9vw, 120px) 5vw',
           overflow:   'hidden',
-        }}
-        ref={(el) => {
-          if (!el) return
-          const lines = el.querySelectorAll('.stat-line')
-          gsap.fromTo(
-            lines,
-            { yPercent: 110 },
-            {
-              yPercent: 0,
-              duration: 1,
-              ease: 'power4.out',
-              stagger: 0.08,
-              scrollTrigger: {
-                trigger: el,
-                start: 'top 80%',
-                once: true,
-              },
-            }
-          )
         }}
       >
 
