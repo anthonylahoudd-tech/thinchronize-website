@@ -319,16 +319,16 @@ export default function PortfolioProjectClient({
               src={project.coverImage}
               alt={project.title}
               fill priority sizes="100vw"
-              style={{ objectFit: 'cover', opacity: 0.82 }}
+              style={{ objectFit: 'cover', opacity: 1 }}
             />
           </div>
         </div>
 
-        {/* ── Gradient — covers full 140vh ── */}
+        {/* ── Gradient — top dark band for nav readability only ── */}
         <div style={{
           position:      'absolute',
           inset:          0,
-          background:    'linear-gradient(to bottom, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.30) 18%, transparent 42%, rgba(0,0,0,0.72) 100%)',
+          background:    'linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.15) 14%, transparent 28%)',
           zIndex:         1,
           pointerEvents: 'none',
         }} />
@@ -414,10 +414,10 @@ export default function PortfolioProjectClient({
                 <span key={s} style={{
                   fontFamily:    PP,
                   fontWeight:    400,
-                  fontSize:      11,
+                  fontSize:      13,
                   letterSpacing: '3px',
                   textTransform: 'uppercase',
-                  color:         'rgba(255,255,255,0.5)',
+                  color:         'rgba(255,255,255,0.85)',
                   whiteSpace:    'nowrap',
                 }}>
                   {s}{i < project.services.length - 1 && (
