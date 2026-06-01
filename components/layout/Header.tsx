@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 import { gsap } from 'gsap'
 import { transitionTo } from '@/lib/pageTransition'
 import MenuOverlay from './MenuOverlay'
@@ -21,6 +22,9 @@ const TOTAL = NAV_LINKS.length
 
 export default function Header() {
   const desktopHeaderRef = useRef<HTMLElement>(null)
+  const pathname = usePathname()
+  const isProjectPage = /^\/portfolio\/.+/.test(pathname ?? '')
+
   const [scrolled,  setScrolled]  = useState(false)
   const [menuOpen,  setMenuOpen]  = useState(false)
 
@@ -76,7 +80,7 @@ export default function Header() {
           opacity:        menuOpen ? 0 : 1,
           pointerEvents:  menuOpen ? 'none' : 'auto',
           transition:     `opacity 300ms ${EASE}`,
-          mixBlendMode:   'difference',
+          mixBlendMode:   (isProjectPage && !scrolled) ? 'normal' : 'difference',
         }}
       >
         <button
@@ -141,7 +145,7 @@ export default function Header() {
           height:       96,
           transition:   'opacity 0.6s ease',
           background:   'transparent',
-          mixBlendMode: 'difference',
+          mixBlendMode: (isProjectPage && !scrolled) ? 'normal' : 'difference',
         }}
       >
 

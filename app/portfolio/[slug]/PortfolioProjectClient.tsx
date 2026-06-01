@@ -100,11 +100,11 @@ export default function PortfolioProjectClient({
         { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out', delay: 1.0 }
       )
     }
-    // Banner — slides down from above after text has appeared
+    // Banner — rises from below, continuing the upward text reveal motion
     if (bannerRef.current) {
       gsap.fromTo(
         bannerRef.current,
-        { y: -40, opacity: 0 },
+        { y: 40, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out', delay: 1.3 }
       )
     }
