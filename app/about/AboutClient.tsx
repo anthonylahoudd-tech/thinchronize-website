@@ -474,9 +474,9 @@ export default function AboutClient() {
           letterSpacing: '0.2em',
           textTransform: 'uppercase',
           color:         'rgba(255,255,255,0.35)',
-          margin:        '0 0 clamp(48px, 6vw, 80px)',
+          margin:        '0 0 clamp(40px, 5vw, 72px)',
         }}>
-          By the numbers
+          THE NUMBERS
         </p>
 
         {/* Stacked stats — clip-reveal on scroll */}
@@ -488,23 +488,23 @@ export default function AboutClient() {
         ].map(item => (
           <div
             key={item.num}
-            style={{ overflow: 'hidden', lineHeight: 1.05 }}
+            style={{ overflow: 'hidden', lineHeight: 1.0 }}
           >
             <p
               className="stat-line"
               style={{
                 fontFamily:    PP,
                 fontWeight:    400,
-                fontSize:      'clamp(52px, 8.5vw, 125px)',
+                fontSize:      'clamp(64px, 11vw, 160px)',
                 textTransform: 'uppercase',
-                letterSpacing: '-3px',
-                lineHeight:    1.0,
+                letterSpacing: '-2px',
+                lineHeight:    0.95,
                 margin:        0,
                 textAlign:     item.align,
               }}
             >
               <span style={{ color: '#fff' }}>{item.num} </span>
-              <span style={{ color: 'rgba(255,255,255,0.3)' }}>{item.label}</span>
+              <span style={{ color: 'rgba(255,255,255,0.25)' }}>{item.label}</span>
             </p>
           </div>
         ))}
