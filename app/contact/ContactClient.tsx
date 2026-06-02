@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { CheckCircle } from 'lucide-react'
-import PageHero from '@/components/ui/PageHero'
+import PageHero, { H } from '@/components/ui/PageHero'
 
 // ─── Tokens ───────────────────────────────────────────────────────────────────
 
@@ -51,7 +51,7 @@ export default function ContactClient() {
       <PageHero
         title="CONTACT"
         lines={[
-          "Ready to build something that matters?",
+          <><H>Ready to build something</H> that matters?</>,
           "Let's start with a conversation.",
         ]}
         bottomLabel="Start a conversation"

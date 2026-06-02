@@ -125,11 +125,11 @@ export default function PortfolioPageClient() {
         </div>
 
         <div style={{ padding: '44px 5vw 0', flexShrink: 0 }}>
-          {[
-            'We build brands with precision,',
+          {([
+            <>We build brands with <span style={{ background: '#D0274B', color: '#fff', padding: '0 8px 2px' }}>precision</span>,</>,
             'intention, and something true to say —',
             'every project starts with a diagnosis.',
-          ].map((line, i) => (
+          ] as React.ReactNode[]).map((line, i) => (
             <div key={i} style={{ overflow: 'hidden' }}>
               <p style={{
                 fontFamily:      PP,
