@@ -300,8 +300,8 @@ function ServiceAccordionItem({
           style={{
             fontFamily:  PP,
             fontWeight:  400,
-            fontSize:    'clamp(24px, 3vw, 40px)',
-            textTransform: 'uppercase',
+            fontSize:    'clamp(18px, 2vw, 26px)',
+            textTransform: 'none',
             color:       nameHovered || isOpen ? RED : '#292929',
             transition:  'color 0.3s',
             lineHeight:  1.1,
