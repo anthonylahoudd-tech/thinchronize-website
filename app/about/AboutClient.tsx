@@ -328,7 +328,7 @@ export default function AboutClient() {
           gap:                 10,
         }}>
           {[
-            { name: 'Anthony Lahoud',  role: 'Co-founder & Strategy',  img: '/images/work/whatsub/Whatsub-Sign.jpg'    },
+            { name: 'Anthony Lahoud',  role: 'Co-founder & Strategy',  img: '/images/Anthony-Lahoud.JPG'    },
             { name: 'Wassim Halabi',   role: 'Co-founder & Creative',  img: '/images/work/cafe-bdooz/Cover-Bdooz.png'  },
           ].map(f => (
             <div key={f.name}>
