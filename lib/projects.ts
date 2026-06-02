@@ -29,6 +29,7 @@ export interface Project {
   readingImages?: ProjectImage[]  // curated subset for reading view (falls back to images.slice(0,10))
   brief: ProjectSection
   diagnosis: ProjectSection
+  idea: ProjectSection
   built: ProjectSection
   result: ProjectSection
   details: ProjectDetails
@@ -109,6 +110,10 @@ export const PROJECTS: Project[] = [
         'Core differentiation definition',
       ],
     },
+    idea: {
+      headline: 'Own the street. Not a sub shop — a street brand.',
+      body: 'The submarine metaphor made the name make sense. It grounded the visual language and gave every touchpoint a character that couldn\'t be faked or borrowed. When a brand has a story, the product becomes proof of it — not the other way around. Owning a feeling on the street was worth more than describing the sandwich.',
+    },
     built: {
       headline: 'A complete brand built around the submarine metaphor.',
       body: 'We built the full brand system: naming rationale, visual identity, color palette, typography, menu design, packaging language, and in-store communication. Every touchpoint was designed to feel ownable, deliberate, and consistent.',
@@ -183,6 +188,10 @@ export const PROJECTS: Project[] = [
         'Competitive landscape (pizza + fast casual)',
         'Cultural entry point identification',
       ],
+    },
+    idea: {
+      headline: 'Earn the first visit on familiar terms.',
+      body: 'Americans don\'t need to learn what flatbread is — they need to recognise something they already love in a better form. The entire brand was built from that bridge outward: the visual language, the tone, the energy — all anchored in American fast-food nostalgia, then elevated. The brand\'s job wasn\'t to educate. It was to lower the barrier to the first bite, so the product could do the explaining from there.',
     },
     built: {
       headline: 'Pizza Hut American style — a common ground, then a destination.',
@@ -260,6 +269,10 @@ export const PROJECTS: Project[] = [
         'Communication effectiveness review',
       ],
     },
+    idea: {
+      headline: 'Build around the children. Not the disease.',
+      body: 'Every brand decision had to answer one question: does this make someone more likely to show up? Warmth and strength in the same system — credible to the medical community, human to a potential donor, honest to the families who depend on it. When the brand reflects what\'s actually at stake, it stops being a logo and starts being a reason to act.',
+    },
     built: {
       headline: 'A brand built around the children — not the disease.',
       body: 'The rebrand centred on life, not illness. Warmth and strength in the same system — for the families who rely on the organisation and the institutions that fund it. A visual identity that makes people want to show up: to donate, to volunteer, to give. Every design decision made to convert a stranger into a donor.',
@@ -314,6 +327,10 @@ export const PROJECTS: Project[] = [
       headline: 'The split was invisible but it was costing them every conversation.',
       body: 'NGOs operating in Lebanon face a trust gap on both sides: institutions that fund don\'t feel the rigour, and communities that receive don\'t feel the warmth. The brand was visually absent where it needed to do the most work — in the first impression.',
     },
+    idea: {
+      headline: 'One system. Two audiences. No split.',
+      body: 'The brand couldn\'t afford to speak two different languages — a credible one for funders and a warm one for communities. That approach would have produced neither. The idea was to find the visual language where rigour and humanity weren\'t in opposition. Restraint as the signal of seriousness. Warmth as the proof of the mission. The same mark doing both jobs at once — because that\'s exactly what the organisation had to do every day.',
+    },
     built: {
       headline: 'A brand built on the mission statement itself.',
       body: 'Restraint for credibility. Warmth for humanity. Both in the same system, without splitting. We built the brand foundation first — then a visual identity that could carry the organisation\'s dual mandate without contradiction. The mark holds both. The system extends without losing its centre.',
@@ -367,6 +384,10 @@ export const PROJECTS: Project[] = [
       headline: 'The café existed. The brand didn\'t.',
       body: 'In a neighbourhood F&B market, personality is infrastructure. Without it, a café becomes interchangeable — just another option on a crowded street. Cafe BDOOZ had a real identity in the room but nothing that carried it outside the four walls.',
     },
+    idea: {
+      headline: 'Familiarity before the first visit.',
+      body: 'The café already had warmth. The brand\'s job was to carry it outside the four walls — to make someone feel like they already knew the place before they\'d ever been. That meant building around recognition, not novelty. Every visual decision was made to feel like a memory, not an introduction.',
+    },
     built: {
       headline: 'An identity built around warmth and return.',
       body: 'Typographic personality that feels handcrafted without being hand-drawn. A colour palette that communicates comfort and confidence. A system that works on a cup, a sign, and a social feed without losing its soul. Every touchpoint designed to make the café feel like a place people already know — before they\'ve ever been.',
@@ -404,6 +425,10 @@ export const PROJECTS: Project[] = [
     diagnosis: {
       headline: 'The visual system wasn\'t the problem. The identity was.',
       body: 'The school had a strong reputation and a clear educational philosophy — but nothing in the brand reflected it. Parents, students, and faculty experienced a gap between the institution\'s ambition and how it showed up visually. A logo refresh would have papered over the real issue.',
+    },
+    idea: {
+      headline: 'Tradition and forward motion. Both. At once.',
+      body: 'The school had already evolved — the brand just hadn\'t caught up. And catching up correctly meant not erasing what came before, but translating it. The dual mandate of heritage and ambition wasn\'t a constraint to navigate around. It was the brief. Once that was clear, every decision followed from it: what to preserve, what to evolve, and what to build from scratch.',
     },
     built: {
       headline: 'Brand foundation first. Visual identity second.',
@@ -443,6 +468,10 @@ export const PROJECTS: Project[] = [
       headline: 'First-brand syndrome: a product without a position.',
       body: 'Early-stage companies often mistake product confidence for brand clarity. Tryo knew what it did. It didn\'t know why that mattered to the market — and neither did the market. Without that, every conversation started from zero.',
     },
+    idea: {
+      headline: 'Answer the question first. Then design.',
+      body: 'What is this, actually — and why does it matter now? Those two questions had to be answered in writing before anything was made. The identity was built outward from the answers, not from a mood board. A brand that can explain itself in three seconds earns the right to ask for the next three minutes.',
+    },
     built: {
       headline: 'We started at Phase 0. What is this, actually?',
       body: 'What is this product? Who is it for? Why does it matter now? Once those answers existed in writing, the visual identity followed — not the other way around. The brand was built to explain itself in three seconds.',
@@ -480,6 +509,10 @@ export const PROJECTS: Project[] = [
     diagnosis: {
       headline: 'Moving ≠ communicating.',
       body: 'In the NFT space, visual noise is everywhere. Every platform animates. Most animate badly — fast, random, and disconnected from what the brand is actually saying. NFT Motivated had energy but no direction. The motion was working against their brand, not for it.',
+    },
+    idea: {
+      headline: 'Motion has to say something before it moves.',
+      body: 'Energy without direction is noise. The platform had motion — what it didn\'t have was a point of view on what that motion was communicating. We defined the motion voice first: the pacing, the easing, the rhythm. Every frame that followed was a design decision disguised as an animation decision.',
     },
     built: {
       headline: 'A motion direction before a single frame was animated.',
@@ -519,6 +552,10 @@ export const PROJECTS: Project[] = [
       headline: 'Enterprise brands animate badly in one of two directions.',
       body: 'Too stiff, or overcompensating with playfulness. Equisoft was stuck between the two. The timing was inconsistent, the easing arbitrary, and the visual language disconnected from the product\'s precision. Motion was being produced piece by piece, with no system holding it together.',
     },
+    idea: {
+      headline: 'Precision in time.',
+      body: 'A motion system — not individual animations. The product\'s intelligence had to be visible in how it moved, not just in what it showed. Defining the principles once meant every subsequent piece of motion, regardless of who made it, read as the same brand. Consistency isn\'t a style choice. It\'s a system decision.',
+    },
     built: {
       headline: 'A motion system — not just animations.',
       body: 'Consistent timing. Consistent easing. Consistent visual language. Every motion principle defined before execution. So every piece of motion, regardless of context or team member, reads as the same brand — the same precision, the same intelligence.',
@@ -557,6 +594,10 @@ export const PROJECTS: Project[] = [
       headline: 'The collateral was undoing the brand work.',
       body: 'Every meeting where a client received Societe Jabra\'s materials was a moment where the brand story broke down. The visual language was inconsistent with the core identity. What should have been a trust-builder was creating confusion instead.',
     },
+    idea: {
+      headline: 'The brand doesn\'t end at the screen.',
+      body: 'Every physical piece that leaves the company is a brand moment. The collateral needed to be rebuilt from the identity system outward — same grid logic, same type hierarchy, same colour proportion. Not because it would look good, but because inconsistency at the touchpoint level breaks the trust built everywhere else.',
+    },
     built: {
       headline: 'Collateral that extended the visual system with the same precision as the core identity.',
       body: 'Every decision — grid, typography, colour proportion — traced back to the brand, not to a designer\'s preference. The system was built to work independently: any team member, any format, any context. Consistent by design, not by accident.',
@@ -594,6 +635,10 @@ export const PROJECTS: Project[] = [
     diagnosis: {
       headline: 'Information without hierarchy is just noise.',
       body: 'Conundrum\'s content had real value — but it was buried under layers of equal-weight information. Every section was presented as if it were the most important. The result: nothing stood out, nothing landed, and the document got filed instead of read.',
+    },
+    idea: {
+      headline: 'Content first. Design second.',
+      body: 'Before any layout decision was made, the content was reordered: what comes first, what supports it, what closes. The design\'s only job was to make that sequence feel inevitable — to guide the reader through without them noticing they were being guided. A document that gets read is more valuable than a document that gets admired.',
     },
     built: {
       headline: 'An editorial system. Content mapped, weighted, and sequenced.',

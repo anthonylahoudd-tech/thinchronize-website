@@ -516,17 +516,18 @@ export default function PortfolioProjectClient({
                 {([
                   { num: '(01)', label: 'The Brief',     section: project.brief,     showDetails: true  },
                   { num: '(02)', label: 'The Diagnosis', section: project.diagnosis, showDetails: false },
-                  { num: '(03)', label: 'What We Built', section: project.built,     showDetails: false },
-                  { num: '(04)', label: 'The Result',    section: project.result,    showDetails: false },
+                  { num: '(03)', label: 'The Idea',      section: project.idea,      showDetails: false },
+                  { num: '(04)', label: 'What We Built', section: project.built,     showDetails: false },
+                  { num: '(05)', label: 'The Result',    section: project.result,    showDetails: false },
                 ] as const).map(({ num, label, section, showDetails }, i) => (
                   <div key={num} style={{
-                    paddingTop:    i === 3 ? 80  : 200,
-                    paddingBottom: i === 3 ? 100 : 220,
+                    paddingTop:    i === 4 ? 80  : 200,
+                    paddingBottom: i === 4 ? 100 : 220,
                     borderTop:     i === 0 ? 'none' : '1px solid rgba(0,0,0,0.1)',
                     // Last section: sticks so right col doesn't go blank while
                     // images continue on the left. Reduced padding keeps it
                     // within viewport height so it visually locks in place.
-                    ...(i === 3 ? {
+                    ...(i === 4 ? {
                       position:   'sticky' as const,
                       top:        96,
                       background: '#ECECEA',
