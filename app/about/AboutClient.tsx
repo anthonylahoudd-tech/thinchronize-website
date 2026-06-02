@@ -484,7 +484,7 @@ export default function AboutClient() {
         {[
           { num: '10+',   label: 'YEARS IN BRAND', align: 'left'  as const },
           { num: '150+',  label: 'BRANDS BUILT',   align: 'right' as const },
-          { num: '20+',   label: 'INDUSTRIES',     align: 'left'  as const },
+          { num: '30+',   label: 'INDUSTRIES',     align: 'left'  as const },
           { num: '100%',  label: 'STRATEGY-LED',   align: 'right' as const },
         ].map(item => (
           <div

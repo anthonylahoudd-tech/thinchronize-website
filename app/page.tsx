@@ -339,12 +339,12 @@ export default function HomePage() {
         </div>
 
         {[
-          { name: 'Brand Engagement',   tagline: 'Strategy before anything else.' },
-          { name: 'Print Design',        tagline: 'Every touchpoint is a brand moment.' },
-          { name: 'Digital Design',      tagline: 'Built for screens. Built for the brand.' },
-          { name: 'Animation & Motion',  tagline: 'The brand, in time.' },
-          { name: 'Photography & Video', tagline: 'Your brand, made real.' },
-          { name: 'Brand Guardianship',  tagline: 'After the brand is built.' },
+          { name: 'Full Brand Engagement',    tagline: 'Strategy and identity from the same brain.' },
+          { name: 'Print & Editorial',        tagline: 'Every physical touchpoint is a brand moment.' },
+          { name: 'Digital Design',           tagline: 'Built for screens. Built for the brand.' },
+          { name: 'Animation & Editing',      tagline: 'The brand, in motion.' },
+          { name: 'Photography & Videography',tagline: 'Your brand, made real.' },
+          { name: 'Brand Guardianship',       tagline: 'After the brand is built.' },
         ].map((svc, i) => (
           <Link
             key={svc.name}

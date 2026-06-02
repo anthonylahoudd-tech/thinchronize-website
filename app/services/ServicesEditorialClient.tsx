@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
-import { SERVICES } from '@/lib/services-data'
+import { BRANDING_SERVICES, PRODUCTION_SERVICES } from '@/lib/services-data'
 import PageHero, { H } from '@/components/ui/PageHero'
 
 const PP  = "'PPNeueCorp', system-ui, sans-serif"
@@ -11,21 +11,49 @@ const RED = '#D0274B'
 // ─── Static content maps ──────────────────────────────────────────────────────
 
 const FOMO: Record<string, string> = {
+  'brand-audit':
+    "Skipping the diagnosis is the most expensive mistake in branding. Most businesses spend money on visual work that doesn't fix anything — because the real problem was never identified. A written audit takes days. A misaligned rebrand takes years to recover from.",
+  'brand-clarity':
+    "A visual identity without a strategy beneath it is decoration. Designers, agencies, and internal teams are briefing against assumptions instead of answers. Every piece of content produced without a clear brand foundation compounds the confusion — and eventually, the cost of course-correcting is higher than building it right would have been.",
+  'brand-refresh':
+    "Your brand is the first thing a potential client sees before they ever speak to you. If your visual identity no longer reflects where you are, every first impression is underselling your capability. A stale visual system doesn't just look outdated — it communicates that you haven't grown.",
   'brand-engagement':
     "Most brands don't lose ground overnight. They drift. When your brand no longer reflects what you've built, the gap between perception and reality is costing you. Potential clients judge capability by presentation, and misalignment between who you are and how you look loses you deals before the conversation starts. Every month without clarity is a month your competitors are winning business that should be yours.",
-  'print-design':
+  'print-editorial':
     "In a world saturated with digital noise, physical materials have become the highest-trust touchpoint left. But generic, templated print signals the opposite of what you need it to. When what you hand someone looks assembled rather than designed, they mentally discount your price point before you've said a word. The quality of what they hold is a proxy for the quality of what you deliver.",
   'digital-design':
     "Decision-makers form a lasting opinion of your brand within 19 seconds of landing on your website. If your digital presence doesn't communicate authority in that window, you're not just losing visitors; you're losing deals that never became conversations. Digital isn't where you exist. It's where you're evaluated.",
-  'animation-motion':
+  'animation-editing':
     "Static content generates a fraction of the engagement motion does, and more importantly, motion communicates personality, energy, and confidence in ways static design simply cannot. If your brand has no kinetic identity, it's sitting still while everything around it moves. The gap in perception grows every day you wait.",
-  'photography-video':
+  'photography-videography':
     "Stock photography is the clearest signal that a brand hasn't invested in itself, and decision-makers notice. Real photography communicates authenticity and specificity: it says you take your brand seriously enough to show the real thing. If your visuals look like everyone else's, your pricing will be questioned before your capabilities are.",
   'brand-guardianship':
     "Brands don't usually fail suddenly. They drift. Inconsistencies accumulate, team members interpret guidelines loosely, markets shift. Without someone holding the standard, even the strongest brand slowly loses coherence. And once a brand loses coherence, rebuilding trust costs more than maintaining it would have.",
 }
 
 const DELIVERABLES: Record<string, { name: string; desc: string }[]> = {
+  'brand-audit': [
+    { name: 'Brand Equity Assessment',    desc: "A structured evaluation of how your brand is currently perceived — internally, externally, and relative to competitors." },
+    { name: 'Visual Identity Audit',      desc: "A detailed review of your existing visual system: coherence, consistency, and whether it matches the brand's strategic intent." },
+    { name: 'Market Positioning Review',  desc: "Where your brand sits relative to the competition — and whether that position is intentional or accidental." },
+    { name: 'Communication Audit',        desc: "How effectively your current messaging communicates what you actually do and who you're for." },
+    { name: 'Written Diagnosis Report',   desc: "A clear, specific document: what's working, what isn't, and the recommended path forward. No vague recommendations." },
+  ],
+  'brand-clarity': [
+    { name: 'Discovery Workshop',         desc: "A structured session to surface what the brand is, who it's for, and what it needs to say — in writing, not just in instinct." },
+    { name: 'Competitor Analysis',        desc: "A clear picture of where your brand stands in the market and what space is available to occupy with conviction." },
+    { name: 'Brand Foundation Document',  desc: "Mission, vision, values, positioning, and personality — the strategic core that every creative decision must hold up against." },
+    { name: 'Positioning Statement',      desc: "A single, clear articulation of who you are, who you're for, and why it matters. The sentence your team aligns around." },
+    { name: 'Messaging Framework',        desc: "How to talk about the brand at every level — from the elevator pitch to the full brand story." },
+  ],
+  'brand-refresh': [
+    { name: 'Logo & Mark System',         desc: "Primary mark, secondary marks, and usage rules — built to work across every format and context." },
+    { name: 'Colour Palette',             desc: "A defined colour system with primary, secondary, and functional colours, including digital and print specifications." },
+    { name: 'Typography System',          desc: "Typeface selection and a clear hierarchy for headlines, body copy, captions, and functional text." },
+    { name: 'Iconography Direction',      desc: "Visual guidance on icon style and usage so every piece of content feels like it belongs to the same system." },
+    { name: 'Brand Guidelines',           desc: "The complete rulebook: how the visual identity is used, protected, and extended across every touchpoint." },
+    { name: 'File Delivery',              desc: "Every format your team and suppliers will need — print, digital, vector, and raster, all organised and labelled." },
+  ],
   'brand-engagement': [
     { name: 'Brand Audit',           desc: "A full diagnostic of your current brand equity: what's resonating, what's eroding, and what's invisible from the inside." },
     { name: 'Brand Foundation',      desc: "Mission, vision, values, positioning, and personality: the strategic core everything else must hold up against." },
@@ -33,7 +61,7 @@ const DELIVERABLES: Record<string, { name: string; desc: string }[]> = {
     { name: 'Brand Standards',       desc: "The rulebook that keeps your brand consistent across every team, every touchpoint, every market." },
     { name: 'Launch Activation',     desc: "Internal rollout and external debut strategy so the new brand lands with the impact it deserves." },
   ],
-  'print-design': [
+  'print-editorial': [
     { name: 'Brand Collateral',       desc: "Business cards, letterheads, and stationery: the physical extensions of your identity that clients hold after the meeting." },
     { name: 'Brochures & Catalogues', desc: "Multi-page formats that take prospects through your offering with the same clarity and authority as a pitch." },
     { name: 'Packaging Design',       desc: "Structural and graphic design for physical product packaging, the first moment a customer physically meets your product." },
@@ -47,14 +75,14 @@ const DELIVERABLES: Record<string, { name: string; desc: string }[]> = {
     { name: 'Digital Advertising', desc: "Ad creatives, landing pages, and campaign assets designed to perform against measurable objectives." },
     { name: 'Presentation Design', desc: "Pitch decks and investor presentations, because how you present is part of what you're pitching." },
   ],
-  'animation-motion': [
+  'animation-editing': [
     { name: 'Brand Motion System',    desc: "Motion principles, transitions, and animations that give your brand a consistent kinetic identity across all digital touchpoints." },
     { name: 'Logo Animation',         desc: "Animated logo variants for digital use: intros, outros, loading states, and social formats." },
     { name: 'Explainer Videos',       desc: "Scripted, animated, and voiced content that communicates complex ideas in 60–90 seconds with precision and brand clarity." },
     { name: 'Social Motion Content',  desc: "Short-form animated assets optimized for feed, stories, and reels, designed to stop the scroll and hold attention." },
     { name: 'Presentation Motion',    desc: "Animated slide templates and transitions that elevate the delivery of your most important presentations." },
   ],
-  'photography-video': [
+  'photography-videography': [
     { name: 'Brand Photography',  desc: "Directed sessions that build a library of on-brand images: people, spaces, products, and atmosphere." },
     { name: 'Product Photography',desc: "Commercial photography optimized for digital and print, built to communicate quality and desirability." },
     { name: 'Brand Film',         desc: "Short-form films (60–180 seconds) that communicate who you are, why you exist, and why it matters." },
@@ -71,13 +99,31 @@ const DELIVERABLES: Record<string, { name: string; desc: string }[]> = {
 }
 
 const KPIS: Record<string, { metric: string; name: string; desc: string }[]> = {
+  'brand-audit': [
+    { metric: 'Clarity',  name: 'DIAGNOSIS FIRST',   desc: 'A written audit removes assumptions and gives the team a shared, accurate picture of the brand' },
+    { metric: '↓ Risk',   name: 'SPEND PROTECTION',  desc: 'Knowing exactly what\'s wrong before commissioning work prevents expensive misdirection' },
+    { metric: 'Fast',     name: 'TURNAROUND',         desc: 'A brand audit is typically complete within 5–7 working days of engagement' },
+    { metric: 'Honest',   name: 'EXTERNAL VIEW',      desc: 'An outside perspective surfaces what internal teams have stopped seeing' },
+  ],
+  'brand-clarity': [
+    { metric: 'Locked',   name: 'STRATEGIC CORE',     desc: 'A written foundation that every designer, agency, and team member can brief against' },
+    { metric: '↑ Speed',  name: 'CREATIVE VELOCITY',  desc: 'Teams with clear strategy produce better work faster — fewer rounds, less ambiguity' },
+    { metric: 'Aligned',  name: 'TEAM COHESION',      desc: 'Everyone in the organisation understands what the brand is and why it matters' },
+    { metric: 'Portable', name: 'AGENCY-READY',        desc: 'The foundation document can brief any creative partner, anywhere, without losing integrity' },
+  ],
+  'brand-refresh': [
+    { metric: 'Current',  name: 'VISUAL ACCURACY',    desc: 'A visual system that reflects where the business actually is — not where it was three years ago' },
+    { metric: 'Scalable', name: 'SYSTEM THINKING',    desc: 'Every element built to extend across applications without needing a designer every time' },
+    { metric: 'Coherent', name: 'CROSS-FORMAT',       desc: 'The same brand, working correctly on a business card, a billboard, and a social feed' },
+    { metric: '↑ Trust',  name: 'FIRST IMPRESSION',   desc: 'An accurate visual identity closes the gap between capability and perception' },
+  ],
   'brand-engagement': [
     { metric: '↑ 40%',   name: 'BRAND RECOGNITION', desc: 'Consistent identity and messaging increase recognition across all touchpoints' },
     { metric: '3×',      name: 'LEAD QUALITY',       desc: 'Clearer positioning attracts the right clients, filtering out the wrong ones' },
     { metric: 'Faster',  name: 'DECISION SPEED',     desc: 'A brand that matches your capability removes hesitation from buying decisions' },
     { metric: 'Aligned', name: 'TEAM COHESION',      desc: 'Every person communicates the brand consistently, from pitch to delivery' },
   ],
-  'print-design': [
+  'print-editorial': [
     { metric: '↑ Trust', name: 'FIRST IMPRESSION',  desc: 'Physical materials create a lasting premium halo, before a word is spoken' },
     { metric: 'Higher',  name: 'PRICE PERCEPTION',  desc: 'Elevated print supports higher price points and reduces price sensitivity' },
     { metric: 'Longer',  name: 'MATERIAL LIFESPAN', desc: 'Designed print gets kept, shared, and referenced, not binned' },
@@ -89,13 +135,13 @@ const KPIS: Record<string, { metric: string; name: string; desc: string }[]> = {
     { metric: 'Lower',   name: 'PRODUCTION COST', desc: 'A design system reduces per-asset creation time for all future content needs' },
     { metric: 'Cohesive',name: 'CROSS-PLATFORM',  desc: 'Consistent digital presence signals capability before any conversation begins' },
   ],
-  'animation-motion': [
+  'animation-editing': [
     { metric: '3×',     name: 'ENGAGEMENT',        desc: 'Motion content drives significantly higher interaction and retention than static' },
     { metric: '95%',    name: 'MESSAGE RETENTION', desc: 'Animated explainers increase how much audiences remember versus text alone' },
     { metric: '↓ Skip', name: 'SCROLL BEHAVIOR',   desc: 'Motion stops the scroll, the first battle in every digital environment' },
     { metric: 'Ownable',name: 'BRAND PERSONALITY', desc: 'Motion communicates tone and energy in ways static design cannot' },
   ],
-  'photography-video': [
+  'photography-videography': [
     { metric: 'Real',     name: 'AUTHENTICITY SCORE', desc: 'Original imagery increases brand trust and perceived authenticity significantly' },
     { metric: '↑ Sales',  name: 'CONVERSION LIFT',    desc: 'Custom product photography increases conversion in both digital and physical retail' },
     { metric: 'Distinct', name: 'VISUAL OWNERSHIP',   desc: 'Custom imagery differentiates your brand from every competitor using the same stock library' },
@@ -110,6 +156,27 @@ const KPIS: Record<string, { metric: string; name: string; desc: string }[]> = {
 }
 
 const CHALLENGES: Record<string, string[]> = {
+  'brand-audit': [
+    "We know something is wrong with the brand but can't put our finger on it",
+    "We're about to invest in a rebrand and want to know exactly what needs fixing",
+    "Different people in the company describe the brand completely differently",
+    "We've had brand work done before but it never quite landed",
+    "Our competitors are winning business we should be winning",
+  ],
+  'brand-clarity': [
+    "Our designers keep asking questions we can't answer",
+    "Every agency we brief comes back with something different",
+    "We have a visual identity but no strategic story behind it",
+    "We're entering a new market and need to articulate what we stand for",
+    "Our team can't explain what makes us different from the competition",
+  ],
+  'brand-refresh': [
+    "Our brand looks like it was built in a different era",
+    "We've grown significantly but the visual identity hasn't kept up",
+    "Our strategy is clear but our visuals don't communicate it",
+    "We're embarrassed to send people to our website or share our materials",
+    "We know what we want to say — we just don't look like it",
+  ],
   'brand-engagement': [
     "Our brand looks outdated but we're afraid of losing what makes us recognizable",
     "Different teams represent us completely differently",
@@ -117,7 +184,7 @@ const CHALLENGES: Record<string, string[]> = {
     "Prospects perceive us as something we're not",
     "We're entering a new market and the current brand doesn't translate",
   ],
-  'print-design': [
+  'print-editorial': [
     "We're using materials that no longer reflect where we are",
     "Our print looks completely disconnected from our digital presence",
     "We're entering a market where physical presence matters",
@@ -131,14 +198,14 @@ const CHALLENGES: Record<string, string[]> = {
     "Our digital assets undermine the credibility of our physical brand",
     "We need materials that convert, not just impress",
   ],
-  'animation-motion': [
+  'animation-editing': [
     "Our social content gets no engagement",
     "We have complex ideas that are hard to explain quickly",
     "Our brand feels static and dated in digital environments",
     "We have a brand but no idea how it should move or behave",
     "We need content that stands out in a crowded feed",
   ],
-  'photography-video': [
+  'photography-videography': [
     "We're using stock photos, and it shows",
     "Our product looks much better in person than it does in photos",
     "We have no visual content that shows our team, culture, or process",
@@ -154,7 +221,7 @@ const CHALLENGES: Record<string, string[]> = {
   ],
 }
 
-const ALUMNI_ELIGIBLE = new Set(['print-design', 'digital-design', 'animation-motion', 'photography-video'])
+const ALUMNI_ELIGIBLE = new Set(['print-editorial', 'digital-design', 'animation-editing', 'photography-videography'])
 
 // ─── New diagnostic data ──────────────────────────────────────────────────────
 
@@ -168,19 +235,19 @@ const questions = [
 const diagnosticOptions: { num: string; text: string; services: string[]; isOther?: boolean }[] = [
   { num: '01', text: "My brand no longer reflects what we've built",  services: ['brand-engagement'] },
   { num: '02', text: "I'm building a brand from scratch",             services: ['brand-engagement'] },
-  { num: '03', text: "I need print or digital design assets",         services: ['print-design', 'digital-design'] },
-  { num: '04', text: "I need animation, motion or video content",     services: ['animation-motion', 'photography-video'] },
+  { num: '03', text: "I need print or digital design assets",         services: ['print-editorial', 'digital-design'] },
+  { num: '04', text: "I need animation, motion or video content",     services: ['animation-editing', 'photography-videography'] },
   { num: '05', text: "My brand is solid — I need ongoing guidance",   services: ['brand-guardianship'] },
   { num: '06', text: "Other — describe what you need",                services: [], isOther: true },
 ]
 
 const keywordMap: Record<string, string[]> = {
-  'brand-engagement':   ['logo', 'identity', 'rebrand', 'brand', 'strategy', 'positioning', 'direction', 'confused', 'stuck', 'start', 'refresh', 'new brand', 'foundation', 'visual identity', 'who we are'],
-  'print-design':       ['print', 'brochure', 'flyer', 'poster', 'business card', 'menu', 'catalog', 'packaging', 'leaflet', 'stationery'],
-  'digital-design':     ['website', 'digital', 'social', 'banner', 'online', 'web', 'instagram', 'ui', 'app', 'email', 'facebook', 'linkedin'],
-  'animation-motion':   ['animation', 'motion', 'animated', 'explainer', 'reel', 'gif', 'moving', 'intro', 'transition'],
-  'photography-video':  ['photo', 'photography', 'shoot', 'film', 'video', 'commercial', 'campaign', 'content', 'footage', 'production'],
-  'brand-guardianship': ['guidance', 'ongoing', 'retainer', 'monthly', 'support', 'maintain', 'consistency', 'advise', 'advisory', 'check', 'review'],
+  'brand-engagement':       ['logo', 'identity', 'rebrand', 'brand', 'strategy', 'positioning', 'direction', 'confused', 'stuck', 'start', 'refresh', 'new brand', 'foundation', 'visual identity', 'who we are'],
+  'print-editorial':        ['print', 'brochure', 'flyer', 'poster', 'business card', 'menu', 'catalog', 'packaging', 'leaflet', 'stationery', 'editorial'],
+  'digital-design':         ['website', 'digital', 'social', 'banner', 'online', 'web', 'instagram', 'ui', 'app', 'email', 'facebook', 'linkedin'],
+  'animation-editing':      ['animation', 'motion', 'animated', 'explainer', 'reel', 'gif', 'moving', 'intro', 'transition', 'editing'],
+  'photography-videography':['photo', 'photography', 'shoot', 'film', 'video', 'commercial', 'campaign', 'content', 'footage', 'production'],
+  'brand-guardianship':     ['guidance', 'ongoing', 'retainer', 'monthly', 'support', 'maintain', 'consistency', 'advise', 'advisory', 'check', 'review'],
 }
 
 function matchFromText(input: string): string[] {
@@ -202,7 +269,7 @@ function ServiceAccordionItem({
   isOpen,
   onToggle,
 }: {
-  service: (typeof SERVICES)[number]
+  service: (typeof BRANDING_SERVICES)[number] | (typeof PRODUCTION_SERVICES)[number]
   isOpen: boolean
   onToggle: () => void
 }) {
@@ -491,14 +558,17 @@ export default function ServicesEditorialClient() {
 
   function getServiceLabel(id: string): string {
     const map: Record<string, string> = {
-      'brand-engagement':  'Brand Engagement',
-      'print-design':      'Print Design',
-      'digital-design':    'Digital Design',
-      'animation-motion':  'Animation & Motion',
-      'photography-video': 'Photography & Video',
-      'brand-guardianship':'Brand Guardianship',
+      'brand-engagement':       'Full Brand Engagement',
+      'brand-audit':            'Brand Audit',
+      'brand-clarity':          'Brand Clarity',
+      'brand-refresh':          'Brand Refresh',
+      'brand-guardianship':     'Brand Guardianship',
+      'print-editorial':        'Print & Editorial',
+      'digital-design':         'Digital Design',
+      'animation-editing':      'Animation & Editing',
+      'photography-videography':'Photography & Videography',
     }
-    return map[id] || 'Brand Engagement'
+    return map[id] || 'Full Brand Engagement'
   }
 
   const toggleService = (id: string) => {
@@ -547,8 +617,16 @@ export default function ServicesEditorialClient() {
           </h2>
         </div>
 
-        {/* Accordion list */}
-        {SERVICES.map(service => (
+        {/* ── BRANDING section ── */}
+        <div style={{ borderLeft: '3px solid #D0274B', paddingLeft: 20, marginBottom: 40, marginTop: 8 }}>
+          <p style={{ fontFamily: PP, fontWeight: 900, fontSize: 13, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#D0274B', margin: 0 }}>
+            Branding
+          </p>
+          <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 14, color: '#919191', margin: '6px 0 0' }}>
+            Strategy and identity. The thinking before the making.
+          </p>
+        </div>
+        {BRANDING_SERVICES.map(service => (
           <ServiceAccordionItem
             key={service.id}
             service={service}
@@ -556,6 +634,28 @@ export default function ServicesEditorialClient() {
             onToggle={() => toggleService(service.id)}
           />
         ))}
+
+        {/* ── PRODUCTION section ── */}
+        <div style={{ borderLeft: '3px solid #D0274B', paddingLeft: 20, marginBottom: 40, marginTop: 80 }}>
+          <p style={{ fontFamily: PP, fontWeight: 900, fontSize: 13, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#D0274B', margin: 0 }}>
+            Production
+          </p>
+          <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 14, color: '#919191', margin: '6px 0 0' }}>
+            Execution built on the brand. Every touchpoint, every format.
+          </p>
+          <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 12, color: 'rgba(0,0,0,0.35)', margin: '10px 0 0', fontStyle: 'italic' }}>
+            Brand Alumni pricing applies to all production services.
+          </p>
+        </div>
+        {PRODUCTION_SERVICES.map(service => (
+          <ServiceAccordionItem
+            key={service.id}
+            service={service}
+            isOpen={openServiceIds.includes(service.id)}
+            onToggle={() => toggleService(service.id)}
+          />
+        ))}
+
         {/* Final bottom rule */}
         <div style={{ height: 1, background: '#E8E8E8' }} />
 
@@ -604,10 +704,10 @@ export default function ServicesEditorialClient() {
                 Path A
               </p>
               <p style={{ fontFamily: PP, fontWeight: 800, fontSize: 18, textTransform: 'uppercase', color: '#FFFFFF', marginTop: 8 }}>
-                Complete any Brand Engagement
+                Complete a Full Brand Engagement
               </p>
               <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 14, color: 'rgba(255,255,255,0.6)', marginTop: 12, lineHeight: 1.6 }}>
-                Completing a full Brand Engagement with Thinchronize earns you Alumni status immediately, regardless of the scope or duration of the project.
+                Completing a Full Brand Engagement with Thinchronize earns you Alumni status immediately, regardless of the scope or duration of the project.
               </p>
             </div>
 
@@ -627,10 +727,10 @@ export default function ServicesEditorialClient() {
             {/* Clarification */}
             <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 24, marginTop: 32 }}>
               <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 13, color: 'rgba(255,255,255,0.5)' }}>
-                Alumni rates apply to: Print Design · Digital Design · Animation & Motion · Photography & Video
+                Alumni rates apply to: Print & Editorial · Digital Design · Animation & Editing · Photography & Videography
               </p>
               <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 13, color: 'rgba(255,255,255,0.3)', marginTop: 8 }}>
-                Not applicable to: Brand Engagement · Brand Guardianship
+                Not applicable to: Full Brand Engagement · Brand Guardianship
               </p>
             </div>
           </div>

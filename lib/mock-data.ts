@@ -99,12 +99,12 @@ export const mockJournalPosts: JournalPost[] = [
   },
   {
     _id: 'jp-4',
-    title: 'Detect, Define, Design, Deliver',
+    title: 'Diagnose. Build. Guard. — How We Think About Brand Process',
     slug: { current: 'our-process' },
     publishedAt: '2023-12-01T10:00:00Z',
     category: 'process',
     excerpt:
-      'The four-stage process we\'ve developed over years of building brands that last — and why every step matters.',
+      'The three-phase process we\'ve developed over years of building brands that last — and why every step matters.',
     readTime: 5,
     featured: false,
   },
