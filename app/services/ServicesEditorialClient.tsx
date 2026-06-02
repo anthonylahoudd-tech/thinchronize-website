@@ -349,7 +349,7 @@ function ServiceAccordionItem({
           {/* A — FOMO */}
           <p style={{
             fontFamily:   PP,
-            fontWeight:   800,
+            fontWeight:   400,
             fontSize:     22,
             color:        '#292929',
             lineHeight:   1.6,
