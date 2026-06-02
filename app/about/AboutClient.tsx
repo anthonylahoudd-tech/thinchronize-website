@@ -348,8 +348,9 @@ export default function AboutClient() {
                     inset:      0,
                     width:      '100%',
                     height:     '100%',
-                    objectFit:  'cover',
-                    filter:     'grayscale(100%)',
+                    objectFit:      'cover',
+                    objectPosition: 'center 15%',
+                    filter:         'grayscale(100%)',
                     display:    'block',
                   }}
                   onError={e => {
