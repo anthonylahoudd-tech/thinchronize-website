@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import PageHero from '@/components/ui/PageHero'
+import PageHero, { H } from '@/components/ui/PageHero'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -144,7 +144,7 @@ export default function AboutClient() {
       <PageHero
         title="ABOUT"
         lines={[
-          'A strategy-led creative studio based in Lebanon —',
+          <><H>A strategy-led creative studio</H> based in Lebanon —</>,
           'building brands that know exactly what they stand for.',
         ]}
         bottomLabel="Learn more about us"

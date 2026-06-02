@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getJournalPosts } from '@/lib/sanity/queries'
-import PageHero from '@/components/ui/PageHero'
+import PageHero, { H } from '@/components/ui/PageHero'
 
 export const metadata: Metadata = {
   title: 'Journal',
@@ -19,7 +19,7 @@ export default async function JournalPage() {
       <PageHero
         title="IDEAS"
         lines={[
-          'Thinking on brand strategy, identity,',
+          <>Thinking on <H>brand strategy</H>, identity,</>,
           'and the craft of building something true.',
         ]}
         bottomLabel="Read our thinking"

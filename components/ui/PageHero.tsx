@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, ReactNode } from 'react'
 
 const PP   = "'PPNeueCorp', system-ui, sans-serif"
 const EASE = 'cubic-bezier(0.19, 1, 0.22, 1)'
@@ -13,9 +13,23 @@ const BASE_DELAY = 420
 
 interface PageHeroProps {
   title:        string
-  lines:        string[]          // subtitle split into individual lines
+  lines:        ReactNode[]       // subtitle split into individual lines (supports JSX for highlights)
   bottomLabel?: string            // e.g. "Learn more about us"
   bottomHref?:  string            // href or "#" to scroll past hero
+}
+
+// Red box highlight helper — use inside lines[]
+export function H({ children }: { children: ReactNode }) {
+  return (
+    <span style={{
+      background:   '#D0274B',
+      color:        '#fff',
+      padding:      '0 8px 2px',
+      display:      'inline',
+    }}>
+      {children}
+    </span>
+  )
 }
 
 export default function PageHero({ title, lines, bottomLabel, bottomHref }: PageHeroProps) {

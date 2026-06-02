@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import { SERVICES } from '@/lib/services-data'
-import PageHero from '@/components/ui/PageHero'
+import PageHero, { H } from '@/components/ui/PageHero'
 
 const PP  = "'PPNeueCorp', system-ui, sans-serif"
 const RED = '#D0274B'
@@ -517,7 +517,7 @@ export default function ServicesEditorialClient() {
         title="SERVICES"
         lines={[
           'Every service traces back to one question —',
-          'does this make the brand stronger?',
+          <>does this make the <H>brand stronger</H>?</>,
         ]}
         bottomLabel="View all services"
         bottomHref="#services-accordion"
