@@ -12,23 +12,23 @@ const RED = '#D0274B'
 
 const FOMO: Record<string, string> = {
   'brand-audit':
-    "Skipping the diagnosis is the most expensive mistake in branding. Most businesses spend money on visual work that doesn't fix anything — because the real problem was never identified. A written audit takes days. A misaligned rebrand takes years to recover from.",
+    "You're about to spend money on a solution you haven't diagnosed yet. That's how rebrands fail.",
   'brand-clarity':
-    "A visual identity without a strategy beneath it is decoration. Designers, agencies, and internal teams are briefing against assumptions instead of answers. Every piece of content produced without a clear brand foundation compounds the confusion — and eventually, the cost of course-correcting is higher than building it right would have been.",
+    "Your designers are guessing. Every brief sent without a strategic foundation comes back wrong.",
   'brand-refresh':
-    "Your brand is the first thing a potential client sees before they ever speak to you. If your visual identity no longer reflects where you are, every first impression is underselling your capability. A stale visual system doesn't just look outdated — it communicates that you haven't grown.",
+    "Your visuals are underselling your capability on every first impression. That's a pricing problem as much as a design one.",
   'brand-engagement':
-    "Most brands don't lose ground overnight. They drift. When your brand no longer reflects what you've built, the gap between perception and reality is costing you. Potential clients judge capability by presentation, and misalignment between who you are and how you look loses you deals before the conversation starts. Every month without clarity is a month your competitors are winning business that should be yours.",
+    "Your brand is losing you deals before the conversation starts. Every month the gap between who you are and how you look stays open, a competitor fills it.",
   'print-editorial':
-    "In a world saturated with digital noise, physical materials have become the highest-trust touchpoint left. But generic, templated print signals the opposite of what you need it to. When what you hand someone looks assembled rather than designed, they mentally discount your price point before you've said a word. The quality of what they hold is a proxy for the quality of what you deliver.",
+    "What you hand someone is a proxy for your price point. Generic print discounts your offer before you've quoted.",
   'digital-design':
-    "Decision-makers form a lasting opinion of your brand within 19 seconds of landing on your website. If your digital presence doesn't communicate authority in that window, you're not just losing visitors; you're losing deals that never became conversations. Digital isn't where you exist. It's where you're evaluated.",
+    "Decision-makers form a lasting opinion in 19 seconds. If your digital presence doesn't communicate authority in that window, the deal is already cooling.",
   'animation-editing':
-    "Static content generates a fraction of the engagement motion does, and more importantly, motion communicates personality, energy, and confidence in ways static design simply cannot. If your brand has no kinetic identity, it's sitting still while everything around it moves. The gap in perception grows every day you wait.",
+    "Your brand is sitting still while everything around it moves. Static content doesn't just underperform — it signals you haven't committed.",
   'photography-videography':
-    "Stock photography is the clearest signal that a brand hasn't invested in itself, and decision-makers notice. Real photography communicates authenticity and specificity: it says you take your brand seriously enough to show the real thing. If your visuals look like everyone else's, your pricing will be questioned before your capabilities are.",
+    "Stock photography is the clearest signal a brand hasn't invested in itself. Decision-makers notice before they say a word.",
   'brand-guardianship':
-    "Brands don't usually fail suddenly. They drift. Inconsistencies accumulate, team members interpret guidelines loosely, markets shift. Without someone holding the standard, even the strongest brand slowly loses coherence. And once a brand loses coherence, rebuilding trust costs more than maintaining it would have.",
+    "Brands don't fail suddenly. They drift — until the damage is too expensive to ignore.",
 }
 
 const DELIVERABLES: Record<string, { name: string; desc: string }[]> = {
@@ -300,7 +300,7 @@ function ServiceAccordionItem({
           style={{
             fontFamily:  PP,
             fontWeight:  400,
-            fontSize:    'clamp(18px, 2vw, 26px)',
+            fontSize:    'clamp(23px, 2.5vw, 33px)',
             textTransform: 'none',
             color:       nameHovered || isOpen ? RED : '#292929',
             transition:  'color 0.3s',
@@ -367,7 +367,7 @@ function ServiceAccordionItem({
             fontFamily:   PP,
             fontWeight:   400,
             fontSize:     18,
-            color:        '#292929',
+            color:        '#919191',
             lineHeight:   1.75,
             maxWidth:     680,
             marginBottom: 48,
