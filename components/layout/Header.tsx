@@ -13,7 +13,6 @@ const EASE = 'cubic-bezier(0.19, 1, 0.22, 1)'
 const NAV_LINKS = [
   { label: 'Work',     href: '/portfolio' },
   { label: 'About',   href: '/about'     },
-  { label: 'Method',  href: '/method'    },
   { label: 'Services', href: '/services' },
   { label: 'Ideas',   href: '/journal'   },
 ]

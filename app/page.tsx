@@ -295,17 +295,6 @@ export default function HomePage() {
             }}>
               The MENA market is flooded with brands that look the part but say nothing. Every project we take on starts with a diagnosis — an honest audit of where the brand stands and what it actually needs to say.
             </p>
-            <Link href="/method" style={{
-              fontFamily:          PP,
-              fontWeight:          400,
-              fontSize:            14,
-              color:               '#111',
-              textDecoration:      'underline',
-              textUnderlineOffset: '5px',
-              textDecorationColor: 'rgba(0,0,0,0.3)',
-            }}>
-              See our method →
-            </Link>
           </div>
         </div>
       </section>
