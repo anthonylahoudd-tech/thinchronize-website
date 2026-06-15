@@ -1,7 +1,9 @@
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { getJournalPostBySlug, getJournalPosts } from '@/lib/sanity/queries'
+import { JsonLd } from '@/components/JsonLd'
 import { ArrowLeft, Clock } from 'lucide-react'
 
 interface Props {
@@ -11,6 +13,23 @@ interface Props {
 export async function generateStaticParams() {
   const posts = await getJournalPosts()
   return posts.map((p) => ({ slug: p.slug.current }))
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const post = await getJournalPostBySlug(params.slug)
+  if (!post) return { title: 'Journal' }
+  const url = `https://thinchronize.com/journal/${params.slug}`
+  return {
+    title: post.title,
+    description: post.excerpt ?? post.title,
+    alternates: { canonical: url },
+    openGraph: {
+      url,
+      title: `${post.title} — Thinchronize`,
+      type: 'article',
+      ...(post.publishedAt && { publishedTime: post.publishedAt }),
+    },
+  }
 }
 
 function formatDate(dateString?: string) {
@@ -27,9 +46,19 @@ export default async function JournalPostPage({ params }: Props) {
   if (!post) notFound()
 
   const coverSrc = `https://picsum.photos/seed/${post._id}/1600/900`
+  const postUrl = `https://thinchronize.com/journal/${params.slug}`
 
   return (
     <article className="bg-dark min-h-screen pt-32">
+      <JsonLd data={{
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: post.title,
+        ...(post.publishedAt && { datePublished: post.publishedAt }),
+        author: { '@type': 'Organization', name: 'Thinchronize' },
+        publisher: { '@type': 'Organization', name: 'Thinchronize', logo: 'https://thinchronize.com/images/logo-stacked.png' },
+        mainEntityOfPage: postUrl,
+      }} />
       <div className="container mx-auto">
         <Link
           href="/#journal"

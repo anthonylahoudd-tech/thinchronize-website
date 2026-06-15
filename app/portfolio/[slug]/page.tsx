@@ -15,13 +15,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const project = getProjectBySlug(params.slug)
   if (!project) return { title: 'Project' }
   const ogImage = `https://thinchronize.com${project.coverImage}`
+  const url = `https://thinchronize.com/portfolio/${project.id}`
   return {
     title: project.title,
     description: project.tagline,
+    alternates: { canonical: url },
     openGraph: {
       title: `${project.title} — Thinchronize`,
       description: project.tagline,
-      url: `https://thinchronize.com/portfolio/${project.id}`,
+      url,
+      type: 'article',
       images: [{ url: ogImage, width: 1200, height: 630, alt: project.title }],
     },
     twitter: {

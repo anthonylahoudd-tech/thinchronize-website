@@ -6,6 +6,8 @@ import PageHero, { H } from '@/components/ui/PageHero'
 export const metadata: Metadata = {
   title: 'Journal',
   description: 'Thinking on brand strategy, identity, and the craft of building something true.',
+  alternates: { canonical: '/journal' },
+  openGraph: { url: 'https://thinchronize.com/journal', title: 'Journal — Thinchronize' },
 }
 
 const PP = "'PPNeueCorp', system-ui, sans-serif"
