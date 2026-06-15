@@ -34,6 +34,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
   },
   robots: { index: true, follow: true },
+  verification: { google: 'G-03wXHvLvpmG-kLz9QhNYyfH2Yl9aXFzRN8L9q4mU4' },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
