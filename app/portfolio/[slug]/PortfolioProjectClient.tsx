@@ -471,7 +471,7 @@ export default function PortfolioProjectClient({
               }}>
                 <Image
                   src={img.src}
-                  alt={`${project.title} ${i + 1}`}
+                  alt={`${project.title} — brand work by Thinchronize, image ${i + 1}`}
                   fill sizes="100vw"
                   style={{ objectFit: 'cover' }}
                   loading={i < 2 ? 'eager' : 'lazy'}
@@ -502,7 +502,7 @@ export default function PortfolioProjectClient({
                   }}>
                     <Image
                       src={img.src}
-                      alt=""
+                      alt={`${project.title} — brand work by Thinchronize`}
                       fill sizes="50vw"
                       style={{ objectFit: 'cover' }}
                       loading="lazy"

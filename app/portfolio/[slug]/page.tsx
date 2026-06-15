@@ -14,9 +14,22 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const project = getProjectBySlug(params.slug)
   if (!project) return { title: 'Project' }
+  const ogImage = `https://thinchronize.com${project.coverImage}`
   return {
     title: project.title,
-    description: project.brief.body,
+    description: project.tagline,
+    openGraph: {
+      title: `${project.title} — Thinchronize`,
+      description: project.tagline,
+      url: `https://thinchronize.com/portfolio/${project.id}`,
+      images: [{ url: ogImage, width: 1200, height: 630, alt: project.title }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${project.title} — Thinchronize`,
+      description: project.tagline,
+      images: [ogImage],
+    },
   }
 }
 
