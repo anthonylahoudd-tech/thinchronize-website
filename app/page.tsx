@@ -4,117 +4,144 @@ import { useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { PROJECTS } from '@/lib/projects'
-import RedLine from '@/components/home/RedLine'
+import { gsap } from 'gsap'
 import ParticleField from '@/components/home/ParticleField'
-import LetterSettle from '@/components/home/LetterSettle'
-import { registerBump } from '@/components/home/motion'
 
-const PP    = "'PPNeueCorp', system-ui, sans-serif"
-const RED   = '#D0274B'
-const BG    = '#EFEFED'   // the light page — clean, Apple-calm
-const INK   = '#111111'
-const MUTED = '#6B6B6B'
-const CARD  = '#0B0B0D'   // the dark interactive module
+const PP   = "'PPNeueCorp', system-ui, sans-serif"
+const RED  = '#D0274B'
+const EASE = 'cubic-bezier(0.19, 1, 0.22, 1)'
 
-// ─── The Line That Synchronizes · light ───────────────────────────────────────
-// Anatomy cloned from the reference homepage (lusion.co): light page, small
-// sentence-case hero headline, one dark rounded interactive card as the
-// centerpiece, giant sentence-case display sections, "+" registration-mark
-// separators, rounded work cards with rolling titles. Their 3D toy is replaced
-// by our own argument: a particle field that scatters on touch (change) and
-// synchronizes into a red line (design). The red line spine and the
-// impulse-spring bumps carry the same physics language down the page.
+// ─── Parallax image (reused from About) ──────────────────────────────────────
 
-function ImpulseRow({ children, rotate = 0, className, style }: {
-  children: React.ReactNode
-  rotate?: number
-  className?: string
-  style?: React.CSSProperties
-}) {
-  const ref = useRef<HTMLDivElement>(null)
+function ParallaxImage({ src, height = '65vh' }: { src: string; height?: string }) {
+  const sectionRef = useRef<HTMLDivElement>(null)
+  const imgRef     = useRef<HTMLDivElement>(null)
+
   useEffect(() => {
-    if (!ref.current) return
-    return registerBump(ref.current, { rotateFactor: rotate })
-  }, [rotate])
-  return <div ref={ref} className={className} style={style}>{children}</div>
-}
+    const handle = () => {
+      if (!sectionRef.current || !imgRef.current) return
+      const rect     = sectionRef.current.getBoundingClientRect()
+      const progress = -rect.top / (rect.height + window.innerHeight)
+      imgRef.current.style.transform = `translateY(${progress * 18}%)`
+    }
+    window.addEventListener('scroll', handle, { passive: true })
+    handle()
+    return () => window.removeEventListener('scroll', handle)
+  }, [])
 
-// "+ CHANGE + DESIGN + ADAPT + EVOLVE +" — the reference's registration-mark
-// separator row, carrying the Cycle.
-function CycleMarks() {
   return (
-    <ImpulseRow>
-      <div className="cycle-marks" aria-label="Change, design, adapt, evolve — the cycle">
-        <span>+</span><em>Change</em>
-        <span>+</span><em>Design</em>
-        <span>+</span><em>Adapt</em>
-        <span>+</span><em>Evolve</em>
-        <span>+</span>
-      </div>
-    </ImpulseRow>
-  )
-}
-
-// Rolling title — the reference repeats each work title as a marquee track that
-// slides on hover.
-function RollingTitle({ text }: { text: string }) {
-  return (
-    <div className="roll-title">
-      <div className="roll-track">
-        <span>{text}&nbsp;·&nbsp;</span><span>{text}&nbsp;·&nbsp;</span>
-        <span>{text}&nbsp;·&nbsp;</span><span>{text}&nbsp;·&nbsp;</span>
+    <div ref={sectionRef} style={{ position: 'relative', height, overflow: 'hidden' }}>
+      <div ref={imgRef} style={{ position: 'absolute', inset: '-15% 0', willChange: 'transform' }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={src} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
       </div>
     </div>
   )
 }
 
+// ─── Hero text entrance ───────────────────────────────────────────────────────
+
+
 export default function HomePage() {
+  const heroLinesRef = useRef<HTMLDivElement>(null)
   const cardRef = useRef<HTMLElement>(null)
 
-  return (
-    <div style={{ background: BG, position: 'relative' }}>
+  useEffect(() => {
+    const el = heroLinesRef.current
+    if (!el) return
+    const spans = el.querySelectorAll('.hero-line-inner')
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        spans,
+        { yPercent: 110 },
+        {
+          yPercent:  0,
+          duration:  1,
+          ease:      'power4.out',
+          stagger:   0.08,
+          delay:     0.3,
+        }
+      )
+    }, el)
+    return () => ctx.revert()
+  }, [])
 
-      {/* The red line spine — born in the hero card, ends at LET'S SYNC. */}
-      <RedLine />
+  return (
+    <div style={{ background: '#000' }}>
 
       {/* ══════════════════════════════════════════════════════════════════
-          S1 — HERO · small statement + the interactive card
+          1. HERO — 100vh, pure typographic statement
       ══════════════════════════════════════════════════════════════════ */}
       <section style={{
-        minHeight: '100svh',
-        display: 'flex', flexDirection: 'column',
-        padding: 'calc(88px + 2vh) 0 0',
+        height:        '100vh',
+        background:    '#000',
+        display:       'flex',
+        flexDirection: 'column',
+        justifyContent:'space-between',
+        padding:       'calc(96px + 3vh) 5vw 52px',
+        overflow:      'hidden',
       }}>
-        {/* Small sentence-case headline, reference position */}
-        <div style={{ padding: '0 5vw', display: 'flex', justifyContent: 'center' }}>
-          <LetterSettle
-            as="h1"
-            parts={[{ t: 'Change is inevitable. Evolution is ' }, { t: 'designed', red: true }, { t: '. Strategy, identity, and design moving as one system.' }]}
-            settleOn="mount"
-            style={{
-              fontFamily: PP, fontWeight: 400,
-              fontSize: 'clamp(17px, 1.9vw, 26px)',
-              color: INK, lineHeight: 1.3, letterSpacing: '-0.01em',
-              textTransform: 'none',
-              margin: 0, maxWidth: '44ch', textAlign: 'left',
-            }}
-          />
+
+        {/* Main statement */}
+        <div ref={heroLinesRef}>
+
+          {/* Row 1 — full width: MINDFUL BY */}
+          <div style={{ overflow: 'hidden' }}>
+            <span className="hero-line-inner" style={{ fontFamily: PP, fontWeight: 400, fontSize: 'clamp(52px, 11vw, 160px)', color: 'white', textTransform: 'uppercase', letterSpacing: '-3px', lineHeight: 1.0, display: 'block', width: '100%', textAlign: 'left' }}>
+              Mindful by
+            </span>
+          </div>
+
+          {/* Row 2 — left: strategy-led label · right: DESIGN */}
+          <div className="hero-line-inner" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '2vw' }}>
+            <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', margin: 0, flexShrink: 0 }}>
+              Strategy-led creative studio · Beirut, Lebanon
+            </p>
+            <div style={{ overflow: 'hidden' }}>
+              <span className="hero-line-inner" style={{ fontFamily: PP, fontWeight: 400, fontSize: 'clamp(52px, 11vw, 160px)', color: RED, textTransform: 'uppercase', letterSpacing: '-3px', lineHeight: 1.0, display: 'block', whiteSpace: 'nowrap' }}>
+                design
+              </span>
+            </div>
+          </div>
+
+          {/* Row 3 — full width: STRATEGIC */}
+          <div style={{ overflow: 'hidden' }}>
+            <span className="hero-line-inner" style={{ fontFamily: PP, fontWeight: 400, fontSize: 'clamp(52px, 11vw, 160px)', color: RED, textTransform: 'uppercase', letterSpacing: '-3px', lineHeight: 1.0, display: 'block', width: '100%', textAlign: 'left' }}>
+              Strategic
+            </span>
+          </div>
+
+          {/* Row 4 — left: every project phrase · right: BY NATURE */}
+          <div className="hero-line-inner" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '2vw' }}>
+            <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 'clamp(13px, 1.2vw, 16px)', color: 'rgba(255,255,255,0.5)', margin: 0, lineHeight: 1.6, flexShrink: 0, maxWidth: '30%' }}>
+              Every project starts with a diagnosis,<br />not a brief.
+            </p>
+            <div style={{ overflow: 'hidden' }}>
+              <span className="hero-line-inner" style={{ fontFamily: PP, fontWeight: 400, fontSize: 'clamp(52px, 11vw, 160px)', color: 'white', textTransform: 'uppercase', letterSpacing: '-3px', lineHeight: 1.0, display: 'block', whiteSpace: 'nowrap' }}>
+                by nature
+              </span>
+            </div>
+          </div>
+
         </div>
 
-        {/* The dark interactive card — our toy: chaos you can touch,
-            synchronization you can watch */}
+
+      </section>
+
+      {/* ══════════════════════════════════════════════════════════════════
+          1b. THE CYCLE — interactive field: drag the chaos, watch it sync
+      ══════════════════════════════════════════════════════════════════ */}
+      <section style={{ background: '#000', padding: '0 5vw clamp(48px, 6vw, 80px)' }}>
         <section
           ref={cardRef}
-          className="hero-card"
           style={{
-            position: 'relative',
-            margin: 'clamp(20px, 3vh, 40px) 5vw 0',
-            flex: 1,
-            minHeight: '58svh',
-            background: CARD,
+            position:     'relative',
+            minHeight:    '58svh',
+            background:   '#0B0B0D',
+            border:       '1px solid rgba(255,255,255,0.08)',
             borderRadius: 24,
-            overflow: 'hidden',
-            touchAction: 'pan-y',
+            overflow:     'hidden',
+            touchAction:  'pan-y',
           }}
         >
           <ParticleField heroRef={cardRef} />
@@ -123,8 +150,6 @@ export default function HomePage() {
             position: 'absolute', left: '8%', right: '8%', top: '66%',
             height: 2, background: RED, opacity: 0, pointerEvents: 'none',
           }} />
-          {/* The spine starts exactly where the particles synchronize */}
-          <div data-line-waypoint style={{ position: 'absolute', left: '50%', top: '66%', width: 1, height: 1 }} />
           <span style={{
             position: 'absolute', left: 24, bottom: 20,
             fontFamily: PP, fontWeight: 400, fontSize: 11, letterSpacing: '0.22em',
@@ -140,401 +165,304 @@ export default function HomePage() {
             Beirut, Lebanon · est. 2016
           </span>
         </section>
-
-        {/* Bottom bar: registration marks + scroll cue */}
-        <div className="hero-foot">
-          <span>+</span><span>+</span>
-          <em>scroll to synchronize</em>
-          <span>+</span><span>+</span>
-        </div>
+        <style dangerouslySetInnerHTML={{ __html: `
+          @media (prefers-reduced-motion: reduce) { .hero-static-line { opacity: 1 !important; } }
+          @media (max-width: 767px) { .hero-card-meta { display: none; } }
+        ` }} />
       </section>
 
       {/* ══════════════════════════════════════════════════════════════════
-          S2 — STATEMENT · giant display + paragraph + pills + ghost line
+          2. MARQUEE — thin strip
       ══════════════════════════════════════════════════════════════════ */}
-      <section style={{ padding: 'clamp(90px, 11vw, 160px) 5vw clamp(40px, 5vw, 80px)' }}>
-        <LetterSettle
-          as="h2"
-          parts={[{ t: "We don't chase change." }]}
-          style={{
-            fontFamily: PP, fontWeight: 400,
-            fontSize: 'clamp(40px, 7vw, 104px)',
-            textTransform: 'none',
-            color: INK, lineHeight: 1.02, letterSpacing: '-0.03em', margin: 0,
-          }}
-        />
-        <LetterSettle
-          as="h2"
-          parts={[{ t: 'We design it.' }]}
-          style={{
-            fontFamily: PP, fontWeight: 400,
-            fontSize: 'clamp(40px, 7vw, 104px)',
-            textTransform: 'none',
-            color: INK, lineHeight: 1.02, letterSpacing: '-0.03em', margin: 0,
-          }}
-        />
-
-        <div className="statement-grid">
-          {/* Work collage the line sweeps through */}
-          <div className="collage">
-            <div data-line-waypoint style={{ position: 'absolute', left: '20%', top: '10%', width: 1, height: 1 }} />
-            <ImpulseRow rotate={0.04} className="collage-a">
-              <Image src={PROJECTS[0]?.coverImage ?? '/images/work/don-bosco.jpg'} alt="" width={520} height={340} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-            </ImpulseRow>
-            <ImpulseRow rotate={0.05} className="collage-b">
-              <Image src={PROJECTS[1]?.coverImage ?? '/images/work/latelier.jpg'} alt="" width={420} height={300} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-            </ImpulseRow>
-            <div data-line-waypoint style={{ position: 'absolute', left: '75%', bottom: '6%', width: 1, height: 1 }} />
-          </div>
-
-          <div className="statement-copy">
-            <ImpulseRow>
-              <p style={{
-                fontFamily: PP, fontWeight: 400, fontSize: 'clamp(14px, 1.15vw, 17px)',
-                color: MUTED, lineHeight: 1.75, margin: 0, maxWidth: 480,
-              }}>
-                Most brands react to change and drift. We synchronize strategy, identity,
-                experience, and communication so every move is intentional, and the brand
-                becomes a clearer, stronger, more capable version of itself. Understanding
-                comes first: an honest look at where the brand stands and what it actually
-                needs to say. Then, and only then, design.
-              </p>
-              <div style={{ display: 'flex', gap: 14, marginTop: 32, flexWrap: 'wrap' }}>
-                <Link href="/method" className="pill pill--light"><i />Our method</Link>
-                <Link href="/diagnostic" className="pill pill--dark">Book the diagnostic</Link>
-              </div>
-            </ImpulseRow>
-          </div>
-        </div>
-
-        {/* Ghost display line — outline at rest, red on hover, flips like the reference */}
-        <Link href="/about" className="ghost-line" aria-label="Mindful Design — about Thinchronize">
-          <span className="ghost-word">Mindful</span>
-          <span className="ghost-word">Design</span>
-        </Link>
-      </section>
-
-      <CycleMarks />
-
-      {/* ══════════════════════════════════════════════════════════════════
-          S3 — FEATURED WORK · rounded cards, rolling titles
-      ══════════════════════════════════════════════════════════════════ */}
-      <section style={{ padding: 'clamp(80px, 10vw, 150px) 5vw 0' }}>
-        <div className="work-head">
-          <LetterSettle
-            as="h2"
-            parts={[{ t: 'Featured work' }]}
-            style={{
-              fontFamily: PP, fontWeight: 400,
-              fontSize: 'clamp(40px, 7vw, 104px)',
-              textTransform: 'none',
-              color: INK, lineHeight: 1, letterSpacing: '-0.03em', margin: 0,
-            }}
-          />
-          <p style={{
-            fontFamily: PP, fontWeight: 400, fontSize: 11, letterSpacing: '0.14em',
-            textTransform: 'uppercase', color: MUTED, lineHeight: 1.8,
-            margin: 0, maxWidth: 300, textAlign: 'left',
-          }}>
-            A selection of brands built to evolve. Strategy, identity, and craft for ambitious teams.
-          </p>
-        </div>
-
-        <div className="work-grid">
-          {PROJECTS.slice(0, 6).map((project, i) => (
-            <ImpulseRow key={project.id} rotate={0.03}>
-              <Link href={`/portfolio/${project.id}`} className="work-card">
-                <span className="work-media">
-                  <Image
-                    src={project.coverImage}
-                    alt={project.title}
-                    fill
-                    sizes="(max-width: 767px) 90vw, 44vw"
-                    style={{ objectFit: 'cover' }}
-                    loading={i < 2 ? 'eager' : 'lazy'}
-                  />
-                </span>
-                <span className="work-tags">{project.category}</span>
-                <RollingTitle text={project.title} />
-              </Link>
-            </ImpulseRow>
-          ))}
-        </div>
-
-        <div style={{ textAlign: 'center', padding: 'clamp(40px, 5vw, 72px) 0 0' }}>
-          <Link href="/portfolio" className="pill pill--dark">See all projects</Link>
-        </div>
-      </section>
-
-      <div style={{ marginTop: 'clamp(80px, 10vw, 150px)' }}><CycleMarks /></div>
-
-      {/* ══════════════════════════════════════════════════════════════════
-          S4 — THE GATE
-      ══════════════════════════════════════════════════════════════════ */}
-      <section style={{
-        minHeight: '80svh', display: 'flex', flexDirection: 'column',
-        justifyContent: 'center', padding: 'clamp(80px, 10vw, 140px) 5vw',
+      <div style={{
+        background:   '#111',
+        overflow:     'hidden',
+        borderTop:    '1px solid rgba(255,255,255,0.06)',
+        borderBottom: '1px solid rgba(255,255,255,0.06)',
+        padding:      '18px 0',
       }}>
-        <div data-line-waypoint style={{ width: 1, height: 1, margin: '0 auto' }} />
-        <GateLine />
-        <ImpulseRow style={{ marginTop: 'clamp(32px, 4vw, 56px)', display: 'flex', justifyContent: 'flex-end' }}>
-          <p style={{
-            fontFamily: PP, fontWeight: 400, fontSize: 'clamp(14px, 1.2vw, 18px)',
-            color: MUTED, lineHeight: 1.8, margin: 0, maxWidth: 560,
+        <div className="page-marquee-track">
+          <span style={{
+            fontFamily:    PP,
+            fontWeight:    400,
+            fontSize:      12,
+            letterSpacing: '0.2em',
+            textTransform: 'uppercase',
+            color:         'rgba(255,255,255,0.35)',
+            whiteSpace:    'nowrap',
           }}>
-            We don&apos;t decorate, and we don&apos;t chase trends. We build brands where every
-            decision, strategic, verbal, or visual, pulls in the same direction. Deeply
-            Lebanese, globally competitive: context is a credential, not an apology.
-          </p>
-        </ImpulseRow>
-      </section>
-
-      <CycleMarks />
+            BRAND STRATEGY &nbsp;·&nbsp; VISUAL IDENTITY &nbsp;·&nbsp; DIAGNOSIS &nbsp;·&nbsp; CRAFT &nbsp;·&nbsp; BEIRUT, LEBANON &nbsp;·&nbsp; EST. 2016 &nbsp;·&nbsp;&nbsp;
+            BRAND STRATEGY &nbsp;·&nbsp; VISUAL IDENTITY &nbsp;·&nbsp; DIAGNOSIS &nbsp;·&nbsp; CRAFT &nbsp;·&nbsp; BEIRUT, LEBANON &nbsp;·&nbsp; EST. 2016 &nbsp;·&nbsp;&nbsp;
+          </span>
+        </div>
+      </div>
 
       {/* ══════════════════════════════════════════════════════════════════
-          S5 — WHAT WE DO · the line ends at LET'S SYNC.
+          3. SELECTED WORK — 3 featured projects, full-width stack
       ══════════════════════════════════════════════════════════════════ */}
-      <section style={{ padding: 'clamp(80px, 10vw, 130px) 5vw clamp(80px, 10vw, 140px)' }}>
+      <section style={{ background: '#000', padding: '80px 5vw' }}>
         <div style={{
-          display: 'flex', justifyContent: 'space-between', alignItems: 'baseline',
-          marginBottom: 'clamp(40px, 5vw, 64px)', gap: 24, flexWrap: 'wrap',
+          display:        'flex',
+          justifyContent: 'space-between',
+          alignItems:     'baseline',
+          marginBottom:   48,
         }}>
           <p style={{
-            fontFamily: PP, fontWeight: 400, fontSize: 12, letterSpacing: '0.18em',
-            textTransform: 'uppercase', color: MUTED, margin: 0,
+            fontFamily:    PP,
+            fontWeight:    400,
+            fontSize:      12,
+            letterSpacing: '0.18em',
+            textTransform: 'uppercase',
+            color:         'rgba(255,255,255,0.35)',
+          }}>
+            Selected work
+          </p>
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          {PROJECTS.slice(0, 3).map((project, i) => (
+            <Link
+              key={project.id}
+              href={`/portfolio/${project.id}`}
+              style={{ textDecoration: 'none', display: 'block', position: 'relative', overflow: 'hidden' }}
+            >
+              <div style={{ position: 'relative', paddingTop: '52%' }}>
+                <Image
+                  src={project.coverImage}
+                  alt={project.title}
+                  fill sizes="90vw"
+                  style={{ objectFit: 'cover', transition: 'transform 600ms cubic-bezier(0.25,0.46,0.45,0.94)' }}
+                  loading={i === 0 ? 'eager' : 'lazy'}
+                  className="work-cover"
+                />
+                <div style={{
+                  position:   'absolute',
+                  inset:      0,
+                  background: 'linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 50%)',
+                }} />
+                <div style={{
+                  position: 'absolute',
+                  bottom:   32,
+                  left:     40,
+                  right:    40,
+                  display:  'flex',
+                  justifyContent: 'space-between',
+                  alignItems:     'flex-end',
+                }}>
+                  <div>
+                    <p style={{
+                      fontFamily:    PP,
+                      fontWeight:    400,
+                      fontSize:      11,
+                      letterSpacing: '3px',
+                      textTransform: 'uppercase',
+                      color:         'rgba(255,255,255,0.5)',
+                      margin:        '0 0 8px',
+                    }}>
+                      {String(i + 1).padStart(2, '0')} — {project.category}
+                    </p>
+                    <h2 style={{
+                      fontFamily:    PP,
+                      fontWeight:    900,
+                      fontSize:      'clamp(28px, 4vw, 56px)',
+                      color:         'white',
+                      textTransform: 'uppercase',
+                      letterSpacing: '-1px',
+                      lineHeight:    1,
+                      margin:        0,
+                    }}>
+                      {project.title}
+                    </h2>
+                  </div>
+                  <span style={{
+                    fontFamily:    PP,
+                    fontWeight:    400,
+                    fontSize:      12,
+                    letterSpacing: '2px',
+                    textTransform: 'uppercase',
+                    color:         'rgba(255,255,255,0.5)',
+                  }}>
+                    View →
+                  </span>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════════════════
+          4. MANIFESTO — dark, full-width quote
+      ══════════════════════════════════════════════════════════════════ */}
+      <section style={{
+        background: '#f5f4f0',
+        padding:    'clamp(80px, 10vw, 130px) 5vw',
+      }}>
+        <div style={{
+          display:             'grid',
+          gridTemplateColumns: '40% 60%',
+          gap:                 0,
+          maxWidth:            1400,
+          margin:              '0 auto',
+        }}>
+          <div style={{ paddingTop: 6 }}>
+            <span style={{
+              fontFamily:    PP,
+              fontWeight:    400,
+              fontSize:      12,
+              letterSpacing: '0.18em',
+              textTransform: 'uppercase',
+              color:         'rgba(0,0,0,0.4)',
+            }}>
+              Our approach
+            </span>
+          </div>
+          <div>
+            <h2 style={{
+              fontFamily:    PP,
+              fontWeight:    400,
+              fontSize:      'clamp(28px, 3.5vw, 54px)',
+              color:         '#111',
+              lineHeight:    1.2,
+              letterSpacing: '-0.01em',
+              margin:        '0 0 clamp(32px, 4vw, 52px)',
+            }}>
+              We don&apos;t design until we understand. Strategy before aesthetics — always.
+            </h2>
+            <p style={{
+              fontFamily:  PP,
+              fontWeight:  400,
+              fontSize:    'clamp(15px, 1.2vw, 18px)',
+              color:       'rgba(0,0,0,0.55)',
+              lineHeight:  1.8,
+              margin:      '0 0 clamp(32px, 4vw, 48px)',
+              maxWidth:    560,
+            }}>
+              The MENA market is flooded with brands that look the part but say nothing. Every project we take on starts with a diagnosis — an honest audit of where the brand stands and what it actually needs to say.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════════════════
+          5. PARALLAX IMAGE
+      ══════════════════════════════════════════════════════════════════ */}
+      <ParallaxImage src="/images/Thinchronize-Mindful-Design-Website.jpg" height="60vh" />
+
+      {/* ══════════════════════════════════════════════════════════════════
+          6. SERVICES — simple list, white
+      ══════════════════════════════════════════════════════════════════ */}
+      <section style={{ background: '#fff', padding: 'clamp(80px, 10vw, 120px) 5vw' }}>
+        <div style={{
+          display:        'flex',
+          justifyContent: 'space-between',
+          alignItems:     'baseline',
+          marginBottom:   'clamp(48px, 6vw, 72px)',
+        }}>
+          <p style={{
+            fontFamily:    PP,
+            fontWeight:    400,
+            fontSize:      12,
+            letterSpacing: '0.18em',
+            textTransform: 'uppercase',
+            color:         'rgba(0,0,0,0.4)',
           }}>
             What we do
           </p>
-          <span style={{ display: 'flex', gap: 28 }}>
-            <Link href="/programs" className="home-smalllink">All programs →</Link>
-            <Link href="/production" className="home-smalllink">Production →</Link>
-          </span>
+          <Link href="/services" style={{
+            fontFamily:          PP,
+            fontWeight:          400,
+            fontSize:            12,
+            letterSpacing:       '2px',
+            textTransform:       'uppercase',
+            color:               'rgba(0,0,0,0.4)',
+            textDecoration:      'underline',
+            textUnderlineOffset: '4px',
+          }}>
+            All services →
+          </Link>
         </div>
 
         {[
-          { name: 'Full Brand Engagement',     tagline: 'Strategy and identity from the same brain.', href: '/programs/brand-engagement' },
-          { name: 'Print & Editorial',         tagline: 'Every physical touchpoint is a brand moment.', href: '/production/print-editorial' },
-          { name: 'Digital Design',            tagline: 'Built for screens. Built for the brand.', href: '/production/social-digital' },
-          { name: 'Animation & Editing',       tagline: 'The brand, in motion.', href: '/production/motion' },
-          { name: 'Photography & Videography', tagline: 'Your brand, made real.', href: '/production/photo-video' },
-          { name: 'Brand Guardianship',        tagline: 'After the brand is built.', href: '/programs/brand-guardianship' },
+          { name: 'Full Brand Engagement',    tagline: 'Strategy and identity from the same brain.' },
+          { name: 'Print & Editorial',        tagline: 'Every physical touchpoint is a brand moment.' },
+          { name: 'Digital Design',           tagline: 'Built for screens. Built for the brand.' },
+          { name: 'Animation & Editing',      tagline: 'The brand, in motion.' },
+          { name: 'Photography & Videography',tagline: 'Your brand, made real.' },
+          { name: 'Brand Guardianship',       tagline: 'After the brand is built.' },
         ].map((svc, i) => (
-          <ImpulseRow key={svc.name}>
-            <Link
-              href={svc.href}
-              className="svc-row"
-              style={{
-                display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                borderTop: '1px solid rgba(0,0,0,0.1)',
-                padding: 'clamp(20px, 2.5vw, 32px) 0',
-                borderBottom: i === 5 ? '1px solid rgba(0,0,0,0.1)' : 'none',
-                textDecoration: 'none', gap: 24,
-              }}
-            >
-              <span className="svc-title" style={{
-                fontFamily: PP, fontWeight: 400, fontSize: 'clamp(22px, 3vw, 40px)',
-                color: INK, transition: 'color 0.3s', lineHeight: 1.1,
-                letterSpacing: '-0.02em',
-              }}>
-                {svc.name}
-              </span>
-              <span style={{
-                fontFamily: PP, fontWeight: 400, fontSize: 14,
-                color: MUTED, textAlign: 'right', flex: 1,
-              }}>
-                {svc.tagline}
-              </span>
-            </Link>
-          </ImpulseRow>
-        ))}
-
-        {/* The line literally leads the visitor to the sync. */}
-        <div style={{ textAlign: 'center', paddingTop: 'clamp(72px, 9vw, 130px)' }}>
-          <div data-line-waypoint style={{ width: 1, height: 1, margin: '0 auto' }} />
-          <ImpulseRow rotate={0.04}>
-            <Link href="/contact" className="lets-sync" style={{
-              fontFamily: PP, fontWeight: 900,
-              fontSize: 'clamp(44px, 9vw, 140px)',
-              textTransform: 'uppercase', letterSpacing: '-2px', lineHeight: 1,
-              color: INK, textDecoration: 'none', display: 'inline-block',
-              transition: 'color 300ms ease',
+          <Link
+            key={svc.name}
+            href="/services"
+            style={{
+              display:        'flex',
+              justifyContent: 'space-between',
+              alignItems:     'center',
+              borderTop:      '1px solid rgba(0,0,0,0.08)',
+              padding:        'clamp(20px, 2.5vw, 32px) 0',
+              borderBottom:   i === 5 ? '1px solid rgba(0,0,0,0.08)' : 'none',
+              textDecoration: 'none',
+              gap:            24,
+            }}
+            onMouseEnter={e => {
+              const title = e.currentTarget.querySelector('.svc-title') as HTMLElement
+              if (title) title.style.color = RED
+            }}
+            onMouseLeave={e => {
+              const title = e.currentTarget.querySelector('.svc-title') as HTMLElement
+              if (title) title.style.color = '#111'
+            }}
+          >
+            <span className="svc-title" style={{
+              fontFamily:    PP,
+              fontWeight:    400,
+              fontSize:      'clamp(22px, 3vw, 40px)',
+              textTransform: 'uppercase',
+              color:         '#111',
+              transition:    'color 0.3s',
+              lineHeight:    1.1,
             }}>
-              Let&apos;s sync.
-            </Link>
-          </ImpulseRow>
-          <p style={{
-            fontFamily: PP, fontWeight: 400, fontSize: 12, letterSpacing: '0.18em',
-            textTransform: 'uppercase', color: MUTED, marginTop: 20,
-          }}>
-            The diagnostic call is free · 10 questions · 30 minutes
-          </p>
-        </div>
+              {svc.name}
+            </span>
+            <span style={{
+              fontFamily: PP,
+              fontWeight: 400,
+              fontSize:   14,
+              color:      'rgba(0,0,0,0.4)',
+              textAlign:  'right',
+              flex:       1,
+            }}>
+              {svc.tagline}
+            </span>
+          </Link>
+        ))}
       </section>
 
-      {/* ── Styles ────────────────────────────────────────────────────── */}
+      {/* ══════════════════════════════════════════════════════════════════
+          7. DOUBLE MARQUEE — before CTA
+      ══════════════════════════════════════════════════════════════════ */}
+      <div style={{ background: '#000', overflow: 'hidden', padding: 'clamp(8px, 1vw, 14px) 0', display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <div style={{ overflow: 'hidden' }}>
+          <div className="page-marquee-track">
+            <span style={{ fontFamily: PP, fontWeight: 900, fontSize: 'clamp(52px, 8vw, 110px)', color: 'white', textTransform: 'uppercase', letterSpacing: '-3px', lineHeight: 0.9, whiteSpace: 'nowrap' }}>
+              THINCHRONIZE * BRAND STUDIO * BEIRUT * STRATEGY * IDENTITY * CRAFT * THINCHRONIZE * BRAND STUDIO * BEIRUT * STRATEGY * IDENTITY * CRAFT *&nbsp;
+            </span>
+          </div>
+        </div>
+        <div style={{ overflow: 'hidden' }}>
+          <div className="page-marquee-track-reverse">
+            <span style={{ fontFamily: PP, fontWeight: 900, fontSize: 'clamp(52px, 8vw, 110px)', color: 'white', textTransform: 'uppercase', letterSpacing: '-3px', lineHeight: 0.9, whiteSpace: 'nowrap' }}>
+              THINCHRONIZE * BRAND STUDIO * BEIRUT * STRATEGY * IDENTITY * CRAFT * THINCHRONIZE * BRAND STUDIO * BEIRUT * STRATEGY * IDENTITY * CRAFT *&nbsp;
+            </span>
+          </div>
+        </div>
+      </div>
+
+
       <style dangerouslySetInnerHTML={{ __html: `
-        /* Registration-mark rows — the reference's section separators, carrying the Cycle */
-        .cycle-marks {
-          display: flex; justify-content: space-between; align-items: center;
-          padding: clamp(14px, 1.6vw, 22px) 5vw;
-        }
-        .cycle-marks span { font-family: ${PP}; font-weight: 400; font-size: 14px; color: rgba(0,0,0,0.3); }
-        .cycle-marks em {
-          font-style: normal; font-family: ${PP}; font-weight: 400; font-size: 11px;
-          letter-spacing: 0.22em; text-transform: uppercase; color: rgba(0,0,0,0.35);
-        }
-
-        .hero-foot {
-          display: flex; justify-content: space-between; align-items: center;
-          padding: clamp(16px, 2.2vh, 26px) 5vw;
-        }
-        .hero-foot span { font-family: ${PP}; font-weight: 400; font-size: 14px; color: rgba(0,0,0,0.3); }
-        .hero-foot em {
-          font-style: normal; font-family: ${PP}; font-weight: 400; font-size: 11px;
-          letter-spacing: 0.24em; text-transform: uppercase; color: rgba(0,0,0,0.45);
-        }
-
-        /* Pills — the reference's CTA language */
-        .pill {
-          display: inline-flex; align-items: center; gap: 10px;
-          font-family: ${PP}; font-weight: 400; font-size: 12px;
-          letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none;
-          padding: 13px 22px; border-radius: 999px;
-          transition: transform 200ms ease, background 250ms ease, color 250ms ease;
-        }
-        .pill:hover { transform: translateY(-1px); }
-        .pill:active { transform: translateY(1px); }
-        .pill:focus-visible { outline: 2px solid ${RED}; outline-offset: 3px; }
-        .pill--light { background: #fff; color: ${INK}; border: 1px solid rgba(0,0,0,0.08); }
-        .pill--light:hover { color: ${RED}; }
-        .pill--light i { width: 6px; height: 6px; border-radius: 50%; background: ${RED}; display: inline-block; }
-        .pill--dark { background: ${INK}; color: #fff; }
-        .pill--dark:hover { background: ${RED}; }
-
-        /* Statement section */
-        .statement-grid {
-          display: grid; grid-template-columns: 1.1fr 1fr;
-          gap: clamp(32px, 5vw, 80px); align-items: start;
-          margin-top: clamp(40px, 5vw, 72px);
-        }
-        .collage { position: relative; min-height: clamp(260px, 30vw, 430px); }
-        .collage-a {
-          position: absolute; left: 0; top: 0; width: 62%; aspect-ratio: 3 / 2;
-          border-radius: 16px; overflow: hidden; transform: rotate(-2deg); z-index: 31;
-        }
-        .collage-b {
-          position: absolute; right: 4%; bottom: 0; width: 46%; aspect-ratio: 4 / 3;
-          border-radius: 16px; overflow: hidden; transform: rotate(1.5deg); z-index: 31;
-        }
-        .statement-copy { padding-top: 8px; }
-
-        /* Ghost display line — outline letters, red flip on hover */
-        .ghost-line {
-          display: flex; justify-content: space-between; gap: 4vw;
-          margin-top: clamp(64px, 9vw, 140px); text-decoration: none;
-        }
-        .ghost-word {
-          font-family: ${PP}; font-weight: 900;
-          font-size: clamp(40px, 8.6vw, 140px);
-          line-height: 0.95; text-transform: uppercase; letter-spacing: -3px;
-          color: transparent; -webkit-text-stroke: 1.5px rgba(0,0,0,0.35);
-          transition: color 350ms ease, -webkit-text-stroke-color 350ms ease, transform 350ms cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        .ghost-line:hover .ghost-word {
-          color: ${RED}; -webkit-text-stroke-color: ${RED}; transform: translateY(-6px);
-        }
-        .ghost-line:hover .ghost-word:last-child { transition-delay: 60ms; }
-        .ghost-line:focus-visible { outline: 2px solid ${RED}; outline-offset: 6px; }
-
-        /* Featured work */
-        .work-head {
-          display: flex; justify-content: space-between; align-items: flex-end;
-          gap: 32px; flex-wrap: wrap; margin-bottom: clamp(40px, 5vw, 72px);
-        }
-        .work-grid {
-          display: grid; grid-template-columns: 1fr 1fr;
-          gap: clamp(20px, 2.4vw, 40px) clamp(16px, 2vw, 32px);
-        }
-        .work-card { display: block; text-decoration: none; }
-        .work-media {
-          position: relative; display: block; aspect-ratio: 4 / 3;
-          border-radius: 20px; overflow: hidden;
-          transform: translateZ(0);
-        }
-        .work-media img { transition: transform 700ms cubic-bezier(0.19, 1, 0.22, 1); }
-        .work-card:hover .work-media img { transform: scale(1.04); }
-        .work-tags {
-          display: block; font-family: ${PP}; font-weight: 400; font-size: 10px;
-          letter-spacing: 0.2em; text-transform: uppercase; color: ${MUTED};
-          margin: 16px 0 4px;
-        }
-        .roll-title { overflow: hidden; white-space: nowrap; }
-        .roll-track {
-          display: inline-flex; width: max-content;
-          font-family: ${PP}; font-weight: 400;
-          font-size: clamp(22px, 2.6vw, 38px); letter-spacing: -0.02em; color: ${INK};
-        }
-        .work-card:hover .roll-track { animation: roll 6s linear infinite; }
-        @keyframes roll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-        .roll-track span { padding-right: 0; }
-
-        .svc-row:hover .svc-title { color: ${RED} !important; }
-        .lets-sync:hover { color: ${RED} !important; }
-        .home-smalllink {
-          font-family: ${PP}; font-weight: 400; font-size: 12px; letter-spacing: 2px;
-          text-transform: uppercase; color: ${MUTED};
-          text-decoration: underline; text-underline-offset: 4px;
-          transition: color 220ms ease;
-        }
-        .home-smalllink:hover { color: ${RED}; }
-
-        @media (max-width: 1023px) {
-          .statement-grid { grid-template-columns: 1fr; }
-          .work-grid { grid-template-columns: 1fr; }
-          .work-head p { max-width: none; }
-        }
-        @media (max-width: 767px) {
-          .hero-card { margin-left: 4vw; margin-right: 4vw; border-radius: 18px; }
-          .hero-card-meta { display: none; }
-          .collage { min-height: 240px; }
-          .cycle-marks em { font-size: 9px; letter-spacing: 0.14em; }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          .hero-static-line { opacity: 1 !important; }
-          .pill, .ghost-word, .work-media img, .roll-track { transition: none !important; animation: none !important; }
-        }
+        .work-cover:hover { transform: scale(1.03) !important; }
       ` }} />
 
-    </div>
-  )
-}
-
-// The gate's oversized display line: letter-settle + velocity skew.
-function GateLine() {
-  const ref = useRef<HTMLDivElement>(null)
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    let cleanup: (() => void) | undefined
-    import('@/components/home/motion').then(m => {
-      if (el.isConnected) cleanup = m.addSkewTarget({ el })
-    })
-    return () => cleanup?.()
-  }, [])
-  return (
-    <div ref={ref} style={{ willChange: 'transform' }}>
-      <LetterSettle
-        as="h2"
-        parts={[{ t: 'Where random change becomes ' }, { t: 'designed evolution.', red: true }]}
-        style={{
-          fontFamily: PP, fontWeight: 400,
-          fontSize: 'clamp(34px, 6.4vw, 100px)',
-          textTransform: 'none',
-          color: '#111', lineHeight: 1.05, letterSpacing: '-0.03em',
-          margin: 0, maxWidth: '92vw',
-        }}
-      />
     </div>
   )
 }
