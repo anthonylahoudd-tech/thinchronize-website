@@ -117,7 +117,7 @@ export default function ContactClient() {
                 fontFamily: PP,
                 fontWeight: 400,
                 fontSize:   15,
-                color:      '#919191',
+                color:      '#000000',
                 lineHeight: 1.7,
                 maxWidth:   '44ch',
               }}>
@@ -129,7 +129,7 @@ export default function ContactClient() {
                   fontFamily:    PP,
                   fontWeight:    400,
                   fontSize:      13,
-                  color:         '#919191',
+                  color:         '#000000',
                   background:    'none',
                   border:        'none',
                   padding:       0,
@@ -247,7 +247,7 @@ export default function ContactClient() {
                   fontFamily:  PP,
                   fontWeight:  400,
                   fontSize:    12,
-                  color:       '#919191',
+                  color:       '#000000',
                   marginTop:   14,
                   letterSpacing: '0.02em',
                 }}>
@@ -265,7 +265,7 @@ export default function ContactClient() {
             fontFamily:  PP,
             fontWeight:  400,
             fontSize:    13,
-            color:       '#919191',
+            color:       '#000000',
             marginTop:   'clamp(48px, 6vw, 80px)',
             letterSpacing: '0.02em',
           }}
@@ -311,7 +311,7 @@ function Field({
         fontSize:      10,
         letterSpacing: '0.2em',
         textTransform: 'uppercase',
-        color:         '#919191',
+        color:         'rgba(0,0,0,0.9)',
         marginBottom:  12,
       }}>
         {label}

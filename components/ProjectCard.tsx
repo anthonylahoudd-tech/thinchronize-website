@@ -102,7 +102,7 @@ export default function ProjectCard({ project }: { project: Project }) {
                 fontFamily: PP,
                 fontWeight: 400,
                 fontSize:   13,
-                color:      'rgba(255,255,255,0.4)',
+                color:      '#FFFFFF',
               }}>
                 {project.subtitle}
               </span>
@@ -115,7 +115,7 @@ export default function ProjectCard({ project }: { project: Project }) {
             fontSize:      11,
             letterSpacing: '2px',
             textTransform: 'uppercase',
-            color:         'rgba(255,255,255,0.35)',
+            color:         'rgba(255,255,255,0.9)',
             paddingTop:    3,
             whiteSpace:    'nowrap',
             marginLeft:    16,

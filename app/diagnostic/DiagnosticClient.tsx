@@ -121,11 +121,11 @@ function ServiceCard({ service, onProjectClick }: ServiceCardProps) {
       <p style={{ fontFamily: PP, fontWeight: 700, fontSize: 22, color: '#fff', margin: '8px 0 4px', lineHeight: 1.2 }}>
         {service.name}
       </p>
-      <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 14, color: '#919191', fontStyle: 'italic', marginBottom: 16 }}>
+      <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 14, color: '#000000', fontStyle: 'italic', marginBottom: 16 }}>
         {service.tagline}
       </p>
       <div style={{ height: 1, background: 'rgba(255,255,255,0.1)', marginBottom: 16 }} />
-      <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 13, color: '#CCCCCC', lineHeight: 1.7, marginBottom: 16, flex: 1 }}>
+      <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 13, color: '#000000', lineHeight: 1.7, marginBottom: 16, flex: 1 }}>
         {service.description}
       </p>
       <p style={{ fontFamily: PP, fontWeight: 800, fontSize: 10, color: RED, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 8 }}>
@@ -138,7 +138,7 @@ function ServiceCard({ service, onProjectClick }: ServiceCardProps) {
             border: '1px solid rgba(255,255,255,0.1)',
             borderRadius: 20,
             padding: '4px 12px',
-            color: '#999',
+            color: '#000000',
             fontSize: 11,
             fontFamily: PP,
           }}>{d}</span>
@@ -167,7 +167,7 @@ function ServiceCard({ service, onProjectClick }: ServiceCardProps) {
                   onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.05)')}
                   onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
                 />
-                <p style={{ fontFamily: PP, fontSize: 10, color: '#919191', marginTop: 4, maxWidth: 80, lineHeight: 1.2 }}>
+                <p style={{ fontFamily: PP, fontSize: 10, color: '#000000', marginTop: 4, maxWidth: 80, lineHeight: 1.2 }}>
                   {proj.title}
                 </p>
               </div>
@@ -244,12 +244,12 @@ function ProjectWindow({ project, onBack, onClose }: ProjectWindowProps) {
           justifyContent: 'space-between',
           zIndex:       10,
         }}>
-          <button onClick={onBack} style={{ fontFamily: PP, fontSize: 13, color: '#555', cursor: 'pointer', background: 'none', border: 'none', transition: 'color 0.2s' }}
+          <button onClick={onBack} style={{ fontFamily: PP, fontSize: 13, color: '#000000', cursor: 'pointer', background: 'none', border: 'none', transition: 'color 0.2s' }}
             onMouseEnter={e => (e.currentTarget.style.color = RED)}
             onMouseLeave={e => (e.currentTarget.style.color = '#555')}
           >← Back</button>
           <span style={{ fontFamily: PP, fontSize: 14, color: '#292929', fontWeight: 600 }}>{project.title}</span>
-          <button onClick={onClose} style={{ fontFamily: PP, fontSize: 18, color: '#555', cursor: 'pointer', background: 'none', border: 'none', transition: 'color 0.2s', lineHeight: 1 }}
+          <button onClick={onClose} style={{ fontFamily: PP, fontSize: 18, color: '#000000', cursor: 'pointer', background: 'none', border: 'none', transition: 'color 0.2s', lineHeight: 1 }}
             onMouseEnter={e => (e.currentTarget.style.color = RED)}
             onMouseLeave={e => (e.currentTarget.style.color = '#555')}
           >×</button>
@@ -271,7 +271,7 @@ function ProjectWindow({ project, onBack, onClose }: ProjectWindowProps) {
               background: '#FFF0F3', color: RED,
               borderRadius: 6, padding: '4px 10px', fontSize: 11, fontFamily: PP,
             }}>{project.category}</span>
-            <span style={{ fontSize: 13, color: '#999', fontFamily: PP }}>
+            <span style={{ fontSize: 13, color: '#000000', fontFamily: PP }}>
               · {project.market} · {project.year}
             </span>
           </div>
@@ -309,7 +309,7 @@ function ProjectWindow({ project, onBack, onClose }: ProjectWindowProps) {
               {project.services.map(s => (
                 <span key={s} style={{
                   background: 'rgba(41,41,41,0.06)', border: '1px solid rgba(41,41,41,0.12)',
-                  borderRadius: 20, padding: '6px 14px', color: '#555', fontSize: 12, fontFamily: PP,
+                  borderRadius: 20, padding: '6px 14px', color: '#000000', fontSize: 12, fontFamily: PP,
                 }}>{s}</span>
               ))}
             </div>
@@ -320,7 +320,7 @@ function ProjectWindow({ project, onBack, onClose }: ProjectWindowProps) {
             <h2 style={{ fontFamily: PP, fontWeight: 900, fontSize: 26, textTransform: 'uppercase', color: '#292929', marginBottom: 10, lineHeight: 1.2 }}>
               Ready to diagnose your brand?
             </h2>
-            <p style={{ fontFamily: PP, fontSize: 15, color: '#888', marginBottom: 28, lineHeight: 1.6 }}>
+            <p style={{ fontFamily: PP, fontSize: 15, color: '#000000', marginBottom: 28, lineHeight: 1.6 }}>
               Every engagement starts with a question, not a quote.
             </p>
             <Link href="/contact" style={{
@@ -407,12 +407,12 @@ function ServiceWindow({ service, onProjectClick, onBack, onClose }: ServiceWind
           justifyContent: 'space-between',
           zIndex:       10,
         }}>
-          <button onClick={onBack} style={{ fontFamily: PP, fontSize: 13, color: '#555', cursor: 'pointer', background: 'none', border: 'none', transition: 'color 0.2s' }}
+          <button onClick={onBack} style={{ fontFamily: PP, fontSize: 13, color: '#000000', cursor: 'pointer', background: 'none', border: 'none', transition: 'color 0.2s' }}
             onMouseEnter={e => (e.currentTarget.style.color = RED)}
             onMouseLeave={e => (e.currentTarget.style.color = '#555')}
           >← Back</button>
           <span style={{ fontFamily: PP, fontSize: 14, color: '#292929', fontWeight: 600 }}>{service.name}</span>
-          <button onClick={onClose} style={{ fontFamily: PP, fontSize: 18, color: '#555', cursor: 'pointer', background: 'none', border: 'none', transition: 'color 0.2s', lineHeight: 1 }}
+          <button onClick={onClose} style={{ fontFamily: PP, fontSize: 18, color: '#000000', cursor: 'pointer', background: 'none', border: 'none', transition: 'color 0.2s', lineHeight: 1 }}
             onMouseEnter={e => (e.currentTarget.style.color = RED)}
             onMouseLeave={e => (e.currentTarget.style.color = '#555')}
           >×</button>
@@ -465,7 +465,7 @@ function ServiceWindow({ service, onProjectClick, onBack, onClose }: ServiceWind
                       onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.05)')}
                       onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
                     />
-                    <p style={{ fontFamily: PP, fontSize: 11, color: '#888', marginTop: 6 }}>{proj.title}</p>
+                    <p style={{ fontFamily: PP, fontSize: 11, color: '#000000', marginTop: 6 }}>{proj.title}</p>
                   </div>
                 ))}
               </div>
@@ -477,7 +477,7 @@ function ServiceWindow({ service, onProjectClick, onBack, onClose }: ServiceWind
             <h2 style={{ fontFamily: PP, fontWeight: 900, fontSize: 26, textTransform: 'uppercase', color: '#292929', marginBottom: 10 }}>
               Ready to diagnose your brand?
             </h2>
-            <p style={{ fontFamily: PP, fontSize: 15, color: '#888', marginBottom: 28 }}>
+            <p style={{ fontFamily: PP, fontSize: 15, color: '#000000', marginBottom: 28 }}>
               Every engagement starts with a question, not a quote.
             </p>
             <Link href="/contact" style={{
@@ -705,7 +705,7 @@ export default function DiagnosticClient() {
               <p style={{ fontFamily: PP, fontWeight: 800, fontSize: 14, color: RED, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 8 }}>
                 What does your brand need?
               </p>
-              <p style={{ fontFamily: PP, fontSize: 11, color: '#919191' }}>Tap to find the right service</p>
+              <p style={{ fontFamily: PP, fontSize: 11, color: '#000000' }}>Tap to find the right service</p>
             </div>
           )}
 
@@ -740,7 +740,7 @@ export default function DiagnosticClient() {
                       {svc.shortName}
                     </span>
                   </div>
-                  <span style={{ fontFamily: PP, fontSize: 11, color: '#919191', textAlign: 'center' }}>
+                  <span style={{ fontFamily: PP, fontSize: 11, color: '#000000', textAlign: 'center' }}>
                     {svc.name}
                   </span>
                 </div>
@@ -751,7 +751,7 @@ export default function DiagnosticClient() {
           {/* Question overlay mobile */}
           {stage === 'question' && (
             <div style={{ width: '100%', maxWidth: 400 }}>
-              <button onClick={popNav} style={{ fontFamily: PP, fontSize: 13, color: '#919191', background: 'none', border: 'none', cursor: 'pointer', marginBottom: 24 }}>
+              <button onClick={popNav} style={{ fontFamily: PP, fontSize: 13, color: '#000000', background: 'none', border: 'none', cursor: 'pointer', marginBottom: 24 }}>
                 ← Back
               </button>
               <p style={{ fontFamily: PP, fontWeight: 800, fontSize: 13, color: RED, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 20, textAlign: 'center' }}>
@@ -790,7 +790,7 @@ export default function DiagnosticClient() {
           {/* Matched services mobile */}
           {stage === 'matched' && (
             <div style={{ width: '100%', maxWidth: 400, display: 'flex', flexDirection: 'column', gap: 16 }}>
-              <button onClick={popNav} style={{ fontFamily: PP, fontSize: 13, color: '#919191', background: 'none', border: 'none', cursor: 'pointer', marginBottom: 8, textAlign: 'left' }}>
+              <button onClick={popNav} style={{ fontFamily: PP, fontSize: 13, color: '#000000', background: 'none', border: 'none', cursor: 'pointer', marginBottom: 8, textAlign: 'left' }}>
                 ← Answer differently
               </button>
               {matchedServices.map(svc => (
@@ -850,7 +850,7 @@ export default function DiagnosticClient() {
               <p style={{ fontFamily: PP, fontWeight: 800, fontSize: 14, color: RED, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 8 }}>
                 What does your brand need?
               </p>
-              <p style={{ fontFamily: PP, fontSize: 11, color: '#919191' }}>Answer to find the right service</p>
+              <p style={{ fontFamily: PP, fontSize: 11, color: '#000000' }}>Answer to find the right service</p>
             </div>
           )}
 
@@ -912,7 +912,7 @@ export default function DiagnosticClient() {
               />
               <button
                 onClick={popNav}
-                style={{ marginTop: 18, fontFamily: PP, fontSize: 12, color: '#919191', background: 'none', border: 'none', cursor: 'pointer', display: 'block', margin: '16px auto 0' }}
+                style={{ marginTop: 18, fontFamily: PP, fontSize: 12, color: '#000000', background: 'none', border: 'none', cursor: 'pointer', display: 'block', margin: '16px auto 0' }}
               >← Back</button>
             </div>
           )}
@@ -941,7 +941,7 @@ export default function DiagnosticClient() {
                   bottom:     -40,
                   left:       '50%',
                   transform:  'translateX(-50%)',
-                  fontFamily: PP, fontSize: 13, color: '#919191',
+                  fontFamily: PP, fontSize: 13, color: '#000000',
                   background: 'none', border: 'none', cursor: 'pointer',
                   whiteSpace: 'nowrap',
                 }}

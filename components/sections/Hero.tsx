@@ -91,7 +91,7 @@ export default function Hero() {
           fontSize:      11,
           letterSpacing: '0.2em',
           textTransform: 'uppercase',
-          color:         'rgba(255,255,255,0.75)',
+          color:         'rgba(255,255,255,0.9)',
           textShadow:    '0 1px 6px rgba(0,0,0,0.6)',
         }}>
           Est. 2016 · Beirut, LB
@@ -101,7 +101,7 @@ export default function Hero() {
           fontWeight:    400,
           fontSize:      11,
           letterSpacing: '0.12em',
-          color:         'rgba(255,255,255,0.75)',
+          color:         '#FFFFFF',
           textShadow:    '0 1px 6px rgba(0,0,0,0.6)',
         }}>
           Brand Strategy · Visual Identity
@@ -120,12 +120,12 @@ export default function Hero() {
           fontSize:      10,
           letterSpacing: '0.25em',
           textTransform: 'uppercase',
-          color:         'rgba(255,255,255,0.75)',
+          color:         'rgba(255,255,255,0.9)',
           textShadow:    '0 1px 6px rgba(0,0,0,0.6)',
         }}>
           Scroll
         </span>
-        <span className="animate-bounce" style={{ color: 'rgba(255,255,255,0.75)', fontSize: 14, textShadow: '0 1px 6px rgba(0,0,0,0.6)' }}>
+        <span className="animate-bounce" style={{ color: '#FFFFFF', fontSize: 14, textShadow: '0 1px 6px rgba(0,0,0,0.6)' }}>
           ↓
         </span>
       </div>

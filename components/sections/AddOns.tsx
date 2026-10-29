@@ -103,7 +103,7 @@ export default function AddOns() {
             fontWeight:  400,
             fontSize:    18,
             lineHeight:  1.7,
-            color:       '#919191',
+            color:       '#000000',
           }}
         >
           Bolt production onto your brand system. Every deliverable inherits your identity —
@@ -158,7 +158,7 @@ export default function AddOns() {
                   fontWeight: 400,
                   fontSize:   15,
                   lineHeight: 1.7,
-                  color:      '#919191',
+                  color:      '#000000',
                 }}
               >
                 {addon.description}
@@ -174,7 +174,7 @@ export default function AddOns() {
               fontFamily: "'PPNeueCorp', system-ui, sans-serif",
               fontWeight: 400,
               fontSize:   14,
-              color:      '#919191',
+              color:      '#000000',
             }}
           >
             Quoted per scope. No packages, no padding.

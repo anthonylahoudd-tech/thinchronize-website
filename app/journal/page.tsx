@@ -38,7 +38,7 @@ export default async function JournalPage() {
       >
         {/* Posts */}
         {posts.length === 0 ? (
-          <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 16, color: '#919191' }}>
+          <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 16, color: '#000000' }}>
             Posts coming soon.
           </p>
         ) : (
@@ -88,7 +88,7 @@ export default async function JournalPage() {
                       fontFamily: PP,
                       fontWeight: 400,
                       fontSize:   12,
-                      color:      '#919191',
+                      color:      '#000000',
                     }}>
                       {new Date(post.publishedAt).toLocaleDateString('en-US', {
                         year: 'numeric', month: 'short', day: 'numeric',
@@ -100,7 +100,7 @@ export default async function JournalPage() {
                       fontFamily: PP,
                       fontWeight: 400,
                       fontSize:   11,
-                      color:      '#919191',
+                      color:      '#000000',
                       marginTop:  4,
                     }}>
                       {post.readTime} min read

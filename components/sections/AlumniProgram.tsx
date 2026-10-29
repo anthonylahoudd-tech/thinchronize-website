@@ -12,7 +12,7 @@ export default function AlumniProgram() {
         {/* Eyebrow */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 48 }}>
           <span style={{ width: 32, height: 1, background: '#D0274B', flexShrink: 0 }} />
-          <span style={{ fontFamily: PP, fontWeight: 800, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase' as const, color: 'rgba(255,255,255,0.5)' }}>
+          <span style={{ fontFamily: PP, fontWeight: 800, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase' as const, color: 'rgba(255,255,255,0.9)' }}>
             Brand Alumni
           </span>
         </div>
@@ -89,7 +89,7 @@ export default function AlumniProgram() {
                 <p style={{ fontFamily: PP, fontWeight: 900, fontSize: 'clamp(72px, 10vw, 120px)', lineHeight: 1, color: '#D0274B', letterSpacing: '-0.02em' }}>
                   25–30%
                 </p>
-                <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 14, color: 'rgba(255,255,255,0.5)', letterSpacing: '0.1em', textTransform: 'uppercase' as const, marginTop: 8 }}>
+                <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 14, color: '#FFFFFF', letterSpacing: '0.1em', textTransform: 'uppercase' as const, marginTop: 8 }}>
                   Permanent production discount
                 </p>
               </div>
@@ -123,7 +123,7 @@ export default function AlumniProgram() {
                   <p style={{ fontFamily: PP, fontWeight: 900, fontSize: 'clamp(15px, 1.5vw, 18px)', color: '#FFFFFF', textTransform: 'uppercase' as const, letterSpacing: '0.02em', lineHeight: 1.2, marginBottom: 12 }}>
                     {path.title}
                   </p>
-                  <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 13, color: 'rgba(255,255,255,0.45)', lineHeight: 1.6 }}>
+                  <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 13, color: '#FFFFFF', lineHeight: 1.6 }}>
                     {path.desc}
                   </p>
                 </div>

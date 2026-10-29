@@ -61,7 +61,7 @@ export default function Footer() {
                 fontWeight: 400,
                 fontSize:   14,
                 lineHeight: 1.7,
-                color:      'rgba(255,255,255,0.7)',
+                color:      '#FFFFFF',
                 maxWidth:   280,
               }}
             >
@@ -81,7 +81,7 @@ export default function Footer() {
                   fontSize:      10,
                   letterSpacing: '0.2em',
                   textTransform: 'uppercase',
-                  color:         'rgba(255,255,255,0.5)',
+                  color:         'rgba(255,255,255,0.9)',
                 }}
               >
                 {section}
@@ -98,7 +98,7 @@ export default function Footer() {
                         fontFamily: PP,
                         fontWeight: 400,
                         fontSize:   14,
-                        color:      'rgba(255,255,255,0.8)',
+                        color:      '#FFFFFF',
                         transition: 'color 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                       }}
                       onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = '#fff')}
@@ -132,10 +132,10 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-8 border-t border-white/20">
-          <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 12, color: 'rgba(255,255,255,0.6)' }}>
+          <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 12, color: '#FFFFFF' }}>
             © {year} Thinchronize. All rights reserved.
           </p>
-          <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 12, color: 'rgba(255,255,255,0.6)' }}>
+          <p style={{ fontFamily: PP, fontWeight: 400, fontSize: 12, color: '#FFFFFF' }}>
             Mindful Design · Beirut, Lebanon
           </p>
         </div>

@@ -159,7 +159,7 @@ export default function About() {
               fontWeight: 400,
               fontSize:   18,
               lineHeight: 1.7,
-              color:      '#919191',
+              color:      '#000000',
             }}>
               Thinchronize is a strategy-led creative studio. We are not here to make your brand
               look better. We are here to make it true. Every engagement starts with a diagnosis,
@@ -188,7 +188,7 @@ export default function About() {
                 fontSize:      13,
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase',
-                color:         '#919191',
+                color:         'rgba(0,0,0,0.9)',
                 marginTop:     8,
               }}>
                 {s.label}
@@ -245,7 +245,7 @@ export default function About() {
                 fontWeight: 400,
                 fontSize:   14,
                 lineHeight: 1.7,
-                color:      '#919191',
+                color:      '#000000',
               }}>
                 {step.description}
               </p>

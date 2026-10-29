@@ -164,7 +164,7 @@ export default function ProductionClient() {
           Loyalty is recognized, not sold — $10,000 of work with us, any mix, and all production is 25–30% off. Forever.
         </h2>
         <p style={{
-          fontFamily: PP, fontWeight: 400, fontSize: 13, color: 'rgba(255,255,255,0.5)',
+          fontFamily: PP, fontWeight: 400, fontSize: 13, color: '#FFFFFF',
           lineHeight: 1.6, margin: '20px auto 0', maxWidth: 720,
         }}>
           Applies to production — Social / Digital · Print & Editorial · Brand Extension · Packaging · Motion · Photography & Video. Never applies to programs or advisory.

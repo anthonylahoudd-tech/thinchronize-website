@@ -409,7 +409,7 @@ export default function PortfolioProjectClient({
                   fontSize:      13,
                   letterSpacing: '3px',
                   textTransform: 'uppercase',
-                  color:         'rgba(255,255,255,0.85)',
+                  color:         'rgba(255,255,255,0.9)',
                   whiteSpace:    'nowrap',
                 }}>
                   {s}{i < project.services.length - 1 && (
@@ -540,7 +540,7 @@ export default function PortfolioProjectClient({
                       fontFamily:    PP,
                       fontWeight:    400,
                       fontSize:      13,
-                      color:         'rgba(0,0,0,0.35)',
+                      color:         '#000000',
                       margin:        '0 0 10px',
                       letterSpacing: '0.5px',
                     }}>
@@ -552,7 +552,7 @@ export default function PortfolioProjectClient({
                       fontFamily: PP,
                       fontWeight: 500,
                       fontSize:   15,
-                      color:      'rgba(0,0,0,0.5)',
+                      color:      '#000000',
                       margin:     '0 0 52px',
                     }}>
                       {label}
@@ -577,7 +577,7 @@ export default function PortfolioProjectClient({
                       fontFamily: PP,
                       fontWeight: 400,
                       fontSize:   20,
-                      color:      'rgba(0,0,0,0.55)',
+                      color:      '#000000',
                       lineHeight: 1.75,
                       margin:     0,
                     }}>
@@ -593,7 +593,7 @@ export default function PortfolioProjectClient({
                           fontSize:      12,
                           letterSpacing: '2.5px',
                           textTransform: 'uppercase',
-                          color:         'rgba(0,0,0,0.35)',
+                          color:         'rgba(0,0,0,0.9)',
                           margin:        '0 0 20px',
                         }}>
                           (What we did)
@@ -622,7 +622,7 @@ export default function PortfolioProjectClient({
                                 fontFamily: PP,
                                 fontWeight: 400,
                                 fontSize:   18,
-                                color:      'rgba(0,0,0,0.65)',
+                                color:      '#000000',
                                 lineHeight: 1.5,
                               }}>
                                 {item}
@@ -651,7 +651,7 @@ export default function PortfolioProjectClient({
                               fontSize:      10,
                               letterSpacing: '3px',
                               textTransform: 'uppercase',
-                              color:         'rgba(0,0,0,0.3)',
+                              color:         'rgba(0,0,0,0.9)',
                               display:       'block',
                               marginBottom:  8,
                             }}>
@@ -661,7 +661,7 @@ export default function PortfolioProjectClient({
                               fontFamily: PP,
                               fontWeight: 400,
                               fontSize:   14,
-                              color:      'rgba(0,0,0,0.7)',
+                              color:      '#000000',
                             }}>
                               {row.value}
                             </span>
@@ -694,7 +694,7 @@ export default function PortfolioProjectClient({
           fontSize:      12,
           letterSpacing: '3px',
           textTransform: 'uppercase',
-          color:         'rgba(0,0,0,0.3)',
+          color:         'rgba(0,0,0,0.9)',
           margin:        '0 0 44px',
         }}>
           (Start a project)
@@ -717,7 +717,7 @@ export default function PortfolioProjectClient({
           fontFamily: PP,
           fontWeight: 400,
           fontSize:   20,
-          color:      'rgba(0,0,0,0.5)',
+          color:      '#000000',
           lineHeight: 1.7,
           maxWidth:   540,
           margin:     '0 0 52px',
@@ -778,7 +778,7 @@ export default function PortfolioProjectClient({
               fontWeight:    400,
               fontSize:      12,
               letterSpacing: '0.05em',
-              color:         'rgba(0,0,0,0.5)',
+              color:         '#000000',
               margin:        0,
               whiteSpace:    'nowrap',
             }}>

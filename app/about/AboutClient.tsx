@@ -178,7 +178,7 @@ export default function AboutClient() {
               fontSize:      12,
               letterSpacing: '0.18em',
               textTransform: 'uppercase',
-              color:         'rgba(0,0,0,0.4)',
+              color:         'rgba(0,0,0,0.9)',
             }}>
               About Thinchronize
             </span>
@@ -280,7 +280,7 @@ export default function AboutClient() {
               fontSize:      12,
               letterSpacing: '0.18em',
               textTransform: 'uppercase',
-              color:         'rgba(0,0,0,0.4)',
+              color:         'rgba(0,0,0,0.9)',
             }}>
               Forged in Lebanon
             </span>
@@ -374,7 +374,7 @@ export default function AboutClient() {
                 fontFamily: PP,
                 fontWeight: 400,
                 fontSize:   16,
-                color:      'rgba(0,0,0,0.45)',
+                color:      '#000000',
                 lineHeight: 1.5,
                 margin:     0,
               }}>
@@ -401,7 +401,7 @@ export default function AboutClient() {
           fontSize:      12,
           letterSpacing: '0.18em',
           textTransform: 'uppercase',
-          color:         'rgba(0,0,0,0.4)',
+          color:         'rgba(0,0,0,0.9)',
           margin:        '0 0 clamp(48px, 6vw, 80px)',
         }}>
           What we stand for
@@ -474,7 +474,7 @@ export default function AboutClient() {
           fontSize:      11,
           letterSpacing: '0.2em',
           textTransform: 'uppercase',
-          color:         'rgba(255,255,255,0.35)',
+          color:         'rgba(255,255,255,0.9)',
           margin:        '0 0 clamp(48px, 6vw, 80px)',
         }}>
           THE NUMBERS
@@ -530,7 +530,7 @@ export default function AboutClient() {
                 fontSize:      11,
                 letterSpacing: '0.2em',
                 textTransform: 'uppercase',
-                color:         'rgba(255,255,255,0.35)',
+                color:         'rgba(255,255,255,0.9)',
                 margin:        '0 0 20px',
               }}>
                 {item.label}

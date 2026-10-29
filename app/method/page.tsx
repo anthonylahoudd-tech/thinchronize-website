@@ -157,7 +157,7 @@ function ClientCard({ category, name, desc, href }: ClientItem) {
       <h3 style={{ color: 'white', fontSize: 36, fontWeight: 900, marginTop: 12, lineHeight: 1.1, fontFamily: PP }}>
         {name}
       </h3>
-      <p style={{ color: '#919191', fontSize: 14, fontWeight: 400, marginTop: 8, lineHeight: 1.6, fontFamily: PP }}>
+      <p style={{ color: '#000000', fontSize: 14, fontWeight: 400, marginTop: 8, lineHeight: 1.6, fontFamily: PP }}>
         {desc}
       </p>
       <Link
@@ -441,7 +441,7 @@ export default function MethodPage() {
               }}>
                 {/* Phase counter: "01 / 04" */}
                 <p style={{
-                  color: '#999999', fontSize: 12, letterSpacing: '0.2em',
+                  color: 'rgba(0,0,0,0.9)', fontSize: 12, letterSpacing: '0.2em',
                   textTransform: 'uppercase', fontWeight: 400,
                   marginBottom: 24, fontFamily: PP,
                 }}>
@@ -471,7 +471,7 @@ export default function MethodPage() {
 
                 {/* Description */}
                 <p style={{
-                  fontSize: 18, color: '#555555', lineHeight: 1.8,
+                  fontSize: 18, color: '#000000', lineHeight: 1.8,
                   fontWeight: 400, fontFamily: PP, maxWidth: 480,
                 }}>
                   {phase.desc}
@@ -535,7 +535,7 @@ export default function MethodPage() {
             <h2 style={{ fontSize: 'clamp(32px, 5vw, 72px)', fontWeight: 900, color: 'white', marginBottom: 16, fontFamily: PP }}>
               Work shaped by this method
             </h2>
-            <p style={{ color: '#919191', fontSize: 16, fontWeight: 400, fontFamily: PP }}>
+            <p style={{ color: '#000000', fontSize: 16, fontWeight: 400, fontFamily: PP }}>
               Every project below went through all four phases.
             </p>
           </div>
@@ -569,7 +569,7 @@ export default function MethodPage() {
             Could this be<br />
             <span style={{ color: '#D0274B' }}>your brand?</span>
           </h2>
-          <p style={{ color: '#919191', fontSize: 18, fontWeight: 400, maxWidth: 440, margin: '0 auto', lineHeight: 1.7, fontFamily: PP }}>
+          <p style={{ color: '#000000', fontSize: 18, fontWeight: 400, maxWidth: 440, margin: '0 auto', lineHeight: 1.7, fontFamily: PP }}>
             We&apos;re selective. We work with brands that are ready to do the work.
           </p>
         </div>
@@ -585,7 +585,7 @@ export default function MethodPage() {
             Every great brand starts<br />with a diagnosis.
           </h2>
           <p style={{
-            color: 'rgba(255,255,255,0.75)', fontSize: 18, fontWeight: 400,
+            color: '#FFFFFF', fontSize: 18, fontWeight: 400,
             maxWidth: 480, margin: '0 auto 56px', lineHeight: 1.6, fontFamily: PP,
           }}>
             We take on a limited number of projects each quarter to ensure every client gets our full attention.
@@ -604,7 +604,7 @@ export default function MethodPage() {
           >
             Start Your Diagnosis →
           </Link>
-          <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12, fontWeight: 400, marginTop: 24, fontFamily: PP }}>
+          <p style={{ color: '#FFFFFF', fontSize: 12, fontWeight: 400, marginTop: 24, fontFamily: PP }}>
             We respond within 48 hours.
           </p>
         </div>

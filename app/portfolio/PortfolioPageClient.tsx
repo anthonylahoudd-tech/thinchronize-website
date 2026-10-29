@@ -320,7 +320,7 @@ export default function PortfolioPageClient() {
                 fontSize:      13,
                 letterSpacing: '3px',
                 textTransform: 'uppercase',
-                color:         'rgba(255,255,255,0.25)',
+                color:         'rgba(255,255,255,0.9)',
               }}>
                 No projects in this category yet.
               </div>
@@ -366,7 +366,7 @@ export default function PortfolioPageClient() {
                         fontSize:      11,
                         letterSpacing: '3px',
                         textTransform: 'uppercase',
-                        color:         'rgba(255,255,255,0.45)',
+                        color:         'rgba(255,255,255,0.9)',
                         margin:        '0 0 16px 0',
                       }}>
                         {String(i + 1).padStart(2, '0')} / {String(filteredProjects.length).padStart(2, '0')} — {project.category}
@@ -424,7 +424,7 @@ export default function PortfolioPageClient() {
                           fontSize:      11,
                           letterSpacing: '3px',
                           textTransform: 'uppercase',
-                          color:         'rgba(255,255,255,0.3)',
+                          color:         'rgba(255,255,255,0.9)',
                           margin:        '0 0 20px 0',
                         }}>
                           Keep scrolling for the next case study.
@@ -501,7 +501,7 @@ export default function PortfolioPageClient() {
                 fontSize:      13,
                 letterSpacing: '3px',
                 textTransform: 'uppercase',
-                color:         'rgba(255,255,255,0.25)',
+                color:         'rgba(255,255,255,0.9)',
               }}>
                 No projects in this category yet.
               </div>
