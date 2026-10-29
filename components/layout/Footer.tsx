@@ -14,10 +14,12 @@ interface FooterLink {
 
 const footerLinks: Record<string, FooterLink[]> = {
   Studio: [
-    { label: 'Home',      href: '/' },
-    { label: 'Services',  href: '/services' },
-    { label: 'Portfolio', href: '/portfolio' },
-    { label: 'Journal',   href: '/journal' },
+    { label: 'Home',       href: '/' },
+    { label: 'Programs',   href: '/programs' },
+    { label: 'Research',   href: '/research' },
+    { label: 'Production', href: '/production' },
+    { label: 'Portfolio',  href: '/portfolio' },
+    { label: 'Journal',    href: '/journal' },
   ],
   Connect: [
     { label: 'Contact',   href: '/contact' },

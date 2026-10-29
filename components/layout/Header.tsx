@@ -11,10 +11,12 @@ const PP   = "'PPNeueCorp', system-ui, sans-serif"
 const EASE = 'cubic-bezier(0.19, 1, 0.22, 1)'
 
 const NAV_LINKS = [
-  { label: 'Work',     href: '/portfolio' },
-  { label: 'About',   href: '/about'     },
-  { label: 'Services', href: '/services' },
-  { label: 'Ideas',   href: '/journal'   },
+  { label: 'Work',       href: '/portfolio'  },
+  { label: 'Programs',   href: '/programs'   },
+  { label: 'Research',   href: '/research'   },
+  { label: 'Production', href: '/production' },
+  { label: 'About',      href: '/about'      },
+  { label: 'Ideas',      href: '/journal'    },
 ]
 
 const TOTAL = NAV_LINKS.length

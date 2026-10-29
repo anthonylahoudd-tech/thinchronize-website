@@ -17,6 +17,27 @@
 
 ---
 
+## 0.5 Skills to use (and when)
+
+Use the installed design skills so this rebuild is premium, not generic. Invoke each by name at the step noted. If a skill isn't registered in this environment, its raw assets are on disk at the paths given — read them directly.
+
+- **`redesign-existing-projects`** — run **first**. Audit `ServicesEditorialClient.tsx`: list generic/AI patterns, weak typography, spacing, hierarchy, and missing states. Produce a prioritized fix list, then apply upgrades **in place** (do not rewrite; never touch the hero).
+- **`ui-ux-pro-max`** — the design database. Before styling, query it for a **"premium editorial studio / minimalist monochrome"** direction on the **Next.js + Tailwind** stack. Run its search, e.g.:
+  ```bash
+  python3 ~/Downloads/ui-ux-pro-max-skill-main/.claude/skills/ui-ux-pro-max/scripts/search.py "premium editorial studio minimalist monochrome" --domain style --stack nextjs
+  # also: --domain typography   --domain ux   --domain gsap
+  ```
+  Use outputs as **guidance only** — DO NOT adopt its stock hex palettes or fonts. Override every color/font with the locked brand below.
+- **`emil-design-eng`** + **`apple-design`** — motion/interaction philosophy for the index→detail transition, hover states, and scroll reveals. Purposeful, tactile, interruptible — never decorative.
+- **`review-animations`** — after motion is in, run it to audit the animations and fix what it flags. Respect `prefers-reduced-motion`.
+- **`animation-vocabulary`** — use to name effects precisely (stage crossfade, hover underline sweep, section reveal).
+- **`ui-styling`** — implementation layer: Tailwind/shadcn patterns, accessible components, focus/hover/active states.
+- **`design-system`** — keep tokens consistent; **reuse the existing brand tokens**, don't invent new scales.
+
+**Hard rule over every skill — the LOCKED brand wins.** `#292929` / `#D0274B` / `#919191` / `#FFFFFF` and PP Neue Corp. If any skill suggests other colors, fonts, gradients, heavy drop-shadows, or rounded-card styling that fights the sharp editorial look — ignore it. No prices, ever. The hero stays pixel-identical.
+
+---
+
 ## 1. The corrected offer set (what the page must show)
 
 **Group A — Programs**
@@ -149,13 +170,15 @@ The current copy is **wrong**. Replace the two-path "Path A / Path B ($3,000 pro
 
 ---
 
-## 8. Suggested build order
+## 8. Suggested build order (skills woven in — see §0.5)
 
-1. Data first: edit `lib/services-data.ts` (rename Engagement, remove Clarity/Refresh, add Research, regroup Production families, update diagnostic maps). Update the `FOMO`/`DELIVERABLES`/`KPIS`/`getServiceLabel` maps in the client to match.
-2. Extract the detail body into a `ServiceDetail` subcomponent (reused by desktop stage + mobile expand).
-3. Build the desktop index/stage layout + state (`activeServiceId`), wire the diagnostic + hash to it.
-4. Build the mobile single-open list from the same subcomponent.
-5. Add sticky category wayfinding + scroll-reveal (reduced-motion aware).
-6. Rebuild the Production compact grid.
-7. Fix the Alumni section copy/structure.
-8. QA against §7 on desktop + mobile, light + the site's normal theme.
+1. **Audit** — invoke `redesign-existing-projects` on `ServicesEditorialClient.tsx`. Output a prioritized fix list (typography, spacing, hierarchy, states). This informs everything below. Present it before editing.
+2. **Design system** — query `ui-ux-pro-max` (style / typography / ux / gsap, `--stack nextjs`) for the editorial-monochrome direction, then translate to the **locked brand tokens** via `design-system`. No new palette or fonts.
+3. **Data** — edit `lib/services-data.ts` (rename Engagement, remove Clarity/Refresh, add Research, regroup Production families, update diagnostic maps). Update the `FOMO`/`DELIVERABLES`/`KPIS`/`getServiceLabel` maps in the client to match.
+4. **Component** — extract the detail body into a `ServiceDetail` subcomponent (reused by desktop stage + mobile expand); build with `ui-styling`.
+5. **Desktop** — build the index/stage layout + state (`activeServiceId`); wire the diagnostic + hash to it.
+6. **Mobile** — single-open list from the same subcomponent.
+7. **Motion** — apply the index→detail crossfade, hover underline sweep, sticky category wayfinding, and scroll-reveal using `emil-design-eng` + `apple-design`. Reduced-motion aware.
+8. **Production grid** — rebuild as the compact six-family grid (§3C).
+9. **Alumni** — fix the copy/structure (§6).
+10. **Review** — run `review-animations` on the motion; re-run the `redesign-existing-projects` audit checklist; run `ui-ux-pro-max` accessibility/UX checks (contrast, touch targets, focus states). Then verify §7 acceptance criteria on desktop + mobile. Fix and re-check.

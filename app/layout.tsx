@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     template: '%s — Thinchronize',
   },
   description:
-    'Thinchronize is a strategy-led brand studio in Beirut, Lebanon. We build brands through diagnosis, positioning, and intentional design.',
+    'Thinchronize is a strategy-led brand studio in Beirut, Lebanon. We synchronize strategy, identity, and design so brands evolve by design, not by accident.',
   keywords: [
     'branding agency Lebanon', 'branding agency Beirut', 'brand strategy studio Beirut',
     'brand identity Lebanon', 'visual identity Lebanon', 'rebranding Lebanon',
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: 'https://thinchronize.com',
     title: 'Thinchronize — Brand Strategy Studio, Beirut',
-    description: 'A strategy-led brand studio in Beirut, Lebanon. We build brands through diagnosis, positioning, and intentional design.',
+    description: 'A strategy-led brand studio in Beirut, Lebanon. We synchronize strategy, identity, and design so brands evolve by design, not by accident.',
     images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'Thinchronize — Brand Strategy Studio, Beirut' }],
   },
   twitter: {

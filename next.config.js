@@ -14,6 +14,12 @@ const nextConfig = {
   },
   // Required for Sanity Studio embedded in Next.js
   transpilePackages: ['sanity'],
+  async redirects() {
+    return [
+      // Services became Production (2026-07-15 restructure); fragments survive the redirect.
+      { source: '/services', destination: '/production', permanent: true },
+    ]
+  },
 }
 
 module.exports = nextConfig
