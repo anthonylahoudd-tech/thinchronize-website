@@ -329,7 +329,7 @@ export default function AboutClient() {
         }}>
           {[
             { name: 'Anthony Lahoud',  role: 'Co-founder & Strategy',  img: '/images/Anthony-Lahoud.JPG'    },
-            { name: 'Wassim Halabi',   role: 'Co-founder & Creative',  img: '/images/work/cafe-bdooz/Cover-Bdooz.png'  },
+            { name: 'Wassim Halabi',   role: 'Co-founder & Creative',  img: '/images/Wassim-Halabi.jpg' },
           ].map(f => (
             <div key={f.name}>
               {/* Photo */}
